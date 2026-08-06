@@ -1,0 +1,96 @@
+generated: '2026-08-06'
+method: probed
+source: live GET of /.well-known/* on every apis.yml and OpenAPI servers[] host
+hosts:
+- host: https://altr.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://docs.altr.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: https://api.live.altr.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  note: AWS API Gateway returns 403 {"message":"Forbidden"} for every unrouted path; no /.well-known/ surface is served.
+- host: https://altrnet.live.altr.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    valid: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    valid: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    valid: false
+  - path: /.well-known/api-catalog
+    status: 200
+    valid: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    valid: false
+  note: FALSE POSITIVE — the ALTR console is a single-page app whose catch-all route answers HTTP 200 with the app HTML
+    shell for every /.well-known/* path. None of these are real discovery documents.
+- host: https://trust.altr.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    valid: true
+    file: altr-trust-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    valid: true
+    file: altr-trust-oauth-authorization-server.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  note: These are served by SafeBase, the vendor hosting ALTR's trust center; the issuer is https://app.safebase.io/api/mcp,
+    not an ALTR authorization server. Recorded for completeness — they are NOT ALTR API auth metadata.
+summary:
+  security_txt: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  api_catalog: false
+  ai_plugin: false
+  agent_card: false
+  note: ALTR publishes no /.well-known/ discovery documents of its own on any host probed.

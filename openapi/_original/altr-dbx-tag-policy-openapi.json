@@ -1,0 +1,408 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ALTR \u2014 Tag-based governance policy on Databricks",
+    "description": "This is an alpha API and may be changed or removed entirely in the future.<p>After registering your Databricks service principal and workspace with ALTR using `POST /databases` in the [Management API](https://altrnet.live.altr.com/api/swagger/#/databases/createDatabase), use this API to define tag-based governance on tagged columns in Databricks.<p>Your ALTR organization must be explicitly enable to use this API. Contact ALTR support.",
+    "termsOfService": "https://www.altr.com/info/altr-solutions-inc-terms-of-service",
+    "contact": {
+      "name": "Support",
+      "email": "support@altr.com"
+    },
+    "version": "alpha"
+  },
+  "externalDocs": {
+    "description": "Find out more about ALTR",
+    "url": "https://docs.altr.com"
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://[Hostname provided by ALTR support]/v1/alpha",
+      "description": "Alpha API Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Databricks Tag Policy",
+      "description": "Operations related to applying tag-based governance policies to Databricks"
+    }
+  ],
+  "paths": {
+    "/dbx/tag-policy/apply": {
+      "post": {
+        "tags": [
+          "Databricks Tag Policy"
+        ],
+        "summary": "Start application of a tag-based policy",
+        "description": "When `policyAction` is `set`, an asynchronous Databricks job is launched to apply the given `policy` on all columns tagged with `tagName`.<p>When `policyAction` is set to `delete`, `policy` is ignored, and a Databricks job is launched to remove policy configured on tag `tagName`.<p>In either case, the status of the job can be tracked with the `GET` endpoint using the returned `id`.",
+        "operationId": "startTagPolicyApplication",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": true,
+                "$ref": "#/components/schemas/PolicySpecification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Asynchronous policy application successfully launched.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "38ac9f93-748d-480d-812e-e8ee7759c99a",
+                      "description": "Use this ID in the `GET` request to check the status of the asynchronous application.",
+                      "required": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Something is wrong with the request."
+          },
+          "401": {
+            "description": "Your API key or secret is wrong or revoked."
+          },
+          "403": {
+            "description": "Your ALTR organization is not authorized for this feature."
+          },
+          "500": {
+            "description": "Something went wrong server-side. Try again later."
+          }
+        }
+      }
+    },
+    "/dbx/tag-policy/apply/{id}": {
+      "get": {
+        "tags": [
+          "Databricks Tag Policy"
+        ],
+        "summary": "Get status and logs of a tag-based policy application",
+        "description": "Check status of an asynchronous application of a tag-based policy started in the `POST` endpoint.<p>Returns the status and, if available, a presigned S3 URL to the logs.",
+        "operationId": "getTagPolicyApplicationStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "38ac9f93-748d-480d-812e-e8ee7759c99a"
+            },
+            "description": "The ID of the tag-based policy application as provided in the `POST` response"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved status of given tag-based policy asynchronous application, and the application is in a final state, so logs are available.<p>Note the given pre-signed URL is valid for *at most* one hour. If it expires, try this request again, and you will get a new pre-signed URL.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "errored",
+                        "applied"
+                      ],
+                      "example": "applied",
+                      "description": "Current status of the application of the tag-based policy.",
+                      "required": true
+                    },
+                    "statusMsg": {
+                      "type": "string",
+                      "example": "Successfully applied tag-based ALTR governance policy!",
+                      "description": "Message, if any, included along with current status.",
+                      "required": true
+                    },
+                    "lastStatusUpdateTime": {
+                      "type": "string",
+                      "example": "2024-08-14T21:20:52.262Z",
+                      "description": "Most recent time the status of the given application has been updated.",
+                      "required": true
+                    },
+                    "presignedS3HttpMethod": {
+                      "type": "string",
+                      "example": "GET",
+                      "description": "HTTP method to use when fetch the logs from S3.",
+                      "required": true
+                    },
+                    "presignedS3Url": {
+                      "type": "string",
+                      "example": "https://an-s3-bucket.s3.us-east-1.amazonaws.com/.../...log?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...",
+                      "description": "URL to use when fetch the logs from S3.",
+                      "required": true
+                    },
+                    "presignedS3Headers": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Host",
+                          "description": "Name of the HTTP header.",
+                          "required": true
+                        },
+                        "value": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "an-s3-bucket.s3.us-east-1.amazonaws.com"
+                          ],
+                          "description": "(Multi-)Value of the HTTP header.",
+                          "required": true
+                        }
+                      },
+                      "example": {
+                        "Host": [
+                          "an-s3-bucket.s3.us-east-1.amazonaws.com"
+                        ]
+                      },
+                      "description": "HTTP headers to use when fetch the logs from S3.",
+                      "required": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Successfully retrieved status of given tag-based policy asynchronous application, and that asynchronous operation is not yet done.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending"
+                      ],
+                      "example": "pending",
+                      "description": "Current status of the application of the tag-based policy. Logs are not available while the status is `pending`",
+                      "required": true
+                    },
+                    "statusMsg": {
+                      "type": "string",
+                      "example": "Working...",
+                      "description": "Message, if any, included along with current status.",
+                      "required": false
+                    },
+                    "lastStatusUpdateTime": {
+                      "type": "string",
+                      "example": "2024-08-14T21:20:52.262Z",
+                      "description": "Most recent time the status of the given application has been updated.",
+                      "required": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Something is wrong with the request."
+          },
+          "401": {
+            "description": "Your API key or secret is wrong or revoked."
+          },
+          "403": {
+            "description": "Your ALTR organization is not authorized for this feature."
+          },
+          "404": {
+            "description": "The provided policy application `id` was not found."
+          },
+          "500": {
+            "description": "Something went wrong server-side. Try again later."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Use ALTR API Key authentication.<p>On the ALTRnet, go to `Settings/Preferences/API/Add New`.\n- The `Username:` below is `API Key Name/Username` (e.g., `ALTR-6B12A4565...`)\n- The `Password:` below is `API Key Secret/Password`."
+      }
+    },
+    "schemas": {
+      "PolicyActionEnum": {
+        "type": "string",
+        "enum": [
+          "set",
+          "delete"
+        ],
+        "description": "Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:\n- `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.\n- `delete`: Remove all policy on all columns with this `tagName`."
+      },
+      "StatusEnum": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "applied",
+          "errored"
+        ],
+        "description": "Specifies what state the job to apply the policy is in. Possible values are:\n- `pending`: The request to apply policy has been received, and the job to apply it is running.\n- `applied`: The job is done, and the requested action (`set` or `delete`) has been applied.\n- `errored`: Some aspect of the job errored. There could be no policy applied or partial policy applied."
+      },
+      "MaskActionEnum": {
+        "type": "string",
+        "enum": [
+          "none",
+          "null_out",
+          "last_four",
+          "full_mask",
+          "allow",
+          "constant_mask",
+          "email_mask"
+        ],
+        "description": "Specifies what to do to the value in governed column. Possible values are:\n- `none`: No action. (Equivalent to `allow`). When a column has the given `tagName`, but none of the `rules` apply, `none` is used for the `defaultAction`.\n- `null_out`: Replace with `null`.\n- `last_four`: Excepting hyphens and other group \"separators\", replace every character except the final four with `*`.\n- `full_mask`: Replace every character with `*`.\n- `allow`: Allow the value as is. (Equivalent to `none`).\n- `constant_mask`: Replace the entire value with the constant value of `****`.\n- `email_mask`: Replace every character before the final `@` with `*`."
+      },
+      "PolicySpecification": {
+        "type": "object",
+        "properties": {
+          "credentialsId": {
+            "type": "integer",
+            "required": true,
+            "description": "The `id` received from ALTR when your Databricks service principal was registered using the ALTR [Management API](https://altrnet.live.altr.com/api/swagger/#/databases/createDatabase)."
+          },
+          "policyAction": {
+            "required": true,
+            "default": "none",
+            "$ref": "#/components/schemas/PolicyActionEnum"
+          },
+          "tagName": {
+            "type": "string",
+            "required": true,
+            "description": "Any column tagged with a tag named this case-*in*sensitive `tagName` will have policy applied."
+          },
+          "policy": {
+            "type": "object",
+            "properties": {
+              "defaultAction": {
+                "required": false,
+                "$ref": "#/components/schemas/MaskActionEnum",
+                "default": "none"
+              },
+              "rules": {
+                "type": "array",
+                "required": true,
+                "items": {
+                  "type": "object",
+                  "required": true,
+                  "properties": {
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "description": "The user executing this query must be a member of any of these roles (\"groups\" in Databricks) for this rule to apply."
+                    },
+                    "tagValues": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "description": "The *value* of the tag named `tagName` on this column must have one of these case-sensitive values for this rule to apply."
+                    },
+                    "action": {
+                      "required": false,
+                      "default": "none",
+                      "$ref": "#/components/schemas/MaskActionEnum"
+                    },
+                    "permissivity": {
+                      "type": "integer",
+                      "required": true,
+                      "minimum": 1,
+                      "maximum": 100,
+                      "description": "If multiple rules match at query-time, the rule with the highest `permissivity` is applied. If multiple rules match with the same permissivity, one of them will randomly be applied, so be very careful when setting your `permissivity` values."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "credentialsId": 1190,
+          "policyAction": "set",
+          "tagName": "stoplight",
+          "policy": {
+            "defaultAction": "full_mask",
+            "rules": [
+              {
+                "roles": [
+                  "green_viewers"
+                ],
+                "tagValues": [
+                  "green"
+                ],
+                "action": "allow",
+                "permissivity": 100
+              },
+              {
+                "roles": [
+                  "yellow_viewers"
+                ],
+                "tagValues": [
+                  "green",
+                  "yellow"
+                ],
+                "action": "allow",
+                "permissivity": 100
+              },
+              {
+                "roles": [
+                  "orange_viewers"
+                ],
+                "tagValues": [
+                  "green"
+                ],
+                "action": "allow",
+                "permissivity": 100
+              },
+              {
+                "roles": [
+                  "orange_viewers"
+                ],
+                "tagValues": [
+                  "yellow"
+                ],
+                "action": "last_four",
+                "permissivity": 50
+              },
+              {
+                "roles": [
+                  "red_viewers"
+                ],
+                "tagValues": [
+                  "red",
+                  "green",
+                  "yellow"
+                ],
+                "action": "allow",
+                "permissivity": 100
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

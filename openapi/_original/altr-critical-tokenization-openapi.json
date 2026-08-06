@@ -1,0 +1,894 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Critical Tokenization V2",
+    "version": "1.3.0",
+    "termsOfService": "https://www.altr.com/info/altr-solutions-inc-terms-of-service",
+    "contact": {
+      "name": "Support",
+      "email": "support@altr.com"
+    },
+    "description": "Welcome to the Swagger documentation for ALTR's Critical Tokenization V2 API. Critical Tokenization V2 allows ALTR Enterprise + customers to tokenize and detokenize values using an API that is PCI compliant.\n\nTokenization credentials can be obtained under Settings > Preferences > API of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page and Passwords are the 'Key Secret' provided when an API key is created."
+  },
+  "servers": [
+    {
+      "url": "https://{customerId}.critical.live.altr.com/v2",
+      "variables": {
+        "customerId": {
+          "description": "Customer ID assigned by ALTR.",
+          "default": "00000000-0000-0000-0000-000000000000"
+        }
+      }
+    }
+  ],
+  "x-servers-not-selectable": true,
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/"
+  },
+  "paths": {
+    "/batch": {
+      "post": {
+        "tags": [
+          "batch"
+        ],
+        "summary": "Batch Write",
+        "description": "This endpoint tokenizes plaintext data. Up to 1024 values can be tokenized at once. Only string values can be tokenized. Values can be up to 128 UTF-8 code units long. Smaller batches may increase performance.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-ALTR-DETERMINISM",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "field000": {
+                    "type": "string",
+                    "example": "Sample Value 1"
+                  },
+                  "field001": {
+                    "type": "string",
+                    "example": "Sample Value 2"
+                  },
+                  "field002": {
+                    "type": "string",
+                    "example": "Sample Value 3"
+                  },
+                  "field003": {
+                    "type": "string",
+                    "example": "Sample Value 4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/BatchWrite"
+          },
+          "400": {
+            "$ref": "#/components/responses/WriteBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooMany"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "batch"
+        ],
+        "summary": "Batch Read",
+        "description": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. Tokens are case sensitive. If you send values to this endpoint that are not valid tokens, the request will fail. Using smaller batch sizes may improve performance.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "field000": {
+                    "type": "string",
+                    "example": "token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W"
+                  },
+                  "field001": {
+                    "type": "string",
+                    "example": "token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG"
+                  },
+                  "field002": {
+                    "type": "string",
+                    "example": "token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl"
+                  },
+                  "field003": {
+                    "type": "string",
+                    "example": "token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BatchRead"
+          },
+          "400": {
+            "$ref": "#/components/responses/ReadBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooMany"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/batch/partial": {
+      "put": {
+        "tags": [
+          "batch"
+        ],
+        "summary": "Partial Batch Read",
+        "description": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. If you send values to this endpoint that are not valid tokens, the request will not fail. Instead, any non-token values supplied will be returned back to the user. Using smaller batch sizes may improve performance.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "field000": {
+                    "type": "string",
+                    "example": "Not a token"
+                  },
+                  "field001": {
+                    "type": "string",
+                    "example": "token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG"
+                  },
+                  "field002": {
+                    "type": "string",
+                    "example": "token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl"
+                  },
+                  "field003": {
+                    "type": "string",
+                    "example": "token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BatchReadPartial"
+          },
+          "400": {
+            "$ref": "#/components/responses/PartialReadBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooMany"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/batch/delete": {
+      "put": {
+        "tags": [
+          "batch"
+        ],
+        "summary": "Batch Delete",
+        "description": "This endpoint deletes tokens from ALTR's token vault. Up to 1024 values can be deleted at once. If a determinstic token is deleted from ALTR, a new POST for that tokens value will result in a newly minted token. If you send values to this endpoint that are not valid tokens, the invalid tokens will be ignored. Using smaller batch sizes may improve performance.\n\n Delete batches may be partially executed. Tokens from the batch that fail to be deleted are returned with their cause for failure.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "field000": {
+                    "type": "string",
+                    "example": "Not a token"
+                  },
+                  "field001": {
+                    "type": "string",
+                    "example": "token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG"
+                  },
+                  "field002": {
+                    "type": "string",
+                    "example": "token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl"
+                  },
+                  "field003": {
+                    "type": "string",
+                    "example": "token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/BatchDelete"
+          },
+          "400": {
+            "$ref": "#/components/responses/BatchDeleteBadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooMany"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Critical Tokenization uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>Tokenization credentials can be obtained on the API page of the dashboard (found under Settings > Preferences > API) of ALTR's portal for Enterprise + customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created."
+      }
+    },
+    "responses": {
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Not Found",
+                "statusCode": 404
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Unsupported Media Type",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Unsupported Media Type",
+                "statusCode": 415
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "WriteBadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "examples": {
+              "Default": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Bad Request",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Exceeds limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Batch exceeds 1024 limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Too Short": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Too Short",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Exceed Length Limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Exceed Length Limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Transaction Cancelled": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Transaction Cancelled",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "ReadBadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "examples": {
+              "Default": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Bad Request",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Exceeds limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Batch exceeds 1024 limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "No Tokens": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "No Tokens Given",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Too Short": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Too Short",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Exceed Length Limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Exceed Length Limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Malformed Token": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Received Malformed Token",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Transaction Cancelled": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Transaction Cancelled",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "PartialReadBadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "examples": {
+              "Default": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Bad Request",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Exceeds limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Batch exceeds 1024 limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "No Tokens": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "No Tokens Given",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Too Short": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Too Short",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Exceed Length Limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Exceed Length Limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Malformed Token": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Received Malformed Token",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Transaction Cancelled": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Transaction Cancelled",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "BatchDeleteBadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "examples": {
+              "Default": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Bad Request",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Exceeds limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Batch exceeds 1024 limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "No Tokens": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "No Tokens Given",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Too Short": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Too Short",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Item(s) Exceed Length Limit": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Item(s) In Batch Exceed Length Limit",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              },
+              "Transaction Cancelled": {
+                "value": {
+                  "data": {
+                    "date": "2022-07-20T18:00:58.723Z",
+                    "message": "Transaction Cancelled",
+                    "statusCode": 400
+                  },
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "BatchReadPartial": {
+        "description": "Partial Read Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BatchReadPartial"
+            }
+          }
+        }
+      },
+      "BatchDelete": {
+        "description": "Delete Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BatchDelete"
+            },
+            "examples": {
+              "Success": {},
+              "Partial Success": {
+                "value": {
+                  "unprocessed": [
+                    {
+                      "message": "Too Many Requests",
+                      "statusCode": "429",
+                      "field003": "token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM"
+                    }
+                  ],
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Resource is forbidden",
+                "statusCode": 403
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "TooMany": {
+        "description": "Too Many Requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Too Many Requests",
+                "statusCode": 429
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Unauthorized",
+                "statusCode": 401
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "Unprocessed": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Unprocessable Entity",
+                "statusCode": 422
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiError"
+            },
+            "example": {
+              "data": {
+                "date": "2022-07-20T18:00:58.723Z",
+                "message": "Internal Server Error",
+                "statusCode": 500
+              },
+              "success": false
+            }
+          }
+        }
+      },
+      "BatchRead": {
+        "description": "Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BatchRead"
+            }
+          }
+        }
+      },
+      "BatchWrite": {
+        "description": "Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BatchWrite"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string",
+                "example": "2022-07-20T18:00:58.723Z"
+              },
+              "message": {
+                "type": "string",
+                "example": "Internal Server Error"
+              },
+              "statusCode": {
+                "type": "integer",
+                "example": 500
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": "false"
+          }
+        }
+      },
+      "BatchWrite": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "field000": {
+                "type": "string",
+                "example": "token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W"
+              },
+              "field001": {
+                "type": "string",
+                "example": "token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG"
+              },
+              "field002": {
+                "type": "string",
+                "example": "token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl"
+              },
+              "field003": {
+                "type": "string",
+                "example": "token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BatchRead": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "field000": {
+                "type": "string",
+                "example": "Sample Value 1"
+              },
+              "field001": {
+                "type": "string",
+                "example": "Sample Value 2"
+              },
+              "field002": {
+                "type": "string",
+                "example": "Sample Value 3"
+              },
+              "field003": {
+                "type": "string",
+                "example": "Sample Value 4"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BatchReadPartial": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "field000": {
+                "type": "string",
+                "example": "Not a token"
+              },
+              "field001": {
+                "type": "string",
+                "example": "Sample Value 2"
+              },
+              "field002": {
+                "type": "string",
+                "example": "Sample Value 3"
+              },
+              "field003": {
+                "type": "string",
+                "example": "Sample Value 4"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BatchDelete": {
+        "type": "object",
+        "properties": {
+          "unprocessed": {
+            "type": "array",
+            "example": "[]"
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      }
+    }
+  }
+}

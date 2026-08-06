@@ -1,0 +1,751 @@
+swagger: '2.0'
+info:
+  description: 'Welcome to the Swagger documentation for ALTR''s Service User API. This API allows ALTR customers to manage
+    service users used to connect to third-party applications such as Snowflake.
+
+    API credentials can be obtained under Settings > Preferences > API of ALTR''s portal for Usernames are the ''Key Names''
+    listed on that page and Passwords are the ''Key Secret'' provided when an API key is created.'
+  title: Service User Service
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  contact:
+    name: Support
+    email: support@altr.com
+  version: '1.0'
+basePath: /v1
+paths:
+  /services/{service}/users:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a list of service users based on the provided query parameters.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Get Service Users handles the request to get service users.
+      parameters:
+      - type: integer
+        default: 10
+        example: 10
+        description: Limit the number of results returned
+        name: limit
+        in: query
+      - type: string
+        example: '"user_"'
+        description: Filter results by prefix
+        name: prefix
+        in: query
+      - enum:
+        - asc
+        - desc
+        type: string
+        default: asc
+        description: Order by ascending or descending
+        name: order_by
+        in: query
+      - type: string
+        example: '"eyJDb250aW"'
+        description: Contiguous ID for pagination
+        name: contiguous_id
+        in: query
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetServiceUserPublicResponse'
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint creates a new service user based on the provided request body.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Register Service User handles the request to register a new service user.
+      parameters:
+      - description: Create Service User Request
+        name: CreateServiceUserRequest
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateServiceUserRequest'
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreateServiceUserResponse'
+  /services/{service}/users/{userID}/auth/keypair:
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint generates a new RSA keypair for the specified user and service, encrypts the private key,
+      produces:
+      - application/json
+      tags:
+      - Auth
+      summary: Create Key Pair handles the request to create a keypair for a user.
+      parameters:
+      - type: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userID
+        in: path
+        required: true
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: boolean
+        default: false
+        description: Set as Active Authentication Method
+        name: set_active
+        in: query
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreateKeypairResponse'
+  /services/{service}/users/{userID}/auth/password:
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint creates a password authentication method for a user in the specified organization.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Auth
+      summary: Create Password handles the request to create a password authentication method.
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userID
+        in: path
+        required: true
+      - type: boolean
+        default: false
+        description: Set as Active Authentication Method
+        name: set_active
+        in: query
+      - description: Create Password Request
+        name: CreatePasswordRequest
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePasswordBody'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreatePasswordResponse'
+  /services/{service}/users/{userID}/auth/{auth}/{authid}/test:
+    post:
+      security:
+      - BasicAuth: []
+      description: Creates an **asynchronous** job that validates the specified authentication item. The endpoint returns
+        immediately with a job‐identifier you can poll later.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Tasks
+      summary: Start a task which validates the authentication method
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      - enum:
+        - password
+        - keypair
+        type: string
+        description: Authentication Type
+        name: auth
+        in: path
+        required: true
+      - type: string
+        description: Authentication ID
+        name: authid
+        in: path
+        required: true
+      responses:
+        '202':
+          description: Test job accepted
+          schema:
+            $ref: '#/definitions/dto.CreateAuthTestJobResponse'
+        '404':
+          description: Authentication item not found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '409':
+          description: Test already in progress or overlapping request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '500':
+          description: Unexpected server error
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '503':
+          description: Service unavailable
+          schema:
+            $ref: '#/definitions/dto.Error'
+  /services/{service}/users/{userid}:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a service user based on the provided service type and user ID.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Get Service User handles the request to get a service user.
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        format: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetServiceUserPublicResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: This endpoint deletes a service user based on the provided service type and user ID.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Delete Service User handles the request to delete a service user.
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        format: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      responses:
+        '204':
+          description: No Content
+    patch:
+      security:
+      - BasicAuth: []
+      description: This endpoint updates a service user based on the provided service type and user ID.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Update Service User handles the request to update a service user.
+      parameters:
+      - description: Update Service User Request
+        name: UpdateServiceUserRequest
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateServiceUserBody'
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetServiceUserPublicResponse'
+  /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/latest:
+    get:
+      security:
+      - BasicAuth: []
+      description: Returns the most recent authentication-test task created for a given user, service and auth.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Tasks
+      summary: Retrieve the status of the latest authentication-test task
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      - enum:
+        - password
+        - keypair
+        type: string
+        description: Authentication Type
+        name: authtype
+        in: path
+        required: true
+      - type: string
+        description: Authentication ID
+        name: authid
+        in: path
+        required: true
+      responses:
+        '200':
+          description: Latest job found – status returned
+          schema:
+            $ref: '#/definitions/dto.AuthTestJobStatusResponse'
+        '404':
+          description: Job not found – no prior test has been created
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '503':
+          description: Auth service unavailable – caller should retry
+          schema:
+            $ref: '#/definitions/dto.Error'
+  /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/{testid}:
+    get:
+      security:
+      - BasicAuth: []
+      description: Returns the status of the authentication-test task for the specified service, user, and authentication
+        identifiers.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Tasks
+      summary: Retrieve the status of a specific authentication-test task
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      - enum:
+        - password
+        - keypair
+        type: string
+        description: Authentication Type
+        name: authtype
+        in: path
+        required: true
+      - type: string
+        description: Authentication ID
+        name: authid
+        in: path
+        required: true
+      - type: string
+        description: Authentication-test ID
+        name: testid
+        in: path
+        required: true
+      responses:
+        '200':
+          description: Job found – status returned
+          schema:
+            $ref: '#/definitions/dto.AuthTestJobStatusResponse'
+        '404':
+          description: Job not found – no prior test has been created
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Error'
+        '503':
+          description: Auth service unavailable – caller should retry
+          schema:
+            $ref: '#/definitions/dto.Error'
+  /services/{service}/users/{userid}/auth/{auth}/{authid}/set-active:
+    post:
+      security:
+      - BasicAuth: []
+      description: Set an authentication method as active for a user.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Auth
+      summary: Set Active Authentication
+      parameters:
+      - enum:
+        - snowflake
+        type: string
+        description: Service Type
+        name: service
+        in: path
+        required: true
+      - type: string
+        example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+      - enum:
+        - password
+        - keypair
+        type: string
+        description: Authentication Type
+        name: auth
+        in: path
+        required: true
+      - type: string
+        description: Authentication ID
+        name: authid
+        in: path
+        required: true
+      responses:
+        '204':
+          description: No Content
+  /users:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a list of users based on the provided query parameters.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Users
+      summary: Get Users handles the request to get users.
+      parameters:
+      - type: integer
+        default: 10
+        example: 10
+        description: Limit the number of results returned
+        name: limit
+        in: query
+      - type: string
+        example: '"user_"'
+        description: Filter results by prefix
+        name: prefix
+        in: query
+      - enum:
+        - asc
+        - desc
+        type: string
+        default: asc
+        description: Order by ascending or descending
+        name: order_by
+        in: query
+      - type: string
+        example: '"eyJDb250aW"'
+        description: Contiguous ID for pagination
+        name: contiguous_id
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ServiceUserQueryResponse'
+definitions:
+  dto.AuthTestJobStatusResponse:
+    type: object
+    properties:
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      detail:
+        description: optional
+        type: string
+      status:
+        description: PENDING|RUNNING|SUCCESS|FAILED
+        type: string
+      task_id:
+        type: array
+        items:
+          type: integer
+  dto.CompositeAuthResponse:
+    type: object
+    properties:
+      algorithm:
+        type: string
+      auth_type:
+        $ref: '#/definitions/types.AuthType'
+      created_at:
+        type: string
+      deactivated_at:
+        type: string
+      id:
+        type: array
+        items:
+          type: integer
+      public_key:
+        type: string
+      public_key_encoding:
+        type: string
+      public_key_fingerprint:
+        type: string
+      public_key_format:
+        type: string
+  dto.CompositeServiceUser:
+    type: object
+    properties:
+      auth_type:
+        description: AuthType specifies the authentication method associated with the user.
+        allOf:
+        - $ref: '#/definitions/types.AuthType'
+      created_at:
+        description: CreatedAt is an optional timestamp when the service user was created.
+        type: string
+      deactivated_at:
+        description: DeactivatedAt is an optional timestamp indicating when the user was deactivated.
+        type: string
+      display_name:
+        description: DisplayName is the user-friendly name for the service user.
+        type: string
+      hostname:
+        type: string
+      port:
+        type: integer
+        maximum: 65535
+        minimum: 1
+      service_type:
+        description: ServiceType indicates the type or category of service associated with the user.
+        allOf:
+        - $ref: '#/definitions/types.ServiceType'
+      updated_at:
+        description: UpdatedAt is an optional timestamp when the user's record was last updated.
+        type: string
+      user_id:
+        description: UserID is the unique identifier of the service user.
+        type: string
+      username:
+        description: Username is the username assigned to the service user.
+        type: string
+  dto.CreateAuthTestJobResponse:
+    type: object
+    properties:
+      created_at:
+        type: string
+      status:
+        type: string
+      task_id:
+        type: array
+        items:
+          type: integer
+  dto.CreateKeypairResponse:
+    type: object
+    properties:
+      algorithm:
+        type: string
+      auth_type:
+        $ref: '#/definitions/types.AuthType'
+      created_at:
+        type: string
+      deactivated_at:
+        type: string
+      id:
+        type: array
+        items:
+          type: integer
+      public_key:
+        type: string
+      public_key_encoding:
+        type: string
+      public_key_fingerprint:
+        type: string
+      public_key_format:
+        type: string
+  dto.CreatePasswordBody:
+    type: object
+    required:
+    - password
+    properties:
+      password:
+        type: string
+        maxLength: 128
+        minLength: 8
+  dto.CreatePasswordResponse:
+    type: object
+    properties:
+      auth_type:
+        $ref: '#/definitions/types.AuthType'
+      created_at:
+        type: string
+      deactivated_at:
+        type: string
+      id:
+        type: array
+        items:
+          type: integer
+  dto.CreateServiceUserRequest:
+    type: object
+    required:
+    - display_name
+    - username
+    properties:
+      display_name:
+        description: DisplayName provides a human-friendly name
+        type: string
+        maxLength: 255
+      hostname:
+        type: string
+      port:
+        type: integer
+        maximum: 65535
+        minimum: 1
+      username:
+        description: Username is the primary identifier for the service user and is used for authentication and display.
+        type: string
+        maxLength: 255
+  dto.CreateServiceUserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/dto.CompositeServiceUser'
+  dto.Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+  dto.GetServiceUserPublicResponse:
+    description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
+    type: object
+    properties:
+      auth:
+        description: Auth optionally provides a public view of authentication details, if available.
+        allOf:
+        - $ref: '#/definitions/dto.CompositeAuthResponse'
+      user:
+        description: User is the composite service user object containing public attributes.
+        allOf:
+        - $ref: '#/definitions/dto.CompositeServiceUser'
+  dto.ServiceUserQueryResponse:
+    type: object
+    properties:
+      contiguous_id:
+        type: string
+      users:
+        type: array
+        items:
+          $ref: '#/definitions/dto.GetServiceUserPublicResponse'
+  dto.UpdateServiceUserBody:
+    description: UpdateServiceUserBody is used to update the details of an existing service user.
+    type: object
+    properties:
+      display_name:
+        type: string
+        maxLength: 255
+      username:
+        type: string
+        maxLength: 255
+  types.AuthType:
+    type: string
+    enum:
+    - UNSUPPORTED
+    - NONE
+    - PASSWORD
+    - KEYPAIR
+    x-enum-varnames:
+    - AuthTypeUnsupported
+    - AuthTypeNone
+    - AuthTypePassword
+    - AuthTypeKeypair
+  types.ServiceType:
+    type: string
+    enum:
+    - SNOWFLAKE
+    - UNSUPPORTED
+    x-enum-varnames:
+    - SnowflakeServiceUser
+    - UnsupportedServiceUser
+securityDefinitions:
+  BasicAuth:
+    type: basic
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

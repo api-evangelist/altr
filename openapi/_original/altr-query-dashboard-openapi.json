@@ -1,0 +1,441 @@
+{
+  "components": {
+    "schemas": {
+      "fiber.ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "main.GetResultOutput": {
+        "properties": {
+          "count_results": {
+            "description": "Sidecar Audits.",
+            "items": {
+              "$ref": "#/components/schemas/management.CountResult"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_page_token": {
+            "description": "Token to retrieve the next page of results. If not present, there are no more results.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.CountResult": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "day": {
+            "type": "integer"
+          },
+          "group": {
+            "type": "string"
+          },
+          "hour": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "integer"
+          },
+          "year": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "management.TriggerSearchOutput": {
+        "properties": {
+          "search_uuid": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "basic": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "The Query Dashboard API is responsible for serving dashboard metrics using sidecar & snowflake audit data.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "Query Dashboard API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/search": {
+      "post": {
+        "description": "This endpoint triggers a search to return DAM metrics based on the provided parameters.\nThe `search_uuid` that is returned expires after 30 days.",
+        "parameters": [
+          {
+            "description": "Integration type. Allowed values: 'snowflake', 'oltp', 'all'.",
+            "in": "query",
+            "name": "integration_type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Resolution of the data. Allowed values: 'hour', 'day', 'month', 'year'.",
+            "in": "query",
+            "name": "resolution",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Queries that ended before this time will not be counted. Must be provided as a UTC timestamp in valid RFC3339 format. Required with to_date_time.",
+            "in": "query",
+            "name": "from_date_time",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Queries that ended after this time will not be counted. Must be provided as a UTC timestamp in valid RFC3339 format. Required with from_date_time.",
+            "in": "query",
+            "name": "to_date_time",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "OLTP consuming usernames. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "consuming_users",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "OLTP repository usernames. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "repository_users",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "OLTP consuming user emails. Excluded with integration_type=snowflake or all. Max 10, each max 1024 chars.",
+            "in": "query",
+            "name": "consuming_user_emails",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "OLTP repository types. Excluded with integration_type=snowflake or all. Max 10.",
+            "in": "query",
+            "name": "repository_types",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "OLTP repository names. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "repository_names",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "OLTP repository sources. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "repository_sources",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Statement types. Excluded with integration_type=snowflake or all. Allowed: SELECT, INSERT, DELETE, UPDATE. Max 10.",
+            "in": "query",
+            "name": "statement_types",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "IP addresses. Excluded with integration_type=oltp or all. Max 10, each max 45 chars.",
+            "in": "query",
+            "name": "ip_addresses",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Snowflake usernames. Excluded with integration_type=oltp or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "snowflake_usernames",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Snowflake current roles. Excluded with integration_type=oltp or all. Max 10, each max 255 chars.",
+            "in": "query",
+            "name": "snowflake_current_roles",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Query texts. Excluded with integration_type=oltp or all. Max 10, each max 15000 chars.",
+            "in": "query",
+            "name": "query_texts",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Snowflake query tag values. Excluded with integration_type=oltp or all. Max 10, each max 512 chars.",
+            "in": "query",
+            "name": "snowflake_query_tag_values",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Snowflake query tag names. Excluded with integration_type=oltp or all. Max 10, each max 256 chars.",
+            "in": "query",
+            "name": "snowflake_query_tag_names",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "Filter to only include queries where a tag is present or absent. Allowed values: TAG_PRESENT, TAG_ABSENT.",
+            "in": "query",
+            "name": "tag_present",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "OLTP connection status. Excluded with integration_type=snowflake or all. Allowed: SUCCESS, FAILED, ALL.",
+            "in": "query",
+            "name": "connection_status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Group by. Allowed: repository_name, repository_username, repository_type, repository_source, consuming_user, consuming_user_email, statement_type, query_text, ip_address, snowflake_current_role, snowflake_query_tag_name, snowflake_query_tag_value, snowflake_username.",
+            "in": "query",
+            "name": "group_by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Count by. Allowed: accessed_rows, query_count, snowflake_username, consuming_user, snowflake_current_role, repository_user.",
+            "in": "query",
+            "name": "count_by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.TriggerSearchOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Trigger query audit search for a count using various filters.",
+        "tags": [
+          "Query Dashboard API"
+        ]
+      }
+    },
+    "/search/{search_uuid}": {
+      "get": {
+        "description": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /audits endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response.",
+        "parameters": [
+          {
+            "description": "`search_uuid`.",
+            "example": "3d53c540-edba-42ba-991b-553b59bcf559",
+            "in": "path",
+            "name": "search_uuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limit the number of results returned. Default is 500.",
+            "example": 500,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Token to retrieve the next page of results.",
+            "example": "AW21AAy4Q...",
+            "in": "query",
+            "name": "next_page_token",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.GetResultOutput"
+                }
+              }
+            },
+            "description": "Search complete. Results are ready."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.GetResultOutput"
+                }
+              }
+            },
+            "description": "Search not complete. Results are not ready."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.ErrorResponse"
+                }
+              }
+            },
+            "description": "Search UUID not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get the results of a search using the `search_uuid`.",
+        "tags": [
+          "Query Dashboard API"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://api.live.altr.com/v1/dam"
+    }
+  ]
+}

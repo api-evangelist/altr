@@ -1,0 +1,81 @@
+generated: '2026-08-06'
+method: generated
+source: openapi/ (operationIds verified by grep against the harvested specs) + conventions/, errors/, mcp/
+note: Every operationId referenced in these skills was grepped out of the harvested specifications. Where a specification
+  declares no operationIds (classification, audit-report, sidecar-*, tag-masking, query-audits, rbac, service-user), the
+  skill references method + path and says so explicitly.
+skills:
+- file: altr-connect-and-classify.md
+  name: Connect a data source and classify it with ALTR
+  api: openapi/altr-mapi-openapi.yml
+  operations:
+  - getDatabases
+  - createDatabase
+  - getDatabaseStatus
+  - updateDatabaseStatus
+  - createSnowflakeConnection
+  - getSnowflakeAccounts
+  - startClassification
+  - listDBs
+  - retrieveJobStatusDB
+  - retrieveColumnClassificationsDB
+- file: altr-tag-based-masking-policy.md
+  name: Create a tag-based dynamic masking policy in ALTR
+  api: openapi/altr-unified-policy-openapi.yml
+  operations:
+  - getPolicies
+  - createPolicy
+  - createPolicyWithRules
+  - getPolicyById
+  - createRule
+  - getRules
+  - updateRule
+  - updateBatchRules
+  - deleteRule
+  - deletePolicy
+  - getUserGroups
+  - retrieveTagsList
+  - retrieveTagDetails
+  - getListOfTags
+- file: altr-databricks-pushdown-policy.md
+  name: Apply a tag-based governance policy to Databricks with ALTR
+  api: openapi/altr-unified-policy-openapi.yml
+  operations:
+  - getDatabases
+  - createDatabase
+  - createPolicy
+  - createGrantPolicyDatabricks
+  - createRule
+  - getRules
+  - startClassificationMetastore
+- file: altr-access-request-approval.md
+  name: Run a data access request and approval in ALTR
+  api: openapi/altr-unified-policy-openapi.yml
+  operations:
+  - createAccessRequest
+  - getAccessRequests
+  - getAccessRequestById
+  - approveAccessRequest
+  - denyAccessRequest
+  - cancelAccessRequest
+  - createAccessManagementPolicySnowflake
+  - createAccessManagementPolicyOltp
+  - updateAccessManagementPolicySnowflake
+  - triggerAccessManagementPolicyCheck
+- file: altr-audit-and-report.md
+  name: Search ALTR audits and produce a compliance audit report
+  api: openapi/altr-mapi-openapi.yml
+  operations:
+  - postQuerySystemaudits
+  - getQuerySystemaudits
+  - getSystemAudits
+  - patchSystemaudits
+  - getAnomalies
+  - getAnomalyDetails
+  - archiveAnomaly
+  - addAnomalyNote
+- file: altr-oltp-sidecar-onboarding.md
+  name: Onboard an OLTP database behind the ALTR sidecar
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  operations: []
+  note: Bound by method + path — this specification declares no operationIds.

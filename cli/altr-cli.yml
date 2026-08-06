@@ -1,0 +1,35 @@
+generated: '2026-08-06'
+method: searched
+source: https://github.com/altrsoftware/altr-mcp-server#cli-optional
+status: build-it-yourself
+note: 'ALTR ships no precompiled first-party CLI binary. Its own MCP server repository documents building one: mcporter
+  compiles the ALTR MCP server into a native binary, giving every one of the 156 MCP tools a terminal command. This is provider-documented,
+  but the user builds the binary — it is not distributed on a package registry.'
+name: altr-cli
+build:
+  command: npx mcporter generate-cli --command "uv run --directory . altr-mcp" --name altr-cli --compile ./altr-cli
+  prerequisites:
+  - uv (Python package manager)
+  - Node.js (for npx)
+  tooling: https://github.com/openclaw/mcporter
+authentication:
+  env:
+  - ORG_ID
+  - MAPI_KEY
+  - MAPI_SECRET
+command_surface:
+  derivation: one command per MCP tool, kebab-cased
+  commands: 156
+  source_artifact: mcp/altr-mcp.yml
+  examples:
+  - ./altr-cli get-databases
+  - ./altr-cli get-database-id --database-name "my_database"
+  - ./altr-cli create-policy --tag "STOPLIGHT"
+  - './altr-cli add-rules --policy-id "TAG#abc123" --rules ''[{"masking_policy": 10001, "role": "PUBLIC", "tag_value": "red"}]'''
+  - ./altr-cli search-query-audits --limit 10
+  - ./altr-cli get-databases --output json
+terraform_alternative:
+  note: For declarative management ALTR publishes a real first-party Terraform provider, which is the closer analogue of
+    a shipped CLI.
+  url: https://registry.terraform.io/providers/altrsoftware/altr/latest
+  version: 1.2.0

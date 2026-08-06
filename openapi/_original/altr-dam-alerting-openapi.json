@@ -1,0 +1,1704 @@
+{
+  "components": {
+    "schemas": {
+      "auditfilter.BetweenValue": {
+        "description": "Between is required for: between (time_of_day only).",
+        "properties": {
+          "end": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "end",
+          "start"
+        ],
+        "type": "object"
+      },
+      "auditfilter.Dimension": {
+        "enum": [
+          "user",
+          "database",
+          "schema",
+          "table",
+          "column",
+          "statement_type",
+          "statement_text",
+          "query_status",
+          "event_name",
+          "time_of_day",
+          "repo_user",
+          "client_ip",
+          "client_app",
+          "client_port",
+          "repo_type",
+          "repo_host",
+          "sidecar_id",
+          "connection_authorized",
+          "authorization_type",
+          "oltp_row_count",
+          "bytes_returned",
+          "policy_applied",
+          "policy_type",
+          "user_email",
+          "user_group",
+          "snowflake_role",
+          "snowflake_roles",
+          "snowflake_warehouse",
+          "snowflake_warehouse_size",
+          "snowflake_ip_address",
+          "snowflake_client",
+          "snowflake_session_id",
+          "snowflake_query_tag",
+          "snowflake_row_count",
+          "snowflake_account",
+          "snowflake_account_region",
+          "snowflake_masking_policy",
+          "snowflake_column_policy",
+          "snowflake_execution_duration",
+          "snowflake_tag_name",
+          "snowflake_tag_value"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "DimUser",
+          "DimDatabase",
+          "DimSchema",
+          "DimTable",
+          "DimColumn",
+          "DimStatementType",
+          "DimStatementText",
+          "DimQueryStatus",
+          "DimEventName",
+          "DimTimeOfDay",
+          "DimRepoUser",
+          "DimClientIP",
+          "DimClientApp",
+          "DimClientPort",
+          "DimRepoType",
+          "DimRepoHost",
+          "DimSidecarID",
+          "DimConnectionAuthorized",
+          "DimAuthorizationType",
+          "DimRowCount",
+          "DimBytesReturned",
+          "DimPolicyApplied",
+          "DimPolicyType",
+          "DimUserEmail",
+          "DimUserGroup",
+          "DimSnowflakeRole",
+          "DimSnowflakeRoles",
+          "DimSnowflakeWarehouse",
+          "DimSnowflakeWarehouseSize",
+          "DimSnowflakeIPAddress",
+          "DimSnowflakeClient",
+          "DimSnowflakeSessionID",
+          "DimSnowflakeQueryTag",
+          "DimSnowflakeRowCount",
+          "DimSnowflakeAccount",
+          "DimSnowflakeAccountRegion",
+          "DimSnowflakeMaskingPolicy",
+          "DimSnowflakeColumnPolicy",
+          "DimSnowflakeExecutionDuration",
+          "DimSnowflakeTagName",
+          "DimSnowflakeTagValue"
+        ]
+      },
+      "auditfilter.FilterNode": {
+        "properties": {
+          "between": {
+            "$ref": "#/components/schemas/auditfilter.BetweenValue"
+          },
+          "children": {
+            "description": "Children is required for: and, or. Depth is bounded by MaxFilterDepth\n(enforced in validateBounded).",
+            "items": {
+              "$ref": "#/components/schemas/auditfilter.FilterNode"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "dimension": {
+            "$ref": "#/components/schemas/auditfilter.Dimension"
+          },
+          "key_eq": {
+            "$ref": "#/components/schemas/auditfilter.KeyEqValue"
+          },
+          "list_value": {
+            "description": "ListValue is required for: in. Per-entry max=256 caps individual list\nitems; the slice-level min=1 enforces non-empty for `in`.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": false
+          },
+          "number_value": {
+            "description": "NumberValue is required for: gt, gte, lt, lte.",
+            "type": "number"
+          },
+          "op": {
+            "$ref": "#/components/schemas/auditfilter.Op"
+          },
+          "range": {
+            "$ref": "#/components/schemas/auditfilter.RangeValue"
+          },
+          "string_value": {
+            "description": "StringValue is required for: eq, neq, contains, regex, cidr, key_exists.\nmax=1024 keeps regex/CIDR/eq values bounded \u2014 well above any plausible\nreal-world value, well below DDB item-size territory.",
+            "maxLength": 1024,
+            "type": "string"
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "type": "object"
+      },
+      "auditfilter.KeyEqValue": {
+        "description": "KeyEq is required for: key_eq.",
+        "properties": {
+          "key": {
+            "maxLength": 256,
+            "type": "string"
+          },
+          "value": {
+            "maxLength": 256,
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object"
+      },
+      "auditfilter.Op": {
+        "enum": [
+          "and",
+          "or",
+          "eq",
+          "neq",
+          "in",
+          "contains",
+          "regex",
+          "cidr",
+          "gt",
+          "gte",
+          "lt",
+          "lte",
+          "range",
+          "between",
+          "exists",
+          "key_exists",
+          "key_eq"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "OpAnd",
+          "OpOr",
+          "OpEq",
+          "OpNeq",
+          "OpIn",
+          "OpContains",
+          "OpRegex",
+          "OpCIDR",
+          "OpGt",
+          "OpGte",
+          "OpLt",
+          "OpLte",
+          "OpRange",
+          "OpBetween",
+          "OpExists",
+          "OpKeyExists",
+          "OpKeyEq"
+        ]
+      },
+      "auditfilter.RangeValue": {
+        "description": "Range is required for: range.",
+        "properties": {
+          "max": {
+            "type": "number"
+          },
+          "min": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "max",
+          "min"
+        ],
+        "type": "object"
+      },
+      "fiber.APIError": {
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/fiber.APIErrorResponse"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "fiber.APIErrorResponse": {
+        "properties": {
+          "error_code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.AckMetadata": {
+        "properties": {
+          "acked_at": {
+            "type": "string"
+          },
+          "acked_by_id": {
+            "type": "string"
+          },
+          "acked_by_name": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.AckRequest": {
+        "properties": {
+          "comment": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.Alert": {
+        "properties": {
+          "ack_metadata": {
+            "$ref": "#/components/schemas/models.AckMetadata"
+          },
+          "alert_id": {
+            "type": "string"
+          },
+          "comment_required": {
+            "type": "boolean"
+          },
+          "data_source_scope": {
+            "type": "string"
+          },
+          "fired_at": {
+            "type": "string"
+          },
+          "matched_event": {
+            "$ref": "#/components/schemas/models.MatchedEvent"
+          },
+          "rule_id": {
+            "type": "string"
+          },
+          "rule_name": {
+            "type": "string"
+          },
+          "rule_type": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "threshold_context": {
+            "$ref": "#/components/schemas/models.ThresholdContext"
+          }
+        },
+        "type": "object"
+      },
+      "models.Comment": {
+        "properties": {
+          "alert_id": {
+            "type": "string"
+          },
+          "author_id": {
+            "type": "string"
+          },
+          "author_name": {
+            "type": "string"
+          },
+          "comment_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.CreateCommentRequest": {
+        "properties": {
+          "text": {
+            "maxLength": 5000,
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "type": "object"
+      },
+      "models.CreateRuleRequest": {
+        "properties": {
+          "comment_required": {
+            "type": "boolean"
+          },
+          "data_source_scope": {
+            "enum": [
+              "snowflake",
+              "oltp"
+            ],
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "email_rate_limit_seconds": {
+            "description": "EmailRateLimitSeconds sets the per-rule email send-once window. 0 (or\nomitted) = platform default (300 s); non-zero must be in [60, 86400].",
+            "type": "integer"
+          },
+          "email_recipients": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "filter_tree": {
+            "$ref": "#/components/schemas/auditfilter.FilterNode"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rule_type": {
+            "enum": [
+              "match",
+              "threshold"
+            ],
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "type": "string"
+          },
+          "threshold": {
+            "type": "integer"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "window_type": {
+            "enum": [
+              "hourly",
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.ListAlertsResponse": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Alert"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.ListCommentsResponse": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Comment"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.ListRulesResponse": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Rule"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.MatchedEvent": {
+        "properties": {
+          "oltp_audit": {
+            "$ref": "#/components/schemas/models.OLTPAudit"
+          },
+          "snowflake_audit": {
+            "$ref": "#/components/schemas/models.SnowflakeAudit"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.OLTPAudit": {
+        "properties": {
+          "authorization_type": {
+            "type": "string"
+          },
+          "bytes_returned": {
+            "type": "integer"
+          },
+          "client_app": {
+            "type": "string"
+          },
+          "client_ip": {
+            "type": "string"
+          },
+          "column": {
+            "type": "string"
+          },
+          "connection_authorized": {
+            "type": "boolean"
+          },
+          "database": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "policies_applied": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "policy_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "query_status": {
+            "type": "string"
+          },
+          "repo_host": {
+            "type": "string"
+          },
+          "repo_type": {
+            "type": "string"
+          },
+          "repo_user": {
+            "type": "string"
+          },
+          "row_count": {
+            "type": "integer"
+          },
+          "schema": {
+            "type": "string"
+          },
+          "sidecar_id": {
+            "type": "string"
+          },
+          "statement_text": {
+            "type": "string"
+          },
+          "statement_type": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "user_group": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.Rule": {
+        "properties": {
+          "comment_required": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "data_source_scope": {
+            "enum": [
+              "snowflake",
+              "oltp",
+              "all"
+            ],
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "email_rate_limit_seconds": {
+            "description": "EmailRateLimitSeconds is the per-rule email send-once window in seconds.\n0 = use platform default (300 s). Must be in [60, 86400] when non-zero.",
+            "maximum": 86400,
+            "minimum": 60,
+            "type": "integer"
+          },
+          "email_recipients": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "type": "array",
+            "uniqueItems": false
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "filter_tree": {
+            "$ref": "#/components/schemas/auditfilter.FilterNode"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "rule_id": {
+            "type": "string"
+          },
+          "rule_type": {
+            "enum": [
+              "match",
+              "threshold"
+            ],
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "type": "string"
+          },
+          "threshold": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "timezone": {
+            "description": "IANA timezone (e.g. \"America/New_York\"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.",
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "window_type": {
+            "enum": [
+              "hourly",
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "data_source_scope",
+          "filter_tree",
+          "name",
+          "rule_id",
+          "rule_type",
+          "severity"
+        ],
+        "type": "object"
+      },
+      "models.SnowflakeAudit": {
+        "properties": {
+          "account": {
+            "type": "string"
+          },
+          "account_region": {
+            "type": "string"
+          },
+          "client": {
+            "type": "string"
+          },
+          "column": {
+            "type": "string"
+          },
+          "column_policies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "database": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "execution_duration": {
+            "type": "integer"
+          },
+          "ip_address": {
+            "type": "string"
+          },
+          "masking_policies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "query_tag": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "role": {
+            "type": "string"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "row_count": {
+            "type": "integer"
+          },
+          "schema": {
+            "type": "string"
+          },
+          "session_id": {
+            "type": "string"
+          },
+          "statement_text": {
+            "type": "string"
+          },
+          "statement_type": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "warehouse": {
+            "type": "string"
+          },
+          "warehouse_size": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.ThresholdContext": {
+        "properties": {
+          "threshold": {
+            "type": "integer"
+          },
+          "threshold_count": {
+            "type": "integer"
+          },
+          "window_start": {
+            "type": "string"
+          },
+          "window_type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.UpdateRuleRequest": {
+        "properties": {
+          "comment_required": {
+            "type": "boolean"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "email_rate_limit_seconds": {
+            "description": "EmailRateLimitSeconds sets the per-rule email window. nil = no change;\nnon-nil must be 0 (reset to platform default) or in [60, 86400].",
+            "maximum": 86400,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "email_recipients": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "type": "array",
+            "uniqueItems": false
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "Manages DAM alerting rules and alerts. Supports rule CRUD, alert inbox, and acknowledgment for ALTR's Data Access Monitoring feature.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "ALTR DAM Alerting API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/alerts/": {
+      "get": {
+        "description": "Returns a paginated list of alerts, newest first",
+        "parameters": [
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by rule ID",
+            "in": "query",
+            "name": "rule_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by state",
+            "in": "query",
+            "name": "state",
+            "schema": {
+              "enum": [
+                "new",
+                "acknowledged"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by severity",
+            "in": "query",
+            "name": "severity",
+            "schema": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListAlertsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List Alerts.",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/alerts/{alert_id}": {
+      "get": {
+        "description": "Returns a single alert by ID",
+        "parameters": [
+          {
+            "description": "Alert ID",
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Alert"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Alert not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get an Alert.",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/alerts/{alert_id}/acknowledge": {
+      "patch": {
+        "description": "Acknowledges an active alert. If the alert's rule has comment_required=true a non-empty comment must be supplied.",
+        "parameters": [
+          {
+            "description": "Alert ID",
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.AckRequest",
+                "summary": "ack",
+                "description": "Acknowledgment"
+              }
+            }
+          },
+          "description": "Acknowledgment",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Alert"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or missing required comment"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Alert not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Alert already acknowledged"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Acknowledge an active alert.",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/alerts/{alert_id}/comments": {
+      "get": {
+        "description": "Returns a paginated list of comments for an alert, oldest first.",
+        "parameters": [
+          {
+            "description": "Alert ID",
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListCommentsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List alert comments.",
+        "tags": [
+          "Alerts"
+        ]
+      },
+      "post": {
+        "description": "Adds an investigation comment to an alert. Comments are append-only \u2014 there is no edit or delete path.",
+        "parameters": [
+          {
+            "description": "Alert ID",
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateCommentRequest",
+                "summary": "comment",
+                "description": "Comment body"
+              }
+            }
+          },
+          "description": "Comment body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Comment"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Alert not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create an alert comment.",
+        "tags": [
+          "Alerts"
+        ]
+      }
+    },
+    "/rules": {
+      "post": {
+        "description": "Creates a new rule with filters, severity, and delivery configuration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateRuleRequest",
+                "summary": "rule",
+                "description": "Rule Request"
+              }
+            }
+          },
+          "description": "Rule Request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Rule"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create a Rule.",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/rules/": {
+      "get": {
+        "description": "Returns a paginated list of DAM alerting rules",
+        "parameters": [
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by enabled flag",
+            "in": "query",
+            "name": "enabled",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Filter by severity",
+            "in": "query",
+            "name": "severity",
+            "schema": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by rule type",
+            "in": "query",
+            "name": "rule_type",
+            "schema": {
+              "enum": [
+                "match",
+                "threshold"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListRulesResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List Rules.",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/rules/{rule_id}": {
+      "delete": {
+        "description": "Permanently deletes a rule and stops further evaluation against it.",
+        "parameters": [
+          {
+            "description": "Rule ID",
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Rule not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Delete a rule.",
+        "tags": [
+          "Rules"
+        ]
+      },
+      "get": {
+        "description": "Returns a single rule by ID",
+        "parameters": [
+          {
+            "description": "Rule ID",
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Rule"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Rule not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get a Rule.",
+        "tags": [
+          "Rules"
+        ]
+      },
+      "patch": {
+        "description": "Patches the mutable fields on a rule. Immutable fields (rule_type, filter_tree, data_source_scope, window_type, threshold, timezone) cannot be changed and must be set via delete+recreate.",
+        "parameters": [
+          {
+            "description": "Rule ID",
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.UpdateRuleRequest",
+                "summary": "rule",
+                "description": "Mutable rule fields"
+              }
+            }
+          },
+          "description": "Mutable rule fields",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Rule"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Rule not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Update a rule.",
+        "tags": [
+          "Rules"
+        ]
+      }
+    },
+    "/unsubscribe": {
+      "get": {
+        "description": "Validates the HMAC token embedded in a DAM alert email's unsubscribe link, removes the recipient from each referenced rule's email_recipients, and returns an HTML confirmation page. Unauthenticated \u2014 authorized solely by the signed token.",
+        "parameters": [
+          {
+            "description": "HMAC-signed unsubscribe token from the email footer link",
+            "in": "query",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "HTML confirmation page"
+          },
+          "400": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing token"
+          },
+          "401": {
+            "content": {
+              "text/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid or tampered token"
+          }
+        },
+        "summary": "Unsubscribe from DAM alert emails (human click).",
+        "tags": [
+          "Unsubscribe"
+        ]
+      },
+      "post": {
+        "description": "One-click unsubscribe for Gmail/Yahoo. The token is supplied in the query string (the List-Unsubscribe URL already carries it); the `List-Unsubscribe=One-Click` request body is ignored. Unauthenticated \u2014 authorized solely by the signed token. Returns 200 with an empty body.",
+        "parameters": [
+          {
+            "description": "HMAC-signed unsubscribe token",
+            "in": "query",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Unsubscribed (empty body)"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing token"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid or tampered token"
+          }
+        },
+        "summary": "Unsubscribe from DAM alert emails (RFC 8058 one-click).",
+        "tags": [
+          "Unsubscribe"
+        ]
+      }
+    }
+  },
+  "openapi": "3.0.3",
+  "servers": [
+    {
+      "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "variables": {
+        "orgID": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

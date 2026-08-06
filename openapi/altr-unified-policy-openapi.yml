@@ -1,0 +1,3700 @@
+openapi: 3.0.3
+info:
+  title: Unified Policy API
+  version: 4.11.1
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  description: 'Welcome to the Swagger documentation for ALTR''s Unified Policy API. This API allows ALTR customers to manage
+    the policy they enact on Data Sources. These policies include column-level masking, tag-based, pushddown and access management.
+
+
+    The API provides endpoints to create, update, retrieve, and delete policies, as well as manage rules and thresholds associated
+    with them. It supports advanced features such as time-based and rate-based thresholds, role-based access control, and
+    integration with Snowflake and Databricks.
+
+
+    For more details, refer to the examples and schemas provided in this documentation.'
+servers:
+- url: https://api.live.altr.com/v1/unified-policy/management/
+x-servers-not-selectable: true
+security:
+- basicAuth: []
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/
+paths:
+  /policy/withRules:
+    post:
+      operationId: createPolicyWithRules
+      tags:
+      - policy
+      summary: Create a policy with rules attached in a single request.
+      description: 'This endpoint allows you to create a policy and attach rules to it in a single API call. The policy defines
+        the overarching structure, while the rules specify the conditions and actions to enforce. Rules can include access
+        rate thresholds, time window thresholds, masking policies, and role-based or tag-based conditions. This endpoint is
+        useful for creating fully configured policies without needing to make multiple API calls to add rules separately.
+
+
+        Note that the policy limitations of POST /policy still apply; such as needing `database_ids` to specify a Databricks
+        source.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy:
+                  $ref: '#/components/schemas/CreatePolicyRequest'
+                rules:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Rule'
+            examples:
+              SFCreateColumnPolicyWithBasicRules:
+                summary: Snowflake - Column Policy with Rules
+                description: This example shows how to create a basic column policy with rules attached. The rules include
+                  what role to apply the policy to and the masking policy to use.
+                value:
+                  policy:
+                    identifier: '123'
+                    type: COLUMN
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+              SFCreateTagPolicyWithBasicRules:
+                summary: Snowflake - Tag Policy with Tag Name + Tag Value Rules
+                description: This example shows how to create a basic tag policy with simple rules attached. The rules include
+                  what role to apply the policy to, the tag value and the masking policy to use.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value: CREDIT_CARD
+              SFCreateTagPolicyWithMultipleRules:
+                summary: Snowflake - Tag Policy with Tag Name + Tag Value Multiple Rules
+                description: This example shows how to create a tag policy with multiple rules attached. The rules include
+                  what role to apply the policy to, and all the tag values and the masking policies to use.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value: CREDIT_CARD
+                  - masking_policy: 10004
+                    role: DEVELOPER_ROLE
+                    tag_value: SSN
+                  - masking_policy: 10002
+                    role: DEVELOPER_ROLE
+                    tag_value: DOB
+              SFCreateTagPolicyWithTagNameOnly:
+                summary: Snowflake - Tag Policy with Tag Name Only Rules
+                description: This example shows how to create a basic tag policy with a tag name only rules attached. The
+                  rules include what role to apply the policy to, the tag value is a regex of * which indicates that the tag
+                  name with any tag value will apply, and the masking policy to use.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value_regex: '*'
+              SFCreateTagPolicyWithTagNameWithAccessRateThreshold:
+                summary: Snowflake - Tag Policy with Tag Name Only and Access Rate Threshold Rules
+                description: This example shows how to create a tag policy with a tag name only rules attached with access
+                  rate thresholds. The access rate thresholds include a rate limit of 10 per minute and an action of alert.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value_regex: '*'
+                    access_rate_thresholds:
+                    - access_rate_unit: minute
+                      access_rate_limit: 10
+                      action: ALERT
+              SFCreateTagPolicyWithTagNameWithTimeWindowThreshold:
+                summary: Snowflake - Tag Policy with Tag Name Only and Time Window Threshold Rules
+                description: This example shows how to create a tag policy with a tag name only rules attached with access
+                  rate thresholds.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value_regex: '*'
+                    time_window_thresholds:
+                    - day:
+                      - monday
+                      - tuesday
+                      - wednesday
+                      - thursday
+                      - friday
+                      start_time:
+                        hour: 9
+                        minute: 0
+                      end_time:
+                        hour: 10
+                        minute: 30
+                      timezone: America/New_York
+                      action: ALERT
+              SFCreatePushDownPolicyWithBasicRules:
+                summary: Snowflake - Push Down Policy
+                description: This example shows how to create a basic push down policy with simple rules attached. The rules
+                  include what role to apply the policy to, the tag value and the masking policy to use. Note that for pushdown
+                  this is the only way to create a pushdown policy.
+                value:
+                  policy:
+                    identifier: PII
+                    type: PUSHDOWN
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value: CREDIT_CARD
+              DBXCreateTagWithBasicRules:
+                summary: Databricks - Tag Policy
+                description: This example shows how to create a basic tag policy for Databricks with a simple rule attached.
+                  The rules include what role to apply the policy to, the tag value and the masking policy to use. Note that
+                  for Databricks, this is the only way to create a tag policy for Databricks.
+                value:
+                  policy:
+                    identifier: PII
+                    type: TAG
+                    database_ids:
+                    - 1
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value: CREDIT_CARD
+              DBXCreatePushDownPolicyWithBasicRules:
+                summary: Databricks - Push Down Policy
+                description: This example shows how to create a basic push down policy for Databricks with a simple rule attached.
+                  The rules include what role to apply the policy to, the tag value and the masking policy to use. Note that
+                  for Databricks, this is the only way to create a push down for Databricks.
+                value:
+                  policy:
+                    identifier: PII
+                    type: PUSHDOWN
+                    database_ids:
+                    - 1
+                  rules:
+                  - masking_policy: 10001
+                    role: DEVELOPER_ROLE
+                    tag_value: CREDIT_CARD
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      policy_id:
+                        type: string
+                        example: COLUMN#iiowdjioqi213u90jdd0wau90
+                        description: The unique id associated with the policy
+                      rule_ids:
+                        type: array
+                        items:
+                          type: string
+                          description: The unique id of the rule
+                          example: TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/rules/supportedMaskingTypes:
+    get:
+      tags:
+      - policy
+      summary: Fetch supported masking types for different databases and policy types
+      description: Retrieve all supported masking types for policies based on the policy type and database type.
+      parameters:
+      - name: policy_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - tag
+          - column
+          - tag_pushdown
+          example: tag
+        description: Type of the policy for which masking types are being queried. E.g.,  'tag','column', 'tag_pushdown'.
+      - name: database_type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - snowflake
+          - databricks
+          example: snowflake
+        description: The database type for which the masking types are being requested. E.g., 'snowflake', 'databricks'.
+      - name: field_id
+        in: query
+        required: false
+        schema:
+          type: int
+          example: 15050
+        description: ' A corresponding field id for column based requests'
+      responses:
+        '200':
+          description: A list of supported masking types
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                    description: Indicates if the response was successful.
+                  data:
+                    type: array
+                    description: The list of supported masking types.
+                    items:
+                      type: object
+                      properties:
+                        permissive_index:
+                          type: integer
+                          example: 90
+                          description: The priority index of the masking type.
+                        masking_type:
+                          type: integer
+                          example: 10000
+                          description: The ID of the masking policy.
+                        title:
+                          type: string
+                          example: No Mask
+                          description: The title of the masking type.
+                        instruction:
+                          type: string
+                          example: A
+                          description: The instruction related to the masking type.
+                        database_type:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - snowflake
+                          description: The list of database types supported by this masking type.
+                        supported_snowflake_tag_types:
+                          type: array
+                          items:
+                            type: string
+                          example:
+                          - governed
+                          - tokenized_vault
+                          - encryption_fpe
+                          description: The Snowflake tag types supported by this masking type.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/reportUrl/{policy_id}:
+    get:
+      operationId: getPolicyReportUrl
+      tags:
+      - policy
+      summary: Generates a S3 presigned URL which contains the policy report from the most recent report id.
+      description: Given the policy id, this endpoint will generate a presigned URL that will allow you to download the report.
+        The URL will expire in 15 minutes. This endpoint grabs the most recent report id for the policy and generates a presigned
+        URL for that report.
+      parameters:
+      - name: policy_id
+        description: The policy id, this can be found in the response of an access management policy.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - csv
+          default: csv
+      responses:
+        '200':
+          description: Successfully generated presigned URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      report_url:
+                        type: string
+                        example: https://example-bucket.s3.amazonaws.com/report.csv?AWSAccessKeyId=AKIA...&Expires=1609459200&Signature=...
+                      expiration:
+                        type: integer
+                        example: 900000
+        '400':
+          description: Bad Request
+        '404':
+          description: Report Not Found
+        '500':
+          description: Internal Server Error
+  /policy/reportUrl/{policy_id}/{report_id}:
+    get:
+      tags:
+      - policy
+      summary: Generates a S3 presigned URL which contains the policy report given the policy id and report id.
+      description: Given the policy id and report id, this endpoint will generate a presigned URL that will allow you to download
+        the report. The URL will expire in 15 minutes. This endpoint generates a presigned URL for the given report and policy.
+      parameters:
+      - name: policy_id
+        description: The policy id, this can be found in the response of an access management policy.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: report_id
+        description: The report id, this can be found in the response of an access management policy.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - csv
+          default: csv
+      responses:
+        '200':
+          description: Successfully generated presigned URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report_url:
+                    type: string
+                    example: https://example-bucket.s3.amazonaws.com/report.csv?AWSAccessKeyId=AKIA...&Expires=1609459200&Signature=...
+                  expiration:
+                    type: integer
+                    example: 900000
+        '400':
+          description: Bad Request
+        '404':
+          description: Report Not Found
+        '500':
+          description: Internal Server Error
+  /policy/{policy_id}/reports:
+    get:
+      tags:
+      - policy
+      summary: Returns all reports for a policy.
+      description: Given the policy id, this endpoint will return a list of reports.
+      parameters:
+      - name: policy_id
+        description: The policy id, this can be found in the response of an access management policy.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        description: The number of policies to return
+        example: 10
+        in: query
+        schema:
+          type: integer
+      - name: exclusive_start_key
+        schema:
+          type: string
+        description: The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`.
+          If the value is present, it can be used to get the next set of policies.
+        in: query
+      responses:
+        '200':
+          description: Successfully returned reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reports:
+                    type: array
+                    example: '[]'
+        '400':
+          description: Bad Request
+        '404':
+          description: Policy Not Found
+        '500':
+          description: Internal Server Error
+  /policy/accessManagement/snowflake:
+    post:
+      operationId: createAccessManagementPolicySnowflake
+      tags:
+      - policy
+      summary: Creates a access management policy for a Snowflake datasource.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessManagementPolicy'
+            examples:
+              BasicAccessManagementPolicy:
+                summary: Basic Access Management Policy
+                description: This is a basic access management policy that will grant read access to the database MY_DATABASE
+                  for the role SECURITYADMIN.
+                value:
+                  policy_name: My Basic Policy
+                  description: This is a basic policy that doesn't do much.
+                  connection_ids:
+                  - 1
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: equals
+                      identifiers:
+                      - SECURITYADMIN
+                    objects:
+                    - type: database
+                      condition: equals
+                      identifiers:
+                      - MY_DATABASE
+                    access:
+                    - name: read
+              StartsWithAccessManagementPolicy:
+                summary: Access Management Policy Starts With Condition
+                description: This is a access management policy that will grant read access to all database in your Snowflake
+                  account that have the prefix of 'DEV_' for all roles that have the prefix of 'DEV_ENGINEER_'.
+                value:
+                  policy_name: My Is A Starts With Policy
+                  description: This is a basic policy description.
+                  connection_ids:
+                  - 1
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: starts_with
+                      identifiers:
+                      - DEV_ENGINEER_
+                    objects:
+                    - type: database
+                      condition: equals
+                      identifiers:
+                      - DEV_
+                    access:
+                    - name: read
+              FullyQualifiedAccessManagementPolicy:
+                summary: Fully Qualified Access Management Policy
+                description: This is a access management policy that grants access to the very specified table (fully qualified)
+                  to all roles that end_with _ENGINEER.
+                value:
+                  policy_name: My Fully Qualified Policy
+                  description: This is a basic Fully Qualified policy.
+                  connection_ids:
+                  - 1
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: ends_with
+                      identifiers:
+                      - _ENGINEER
+                    objects:
+                    - type: database
+                      condition: fully_qualified
+                      fully_qualified_identifiers:
+                      - database: MY_DATABASE
+                        schema: PUBLIC
+                        table: MY_TABLE
+                    access:
+                    - name: read
+              BasicAccessManagementPolicyWithMaintenance:
+                summary: Basic Access Management Policy With Maintenance Day Rate
+                description: This is a basic access management policy that will grant read access to the database MY_DATABASE
+                  for the role SECURITYADMIN and will re-run every day that is specified.
+                value:
+                  policy_name: My Basic Policy
+                  description: This is a basic policy that doesn't do much.
+                  connection_ids:
+                  - 1
+                  policy_maintenance:
+                    rate: day
+                    value: 1
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: equals
+                      identifiers:
+                      - SECURITYADMIN
+                    objects:
+                    - type: database
+                      condition: equals
+                      identifiers:
+                      - MY_DATABASE
+                    access:
+                    - name: read
+              BasicAccessManagementPolicyWithMaintenanceCron:
+                summary: Basic Access Management Policy With Maintenance Cron Rate
+                description: This is a basic access management policy that will grant read access to the database MY_DATABASE
+                  for the role SECURITYADMIN and will re-run every day that is specified by the cron expression.
+                value:
+                  policy_name: My Basic Policy
+                  description: This is a basic policy that doesn't do much.
+                  connection_ids:
+                  - 1
+                  policy_maintenance:
+                    rate: cron
+                    value: 0 12 * * ? *
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: equals
+                      identifiers:
+                      - SECURITYADMIN
+                    objects:
+                    - type: database
+                      condition: equals
+                      identifiers:
+                      - MY_DATABASE
+                    access:
+                    - name: read
+              AccessManagementPolicyWithTag:
+                summary: Access Management Policy With Tag
+                description: This is an access management policy that grants read access to all databases tagged with 'sensitive_data'
+                  having the value 'PII' for the role 'SECURITYADMIN'.
+                value:
+                  policy_name: My AMP Policy with Tags
+                  description: This is a basic policy that has a tag.
+                  connection_ids:
+                  - 1
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: equals
+                      identifiers:
+                      - SECURITYADMIN
+                    tagged_objects:
+                    - check_against:
+                      - databases
+                      tagged_with:
+                      - database: MY_DATABASE
+                        schema: PUBLIC
+                        name: sensitive_data
+                        value: PII
+                      tag_condition: and
+                    access:
+                    - name: read
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessManagementPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/accessManagement/oltp:
+    post:
+      operationId: createAccessManagementPolicyOltp
+      tags:
+      - policy
+      summary: Creates a access management policy for an OLTP datasource.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OltpPolicyRequest'
+            examples:
+              FullyQualifiedAccessManagementPolicy:
+                summary: Basic Access Management Policy
+                description: This is a basic access management policy that will grant read access to the database MY_DATABASE
+                  for the role SECURITYADMIN.
+                value:
+                  policy_name: My Basic Policy
+                  description: This is a basic policy that doesn't do much.
+                  repo_name: my-repo
+                  database_type: 4
+                  database_type_name: oracle
+                  case_sensitivity: case_sensitive
+                  rules:
+                  - type: read
+                    actors:
+                    - type: idp_user
+                      condition: equals
+                      identifiers:
+                      - DANIEL
+                    - type: idp_group
+                      condition: equals
+                      identifiers:
+                      - ADMINS
+                    objects:
+                    - type: column
+                      identifiers:
+                      - database:
+                          name: MY_DATABASE
+                        schema:
+                          name: MY_SCHEMA
+                        table:
+                          name: MY_TABLE
+                        column:
+                          name: MY_COLUMN
+              WildcardAccessManagementPolicy:
+                summary: Fully Qualified Access Management Policy
+                description: This is a access management policy that grants access to the very specified table (fully qualified)
+                  to all roles that end_with _ENGINEER.
+                value:
+                  policy_name: My Wildcard Policy
+                  description: This is a basic wildcard policy that doesn't do much.
+                  repo_name: my-repo
+                  database_type: 4
+                  database_type_name: oracle
+                  rules:
+                  - type: read
+                    actors:
+                    - type: idp_user
+                      condition: equals
+                      identifiers:
+                      - DANIEL
+                    - type: idp_group
+                      condition: equals
+                      identifiers:
+                      - ADMINS
+                    objects:
+                    - type: column
+                      identifiers:
+                      - database:
+                          name: MY_DATABASE
+                        schema:
+                          name: MY_SCHEMA
+                        table:
+                          wildcard: true
+                        column:
+                          wildcard: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OltpPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/accessManagement/snowflake/{policy_id}:
+    put:
+      operationId: updateAccessManagementPolicySnowflake
+      tags:
+      - policy
+      summary: Updates an existing access management policy for a Snowflake datasource.
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessManagementPolicyUpdate'
+            examples:
+              BasicAccessManagementPolicy:
+                summary: Basic Access Management Policy
+                description: This is a basic access management policy that will grant read access to the database MY_DATABASE
+                  for the role SECURITYADMIN.
+                value:
+                  policy_name: My Basic Policy Is Updated
+                  description: This is a basic policy that doesn't do much.
+                  rules:
+                  - actors:
+                    - type: role
+                      condition: equals
+                      identifiers:
+                      - SECURITYADMIN
+                    objects:
+                    - type: database
+                      condition: equals
+                      identifiers:
+                      - MY_DATABASE
+                    access:
+                    - name: read
+      responses:
+        '202':
+          description: Successfully updated the policy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      policy_id:
+                        type: string
+                        example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                      policy:
+                        $ref: '#/components/schemas/AccessManagementPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/accessManagement/triggerCheck/{policy_id}:
+    put:
+      operationId: triggerAccessManagementPolicyCheck
+      tags:
+      - policy
+      summary: Trigger a manual check for a grant policy
+      description: This endpoint triggers a manual run for a grant policy and updates its status to pending.
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy.
+      responses:
+        '202':
+          description: Successfully triggered the manual check for the policy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      policy_id:
+                        type: string
+                        example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                      policy:
+                        $ref: '#/components/schemas/AccessManagementPolicyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/grant/databricks:
+    post:
+      operationId: createGrantPolicyDatabricks
+      tags:
+      - policy
+      summary: Creates a grant policy for a Databricks catalog.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy_name:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  example: example_policy
+                description:
+                  type: string
+                  minLength: 1
+                  maxLength: 255
+                  example: This is an example policy description
+                connection_ids:
+                  type: array
+                  items:
+                    type: number
+                  minItems: 1
+                  maxItems: 1
+                  uniqueItems: true
+                  example:
+                  - 1
+                rules:
+                  type: array
+                  minItems: 1
+                  maxItems: 1
+                  items:
+                    type: object
+                    properties:
+                      actors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - group
+                              example: group
+                            condition:
+                              type: string
+                              enum:
+                              - equals
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              uniqueItems: true
+                              example:
+                              - Devops
+                      objects:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - catalog
+                              example: catalog
+                            condition:
+                              type: string
+                              enum:
+                              - equals
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              uniqueItems: true
+                              example:
+                              - test_catalog
+                      access:
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                          - read
+                        minItems: 1
+                        maxItems: 1
+                        example:
+                        - read
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      policies:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            PK:
+                              type: string
+                              example: ORG#43f84092-02a0-4168-bde6-caecb3a8d0#POLICY
+                            SK:
+                              type: string
+                              example: GRANT#13f84091-02a9-4118-bdd6-caaeb3a8d0#DATABASE_TYPE#9#DATABASE_ID#7
+                            client_id:
+                              type: string
+                              example: 43f84092-02a0-4168-bde6-caecb3a8d0
+                            created_at:
+                              type: string
+                              format: date-time
+                              example: '2025-01-22T16:10:17.474Z'
+                            updated_at:
+                              type: string
+                              format: date-time
+                              example: '2025-01-22T16:10:17.474Z'
+                            policy_name:
+                              type: string
+                              example: This is the name
+                            request_id:
+                              type: string
+                              example: 77daf066-3dc2-4204-a9fa-521f2a412564
+                            description:
+                              type: string
+                              example: This is a basic policy.
+                            connection_ids:
+                              type: array
+                              items:
+                                type: number
+                              example:
+                              - 7
+                            rules_pending:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  actors:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          example: group
+                                        condition:
+                                          type: string
+                                          example: equals
+                                        identifiers:
+                                          type: array
+                                          items:
+                                            type: string
+                                          example:
+                                          - Devops
+                                  objects:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          example: catalog
+                                        condition:
+                                          type: string
+                                          example: equals
+                                        identifiers:
+                                          type: array
+                                          items:
+                                            type: string
+                                          example:
+                                          - test_catalog
+                                  access:
+                                    type: array
+                                    items:
+                                      type: string
+                                      example: read
+                            rules_applied:
+                              type: string
+                              nullable: true
+                              example: null
+                            rules_failed:
+                              type: string
+                              nullable: true
+                              example: null
+                      count:
+                        type: number
+                        example: 1
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy:
+    get:
+      operationId: getPolicies
+      tags:
+      - policy
+      summary: Get information on all the policies in your organization.
+      parameters:
+      - name: limit
+        description: The number of policies to return
+        example: 10
+        in: query
+        schema:
+          type: integer
+      - name: exclusive_start_key
+        schema:
+          type: string
+        description: The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`.
+          If the value is present, it can be used to get the next set of policies.
+        in: query
+      - name: policy_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - PUSHDOWN
+          - TAG
+          - COLUMN
+          - IMPERSONATION
+          - GRANT
+          - ROW
+          - OLTP
+          example: TAG
+        description: Type of the policy to be queried. E.g., 'TAG','COLUMN', 'PUSHDOWN'.
+      - name: sort_by
+        description: ' The order of the returned policies to sort by'
+        example: updated_at
+        in: query
+        schema:
+          type: string
+          enum:
+          - name
+          - updated_at
+        default: updated_at
+      - name: order_by
+        description: The order of the returned policies
+        example: asc
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        default: desc
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      policies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PolicyDefinition'
+                      last_evaluated_key:
+                        type: object
+                        description: The last evaluated key for pagination
+                        properties:
+                          policy_id:
+                            type: string
+                      count:
+                        type: integer
+                        description: The number of policies returned.
+                        example: 1
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      operationId: createPolicy
+      tags:
+      - policy
+      summary: Creates a policy without any rules attached.
+      description: This endpoint allows you to create a policy without any associated rules. Rules can be added using the
+        appropriate `/policy/{policy_id}/rules` endpoints or by creating a policy with rules by using the `policy/withRules`
+        endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePolicyRequest'
+            examples:
+              SnowflakeColumnPolicy:
+                summary: Snowflake - Column Policy
+                description: This is an example of a column policy for Snowflake.
+                value:
+                  identifier: '1'
+                  type: COLUMN
+              SnowflakeTagPolicy:
+                summary: Snowflake - Tag Policy
+                description: This is an example of a tag policy for Snowflake.
+                value:
+                  identifier: MY_TAG_NAME
+                  type: TAG
+              SnowflakePushDownPolicy:
+                summary: Snowflake - Push Down Policy
+                description: This is an example of a push down policy for Snowflake. Please note that identifiers here will
+                  be assumed to be a tag name value, not a column identifier, as the column identifier for push down is not
+                  supported at the moment.
+                value:
+                  identifier: MY_TAG_NAME
+                  type: PUSHDOWN
+              DatabricksTagPolicy:
+                summary: Databricks - Tag Policy
+                description: This is an example of a tag policy for Snowflake. Notice that database_ids is now supplied. The
+                  database ids MUST all be valid databricks database ids. These can be found by using the `GET /database`
+                  endpoint in the Master API.
+                value:
+                  identifier: MY_TAG_NAME
+                  type: TAG
+                  database_ids:
+                  - 1
+      responses:
+        '202':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      policy_id:
+                        type: string
+                        example: COLUMN#iiowdjioqi213u90jdd0wau90
+                        description: The unique id associated with the policy
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/{policy_id}:
+    get:
+      operationId: getPolicyById
+      tags:
+      - policy
+      summary: Get information on a policy in your organization.
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/PolicyDefinition'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deletePolicy
+      tags:
+      - policy
+      summary: Delete an existing policy
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: force-delete
+        schema:
+          type: boolean
+        description: Flag to force delete the policy
+        example: true
+        in: query
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/{policy_id}/rules/batch:
+    patch:
+      operationId: updateBatchRules
+      tags:
+      - rules
+      summary: Creates a new rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                        description: The unique id of the rule if this is a DELETE operation
+                      action:
+                        type: string
+                        enum:
+                        - DELETE
+                        - PUT
+                        description: The action to take on the rule
+                      rule:
+                        type: object
+                        properties:
+                          access_rate_thresholds:
+                            $ref: '#/components/schemas/AccessRateThreshold'
+                          time_window_thresholds:
+                            $ref: '#/components/schemas/TimeWindowThreshold'
+                          masking_policy:
+                            type: integer
+                            enum:
+                            - 10000
+                            - 10001
+                            - 10002
+                            - 10003
+                            - 10004
+                            description: "The id of the masking policy which should be applied. If you have multiple conflicting\
+                              \ masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 -\
+                              \ Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                          role:
+                            type: string
+                            description: The name of the role associated with this rule, if this is a CREATE operation
+                          tag_value:
+                            type: string
+                            description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex'
+                              instead. Only valid on CREATE operations.
+                          tag_value_regex:
+                            type: string
+                            enum:
+                            - '*'
+                            description: The REGEX for matching tag values to which this rule applies. If you with to use
+                              an exact string match, you may use 'tag_value' instead. Only * is currently supported. Only
+                              valid on CREATE operations.
+                policy:
+                  type: object
+                  properties:
+                    active:
+                      type: boolean
+                      description: Whether to policy is applied or not. Defaults to null.
+                      example: true
+                    database_ids:
+                      type: object
+                      example:
+                        '4': add
+                        '5': delete
+                        '6': force-delete
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/{policy_id}/rules:
+    post:
+      operationId: createRule
+      tags:
+      - rules
+      summary: Creates a new rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_rate_thresholds:
+                  $ref: '#/components/schemas/AccessRateThreshold'
+                time_window_thresholds:
+                  $ref: '#/components/schemas/TimeWindowThreshold'
+                masking_policy:
+                  type: integer
+                  enum:
+                  - 10000
+                  - 10001
+                  - 10002
+                  - 10003
+                  - 10004
+                  description: "The id of the masking policy which should be applied. If you have multiple conflicting masking\
+                    \ policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002\
+                    \ - Email Mask \n 10004 - Constant Mask"
+                role:
+                  type: string
+                tag_value:
+                  type: string
+                  description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead.
+                tag_value_regex:
+                  type: string
+                  enum:
+                  - '*'
+                  description: The REGEX for matching tag values to which this rule applies. If you with to use an exact string
+                    match, you may use 'tag_value' instead. Only * is currently supported.
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                        description: The unique id of the rule
+                        example: TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      operationId: getRules
+      tags:
+      - rules
+      summary: Get all the rules associated with the given policy_id
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: limit
+        schema:
+          type: integer
+        description: The number of rules to return
+        example: 10
+        in: query
+      - name: exclusive_start_key
+        schema:
+          type: string
+        description: The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`.
+          If the value is present, it can be used to get the next set of policies.
+        in: query
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: The number of rule groups returned.
+                        example: 1
+                      items:
+                        type: object
+                        additionalProperties:
+                          type: array
+                          description: The rules associated with the policy, the key is the rule_hash.
+                          items:
+                            type: object
+                            properties:
+                              rule_id:
+                                type: string
+                                description: The unique id of the rule.
+                                example: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343#ROLE#0ad4fa3dac4f39ca0d653cfaa47182dafa5b8923dec019a5ecafeca3aa6d55a7#TAG_VALUE#99443317afac8b4204d2c07e8b8ae3cdb1633016e7142b8ba77ad1615cfbb409
+                              rule_hash:
+                                type: string
+                                description: The hash of the rule.
+                                example: 9417c2bc077fda72be5677930613049eCREDIT_CARD
+                              pending_rule_json:
+                                type: object
+                                description: The object we are attempting to update the policy state to.
+                                example: {}
+                              success_rule_json:
+                                type: object
+                                description: The currently applied policy.
+                                properties:
+                                  masking_policy:
+                                    type: string
+                                    example: '10001'
+                              failed_rule_json:
+                                type: object
+                                description: The object representing a failed rule.
+                                example: {}
+                              policy_id:
+                                type: string
+                                description: The unique identifier for the policy.
+                                example: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343
+                              role:
+                                type: string
+                                description: The name of the role associated with this rule.
+                                example: DEVELOPER_ROLE
+                              tag_value:
+                                type: string
+                                description: The tag value associated with the rule.
+                                example: CREDIT_CARD
+                              updated_at:
+                                type: string
+                                format: date-time
+                                description: The last updated timestamp of the rule.
+                                example: '2023-10-01T12:00:00Z'
+                        example:
+                          9417c2bc077fda72be5677930613049eCREDIT_CARD:
+                          - rule_id: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343#ROLE#0ad4fa3dac4f39ca0d653cfaa47182dafa5b8923dec019a5ecafeca3aa6d55a7#TAG_VALUE#99443317afac8b4204d2c07e8b8ae3cdb1633016e7142b8ba77ad1615cfbb409
+                            rule_hash: 9417c2bc077fda72be5677930613049eCREDIT_CARD
+                            pending_rule_json: {}
+                            success_rule_json:
+                              masking_policy: '10001'
+                            failed_rule_json: {}
+                            policy_id: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343
+                            role: DEVELOPER_ROLE
+                            tag_value: CREDIT_CARD
+                            updated_at: '2023-10-01T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/{policy_id}/rules/{rule_id}:
+    get:
+      operationId: getRuleById
+      tags:
+      - rules
+      summary: Get details for a specific rule
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  rule_id:
+                    type: string
+                    description: The unique id of the rule
+                    example: TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805
+                  pending_rule_json:
+                    type: object
+                    description: The object we are attempting to update the policy state to.
+                    properties:
+                      time_window_thresholds:
+                        $ref: '#/components/schemas/TimeWindowThreshold'
+                      masking_policy:
+                        type: integer
+                        enum:
+                        - 10000
+                        - 10001
+                        - 10002
+                        - 10003
+                        - 10004
+                        description: "The id of the masking policy which should be applied. If you have multiple conflicting\
+                          \ masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full\
+                          \ Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                      access_rate_thresholds:
+                        $ref: '#/components/schemas/AccessRateThreshold'
+                  success_rule_json:
+                    type: object
+                    description: The currently applied policy.
+                    properties:
+                      time_window_thresholds:
+                        $ref: '#/components/schemas/TimeWindowThreshold'
+                      masking_policy:
+                        type: integer
+                        enum:
+                        - 10000
+                        - 10001
+                        - 10002
+                        - 10003
+                        - 10004
+                        description: "The id of the masking policy which should be applied. If you have multiple conflicting\
+                          \ masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full\
+                          \ Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                      access_rate_thresholds:
+                        $ref: '#/components/schemas/AccessRateThreshold'
+                  role:
+                    type: string
+                    description: The name of the role associated with this rule
+                    example: ACCOUNTADMIN
+                  tag_value:
+                    type: string
+                    description: The name of the tag value associated with the rule if present
+                    example: yellow
+                  tag_value_regex:
+                    type: string
+                    description: The name of the tag value regex associated with the rule if present
+                    example: '*'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: The last updated timestamp of the rule
+                    example: '2023-10-01T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      operationId: deleteRule
+      tags:
+      - rules
+      summary: Delete an existing rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      operationId: updateRule
+      tags:
+      - rules
+      summary: Updates an existing rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_rate_thresholds:
+                  $ref: '#/components/schemas/AccessRateThreshold'
+                time_window_thresholds:
+                  $ref: '#/components/schemas/TimeWindowThreshold'
+                masking_policy:
+                  type: integer
+                  enum:
+                  - 10000
+                  - 10001
+                  - 10002
+                  - 10003
+                  - 10004
+                  description: "The id of the masking policy which should be applied. If you have multiple conflicting masking\
+                    \ policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002\
+                    \ - Email Mask \n 10004 - Constant Mask"
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /policy/impersonation:
+    post:
+      operationId: createImpersonationPolicy
+      tags:
+      - policy
+      summary: Create an impersonation policy
+      description: This endpoint allows you to create an impersonation policy. The policy specifies consumer users, consumer
+        groups, repository users, and the repository ID to enforce impersonation rules.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImpersonationPolicyRequest'
+      responses:
+        '202':
+          description: Impersonation policy created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      policy_id:
+                        type: string
+                        description: The unique identifier for the impersonation policy.
+                        example: IMPERSONATION#97960564-65e8-48ff-a34c-542d3bbd0ac4
+                      policy:
+                        type: object
+                        properties:
+                          PK:
+                            type: string
+                            example: ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#POLICY
+                          SK:
+                            type: string
+                            example: IMPERSONATION#97960564-65e8-48ff-a34c-542d3bbd0ac4
+                          client_id:
+                            type: string
+                            example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+                          created_at:
+                            type: string
+                            format: date-time
+                            example: '2025-07-03T17:46:56.591Z'
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: '2025-07-03T17:46:56.598Z'
+                          policy_name:
+                            type: string
+                            example: My Impersonation Policy
+                          tracking_id:
+                            type: string
+                            example: 1321a352-7d7b-490d-a399-ca4b9a5cf30d
+                          id:
+                            type: string
+                            example: 97960564-65e8-48ff-a34c-542d3bbd0ac4
+                          rules:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  example: read
+                                actors:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        example: idp_user
+                                      condition:
+                                        type: string
+                                        example: equals
+                                      identifiers:
+                                        type: array
+                                        items:
+                                          type: string
+                                        example:
+                                        - JOHN_DOE
+                                targets:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        example: repo_user
+                                      condition:
+                                        type: string
+                                        example: equals
+                                      identifiers:
+                                        type: array
+                                        items:
+                                          type: string
+                                          example:
+                                          - REPO_USER
+                          GSI1SK:
+                            type: string
+                            example: IMPERSONATION#97960564-65e8-48ff-a34c-542d3bbd0ac4
+                          GSI1PK:
+                            type: string
+                            example: ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#POLICY
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest:
+    post:
+      operationId: createAccessRequest
+      tags:
+      - access_request
+      summary: Create a new access request
+      description: An access request represents a user's request to access specific resources or perform certain actions within
+        the system. This endpoint allows you to create a new access request. The request body must include details about the
+        requester, justification, metadata, and rules defining the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requester_identity:
+                  type: object
+                  properties:
+                    requester:
+                      type: string
+                      example: NAME
+                      description: The name of the requester.
+                    email:
+                      type: string
+                      example: name@company.com
+                      description: The email of the requester.
+                    role:
+                      type: string
+                      example: DEV_ROLE
+                      description: The role of the requester.
+                  required:
+                  - requester
+                justification:
+                  type: string
+                  example: Need access to perform data analysis.
+                  description: Reason for the access request.
+                snowflake_metadata:
+                  type: object
+                  properties:
+                    account_region:
+                      type: string
+                      description: Region of the account.
+                    account_name:
+                      type: string
+                      description: Name of the account.
+                    organization_name:
+                      type: string
+                      description: Name of the current organization.
+                rules:
+                  type: array
+                  description: Rules defining the access request.
+                  items:
+                    $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+                connection_id:
+                  type: number
+                  example: 1
+                  description: Connection ID associated with the access request.
+              required:
+              - requester_identity
+              - justification
+              - rules
+              - connection_id
+      responses:
+        '200':
+          description: Access request created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequestPostResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      operationId: getAccessRequests
+      tags:
+      - access_request
+      summary: Retrieve all access requests
+      description: This endpoint retrieves all access requests for the client. It supports pagination using the `exclusive_start_key`
+        and `limit` query parameters. `exclusive_start_key` can be found in the response of the previous request under `last_evaluated_key`,
+        under the `id` property. Use that value to get the next set of access requests.
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 10
+        description: The maximum number of access requests to retrieve.
+      - name: requester
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The name of the individual who issued the access request.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          default: OPEN
+        description: The statues of the access request.
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: The sort order of the access requests.
+      - name: exclusive_start_key
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The key to start pagination from. This is an encoded JSON string.
+      responses:
+        '200':
+          description: Access request retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}:
+    get:
+      operationId: getAccessRequestById
+      tags:
+      - access_request
+      summary: Retrieve a specific access request
+      description: This endpoint retrieves a specific access request by its ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      responses:
+        '200':
+          description: Access request retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/approve:
+    put:
+      operationId: approveAccessRequest
+      tags:
+      - access_request
+      summary: Approve an access request
+      description: This endpoint approves a specific access request by its ID. The access request must be in an OPEN status
+        to be approved.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for approving the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request approved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/deny:
+    put:
+      operationId: denyAccessRequest
+      tags:
+      - access_request
+      summary: Deny an access request
+      description: This endpoint denies a specific access request by its ID. The access request must be in an OPEN status
+        to be denied.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for denying the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request denied successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/cancel:
+    put:
+      operationId: cancelAccessRequest
+      tags:
+      - access_request
+      summary: Cancel an access request
+      description: This endpoint cancels a specific access request by its ID. The access request must be in an OPEN status
+        to be canceled.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for canceling the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request canceled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Unified Policy uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>ALTR
+        API keys are created and obtained on the API page in the ALTRnet (Settings > Preferences > API).<br/><br/>Usernames
+        are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Not Found
+            statusCode: 404
+            date: '2022-07-20T18:00:58.723Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Resource is forbidden
+            statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    TooMany:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Too Many Requests
+            statusCode: 429
+            date: '2022-07-20T18:00:58.723Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
+            date: '2022-07-20T18:00:58.723Z'
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unprocessable Entity
+            statusCode: 422
+            date: '2022-07-20T18:00:58.723Z'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Internal Server Error
+            statusCode: 500
+            date: '2022-07-20T18:00:58.723Z'
+    OkResponse:
+      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will
+        complete.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              success:
+                type: boolean
+                example: true
+  schemas:
+    TimeWindowThreshold:
+      description: Enforces a policy during a provided time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          day:
+            type: array
+            items:
+              type: string
+              enum:
+              - sunday
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+              description: The user may not access data on these days of the week
+          start_time:
+            type: object
+            properties:
+              hour:
+                example: '12'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data after this time and before the end_time.
+          end_time:
+            type: object
+            properties:
+              hour:
+                example: '20'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data before this time and after the start_time.
+          timezone:
+            type: string
+            example: America/New_York
+            description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in. See a list
+              of TZ Identifiers at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected
+              data until the alert is cleared.
+    AccessRateThreshold:
+      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          access_rate_unit:
+            type: string
+            enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+            description: The time window starting at the first query until the ratebucket is reset
+          access_rate_limit:
+            type: integer
+            description: The max access count in the given time window
+            example: 100
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected
+              data until the alert is cleared.
+    CreatePolicyRequest:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: 'For column policies, provide the column id, which can be retrieved from the `/data` endpoint in the
+            Master API.
+
+
+            For tag policies, provide the tag name as the value.'
+          example: '1'
+        type:
+          type: string
+          description: "You can create policy on columns or tags you have connected to ALTR.\nBy selecting `pushdown`, the\
+            \ policy is implemented on a tag entirely inside the database (that is, the policy logic is \"pushed down\" to\
+            \ the database) instead of reaching out to ALTR over the network at runtime for policy decisions. This is useful\
+            \ in certain scenarios where performance is of paramount importance, but this implementation comes with significant\
+            \ limitations and should not be used without discussion with ALTR support to fully understand the ramifications.\
+            \ \n\n Please note that Push Down policies for columns is not presently supported, so assure that the identifier\
+            \ is a tag name, not a column id."
+          enum:
+          - COLUMN
+          - TAG
+          - PUSHDOWN
+          example: COLUMN
+        active:
+          type: boolean
+          description: Indicates whether the policy is active and applied. Defaults to true.
+          default: true
+        database_ids:
+          type: array
+          description: The database_ids field is required only if the database being used is for a specific Databricks connection.
+            If no database_ids are provided, the policy will apply to all Snowflake (SF) data sources across the account.
+            If a Databricks ID is passed, the policy type cannot be 'COLUMN' and will result in a failure. The database ID
+            can be retrieved from the /databases endpoint in the Master API.
+          items:
+            type: integer
+            description: The database id to apply the policy to
+            example: '1'
+            maximum: 99
+    Rule:
+      type: object
+      properties:
+        access_rate_thresholds:
+          $ref: '#/components/schemas/AccessRateThreshold'
+        time_window_thresholds:
+          $ref: '#/components/schemas/TimeWindowThreshold'
+        masking_policy:
+          type: integer
+          enum:
+          - 10000
+          - 10001
+          - 10002
+          - 10003
+          - 10004
+          description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies\
+            \ applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n\
+            \ 10004 - Constant Mask"
+        role:
+          type: string
+          example: DEVELOPER_ROLE
+          description: The name of the role associated with this rule.
+        tag_value:
+          type: string
+          example: yellow
+          description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead.
+        tag_value_regex:
+          type: string
+          enum:
+          - '*'
+          description: The REGEX for matching tag values to which this rule applies. If you wish to use an exact string match,
+            you may use 'tag_value' instead. Only * is currently supported.
+    AccessManagementPolicy:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Swagger Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        policy_maintenance:
+          type: object
+          properties:
+            rate:
+              type: string
+              enum:
+              - day
+              - cron
+              example: day
+              description: The rate at which the policy should be maintained. If set to cron, the cron expression must be
+                provided in the cron field. The cron field must be a valid AWS Cloud Watch cron expression.
+            value:
+              oneOf:
+              - type: string
+              - type: number
+          nullable: true
+          default: null
+        connection_ids:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+          maxItems: 1
+          uniqueItems: true
+          example:
+          - 1
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+        access_request_id:
+          type: string
+          description: The ID of the access request associated with this policy, if any.
+          example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+      required:
+      - policy_name
+      - connection_ids
+      - rules
+    AccessManagementPolicyUpdate:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Swagger Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        rules:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              actors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - role
+                    condition:
+                      type: string
+                      enum:
+                      - equals
+                      - starts_with
+                      - ends_with
+                    identifiers:
+                      type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                      example:
+                      - DEVELOPER_ROLE
+                      - ADMINISTRATOR_ROLE
+                  required:
+                  - type
+                  - condition
+                minItems: 1
+              objects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - database
+                      - schema
+                      - table
+                    condition:
+                      type: string
+                      enum:
+                      - equals
+                      - starts_with
+                      - ends_with
+                      - fully_qualified
+                    identifiers:
+                      type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                      example:
+                      - DEVELOPER_DATABASE
+                      - ADMINISTRATOR_DATABASE
+                    fully_qualified_identifiers:
+                      description: This field is required if the condition is fully_qualified
+                      type: array
+                      items:
+                        description: This field is required if the condition is fully_qualified
+                        type: object
+                        properties:
+                          database:
+                            type: string
+                            example: DEVELOPER_DATABASE
+                          schema:
+                            type: string
+                            example: PUBLIC
+                          table:
+                            type: string
+                            example: USERS
+                          view:
+                            type: string
+                            example: USERS
+                        nullable: true
+                  required:
+                  - type
+                  - condition
+                minItems: 1
+              access:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                      - read
+                      - write
+                  required:
+                  - name
+                minItems: 1
+                maxItems: 2
+            required:
+            - actors
+            - objects
+            - access
+      required:
+      - policy_name
+      - rules
+    AccessManagementPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            policy_id:
+              type: string
+              example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+            policy:
+              type: object
+              properties:
+                PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                SK:
+                  type: string
+                  example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                client_id:
+                  type: string
+                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
+                created_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                updated_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                policy_name:
+                  type: string
+                  example: Swagger Policy
+                description:
+                  type: string
+                  example: This is a policy generated via Swagger
+                connection_ids:
+                  type: array
+                  items:
+                    type: integer
+                  example:
+                  - 4
+                rules_pending:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      actors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: role
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - MY_ROLE
+                      objects:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: schema
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - PUBLIC
+                      access:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: read
+                rules_applied:
+                  type: string
+                  nullable: true
+                  example: null
+                rules_failed:
+                  type: string
+                  nullable: true
+                  example: null
+                report_id:
+                  type: string
+                  nullable: true
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                GSI1SK:
+                  type: string
+                  example: ACTIVE#GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                GSI1PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                id:
+                  type: string
+                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+                tracking_id:
+                  type: string
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                database_type:
+                  type: integer
+                  example: 9
+                this_status:
+                  type: string
+                  example: ACTIVE
+    ImpersonationPolicyRequest:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Impersonation Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        repo_name:
+          type: string
+          example: my-repo
+          description: The name of the repository where the impersonation policy is defined.
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ImpersonationPolicyRule'
+    OltpPolicyRequest:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My OLTP AMP Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        repo_name:
+          type: string
+          example: my-repo
+          description: The name of the repository where the policy is defined.
+        case_sensitivity:
+          type: string
+          default: case_sensitive
+          enum:
+          - case_sensitive
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OltpAmpPolicyRule'
+    OltpPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            policy_id:
+              type: string
+              example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+            policy:
+              type: object
+              properties:
+                PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                SK:
+                  type: string
+                  example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+                client_id:
+                  type: string
+                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
+                created_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                updated_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                policy_name:
+                  type: string
+                  example: Swagger Policy
+                description:
+                  type: string
+                  example: This is a policy generated via Swagger
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: read
+                      actors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: idp_user
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - JOHN_DOE
+                      objects:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: schema
+                            identifiers:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  database:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: MY_DATABASE
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  schema:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: PUBLIC
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  table:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: USERS
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  column:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: USERS
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                report_id:
+                  type: string
+                  nullable: true
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                GSI1SK:
+                  type: string
+                  example: SUCCESS#OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+                GSI1PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                id:
+                  type: string
+                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+                tracking_id:
+                  type: string
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                database_type:
+                  type: integer
+                  example: 4
+                this_status:
+                  type: string
+                  example: ACTIVE
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
+    types.ListTagMaskingItem:
+      type: object
+      description: Pass-through from /v1/tag/masking types.ListTagMaskingItem. Reproduced here for your convenience, but because
+        this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date
+        information.
+      properties:
+        created_at:
+          type: string
+        database_id:
+          type: integer
+        database_name:
+          type: string
+        database_type_enum:
+          type: integer
+        friendly_name:
+          type: string
+        masking_applied:
+          description: This is the most recent successfully applied configuration.
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        masking_failed:
+          description: 'The configuration which failed to apply.
+
+
+            If we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.
+
+            In that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error
+            message,
+
+            while MaskingApplied is the previous configuration prior to the failed modification.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        masking_pending:
+          description: 'The configuration which is currently being applied.
+
+            This configuration will be moved to masking_applied or masking_failed depending on if it is successful.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        schema_name:
+          type: string
+        tag_group_id:
+          type: string
+        tag_name:
+          type: string
+        updated_at:
+          type: string
+    ImpersonationPolicyRule:
+      type: object
+      properties:
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - idp_user
+                - idp_group
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_ROLE
+                - ADMINISTRATOR_ROLE
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+        targets:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - repo_user
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - REPO_USER
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+      required:
+      - actors
+      - targets
+    OltpAmpPolicyRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - create
+          - read
+          - update
+          - delete
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - idp_user
+                - idp_group
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_ROLE
+                - ADMINISTRATOR_ROLE
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+        objects:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - repo_user
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    database:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: MY_DATABASE
+                        wildcard:
+                          type: boolean
+                          example: false
+                    schema:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: PUBLIC
+                        wildcard:
+                          type: boolean
+                          example: false
+                    table:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: USERS
+                        wildcard:
+                          type: boolean
+                          example: false
+                    column:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: USERS
+                        wildcard:
+                          type: boolean
+                          example: false
+                uniqueItems: true
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+      required:
+      - actors
+      - objects
+    SnowflakeAccessManagementRule:
+      type: object
+      properties:
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - role
+              condition:
+                type: string
+                enum:
+                - equals
+                - starts_with
+                - ends_with
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_ROLE
+                - ADMINISTRATOR_ROLE
+            required:
+            - type
+            - condition
+          minItems: 1
+        objects:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - database
+                - schema
+                - table
+                - view
+              condition:
+                type: string
+                enum:
+                - equals
+                - starts_with
+                - ends_with
+                - fully_qualified
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_DATABASE
+                - ADMINISTRATOR_DATABASE
+              fully_qualified_identifiers:
+                description: This field is required if the condition is fully_qualified
+                type: array
+                items:
+                  description: This field is required if the condition is fully_qualified
+                  type: object
+                  properties:
+                    database:
+                      type: string
+                      example: DEVELOPER_DATABASE
+                    schema:
+                      type: string
+                      example: PUBLIC
+                    table:
+                      type: string
+                      example: USERS
+                    view:
+                      type: string
+                      example: USERS
+                  nullable: true
+            required:
+            - type
+            - condition
+          minItems: 1
+        tagged_objects:
+          type: array
+          items:
+            type: object
+            properties:
+              check_against:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - databases
+                  - schemas
+                  - tables
+                  - views
+                  example:
+                  - databases
+                  - schemas
+              tagged_with:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    database:
+                      type: string
+                      example: MY_DATABASE
+                    schema:
+                      type: string
+                      example: PUBLIC
+                    name:
+                      type: string
+                      example: sensitive_data
+                    value:
+                      type: string
+                      example: PII
+                minItems: 1
+              tag_condition:
+                type: string
+                enum:
+                - or
+                - and
+                example: and
+        access:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                enum:
+                - read
+                - write
+            required:
+            - name
+          minItems: 1
+          maxItems: 2
+      required:
+      - actors
+      - access
+    AccessRequestPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The unique identifier for the access request.
+        client_id:
+          type: string
+          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+          description: The client ID associated with the access request.
+        tracking_id:
+          type: string
+          example: c4773270-0265-4f41-9c98-80f7d8679b18
+          description: The tracking ID for the access request.
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.713Z'
+          description: The timestamp when the access request was created.
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+          description: The rules defining the access request.
+        requester:
+          type: string
+          example: ADAM
+          description: The name of the requester.
+        requester_identity:
+          type: object
+          properties:
+            requester:
+              type: string
+              example: ADAM
+              description: The name of the requester.
+            email:
+              type: string
+              example: ADAM@company.com
+              description: The email of the requester.
+            role:
+              type: string
+              example: DEVELOPER_ROLE
+              description: The role of the requester.
+        requester_justification:
+          type: string
+          example: Need access for testing purposes.
+          description: The justification provided by the requester.
+        snowflake_metadata:
+          type: object
+          properties:
+            account_region:
+              type: string
+              example: AWS_US_WEST_2
+              description: The region of the account.
+            account_name:
+              type: string
+              example: ORG
+              description: The name of the account.
+            organization_name:
+              type: string
+              example: COMPANY_ORG
+              description: The name of the organization.
+        status:
+          type: string
+          example: OPEN
+          description: The current status of the access request.
+          enum:
+          - NONE
+          - PENDING_CREATION
+          - OPEN
+          - PENDING
+          - PENDING_APPROVED
+          - CLOSED_APPROVED
+          - PENDING_DENIED
+          - CLOSED_DENIED
+          - PENDING_CANCELLED
+          - CLOSED_CANCELLED
+          - CLOSED
+          - FAILED
+    AccessRequest:
+      type: object
+      description: Represents an access request entity.
+      properties:
+        PK:
+          type: string
+          example: ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST
+          description: The partition key for the access request.
+        SK:
+          type: string
+          example: ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The sort key for the access request.
+        client_id:
+          type: string
+          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+          description: The client ID associated with the access request.
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.713Z'
+          description: The timestamp when the access request was created.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.718Z'
+          description: The timestamp when the access request was last updated.
+        id:
+          type: string
+          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The unique identifier for the access request.
+        status:
+          type: string
+          example: CLOSED_DENIED
+          description: The current status of the access request.
+          enum:
+          - NONE
+          - PENDING_CREATION
+          - OPEN
+          - PENDING
+          - PENDING_APPROVED
+          - CLOSED_APPROVED
+          - PENDING_DENIED
+          - CLOSED_DENIED
+          - PENDING_CANCELLED
+          - CLOSED_CANCELLED
+          - CLOSED
+          - FAILED
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+          description: The rules defining the access request.
+        requester_identity:
+          type: object
+          description: Information about the requester.
+          properties:
+            requester:
+              type: string
+              example: USER
+              description: The name of the requester.
+            email:
+              type: string
+              example: user@company.com
+              description: The email of the requester.
+            role:
+              type: string
+              example: DEVELOPER_ROLE
+              description: The role of the requester.
+        requester_justification:
+          type: string
+          example: Need access for testing purposes
+          description: The justification provided by the requester.
+        approver_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the approver(s).
+        approver_justification:
+          type: string
+          example: Approved by the manager
+          description: The justification provided by the approver.
+        denier_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the denier(s).
+        denier_justification:
+          type: string
+          example: Justification for the action
+          description: The justification provided by the denier.
+        canceller_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the canceller(s).
+        canceller_justification:
+          type: string
+          example: null
+          description: The justification provided by the canceller.
+        snowflake_metadata:
+          type: object
+          description: Metadata related to Snowflake.
+          properties:
+            organization_name:
+              type: string
+              example: DMHDHZU
+              description: The name of the organization.
+            account_region:
+              type: string
+              example: AWS_US_WEST_2
+              description: The region of the account.
+            ip:
+              type: string
+              example: unknown
+              description: The IP address associated with the request.
+            account_name:
+              type: string
+              example: ALTR
+              description: The name of the account.
+        policy_reference:
+          type: string
+          example: null
+          description: Reference to the associated policy.
+        tracking_id:
+          type: string
+          example: b8490d10-0808-44f0-80b6-e244724d4030
+          description: The tracking ID for the access request.
+        progress_step:
+          type: string
+          example: Updating status.
+          description: The current progress step of the access request.
+        failure_reason:
+          type: string
+          example: null
+          description: The reason for failure, if applicable.
+    PolicyDefinition:
+      type: object
+      properties:
+        policy_id:
+          type: string
+          example: COLUMN#iiowdjioqi213u90jdd0wau90
+          description: The unique identifier for this policy
+        name:
+          type: string
+          example: firstName
+          description: The name of the policy, either the column name or tag name
+        this_status:
+          type: string
+          example: SUCCESS
+          description: The status of updating this policy definition
+        metadata:
+          type: object
+          description: The metadata associated with the policy, this property is not present for GRANT policy types.
+          properties:
+            error_message:
+              type: string
+              description: may contain a short description of why the policy failed
+              example: The column does not exist
+            updated_at:
+              type: string
+              format: date-time
+              description: The time at which the policy definition was last updated. Note this may be different from the time
+                at which the policy was last applied on tags affected by the policy.
+              example: '2025-02-07T16:12:12.807Z'
+            metastores:
+              type: object
+              description: For PUSHDOWN policies affecting Dataricks metastores. A map where the keys are metastore IDs and
+                the values are objects representing the policy status and job tracking information for each metastore.
+              additionalProperties:
+                type: object
+                properties:
+                  policy_status:
+                    type: string
+                    description: The status of the policy application for this metastore.
+                    enum:
+                    - PENDING
+                    - SUCCESS
+                    - FAILED
+                  job_tracking_id:
+                    type: string
+                    description: The unique identifier for the job tracking the policy application.
+                required:
+                - policy_status
+                - job_tracking_id
+            affected_tags:
+              type: array
+              description: For TAG and PUSHDOWN policies, these are the affected tags. Though a policy definition, itself,
+                may be updated, the tags to which the policy applies may still be updating with the new policy definition.
+              items:
+                $ref: '#/components/schemas/types.ListTagMaskingItem'
+            column_info:
+              type: object
+              description: If this is a column policy, this object will be present for the column policies.
+              properties:
+                database_name:
+                  type: string
+                  description: The name of the database associated with the column
+                  example: TEST_DB
+                schema_name:
+                  type: string
+                  description: The name of the schema associated wth the column
+                  example: PUBLIC
+                table_name:
+                  type: string
+                  description: The name of the table associated with the column.
+                  example: PEOPLE
+                column_name:
+                  type: string
+                  description: The name of the column.
+                  example: FIRST_NAME
+            roles:
+              type: array
+              items:
+                type: string
+                example: ADMIN
+                description: The roles with a rule associated with this policy.
+    types.TagMaskingError:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through,
+        it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    types.CustomRoleProvider:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through,
+        it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        enabled:
+          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
+          type: boolean
+          default: false
+        fully_qualified_function_udf_name:
+          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking
+            policy to get the list of roles.
+
+            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
+          type: string
+    types.EncryptionFPEOptions:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through,
+        it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        alphabet:
+          type: string
+        key_name:
+          type: string
+        tweak_name:
+          type: string
+    types.Masking:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through,
+        it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        custom_role_provider:
+          description: 'CustomRoleProvider contains the configuration related to creating a custom role provider UDF.
+
+            This UDF is used by you to feed in roles to be used by ALTR''s policy decision engine for a given tag policy.'
+          allOf:
+          - $ref: '#/components/schemas/types.CustomRoleProvider'
+        encryption_fpe_options:
+          $ref: '#/components/schemas/types.EncryptionFPEOptions'
+        error:
+          description: 'ErrorMessage contains an error message related to the failure to apply the new ALTR tag masking configuration.
+
+            This won''t be defined for pending and applied tag masking.'
+          allOf:
+          - $ref: '#/components/schemas/types.TagMaskingError'
+        force_delete:
+          description: 'ForceDelete When set to true, ALTR will ignore errors when deleting configuration resources inside
+            the snowflake host.
+
+            This could result in orphaned ALTR configuration inside the snowflake host.
+
+            Caution should be used, it is recommended to have ForceDelete set to false (default behavior).'
+          type: boolean
+        mask_data_type_list:
+          description: 'MaskDataTypeList is a list of data types matched to this ALTR tag based masking policy.
+
+            See this for the full list of valid data types https://docs.snowflake.com/en/sql-reference/intro-summary-data-types
+
+            Geospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial'
+          type: array
+          items:
+            type: string
+        protection_type:
+          description: 'What content is this mask targeting (e.g. governed, tokenized-vault)
+
+
+            `governed` indicates that the content is un-formatted text. Content targeted with this type is
+
+            stored or transmitted as-is, without any specialized processing.
+
+
+            `governed-pushdown` is the same as `governed`, but the implementation is done entirely with the database
+
+            without reaching out to ALTR''s policy decision engine at runtime. This is sometimes needed for performance.
+
+
+            `tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is
+
+            set tokens will be converted back to original sensitive data, provided the user has permissions to view.
+
+
+            `encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set
+
+            data will be assumed encrypted and will be converted back to the original sensitive data, provided the user has
+            permissions to view.'
+          type: string
+        tracking_id:
+          description: TrackingID a unique ALTR trackingID.
+          type: string

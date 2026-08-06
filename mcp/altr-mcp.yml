@@ -1,0 +1,713 @@
+generated: '2026-08-06'
+method: searched
+status: published
+source: https://github.com/altrsoftware/altr-mcp-server
+server:
+  name: altr
+  registry_name: io.github.altrsoftware/altr-mcp-server
+  version: 0.5.1
+  transport:
+  - stdio
+  - sse
+  - streamable-http
+  default_transport: stdio
+  hosted: false
+  install: uvx altr-mcp
+  package: altr-mcp (PyPI)
+  repository: https://github.com/altrsoftware/altr-mcp-server
+  registry: https://registry.modelcontextprotocol.io/v0/servers?search=altr
+  license: GPL-3.0
+  language: python
+  documentation: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/index.md
+authentication:
+  style: environment variables (no OAuth)
+  required:
+  - name: ORG_ID
+    description: ALTR organization ID
+    secret: false
+  - name: MAPI_KEY
+    description: ALTR management API key
+    secret: true
+  - name: MAPI_SECRET
+    description: ALTR management API secret
+    secret: true
+  docs: https://docs.altr.com/account-and-api/api/api-keys/
+  note: The server authenticates to the ALTR REST APIs with HTTP Basic (key name / key secret), the same credential model
+    as the REST surface.
+governance:
+  restricted_tools_env: RESTRICTED_TOOLS
+  description: A comma-separated allow-deny list removes named tools from tools/list and blocks direct calls, so a read-only
+    deployment can be enforced at the server.
+  read_only_example: RESTRICTED_TOOLS=disconnect_database,delete_policy,delete_rule,disconnect_tag,disconnect_tag_by_details,delete_classifier,delete_collection,disconnect_sc_repo,disconnect_sc_sidecar
+response_envelope: '{"success": bool, "data": object|null, "error": string|null}'
+clients_documented:
+- Claude Desktop
+- Claude Code
+- Cursor
+- VS Code (GitHub Copilot)
+- Windsurf
+tool_count: 156
+domains:
+- domain: Databases
+  tools: 8
+  backing_api: openapi/altr-mapi-openapi.yml
+- domain: Tags
+  tools: 8
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- domain: Policies & Rules
+  tools: 8
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- domain: Classification
+  tools: 36
+  backing_api: openapi/altr-classification-openapi.yml
+- domain: Access Management
+  tools: 4
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- domain: Access Requests
+  tools: 6
+  backing_api: openapi/altr-mapi-openapi.yml
+- domain: Audits
+  tools: 6
+  backing_api: openapi/altr-query-audits-openapi.yml
+- domain: Audit Reports
+  tools: 17
+  backing_api: openapi/altr-audit-report-openapi.yml
+- domain: Telemetry
+  tools: 9
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- domain: Sidecar Configuration
+  tools: 37
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- domain: Vault Tokenization
+  tools: 4
+  backing_api: null
+- domain: Critical Tokenization
+  tools: 4
+  backing_api: openapi/altr-critical-tokenization-openapi.yml
+- domain: Key Management
+  tools: 9
+  backing_api: null
+tools:
+- name: get_databases
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: get_database_id
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: get_service_users
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: create_database
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: create_databricks_database
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: update_database
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: trigger_database_status_sync
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: disconnect_database
+  domain: Databases
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/databases.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: get_tags
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: get_tag_values
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: get_tag_details_by_group_id
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: get_tag_details
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: connect_tag
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: update_tag
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: disconnect_tag
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: disconnect_tag_by_details
+  domain: Tags
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/tags.md
+  backing_api: openapi/altr-tag-masking-openapi.yml
+- name: get_policies
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: get_rules
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: get_roles
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: create_policy
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: add_rules
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: update_rule
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: delete_rule
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: delete_policy
+  domain: Policies & Rules
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/policies.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: get_classifiers
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_classifier
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_classifier
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: update_classifier
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: delete_classifier
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_collections
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: update_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: delete_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_collection_classifiers
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: add_classifiers_to_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: remove_classifiers_from_collection
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: import_altr_managed_classifiers
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_altr_managed_timestamp
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: list_altr_managed_classifiers
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_jobs
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_active_jobs
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_summary
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_job
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_gdlp_job
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_databricks_job
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_oltp_job
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: update_job_status
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings_schemas
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings_tables
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings_columns
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings_classifiers
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_findings_lineage
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: record_job_decision
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_decisions
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: revoke_job_decisions
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_job_review_status
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: get_classification_report
+  domain: Classification
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/classification.md
+  backing_api: openapi/altr-classification-openapi.yml
+- name: create_snowflake_access_policy
+  domain: Access Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-management.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: update_snowflake_access_policy
+  domain: Access Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-management.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: create_oltp_access_policy
+  domain: Access Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-management.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: trigger_access_policy_check
+  domain: Access Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-management.md
+  backing_api: openapi/altr-unified-policy-openapi.yml
+- name: create_access_request
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: get_access_requests
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: get_access_request
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: approve_access_request
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: deny_access_request
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: cancel_access_request
+  domain: Access Requests
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/access-requests.md
+  backing_api: openapi/altr-mapi-openapi.yml
+- name: search_audits
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: get_audit_results
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: search_query_audits
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: get_query_audit_results
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: search_system_audits
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: get_system_audit_results
+  domain: Audits
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audits.md
+  backing_api: openapi/altr-query-audits-openapi.yml
+- name: list_report_definitions
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: create_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: get_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: update_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: archive_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: restore_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: trigger_report_definition
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: list_report_instances
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: get_report_instance
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: get_report_instance_download_url
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: list_report_comments
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: create_report_comment
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: pin_report_comment
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: unpin_report_comment
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: get_report_sign_off
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: create_report_sign_off
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: list_report_sign_offs
+  domain: Audit Reports
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/audit-report.md
+  backing_api: openapi/altr-audit-report-openapi.yml
+- name: get_agent_instances
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: get_agent_instance
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: disconnect_agent_instance
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: get_agent_task_telemetry
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: get_sidecar_instances
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: get_sidecar_instance
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: disconnect_sidecar_instance
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: get_task_telemetry
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: delete_task_telemetry
+  domain: Telemetry
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/telemetry.md
+  backing_api: openapi/altr-sidecar-telemetry-openapi.yml
+- name: list_sc_agents
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_agent
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_agent
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_agent
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_agent
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_agent_tasks
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_agent_task
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_agent_task
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: delete_sc_agent_task
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_repos
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_repo
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_repo
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_repo
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_repo
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_repo_users
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_repo_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_repo_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_repo_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_repo_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_service_users
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_service_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_service_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_service_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_service_user
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_sidecars
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_sidecar
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_sidecar
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: update_sc_sidecar
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_sidecar
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_sidecar_listeners
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: register_sc_sidecar_listener
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: deregister_sc_sidecar_listener
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_sidecar_bindings
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: list_sc_repo_bindings
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: get_sc_sidecar_binding
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: create_sc_sidecar_binding
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: disconnect_sc_sidecar_binding
+  domain: Sidecar Configuration
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/sidecar-config.md
+  backing_api: openapi/altr-sidecar-repo-config-openapi.yml
+- name: vault_tokenize
+  domain: Vault Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/vault-tokenization.md
+- name: vault_detokenize
+  domain: Vault Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/vault-tokenization.md
+- name: vault_partial_detokenize
+  domain: Vault Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/vault-tokenization.md
+- name: vault_delete_tokens
+  domain: Vault Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/vault-tokenization.md
+- name: critical_tokenize
+  domain: Critical Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/critical-tokenization.md
+  backing_api: openapi/altr-critical-tokenization-openapi.yml
+- name: critical_detokenize
+  domain: Critical Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/critical-tokenization.md
+  backing_api: openapi/altr-critical-tokenization-openapi.yml
+- name: critical_partial_detokenize
+  domain: Critical Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/critical-tokenization.md
+  backing_api: openapi/altr-critical-tokenization-openapi.yml
+- name: critical_delete_tokens
+  domain: Critical Tokenization
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/critical-tokenization.md
+  backing_api: openapi/altr-critical-tokenization-openapi.yml
+- name: list_tweaks
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: get_tweak
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: create_tweak
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: deactivate_tweak
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: list_keys
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: get_key
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: create_key
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: deactivate_key
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+- name: rotate_key
+  domain: Key Management
+  docs: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/key-management.md
+x-evidence:
+  fetched: '2026-08-06'
+  urls:
+  - url: https://github.com/altrsoftware/altr-mcp-server
+    http_status: 200
+  - url: https://raw.githubusercontent.com/altrsoftware/altr-mcp-server/main/README.md
+    http_status: 200
+  - url: https://registry.modelcontextprotocol.io/v0/servers?search=altr
+    http_status: 200
+  note: tools/list could not be called anonymously — the server is stdio-first and requires ORG_ID/MAPI_KEY/MAPI_SECRET,
+    so the tool list is taken verbatim from the provider-published docs/ tree in its own repository. Input schemas require
+    authenticated introspection.

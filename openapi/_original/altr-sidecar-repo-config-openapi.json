@@ -1,0 +1,4121 @@
+{
+  "components": {
+    "schemas": {
+      "agents.CreateAgentInput": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "public_key_1": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "public_key_2": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "type": {
+            "description": "Valid types: SIS, CLASSIFIER",
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "agents.UpdateAgentInput": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "public_key_1": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "public_key_2": {
+            "type": "string",
+            "x-order": "3"
+          }
+        },
+        "type": "object"
+      },
+      "fiber.APIError": {
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/fiber.APIErrorResponse"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "fiber.APIErrorResponse": {
+        "properties": {
+          "error_code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.AWSSecretsManager": {
+        "properties": {
+          "iam_role": {
+            "description": "validate that this is an arn",
+            "type": "string",
+            "x-order": "0"
+          },
+          "secrets_path": {
+            "description": "could change to id and name",
+            "type": "string",
+            "x-order": "1"
+          }
+        },
+        "required": [
+          "secrets_path"
+        ],
+        "type": "object",
+        "x-order": "1"
+      },
+      "management.Agent": {
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "x-order": "8"
+          },
+          "data_plane_url": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "description": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "public_key_1": {
+            "$ref": "#/components/schemas/management.PublicKey"
+          },
+          "public_key_2": {
+            "$ref": "#/components/schemas/management.PublicKey"
+          },
+          "task_count": {
+            "type": "integer",
+            "x-order": "5"
+          },
+          "type": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "9"
+          }
+        },
+        "type": "object"
+      },
+      "management.AzureKeyVault": {
+        "properties": {
+          "key_vault_uri": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "secret_name": {
+            "type": "string",
+            "x-order": "1"
+          }
+        },
+        "required": [
+          "key_vault_uri",
+          "secret_name"
+        ],
+        "type": "object",
+        "x-order": "2"
+      },
+      "management.EnvironmentVariable": {
+        "properties": {
+          "variable_name": {
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "required": [
+          "variable_name"
+        ],
+        "type": "object",
+        "x-order": "3"
+      },
+      "management.GetRepoBindOutput": {
+        "properties": {
+          "repo_sidecar_binding": {
+            "$ref": "#/components/schemas/management.RepoSidecarBinding"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListAgentsOutput": {
+        "properties": {
+          "agents": {
+            "items": {
+              "$ref": "#/components/schemas/management.Agent"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          },
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListBindingsOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "repo_bindings": {
+            "items": {
+              "$ref": "#/components/schemas/management.RepoSidecarBinding"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListRepoUsersOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/management.RepoUser"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListReposOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "repos": {
+            "items": {
+              "$ref": "#/components/schemas/management.Repo"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListServiceUsersOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "service_users": {
+            "items": {
+              "$ref": "#/components/schemas/management.ServiceUser"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListSidecarListenersOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "sidecar_listeners": {
+            "items": {
+              "$ref": "#/components/schemas/management.ListenerPort"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "management.ListSidecarsOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "sidecars": {
+            "items": {
+              "$ref": "#/components/schemas/management.Sidecar"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListTasksOutput": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/management.Task"
+            },
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.ListenerPort": {
+        "properties": {
+          "advertised_version": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "database_type": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "port": {
+            "type": "integer",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.PublicKey": {
+        "properties": {
+          "registered_at": {
+            "type": "string"
+          },
+          "rsa_key": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "x-order": "9"
+      },
+      "management.Repo": {
+        "properties": {
+          "binding_count": {
+            "type": "integer",
+            "x-order": "7"
+          },
+          "created_at": {
+            "type": "string",
+            "x-order": "9"
+          },
+          "description": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "hostname": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "org_id": {
+            "type": "string",
+            "x-order": "8"
+          },
+          "port": {
+            "type": "integer",
+            "x-order": "3"
+          },
+          "service_user_count": {
+            "type": "integer",
+            "x-order": "6"
+          },
+          "type": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "10"
+          },
+          "user_count": {
+            "type": "integer",
+            "x-order": "5"
+          }
+        },
+        "type": "object"
+      },
+      "management.RepoSidecarBinding": {
+        "properties": {
+          "port": {
+            "type": "integer",
+            "x-order": "0"
+          },
+          "repo_name": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "sidecar_id": {
+            "type": "string",
+            "x-order": "2"
+          }
+        },
+        "type": "object",
+        "x-order": "0"
+      },
+      "management.RepoUser": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "created_at": {
+            "type": "string",
+            "x-order": "6"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "repo_name": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "7"
+          },
+          "username": {
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "management.Schedule": {
+        "properties": {
+          "max_duration": {
+            "description": "MaxDuration is an optional ISO 8601 duration string that indicates the maximum expected duration of a task run.",
+            "type": "string"
+          },
+          "timezone": {
+            "description": "Timezone is an IANA timezone name (e.g., \"America/New_York\"). Defaults to \"UTC\" if omitted.",
+            "example": "America/New_York",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "CRON"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "x-order": "5"
+      },
+      "management.SecretFile": {
+        "properties": {
+          "path": {
+            "description": "Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.\nExample: \"db_password\" \u2192 /altr/secrets/db_password",
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object",
+        "x-order": "4"
+      },
+      "management.ServiceUser": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "created_at": {
+            "type": "string",
+            "x-order": "9"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "repo_name": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "resource": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          },
+          "task_count": {
+            "type": "integer",
+            "x-order": "8"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "10"
+          },
+          "username": {
+            "type": "string",
+            "x-order": "1"
+          }
+        },
+        "type": "object"
+      },
+      "management.Sidecar": {
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "x-order": "10"
+          },
+          "data_plane_url": {
+            "type": "string",
+            "x-order": "5"
+          },
+          "description": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "disable_platform_audits": {
+            "type": "boolean",
+            "x-order": "13"
+          },
+          "hostname": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "id": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "listener_count": {
+            "type": "integer",
+            "x-order": "7"
+          },
+          "listener_repo_binding_count": {
+            "type": "integer",
+            "x-order": "6"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "org_id": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "public_key_1": {
+            "$ref": "#/components/schemas/management.PublicKey"
+          },
+          "public_key_2": {
+            "$ref": "#/components/schemas/management.PublicKey"
+          },
+          "unsupported_query_bypass": {
+            "type": "boolean",
+            "x-order": "12"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "11"
+          }
+        },
+        "type": "object"
+      },
+      "management.SslConfig": {
+        "description": "SSL/TLS configuration - optional for all SIS repo types",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "hostname_in_certificate": {
+            "type": "string"
+          },
+          "trust_server_certificate": {
+            "type": "boolean"
+          },
+          "trust_store_password_arn": {
+            "type": "string"
+          },
+          "trust_store_path": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.Task": {
+        "properties": {
+          "agent_id": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/management.TaskConfiguration"
+          },
+          "created_at": {
+            "type": "string",
+            "x-order": "8"
+          },
+          "description": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "id": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "repo_name": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/management.Schedule"
+          },
+          "service_user": {
+            "type": "string",
+            "x-order": "5"
+          },
+          "updated_at": {
+            "type": "string",
+            "x-order": "9"
+          }
+        },
+        "type": "object"
+      },
+      "management.TaskConfiguration": {
+        "properties": {
+          "audit_file_path": {
+            "description": "MSSQL and PostgreSQL - absolute path to audit files (e.g., /var/opt/mssql/log/*.sqlaudit or /var/lib/postgresql/audit/*.csv)",
+            "type": "string"
+          },
+          "audit_file_type": {
+            "description": "PostgreSQL specific - file type: \"stderr\", \"csv\", or \"json\"",
+            "type": "string"
+          },
+          "classification_type": {
+            "type": "integer"
+          },
+          "collection_name": {
+            "description": "Classification specific - Collection name",
+            "type": "string"
+          },
+          "condition_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "initial_audit_timestamp": {
+            "description": "Optional for all types - RFC3339 timestamp for initial audit cutoff",
+            "type": "string"
+          },
+          "log_line_prefix": {
+            "description": "PostgreSQL specific - log_line_prefix setting (required when audit_file_type is \"stderr\")",
+            "type": "string"
+          },
+          "sample_size": {
+            "description": "Classification specific - per-task sampling budget forwarded into each spawned job: a\npositive integer row count for ROWS, or a percentage 1-100 for PERCENT. Optional; paired with sample_type.",
+            "type": "integer"
+          },
+          "sample_strategy": {
+            "type": "string"
+          },
+          "sample_type": {
+            "description": "Classification specific - unit for sample_size: one of ROWS or PERCENT (case-insensitive).\nOptional; must be provided together with sample_size.",
+            "type": "string"
+          },
+          "service_name": {
+            "description": "Oracle specific - Oracle service name",
+            "type": "string"
+          },
+          "ssl_config": {
+            "$ref": "#/components/schemas/management.SslConfig"
+          },
+          "table_name": {
+            "description": "MySQL specific - table name for audit data (requires service user)",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "x-order": "4"
+      },
+      "repos.CreateRepoInput": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "hostname": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "port": {
+            "type": "integer",
+            "x-order": "4"
+          },
+          "type": {
+            "type": "string",
+            "x-order": "2"
+          }
+        },
+        "type": "object"
+      },
+      "repos.UpdateRepoInput": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "repousers.CreateRepoUserInput": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          },
+          "username": {
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "repousers.UpdateRepoUserInput": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          }
+        },
+        "type": "object"
+      },
+      "serviceusers.CreateServiceUserInput": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "resource": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          },
+          "username": {
+            "type": "string",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "serviceusers.UpdateServiceUserInput": {
+        "properties": {
+          "aws_secrets_manager": {
+            "$ref": "#/components/schemas/management.AWSSecretsManager"
+          },
+          "azure_key_vault": {
+            "$ref": "#/components/schemas/management.AzureKeyVault"
+          },
+          "environment_variable": {
+            "$ref": "#/components/schemas/management.EnvironmentVariable"
+          },
+          "resource": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "secret_file": {
+            "$ref": "#/components/schemas/management.SecretFile"
+          }
+        },
+        "type": "object"
+      },
+      "sidecarlisteners.RegisterSidecarListenerInput": {
+        "properties": {
+          "advertised_version": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "database_type": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "port": {
+            "type": "integer",
+            "x-order": "0"
+          }
+        },
+        "type": "object"
+      },
+      "sidecars.CreateSidecarInput": {
+        "properties": {
+          "description": {
+            "maxLength": 400,
+            "type": "string",
+            "x-order": "1"
+          },
+          "disable_platform_audits": {
+            "description": "DisablePlatformAudits\nWhen true, the sidecar will not send activity audits (connections and SQL statements) to the platform.",
+            "type": "boolean",
+            "x-order": "6"
+          },
+          "hostname": {
+            "maxLength": 500,
+            "type": "string",
+            "x-order": "2"
+          },
+          "name": {
+            "maxLength": 64,
+            "type": "string",
+            "x-order": "0"
+          },
+          "public_key_1": {
+            "maxLength": 45000,
+            "type": "string",
+            "x-order": "3"
+          },
+          "public_key_2": {
+            "maxLength": 45000,
+            "type": "string",
+            "x-order": "4"
+          },
+          "unsupported_query_bypass": {
+            "description": "UnsupportedQueryBypass\nWhen true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.",
+            "type": "boolean",
+            "x-order": "5"
+          }
+        },
+        "required": [
+          "hostname",
+          "name"
+        ],
+        "type": "object"
+      },
+      "sidecars.UpdateSidecarInput": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "disable_platform_audits": {
+            "description": "DisablePlatformAudits\nWhen true, the sidecar will not send activity audits (connections and SQL statements) to the platform.",
+            "type": "boolean",
+            "x-order": "6"
+          },
+          "hostname": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "public_key_1": {
+            "type": "string",
+            "x-order": "3"
+          },
+          "public_key_2": {
+            "type": "string",
+            "x-order": "4"
+          },
+          "unsupported_query_bypass": {
+            "description": "UnsupportedQueryBypass\nWhen true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.",
+            "type": "boolean",
+            "x-order": "5"
+          }
+        },
+        "type": "object"
+      },
+      "tasks.CreateTaskInput": {
+        "properties": {
+          "configuration": {
+            "$ref": "#/components/schemas/management.TaskConfiguration"
+          },
+          "description": {
+            "type": "string",
+            "x-order": "1"
+          },
+          "name": {
+            "type": "string",
+            "x-order": "0"
+          },
+          "repo_name": {
+            "type": "string",
+            "x-order": "2"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/management.Schedule"
+          },
+          "service_user": {
+            "type": "string",
+            "x-order": "3"
+          }
+        },
+        "type": "object"
+      },
+      "tasks.UpdateTaskInput": {
+        "properties": {
+          "configuration": {
+            "$ref": "#/components/schemas/management.TaskConfiguration"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "description": "Name If provided, the name cannot be an empty string.",
+            "type": "string"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/management.Schedule"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "basic": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "This is the API for managing Sidecars, Agents and their configurations.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "ALTR Sidecar/Agent Configuration API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/agents": {
+      "get": {
+        "description": "List Agents for your organization.",
+        "parameters": [
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Agent type",
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "enum": [
+                "SIS",
+                "CLASSIFIER"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Agent name in a `starts with` fashion. (Case-insensitive)",
+            "in": "query",
+            "name": "name_starts_with",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListAgentsOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List Agents.",
+        "tags": [
+          "Agents"
+        ]
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agents.CreateAgentInput"
+              }
+            }
+          },
+          "description": "Agent details.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Agent"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Agent.",
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/agents/{agent_id}": {
+      "delete": {
+        "description": "An Agent cannot be deleted if its task_count > 0.",
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete Agent.",
+        "tags": [
+          "Agents"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "ID of the Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Agent"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get an Agent.",
+        "tags": [
+          "Agents"
+        ]
+      },
+      "patch": {
+        "description": "If property is not included it will not be updated. If property included with null value, it will be removed.",
+        "parameters": [
+          {
+            "description": "The Agent ID",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/agents.UpdateAgentInput"
+              }
+            }
+          },
+          "description": "Details to update.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Agent"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update an Agent.",
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/agents/{agent_id}/tasks": {
+      "get": {
+        "description": "List all Tasks for a given Agent.",
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListTasksOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List Tasks for an Agent.",
+        "tags": [
+          "Agent Tasks"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tasks.CreateTaskInput"
+              }
+            }
+          },
+          "description": "Task details.",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Task"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Task for an Agent.",
+        "tags": [
+          "Agent Tasks"
+        ]
+      }
+    },
+    "/agents/{agent_id}/tasks/{task_id}": {
+      "delete": {
+        "description": "This will decrement the Agent's task_count by 1.",
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of Task.",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete Task.",
+        "tags": [
+          "Agent Tasks"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of Task.",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Task"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Task.",
+        "tags": [
+          "Agent Tasks"
+        ]
+      },
+      "patch": {
+        "description": "Update a Task for a given Agent with the provided details. Fields that are not provided will not be updated.",
+        "parameters": [
+          {
+            "description": "ID of Agent.",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "ID of Task.",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tasks.UpdateTaskInput"
+              }
+            }
+          },
+          "description": "Task details to update",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Task"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update a Task.",
+        "tags": [
+          "Agent Tasks"
+        ]
+      }
+    },
+    "/repos": {
+      "get": {
+        "description": "List all Repos with pagination.",
+        "parameters": [
+          {
+            "description": "Number of Repos to return",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter results by repo type",
+            "in": "query",
+            "name": "repo_type",
+            "schema": {
+              "enum": [
+                "Oracle",
+                "MSSQL",
+                "MySQL",
+                "Postgres",
+                "MongoDB",
+                "Cassandra"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Repo name in a `starts with` fashion. (Case-insensitive)",
+            "in": "query",
+            "name": "name_starts_with",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListReposOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List Repos.",
+        "tags": [
+          "Repos"
+        ]
+      },
+      "post": {
+        "description": "Create a new Repo with the provided details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/repos.CreateRepoInput"
+              }
+            }
+          },
+          "description": "Repo details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Repo"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Repo.",
+        "tags": [
+          "Repos"
+        ]
+      }
+    },
+    "/repos/{repo_name}": {
+      "delete": {
+        "description": "A Repo cannot be deleted if it its `user_count` or `binding_count` are > 0.",
+        "parameters": [
+          {
+            "description": "Name of Repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete a Repo.",
+        "tags": [
+          "Repos"
+        ]
+      },
+      "get": {
+        "description": "Get the repo for a given repo name.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Repo"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Repo.",
+        "tags": [
+          "Repos"
+        ]
+      },
+      "patch": {
+        "description": "Update a Repo.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/repos.UpdateRepoInput"
+              }
+            }
+          },
+          "description": "The Repo to update.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Repo"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update a Repo.",
+        "tags": [
+          "Repos"
+        ]
+      }
+    },
+    "/repos/{repo_name}/bindings": {
+      "get": {
+        "description": "List all bindings for a specific repo with optional filtering by ports and sidecar IDs.",
+        "parameters": [
+          {
+            "description": "The repo name",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-separated list of ports to filter by",
+            "in": "query",
+            "name": "ports",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-separated list of sidecar IDs to filter by",
+            "in": "query",
+            "name": "sidecar_ids",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListBindingsOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List repo bindings.",
+        "tags": [
+          "Sidecar Listener Port and Repo bindings"
+        ]
+      }
+    },
+    "/repos/{repo_name}/serviceusers": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The name of the repo to list service users for.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by Service User username in a `starts with fashion`.",
+            "in": "query",
+            "name": "username_starts_with",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListServiceUsersOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List all Service Users in given Repo.",
+        "tags": [
+          "Service Users"
+        ]
+      },
+      "post": {
+        "description": "Create a new Service User with the provided details. Exactly one credential provider must be specified:\n\n- **aws_secrets_manager** \u2014 reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).\n- **azure_key_vault** \u2014 reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).\n- **environment_variable** \u2014 read the credential from an OS environment variable (field: variable_name).\n- **secret_file** \u2014 read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. \"db_password\" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceusers.CreateServiceUserInput"
+              }
+            }
+          },
+          "description": "Service User details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.RepoUser"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Service User.",
+        "tags": [
+          "Service Users"
+        ]
+      }
+    },
+    "/repos/{repo_name}/serviceusers/{username}": {
+      "delete": {
+        "description": "Delete a Service User from a Repo.",
+        "parameters": [
+          {
+            "description": "Name of Repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of Service User.",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete a Service User.",
+        "tags": [
+          "Service Users"
+        ]
+      },
+      "get": {
+        "description": "Get the Service User for a given Service User ID.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of user.",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ServiceUser"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Service User.",
+        "tags": [
+          "Service Users"
+        ]
+      },
+      "patch": {
+        "description": "Update a Service User. When changing the credential provider, supply exactly one of:\n\n- **aws_secrets_manager** \u2014 reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).\n- **azure_key_vault** \u2014 reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).\n- **environment_variable** \u2014 read the credential from an OS environment variable (field: variable_name).\n- **secret_file** \u2014 read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. \"db_password\" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of user.",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/serviceusers.UpdateServiceUserInput"
+              }
+            }
+          },
+          "description": "Details to update.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ServiceUser"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update a Service User.",
+        "tags": [
+          "Service Users"
+        ]
+      }
+    },
+    "/repos/{repo_name}/users": {
+      "get": {
+        "description": "List all users for a repo.",
+        "parameters": [
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The name of the repo to list users for.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListRepoUsersOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List all users for a repo.",
+        "tags": [
+          "Repo Users"
+        ]
+      },
+      "post": {
+        "description": "Create a new Repo User with the provided details. Exactly one credential provider must be specified:\n\n- **aws_secrets_manager** \u2014 reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).\n- **azure_key_vault** \u2014 reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).\n- **environment_variable** \u2014 read the credential from an OS environment variable (field: variable_name).\n- **secret_file** \u2014 read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. \"db_password\" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/repousers.CreateRepoUserInput"
+              }
+            }
+          },
+          "description": "Repo User details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.RepoUser"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Repo User.",
+        "tags": [
+          "Repo Users"
+        ]
+      }
+    },
+    "/repos/{repo_name}/users/{username}": {
+      "delete": {
+        "description": "Delete a user from a Repo.",
+        "parameters": [
+          {
+            "description": "Name of Repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of User.",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete a Repo User.",
+        "tags": [
+          "Repo Users"
+        ]
+      },
+      "get": {
+        "description": "Get the user for a given repo name and user name.",
+        "parameters": [
+          {
+            "description": "Name of repo.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of user.",
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.RepoUser"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Repo User.",
+        "tags": [
+          "Repo Users"
+        ]
+      },
+      "patch": {
+        "description": "Update a Repo User. When changing the credential provider, supply exactly one of:\n\n- **aws_secrets_manager** \u2014 reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).\n- **azure_key_vault** \u2014 reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).\n- **environment_variable** \u2014 read the credential from an OS environment variable (field: variable_name).\n- **secret_file** \u2014 read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. \"db_password\" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/repousers.UpdateRepoUserInput"
+              }
+            }
+          },
+          "description": "The Repo User to update.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.RepoUser"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update a Repo User.",
+        "tags": [
+          "Repo Users"
+        ]
+      }
+    },
+    "/serviceusers": {
+      "get": {
+        "parameters": [
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListServiceUsersOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List all Service Users for your organization.",
+        "tags": [
+          "Service Users"
+        ]
+      }
+    },
+    "/sidecars": {
+      "get": {
+        "description": "List all sidecars for your organization.",
+        "parameters": [
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListSidecarsOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List all sidecars.",
+        "tags": [
+          "Sidecars"
+        ]
+      },
+      "post": {
+        "description": "Create a new Sidecar with the provided details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sidecars.CreateSidecarInput"
+              }
+            }
+          },
+          "description": "Sidecar details",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Sidecar"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Sidecar.",
+        "tags": [
+          "Sidecars"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}": {
+      "delete": {
+        "description": "A Sidecar cannot be deleted if its listener_count > 0.",
+        "parameters": [
+          {
+            "description": "ID of sidecar.",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete a Sidecar.",
+        "tags": [
+          "Sidecars"
+        ]
+      },
+      "get": {
+        "description": "Get the sidecar for a given sidecar ID.",
+        "parameters": [
+          {
+            "description": "ID of sidecar.",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Sidecar"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Sidecar.",
+        "tags": [
+          "Sidecars"
+        ]
+      },
+      "patch": {
+        "description": "Update a Sidecar.",
+        "parameters": [
+          {
+            "description": "The Sidecar ID",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sidecars.UpdateSidecarInput"
+              }
+            }
+          },
+          "description": "The Sidecar to update.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.Sidecar"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Update a Sidecar.",
+        "tags": [
+          "Sidecars"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/bindings": {
+      "get": {
+        "description": "List all bindings for a specific sidecar with optional filtering by ports and repo names.",
+        "parameters": [
+          {
+            "description": "The sidecar ID",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-separated list of ports to filter by",
+            "in": "query",
+            "name": "ports",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comma-separated list of repo names to filter by",
+            "in": "query",
+            "name": "repo_names",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListBindingsOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List sidecar bindings.",
+        "tags": [
+          "Sidecar Listener Port and Repo bindings"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}": {
+      "delete": {
+        "description": "Delete an existing Repo Sidecar Binding.",
+        "parameters": [
+          {
+            "description": "The sidecar ID.",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The repo name.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The sidecar listener port.",
+            "in": "path",
+            "name": "port",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete a Repo Sidecar Binding.",
+        "tags": [
+          "Sidecar Listener Port and Repo bindings"
+        ]
+      },
+      "get": {
+        "description": "Get the repo sidecar binding for a given sidecar ID, port, and repo name.",
+        "parameters": [
+          {
+            "description": "ID of sidecar.",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Port number.",
+            "in": "path",
+            "name": "port",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Repository name.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.GetRepoBindOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get a Repo Sidecar Binding.",
+        "tags": [
+          "Sidecar Listener Port and Repo bindings"
+        ]
+      },
+      "post": {
+        "description": "Create a new Repo Sidecar Binding with the provided details.",
+        "parameters": [
+          {
+            "description": "The sidecar ID to bind.",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The repo name to bind.",
+            "in": "path",
+            "name": "repo_name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The sidecar listener port to bind.",
+            "in": "path",
+            "name": "port",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Create a new Repo Sidecar Binding.",
+        "tags": [
+          "Sidecar Listener Port and Repo bindings"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/ports": {
+      "get": {
+        "description": "List all sidecar listeners for a given sidecar.",
+        "parameters": [
+          {
+            "description": "ID of the sidecar",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The Contiguous ID for pagination",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.ListSidecarListenersOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "List all listener ports for given sidecarID.",
+        "tags": [
+          "Sidecar Listeners"
+        ]
+      },
+      "post": {
+        "description": "Register a new sidecar listener port with the provided details.",
+        "parameters": [
+          {
+            "description": "ID of the sidecar",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sidecarlisteners.RegisterSidecarListenerInput"
+              }
+            }
+          },
+          "description": "Sidecar Listener Port details",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Register a new sidecar listener port.",
+        "tags": [
+          "Sidecar Listeners"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/ports/{port}": {
+      "delete": {
+        "description": "Deregister a Sidecar Listener.",
+        "parameters": [
+          {
+            "description": "ID of the sidecar",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Port of the Sidecar Listener",
+            "in": "path",
+            "name": "port",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Deregister a Sidecar Listener.",
+        "tags": [
+          "Sidecar Listeners"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://{orgID}.sc-control.live.altr.com/v1",
+      "variables": {
+        "orgID": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

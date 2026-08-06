@@ -1,0 +1,2025 @@
+schemes: []
+swagger: '2.0'
+info:
+  description: The RBAC Management API. This is used to create and revoke grants on roles inside a database.
+  title: RBAC API
+  contact: {}
+  version: 0.1.0
+host: api.live.altr.com/v1
+basePath: /rbac
+paths:
+  /databricks:
+    get:
+      security:
+      - BasicAuth: []
+      description: Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND`
+        operation.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: List ALTR managed privileges for your organization.
+      parameters:
+      - maximum: 50
+        minimum: 1
+        type: integer
+        default: 50
+        description: The maximum number of items to return.
+        name: limit
+        in: query
+      - minimum: 0
+        type: integer
+        default: 0
+        description: The number of items to skip.
+        name: offset
+        in: query
+      - type: string
+        description: Filter down to a specific principal.
+        name: principalName
+        in: query
+      - type: string
+        description: Filter down to a specific catalog.
+        name: catalogName
+        in: query
+      - type: string
+        description: Filter down to a specific schema. Requires `catalogName` to be specified.
+        name: schemaName
+        in: query
+      - type: string
+        description: Filter down to a specific table. Requires `catalogName` and `schemaName` to be specified.
+        name: tableName
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/types.ListDatabricksPrivilegesResponse'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700023,700024,700026,700027
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    put:
+      security:
+      - BasicAuth: []
+      description: Batch create/update a role's privileges.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Batch create/update a role's privileges.
+      parameters:
+      - description: The batch of privileges to grant to the specified role.
+        name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/types.DatabricksPutBatchPrivilegeRequest'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/types.DatabricksPutBatchPrivilegeResponse'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700001,700004
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Specified database ID does not exist. - Error code 600001
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    patch:
+      security:
+      - BasicAuth: []
+      description: Add or Remove references attached to a databricks privilege. Used for tracking what is responsible for
+        this grant. When all references are removed, the privilege can be revoked.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Add or Remove references attached to a databricks privilege.
+      parameters:
+      - description: Add or Remove references from a databricks privilege.
+        name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/types.PatchDatabricksPrivilegeReferencesInput'
+      responses:
+        '204':
+          description: The references have been updated.
+        '400':
+          description: Something about your request isn't correct. - Error code 700000,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not Found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}:
+    get:
+      security:
+      - BasicAuth: []
+      description: Get the details of an ALTR managed catalog privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get the details of an ALTR managed catalog privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/rbac.DatabricksPrivilegeItem'
+        '400':
+          description: Something about your request isn't correct. - Error code 700006
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700011,700012,700013,700014,700017,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  ? /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}/schema-name/{schemaName}
+  : get:
+      security:
+      - BasicAuth: []
+      description: Get the details of an ALTR managed schema privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get the details of an ALTR managed schema privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/rbac.DatabricksPrivilegeItem'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700011,700012,700013,700014,700017,700018,700019,700020,700022
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed schema privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700011,700012,700013,700014,700017,700019,700020,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  ? /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}/schema-name/{schemaName}/table-name/{tableName}
+  : get:
+      security:
+      - BasicAuth: []
+      description: Get the details of an ALTR managed table privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get the details of an ALTR managed table privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The table name.
+        name: tableName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/rbac.DatabricksPrivilegeItem'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700011,700012,700013,700014,700017,700018,700019,700020,700021,700022
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed table privilege which is granted to a specified principal.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified principal.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ALTR Database ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The principal name that the privilege is granted to.
+        name: principalName
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The catalog name.
+        name: catalogName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The table name.
+        name: tableName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700011,700012,700013,700014,700017,700019,700020,700021,700022,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error codes 600000,600006,600007
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  /databricks/reference/{reference}:
+    get:
+      security:
+      - BasicAuth: []
+      description: List privileges by a given reference.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: List privileges by a given reference.
+      parameters:
+      - maximum: 50
+        minimum: 1
+        type: integer
+        default: 50
+        description: The maximum number of items to return.
+        name: limit
+        in: query
+      - type: string
+        description: Unique pagination token for each page of results.
+        name: nextToken
+        in: query
+      - type: string
+        description: Filter privileges which are related to this given reference.
+        name: reference
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.ListDatabricksPrivilegesByReferenceOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700003,700023,700024,700025
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  /snowflake:
+    get:
+      security:
+      - BasicAuth: []
+      description: Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND`
+        operation.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: List ALTR managed privileges for your organization.
+      parameters:
+      - maximum: 50
+        minimum: 1
+        type: integer
+        default: 50
+        description: The maximum number of items to return.
+        name: limit
+        in: query
+      - minimum: 0
+        type: integer
+        default: 0
+        description: The number of items to skip.
+        name: offset
+        in: query
+      - type: string
+        description: Filter down to a specific role.
+        name: role
+        in: query
+      - type: string
+        description: Filter down to a specific database.
+        name: databaseName
+        in: query
+      - type: string
+        description: Filter down to a specific schema. Requires `databaseName` to be specified.
+        name: schemaName
+        in: query
+      - type: string
+        description: Filter down to a specific table. Requires `databaseName` and `schemaName` to be specified.
+        name: tableName
+        in: query
+      - type: string
+        description: Filter down to a specific view. Requires `databaseName` and `schemaName` to be specified.
+        name: viewName
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.ListSnowflakePrivilegesOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700023,700024,700026,700027
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 60000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    put:
+      security:
+      - BasicAuth: []
+      description: Batch create/update a role's privileges.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Batch create/update a role's privileges.
+      parameters:
+      - description: The batch of privileges to grant to the specified role.
+        name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/types.PutBatchSnowflakePrivilegesInput'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/types.PutBatchSnowflakePrivilegesOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700001,700004
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Specified database ID does not exist. - Error code 600001
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    patch:
+      security:
+      - BasicAuth: []
+      description: Add or Remove references attached to a snowflake privilege. Used for tracking what is responsible for this
+        grant. When all references are removed, the privilege can be revoked.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Add or Remove references attached to a snowflake privilege.
+      parameters:
+      - description: Add or Remove references attached to a snowflake privilege.
+        name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/types.PatchSnowflakePrivilegeReferencesInput'
+      responses:
+        '204':
+          description: The references have been updated.
+        '400':
+          description: Something about your request isn't correct - Error code 700000,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error code 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}:
+    get:
+      security:
+      - BasicAuth: []
+      description: Get all the details on an ALTR managed privilege granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get an ALTR managed database privilege granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The database name.
+        name: databaseName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.GetSnowflakePrivilegeOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed database privilege which is granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed database privilege which is granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}
+  : get:
+      security:
+      - BasicAuth: []
+      description: Gets all the details on an ALTR managed privilege granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get an ALTR managed schema privilege granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The schema's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.GetSnowflakePrivilegeOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed schema privilege which is granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The schema's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}/table-name/{tableName}
+  : get:
+      security:
+      - BasicAuth: []
+      description: Gets all the details on an ALTR managed privilege granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get an ALTR managed table privilege granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The table's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The table's schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The table name.
+        name: tableName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.GetSnowflakePrivilegeOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020,700021,700022
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed table privilege which is granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The table's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The table's schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The table name.
+        name: tableName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020,700021,700022,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}/view-name/{viewName}
+  : get:
+      security:
+      - BasicAuth: []
+      description: Gets all the details on an ALTR managed privilege granted to a specified view.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Get an ALTR managed view privilege granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The view's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The view's schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The view name.
+        name: viewName
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.GetSnowflakePrivilegeOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020,700021,700022
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: Delete/revoke an ALTR managed view privilege which is granted to a specified role.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: Delete/revoke an ALTR managed view privilege which is granted to a specified role.
+      parameters:
+      - maximum: 9223372036854775000
+        minimum: 1
+        type: integer
+        format: int64
+        description: The ID of a connected database.
+        name: databaseId
+        in: path
+        required: true
+      - type: string
+        description: The role name that the privilege is granted to.
+        name: role
+        in: path
+        required: true
+      - type: string
+        description: The privilege granted to the specified role.
+        name: privilege
+        in: path
+        required: true
+      - type: string
+        description: The view's database name.
+        name: databaseName
+        in: path
+        required: true
+      - type: string
+        description: The view's schema name.
+        name: schemaName
+        in: path
+        required: true
+      - type: string
+        description: The view name.
+        name: viewName
+        in: path
+        required: true
+      - type: boolean
+        description: Whether to ignore errors during revocation.
+        name: x-altr-ignore-errors
+        in: header
+      - type: string
+        description: Revoke this privilege and this specified reference.
+        name: x-altr-reference
+        in: header
+      responses:
+        '202':
+          description: Privilege revocation is in progress if it exists.
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700002,700006,700007,700008,700009,700010,700013,700014,700015,700016,700019,700020,700021,700022,700030,700033
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '404':
+          description: Not found. - Error codes 600001,600005
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+  /snowflake/reference/{reference}:
+    get:
+      security:
+      - BasicAuth: []
+      description: List privileges by a given reference.
+      produces:
+      - application/json
+      tags:
+      - RBAC API
+      summary: List privileges by a given reference.
+      parameters:
+      - maximum: 50
+        minimum: 1
+        type: integer
+        default: 50
+        description: The maximum number of items to return.
+        name: limit
+        in: query
+      - type: string
+        description: Unique pagination token for each page of results.
+        name: nextToken
+        in: query
+      - type: string
+        description: Filter privileges which are related to this given reference.
+        name: reference
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/management.ListSnowflakePrivilegesByReferenceOutput'
+        '400':
+          description: Something about your request isn't correct. - Error codes 700000,700003,700023,700024,700025
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '401':
+          description: Not authenticated.
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+        '500':
+          description: Internal error. Please try again and contact support if it persists. - Error code 600000
+          schema:
+            $ref: '#/definitions/types.RBACAPIErrorResponse'
+definitions:
+  catalog.Privilege:
+    type: string
+    enum:
+    - ACCESS
+    - ALL_PRIVILEGES
+    - APPLY_TAG
+    - BROWSE
+    - CREATE
+    - CREATE_CATALOG
+    - CREATE_CLEAN_ROOM
+    - CREATE_CONNECTION
+    - CREATE_EXTERNAL_LOCATION
+    - CREATE_EXTERNAL_TABLE
+    - CREATE_EXTERNAL_VOLUME
+    - CREATE_FOREIGN_CATALOG
+    - CREATE_FOREIGN_SECURABLE
+    - CREATE_FUNCTION
+    - CREATE_MANAGED_STORAGE
+    - CREATE_MATERIALIZED_VIEW
+    - CREATE_MODEL
+    - CREATE_PROVIDER
+    - CREATE_RECIPIENT
+    - CREATE_SCHEMA
+    - CREATE_SERVICE_CREDENTIAL
+    - CREATE_SHARE
+    - CREATE_STORAGE_CREDENTIAL
+    - CREATE_TABLE
+    - CREATE_VIEW
+    - CREATE_VOLUME
+    - EXECUTE
+    - EXECUTE_CLEAN_ROOM_TASK
+    - EXTERNAL_USE_SCHEMA
+    - MANAGE
+    - MANAGE_ALLOWLIST
+    - MODIFY
+    - MODIFY_CLEAN_ROOM
+    - READ_FILES
+    - READ_PRIVATE_FILES
+    - READ_VOLUME
+    - REFRESH
+    - SELECT
+    - SET_SHARE_PERMISSION
+    - USAGE
+    - USE_CATALOG
+    - USE_CONNECTION
+    - USE_MARKETPLACE_ASSETS
+    - USE_PROVIDER
+    - USE_RECIPIENT
+    - USE_SCHEMA
+    - USE_SHARE
+    - WRITE_FILES
+    - WRITE_PRIVATE_FILES
+    - WRITE_VOLUME
+    x-enum-varnames:
+    - PrivilegeAccess
+    - PrivilegeAllPrivileges
+    - PrivilegeApplyTag
+    - PrivilegeBrowse
+    - PrivilegeCreate
+    - PrivilegeCreateCatalog
+    - PrivilegeCreateCleanRoom
+    - PrivilegeCreateConnection
+    - PrivilegeCreateExternalLocation
+    - PrivilegeCreateExternalTable
+    - PrivilegeCreateExternalVolume
+    - PrivilegeCreateForeignCatalog
+    - PrivilegeCreateForeignSecurable
+    - PrivilegeCreateFunction
+    - PrivilegeCreateManagedStorage
+    - PrivilegeCreateMaterializedView
+    - PrivilegeCreateModel
+    - PrivilegeCreateProvider
+    - PrivilegeCreateRecipient
+    - PrivilegeCreateSchema
+    - PrivilegeCreateServiceCredential
+    - PrivilegeCreateShare
+    - PrivilegeCreateStorageCredential
+    - PrivilegeCreateTable
+    - PrivilegeCreateView
+    - PrivilegeCreateVolume
+    - PrivilegeExecute
+    - PrivilegeExecuteCleanRoomTask
+    - PrivilegeExternalUseSchema
+    - PrivilegeManage
+    - PrivilegeManageAllowlist
+    - PrivilegeModify
+    - PrivilegeModifyCleanRoom
+    - PrivilegeReadFiles
+    - PrivilegeReadPrivateFiles
+    - PrivilegeReadVolume
+    - PrivilegeRefresh
+    - PrivilegeSelect
+    - PrivilegeSetSharePermission
+    - PrivilegeUsage
+    - PrivilegeUseCatalog
+    - PrivilegeUseConnection
+    - PrivilegeUseMarketplaceAssets
+    - PrivilegeUseProvider
+    - PrivilegeUseRecipient
+    - PrivilegeUseSchema
+    - PrivilegeUseShare
+    - PrivilegeWriteFiles
+    - PrivilegeWritePrivateFiles
+    - PrivilegeWriteVolume
+  catalog.SecurableType:
+    type: string
+    enum:
+    - CATALOG
+    - CLEAN_ROOM
+    - CONNECTION
+    - CREDENTIAL
+    - EXTERNAL_LOCATION
+    - EXTERNAL_METADATA
+    - FUNCTION
+    - METASTORE
+    - PIPELINE
+    - PROVIDER
+    - RECIPIENT
+    - SCHEMA
+    - SHARE
+    - STAGING_TABLE
+    - STORAGE_CREDENTIAL
+    - TABLE
+    - VOLUME
+    x-enum-varnames:
+    - SecurableTypeCatalog
+    - SecurableTypeCleanRoom
+    - SecurableTypeConnection
+    - SecurableTypeCredential
+    - SecurableTypeExternalLocation
+    - SecurableTypeExternalMetadata
+    - SecurableTypeFunction
+    - SecurableTypeMetastore
+    - SecurableTypePipeline
+    - SecurableTypeProvider
+    - SecurableTypeRecipient
+    - SecurableTypeSchema
+    - SecurableTypeShare
+    - SecurableTypeStagingTable
+    - SecurableTypeStorageCredential
+    - SecurableTypeTable
+    - SecurableTypeVolume
+  fiber.APIErrorResponse:
+    type: object
+    properties:
+      error_code:
+        type: integer
+      message:
+        type: string
+  management.GetSnowflakePrivilegeOutput:
+    type: object
+    properties:
+      privilege:
+        $ref: '#/definitions/types.PrivilegeItem'
+  management.ListDatabricksPrivilegesByReferenceOutput:
+    type: object
+    properties:
+      next_token:
+        description: NextToken is null when there is no further page of results.
+        type: string
+        x-nullable: true
+      privileges:
+        description: Privileges is null when there are no matching privileges.
+        type: array
+        items:
+          $ref: '#/definitions/rbac.DatabricksPrivilegeItem'
+        x-nullable: true
+  management.ListSnowflakePrivilegesByReferenceOutput:
+    type: object
+    properties:
+      next_token:
+        description: NextToken is null when there is no further page of results.
+        type: string
+        x-nullable: true
+      snowflake_privileges:
+        description: SnowflakePrivilegeItems is null when there are no matching privileges.
+        type: array
+        items:
+          $ref: '#/definitions/types.PrivilegeItem'
+        x-nullable: true
+  management.ListSnowflakePrivilegesOutput:
+    type: object
+    properties:
+      has_more:
+        type: boolean
+      snowflake_privileges:
+        type: array
+        items:
+          $ref: '#/definitions/types.PrivilegeItem'
+  rbac.DatabricksFailure:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+  rbac.DatabricksPrivilege:
+    type: object
+    required:
+    - principal_name
+    - privilege
+    - securable
+    properties:
+      securable:
+        allOf:
+        - $ref: '#/definitions/rbac.DatabricksSecurable'
+        x-order: '0'
+      principal_name:
+        type: string
+        x-order: '1'
+      privilege:
+        description: "See Databricks documentation for the full list of privileges: https://docs.databricks.com/en/data-governance/unity-catalog/manage-privileges/privileges.html#privilege-types-by-securable-object-in-unity-catalog\n\
+          \nALTR supports the following privileges for the following securable types:\n\n- catalog:\n  - \"ALL_PRIVILEGES\"\
+          \n  - \"APPLY_TAG\"\n  - \"CREATE_FUNCTION\"\n  - \"CREATE_MATERIALIZED_VIEW\"\n  - \"CREATE_MODEL\"\n  - \"CREATE_SCHEMA\"\
+          \n  - \"CREATE_TABLE\"\n  - \"CREATE_VOLUME\"\n  - \"EXECUTE\"\n  - \"MODIFY\"\n  - \"READ_VOLUME\"\n  - \"REFRESH\"\
+          \n  - \"SELECT\"\n  - \"USE_CATALOG\"\n  - \"USE_SCHEMA\"\n  - \"WRITE_VOLUME\"\n\n- schema:\n  - \"ALL_PRIVILEGES\"\
+          \n  - \"APPLY_TAG\"\n  - \"CREATE_FUNCTION\"\n  - \"CREATE_MATERIALIZED_VIEW\"\n  - \"CREATE_MODEL\"\n  - \"CREATE_TABLE\"\
+          \n  - \"CREATE_VOLUME\"\n  - \"EXECUTE\"\n  - \"MODIFY\"\n  - \"READ_VOLUME\"\n  - \"REFRESH\"\n  - \"SELECT\"\n\
+          \  - \"USE_SCHEMA\"\n  - \"WRITE_VOLUME\"\n\n- table:\n  - \"ALL_PRIVILEGES\"\n  - \"APPLY_TAG\"\n  - \"MODIFY\"\
+          \n  - \"SELECT\""
+        allOf:
+        - $ref: '#/definitions/catalog.Privilege'
+        x-order: '2'
+  rbac.DatabricksPrivilegeItem:
+    type: object
+    properties:
+      tracking_id:
+        type: string
+        x-order: '0'
+      client_id:
+        type: string
+        x-order: '1'
+      failure:
+        allOf:
+        - $ref: '#/definitions/rbac.DatabricksFailure'
+        x-order: '10'
+      privilege_reference_list:
+        type: array
+        items:
+          type: string
+        x-order: '11'
+      database_id:
+        type: integer
+        x-order: '2'
+      request_id:
+        type: string
+        x-order: '3'
+      grant_status:
+        type: string
+        x-order: '4'
+      permission:
+        type: string
+        x-order: '5'
+      databricks_privilege:
+        allOf:
+        - $ref: '#/definitions/rbac.DatabricksPrivilege'
+        x-order: '6'
+      created_at:
+        type: string
+        x-order: '7'
+      updated_at:
+        type: string
+        x-order: '8'
+      privilege_options:
+        allOf:
+        - $ref: '#/definitions/rbac.DatabricksPrivilegeOptions'
+        x-order: '9'
+  rbac.DatabricksPrivilegeOptions:
+    type: object
+    properties:
+      ignore_errors:
+        description: 'When set to true, ALTR will ignore errors when doing a grant/revoke.
+
+          This could result in orphaned ALTR configuration.'
+        type: boolean
+  rbac.DatabricksSecurable:
+    type: object
+    required:
+    - account_id
+    - catalog_name
+    - metastore_global_id
+    - securable_type
+    properties:
+      securable_type:
+        description: 'ALTR supports only the following securable types: "catalog", "schema", "table"'
+        allOf:
+        - $ref: '#/definitions/catalog.SecurableType'
+        x-order: '0'
+      account_id:
+        type: string
+        x-order: '1'
+      metastore_global_id:
+        type: string
+        x-order: '2'
+      catalog_name:
+        type: string
+        x-order: '3'
+      schema_name:
+        type: string
+        x-order: '4'
+      table_name:
+        type: string
+        x-order: '5'
+  rbac.SnowflakeFutureObjectType:
+    type: string
+    enum:
+    - TABLES
+    - SCHEMAS
+    - VIEWS
+    x-enum-varnames:
+    - SnowflakeFutureTables
+    - SnowflakeFutureSchemas
+    - SnowflakeFutureViews
+  rbac.SnowflakeRolePrivilege:
+    type: object
+    required:
+    - account_locator
+    - database_id
+    - database_name
+    - organization
+    - privilege
+    - region
+    - role
+    - tracking_id
+    properties:
+      tracking_id:
+        type: string
+        x-order: '0'
+      database_id:
+        description: ALTR Database ID
+        type: integer
+        x-order: '1'
+      future_object_type:
+        description: 'Create the privilege as a future privilege for this object type.
+
+          When removed, we will only remove the future grant. Grants created by the future grant may remain.
+
+          See the link below for considerations, restrictions, and limitations.
+
+          https://docs.snowflake.com/en/sql-reference/sql/grant-privilege#future-grants-on-database-or-schema-objects
+
+          Supported values ''SCHEMAS'' ''TABLES'' ''VIEWS'''
+        enum:
+        - TABLES
+        - VIEWS
+        - SCHEMAS
+        allOf:
+        - $ref: '#/definitions/rbac.SnowflakeFutureObjectType'
+        x-order: '10'
+      privilege:
+        description: 'database https://docs.snowflake.com/en/user-guide/security-access-control-privileges#database-privileges
+
+          ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''REFERENCE_USAGE'' ''CREATE DATABASE ROLE'' ''CREATE SCHEMA''
+          ''IMPORTED PRIVILEGES'' ''OWNERSHIP'' ''ALL''
+
+          schema https://docs.snowflake.com/en/user-guide/security-access-control-privileges#schema-privileges
+
+          ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''CREATE AUTHENTICATION POLICY'' ''CREATE DATA METRIC FUNCTION''
+          ''CREATE TABLE'' ''CREATE DYNAMIC TABLE'' ''CREATE EVENT TABLE'' ''CREATE EXTERNAL TABLE'' ''CREATE GIT REPOSITORY''
+          ''CREATE ICEBERG TABLE'' ''CREATE VIEW'' ''CREATE MASKING POLICY'' ''CREATE MATERIALIZED VIEW'' ''CREATE NETWORK
+          RULE'' ''CREATE NOTEBOOK'' ''CREATE ROW ACCESS POLICY''
+
+          ''CREATE SECRET'' ''CREATE SESSION POLICY'' ''CREATE STAGE'' ''CREATE STREAMLIT'' ''CREATE FILE FORMAT'' ''CREATE
+          SEQUENCE'' ''CREATE FUNCTION'' ''CREATE PACKAGES POLICY'' ''CREATE PASSWORD POLICY''
+
+          ''CREATE PIPE'' ''CREATE STREAM'' ''CREATE TAG'' ''CREATE TASK'' ''CREATE PROCEDURE'' ''CREATE ALERT'' ''CREATE
+          CORTEX SEARCH SERVICE'' ''CREATE SNOWFLAKE.CORE.BUDGET''
+
+          ''CREATE SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER'' ''CREATE SNOWFLAKE.ML.ANOMALY_DETECTION'' ''CREATE SNOWFLAKE.ML.CLASSIFICATION''
+          ''CREATE SNOWFLAKE.ML.FORECAST''
+
+          ''CREATE SNOWFLAKE.ML.TOP_INSIGHTS'' ''CREATE MODEL'' ''CREATE IMAGE REPOSITORY'' ''CREATE SERVICE'' ''CREATE SNAPSHOT''
+          ''ADD SEARCH OPTIMIZATION'' ''OWNERSHIP'' ''ALL''
+
+          table https://docs.snowflake.com/en/user-guide/security-access-control-privileges#table-privileges
+
+          ''SELECT'' ''INSERT'' ''UPDATE'' ''DELETE'' ''TRUNCATE'' ''REFERENCES'' ''APPLYBUDGET'' ''OWNERSHIP'' ''ALL'''
+        type: string
+        x-order: '11'
+      organization:
+        description: organization name. https://docs.snowflake.com/en/sql-reference/functions/current_organization_name
+        type: string
+        x-order: '2'
+      account_locator:
+        description: Account Locator. https://docs.snowflake.com/en/user-guide/admin-account-identifier#label-account-locator
+        type: string
+        x-order: '3'
+      region:
+        description: Database's region. https://docs.snowflake.com/en/user-guide/intro-regions
+        type: string
+        x-order: '4'
+      role:
+        description: The role which the privilege is granted to.
+        type: string
+        maxLength: 255
+        x-order: '5'
+      database_name:
+        type: string
+        maxLength: 255
+        x-order: '6'
+      schema_name:
+        type: string
+        maxLength: 255
+        x-order: '7'
+      table_name:
+        type: string
+        maxLength: 255
+        x-order: '8'
+      view_name:
+        type: string
+        maxLength: 255
+        x-order: '9'
+  types.DatabricksPrimitivePrivilege:
+    type: object
+    required:
+    - catalog_name
+    - principal_name
+    - privilege
+    properties:
+      principal_name:
+        type: string
+        x-order: '0'
+      catalog_name:
+        type: string
+        x-order: '1'
+      schema_name:
+        type: string
+        x-order: '2'
+      table_name:
+        type: string
+        x-order: '3'
+      privilege:
+        description: "See Databricks documentation for the full list of privileges: https://docs.databricks.com/en/data-governance/unity-catalog/manage-privileges/privileges.html#privilege-types-by-securable-object-in-unity-catalog\n\
+          \nThe following privileges are supported for the following securable types:\n\n- catalog:\n  - \"ALL_PRIVILEGES\"\
+          \n  - \"APPLY_TAG\"\n  - \"CREATE_FUNCTION\"\n  - \"CREATE_MATERIALIZED_VIEW\"\n  - \"CREATE_MODEL\"\n  - \"CREATE_SCHEMA\"\
+          \n  - \"CREATE_TABLE\"\n  - \"CREATE_VOLUME\"\n  - \"EXECUTE\"\n  - \"MODIFY\"\n  - \"READ_VOLUME\"\n  - \"REFRESH\"\
+          \n  - \"SELECT\"\n  - \"USE_CATALOG\"\n  - \"USE_SCHEMA\"\n  - \"WRITE_VOLUME\"\n\n- schema:\n  - \"ALL_PRIVILEGES\"\
+          \n  - \"APPLY_TAG\"\n  - \"CREATE_FUNCTION\"\n  - \"CREATE_MATERIALIZED_VIEW\"\n  - \"CREATE_MODEL\"\n  - \"CREATE_TABLE\"\
+          \n  - \"CREATE_VOLUME\"\n  - \"EXECUTE\"\n  - \"MODIFY\"\n  - \"READ_VOLUME\"\n  - \"REFRESH\"\n  - \"SELECT\"\n\
+          \  - \"USE_SCHEMA\"\n  - \"WRITE_VOLUME\"\n\n- table:\n  - \"ALL_PRIVILEGES\"\n  - \"APPLY_TAG\"\n  - \"MODIFY\"\
+          \n  - \"SELECT\""
+        allOf:
+        - $ref: '#/definitions/catalog.Privilege'
+        x-order: '4'
+  types.DatabricksPutBatchPrivilegeRequest:
+    type: object
+    required:
+    - database_id
+    - privileges
+    properties:
+      database_id:
+        type: integer
+        minimum: 1
+        x-order: '0'
+      privileges:
+        type: array
+        maxItems: 15
+        minItems: 1
+        items:
+          $ref: '#/definitions/types.DatabricksPrimitivePrivilege'
+        x-order: '1'
+      grant_implicit_privileges:
+        type: boolean
+        default: false
+        x-order: '2'
+      grant_reference:
+        description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references
+          are removed first.
+
+          If empty this will default to "RBAC"'
+        type: string
+        default: RBAC
+        x-order: '3'
+  types.DatabricksPutBatchPrivilegeResponse:
+    type: object
+    properties:
+      privileges:
+        type: array
+        items:
+          $ref: '#/definitions/rbac.DatabricksPrivilege'
+  types.Failure:
+    type: object
+    properties:
+      code:
+        description: 'Valid values noted below.
+
+          70008 - "Unexpected error when connecting to Snowflake database."
+
+          70009 - "Unexpected error when connecting to Snowflake database."
+
+          70010 - "Unexpected error when connecting to Snowflake database."
+
+          70100 - "Specified database ID''s type is not supported."
+
+          70110 - "Specified database or credential does not exist."
+
+          70200 - "Snowflake Query has failed."
+
+          74000 - "Unknown internal error."'
+        type: integer
+      message:
+        description: 'Valid values noted below.
+
+          70008 - "Unexpected error when connecting to Snowflake database."
+
+          70009 - "Unexpected error when connecting to Snowflake database."
+
+          70010 - "Unexpected error when connecting to Snowflake database."
+
+          70100 - "Specified database ID''s type is not supported."
+
+          70110 - "Specified database or credential does not exist."
+
+          70200 - "Snowflake Query has failed."
+
+          74000 - "Unknown internal error."'
+        type: string
+      query_id:
+        description: Snowflake queryID related to the failure. This may not be set in all failure scenarios.
+        type: string
+  types.ListDatabricksPrivilegesResponse:
+    type: object
+    properties:
+      databricks_privileges:
+        type: array
+        items:
+          $ref: '#/definitions/rbac.DatabricksPrivilegeItem'
+      has_more:
+        type: boolean
+  types.PatchDatabricksPrivilegeReferencesInput:
+    type: object
+    required:
+    - add_grant_references
+    - database_id
+    - privilege
+    - remove_grant_references
+    properties:
+      database_id:
+        description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+        type: integer
+        minimum: 1
+        x-order: '0'
+      privilege:
+        description: List of privileges
+        allOf:
+        - $ref: '#/definitions/types.DatabricksPrimitivePrivilege'
+        x-order: '2'
+      prevent_no_references_remaining_on_grant:
+        description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
+        type: boolean
+        default: false
+        x-order: '5'
+      add_grant_references:
+        description: 'A list of references to add to this privilege.
+
+          Mutually exclusive with remove_grant_references.'
+        type: array
+        maxItems: 25
+        uniqueItems: true
+        items:
+          type: string
+      remove_grant_references:
+        description: 'A list of references to remove from this privilege.
+
+          Mutually exclusive with add_grant_references.'
+        type: array
+        maxItems: 25
+        uniqueItems: true
+        items:
+          type: string
+  types.PatchSnowflakePrivilegeReferencesInput:
+    type: object
+    required:
+    - add_grant_references
+    - database_id
+    - privilege
+    - remove_grant_references
+    properties:
+      database_id:
+        description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+        type: integer
+        minimum: 1
+        x-order: '0'
+      privilege:
+        description: List of privileges
+        allOf:
+        - $ref: '#/definitions/types.SnowflakePrivilege'
+        x-order: '2'
+      prevent_no_references_remaining_on_grant:
+        description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
+        type: boolean
+        default: false
+        x-order: '5'
+      add_grant_references:
+        description: 'A list of references to add to this privilege.
+
+          Mutually exclusive with remove_grant_references.'
+        type: array
+        maxItems: 25
+        uniqueItems: true
+        items:
+          type: string
+      remove_grant_references:
+        description: 'A list of references to remove from this privilege.
+
+          Mutually exclusive with add_grant_references.'
+        type: array
+        maxItems: 25
+        uniqueItems: true
+        items:
+          type: string
+  types.PrivilegeItem:
+    type: object
+    properties:
+      client_id:
+        type: string
+      created_at:
+        type: string
+      failure:
+        description: Additional information about a failure. This will be set if the status is FAILED.
+        allOf:
+        - $ref: '#/definitions/types.Failure'
+      privilege_reference_list:
+        description: List of References that are related to this privilege.
+        type: array
+        items:
+          type: string
+      request_id:
+        type: string
+      revoke_options:
+        description: If revoke_options is set, then the desired state is to revoke this privilege
+        allOf:
+        - $ref: '#/definitions/types.RevokeOptions'
+      snowflake_privilege:
+        $ref: '#/definitions/rbac.SnowflakeRolePrivilege'
+      status:
+        description: 'valid values are noted below
+
+          PENDING
+
+          APPLIED
+
+          FAILED'
+        type: string
+      updated_at:
+        type: string
+  types.PutBatchSnowflakePrivilegesInput:
+    type: object
+    required:
+    - database_id
+    - privileges
+    properties:
+      database_id:
+        description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+        type: integer
+        minimum: 1
+        x-order: '0'
+      privileges:
+        description: List of privileges
+        type: array
+        items:
+          $ref: '#/definitions/types.SnowflakePrivilege'
+        x-order: '1'
+      grant_implicit_privileges:
+        description: If set to true, implicit privileges will also be granted unless it is a future grant.
+        type: boolean
+        default: false
+        x-order: '2'
+      grant_reference:
+        description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references
+          are removed first.
+
+          If empty this will default to "RBAC"'
+        type: string
+        default: RBAC
+        x-order: '3'
+  types.PutBatchSnowflakePrivilegesOutput:
+    type: object
+    properties:
+      snowflake_privileges:
+        description: List of privileges which are being created.
+        type: array
+        items:
+          $ref: '#/definitions/rbac.SnowflakeRolePrivilege'
+  types.RBACAPIErrorResponse:
+    type: object
+    properties:
+      error:
+        $ref: '#/definitions/fiber.APIErrorResponse'
+  types.RevokeOptions:
+    type: object
+    properties:
+      ignore_errors:
+        description: 'When set to true, ALTR will ignore errors when revoking the grant inside the snowflake host.
+
+          This could result in orphaned ALTR configuration inside the snowflake host.
+
+          Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
+        type: boolean
+  types.SnowflakePrivilege:
+    type: object
+    required:
+    - database_name
+    - privilege
+    - role
+    properties:
+      role:
+        type: string
+        x-order: '0'
+      database_name:
+        type: string
+        maxLength: 255
+        x-order: '1'
+      schema_name:
+        type: string
+        maxLength: 255
+        x-order: '2'
+      table_name:
+        type: string
+        maxLength: 255
+        x-order: '3'
+      view_name:
+        type: string
+        maxLength: 255
+        x-order: '4'
+      future_object_type:
+        description: 'Create the privilege as a future privilege for this object type.
+
+          When removed, we will only remove the future grant. Grants created by the future grant may remain.
+
+          See the link below for considerations, restrictions, and limitations.
+
+          https://docs.snowflake.com/en/sql-reference/sql/grant-privilege#future-grants-on-database-or-schema-objects
+
+          Supported values ''SCHEMAS'' ''TABLES'' ''VIEWS'''
+        enum:
+        - TABLES
+        - VIEWS
+        - SCHEMAS
+        allOf:
+        - $ref: '#/definitions/rbac.SnowflakeFutureObjectType'
+        x-order: '5'
+      privilege:
+        description: 'database https://docs.snowflake.com/en/user-guide/security-access-control-privileges#database-privileges
+
+          ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''REFERENCE_USAGE'' ''CREATE DATABASE ROLE'' ''CREATE SCHEMA''
+          ''IMPORTED PRIVILEGES'' ''OWNERSHIP'' ''ALL''
+
+          schema https://docs.snowflake.com/en/user-guide/security-access-control-privileges#schema-privileges
+
+          ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''CREATE AUTHENTICATION POLICY'' ''CREATE DATA METRIC FUNCTION''
+          ''CREATE TABLE'' ''CREATE DYNAMIC TABLE'' ''CREATE EVENT TABLE'' ''CREATE EXTERNAL TABLE'' ''CREATE GIT REPOSITORY''
+          ''CREATE ICEBERG TABLE'' ''CREATE VIEW'' ''CREATE MASKING POLICY'' ''CREATE MATERIALIZED VIEW'' ''CREATE NETWORK
+          RULE'' ''CREATE NOTEBOOK'' ''CREATE ROW ACCESS POLICY''
+
+          ''CREATE SECRET'' ''CREATE SESSION POLICY'' ''CREATE STAGE'' ''CREATE STREAMLIT'' ''CREATE FILE FORMAT'' ''CREATE
+          SEQUENCE'' ''CREATE FUNCTION'' ''CREATE PACKAGES POLICY'' ''CREATE PASSWORD POLICY''
+
+          ''CREATE PIPE'' ''CREATE STREAM'' ''CREATE TAG'' ''CREATE TASK'' ''CREATE PROCEDURE'' ''CREATE ALERT'' ''CREATE
+          CORTEX SEARCH SERVICE'' ''CREATE SNOWFLAKE.CORE.BUDGET''
+
+          ''CREATE SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER'' ''CREATE SNOWFLAKE.ML.ANOMALY_DETECTION'' ''CREATE SNOWFLAKE.ML.CLASSIFICATION''
+          ''CREATE SNOWFLAKE.ML.FORECAST''
+
+          ''CREATE SNOWFLAKE.ML.TOP_INSIGHTS'' ''CREATE MODEL'' ''CREATE IMAGE REPOSITORY'' ''CREATE SERVICE'' ''CREATE SNAPSHOT''
+          ''ADD SEARCH OPTIMIZATION'' ''OWNERSHIP'' ''ALL''
+
+          table https://docs.snowflake.com/en/user-guide/security-access-control-privileges#table-privileges
+
+          ''SELECT'' ''INSERT'' ''UPDATE'' ''DELETE'' ''TRUNCATE'' ''REFERENCES'' ''APPLYBUDGET'' ''OWNERSHIP'' ''ALL'''
+        type: string
+        x-order: '6'
+securityDefinitions:
+  BasicAuth:
+    type: basic

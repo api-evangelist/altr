@@ -1,0 +1,196 @@
+components:
+  schemas:
+    dto.AccessTokenQueryResponse:
+      properties:
+        access_tokens:
+          items:
+            $ref: '#/components/schemas/dto.GetAccessTokenResponse'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    dto.CreateAccessTokenRequest:
+      properties:
+        chosen_duration_minutes:
+          description: 5256000 is 10 years in minutes
+          example: 3600
+          maximum: 5256000
+          minimum: 1
+          type: integer
+        display_name:
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - chosen_duration_minutes
+      - display_name
+      type: object
+    dto.CreateAccessTokenResponse:
+      properties:
+        access_token:
+          type: string
+        created_at:
+          description: Milliseconds since epoch
+          type: integer
+        id:
+          type: string
+        valid_from:
+          description: Milliseconds since epoch
+          type: integer
+        valid_until:
+          description: Milliseconds since epoch
+          type: integer
+      type: object
+    dto.Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    dto.GetAccessTokenResponse:
+      properties:
+        created_at:
+          description: Milliseconds since epoch
+          type: integer
+        display_name:
+          type: string
+        id:
+          type: string
+        valid_from:
+          description: Milliseconds since epoch
+          type: integer
+        valid_until:
+          description: Milliseconds since epoch
+          type: integer
+      required:
+      - created_at
+      - id
+      - valid_from
+      - valid_until
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+info:
+  contact:
+    email: support@altr.com
+    name: Support
+  description: This API allows ALTR customers to manage data consumer access tokens.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service
+  title: Access Tokens API
+  version: '1.0'
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en
+paths:
+  /access-tokens:
+    get:
+      description: This endpoint retrieves a list of access tokens for a user based on the provided query parameters.
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          default: 100
+          maximum: 1000
+          minimum: 0
+          type: integer
+      - description: Sorts by the time the access token was created
+        in: query
+        name: order_by
+        schema:
+          description: Sorts by the time the access token was created
+          enum:
+          - asc
+          - desc
+          type: string
+      - in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.AccessTokenQueryResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Bad request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Too many requests, slow down and try again later
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Internal server error, try again later
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Service unavailable, try again later
+      security:
+      - BasicAuth: []
+      summary: Get Access Tokens
+      tags:
+      - Control Plane
+    post:
+      description: This endpoint creates a new access token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dto.CreateAccessTokenRequest'
+        description: Create Access Token Request
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.CreateAccessTokenResponse'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Bad request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Too many requests, slow down and try again later
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Internal server error, try again later
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+          description: Service unavailable, try again later
+      security:
+      - BasicAuth: []
+      summary: Creates Access Token
+      tags:
+      - Control Plane
+openapi: 3.1.0
+servers:
+- url: /v1

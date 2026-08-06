@@ -1,0 +1,1176 @@
+generated: '2026-08-06'
+method: derived
+source: mcp/altr-mcp.yml + openapi/ (21 harvested specifications)
+surfaces:
+  openapi:
+    files: 21
+    operations: 375
+    note: 21 specifications harvested from ALTR's public Swagger UIs; 142 of 375 operations declare an operationId, so 233
+      tools/operations are bound by method+path instead.
+  graphql: null
+  mcp:
+    server: io.github.altrsoftware/altr-mcp-server
+    tools: 156
+    gated: true
+    note: stdio-first server requiring ORG_ID/MAPI_KEY/MAPI_SECRET — tools/list could not be called anonymously, so the
+      tool list comes from the provider-published docs/ tree and input schemas require authenticated introspection. Each
+      bound tool inherits its real input contract from the parameters + requestBody of the backing operation below.
+coverage:
+  tools_named: 156
+  tools_bound: 143
+  mcp_only: 13
+  rest_operations_total: 375
+  rest_operations_with_tool: 143
+crosswalk:
+- tool: get_databases
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - getDatabases
+  binding: rest
+  confidence: high
+- tool: get_database_id
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - getDatabases
+  binding: rest
+  confidence: medium
+  note: Convenience lookup — resolves a database name to its ALTR id client-side from the list response.
+- tool: get_service_users
+  category: Databases
+  api: openapi/altr-service-user-openapi.yml
+  rest:
+  - GET /users
+  binding: rest
+  confidence: medium
+- tool: create_database
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - createDatabase
+  binding: rest
+  confidence: high
+- tool: create_databricks_database
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - createDatabase
+  binding: rest
+  confidence: medium
+  note: Same operation with a Databricks connection payload.
+- tool: update_database
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - updateDatabase
+  binding: rest
+  confidence: high
+- tool: trigger_database_status_sync
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - updateDatabaseStatus
+  binding: rest
+  confidence: medium
+- tool: disconnect_database
+  category: Databases
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - deleteDatabase
+  binding: rest
+  confidence: high
+- tool: get_tags
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - retrieveTagsList
+  binding: rest
+  confidence: medium
+  note: MAPI getListOfTags covers the same vocabulary.
+- tool: get_tag_values
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - retrieveTags
+  binding: rest
+  confidence: medium
+- tool: get_tag_details_by_group_id
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - retrieveTagGroupDetails
+  binding: rest
+  confidence: high
+- tool: get_tag_details
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - retrieveTagDetails
+  binding: rest
+  confidence: high
+- tool: connect_tag
+  category: Tags
+  api: openapi/altr-tag-masking-openapi.yml
+  rest:
+  - PUT /tag/{tag-group-id}
+  binding: rest
+  confidence: medium
+  note: Tag Masking API declares no operationIds; bound by method+path.
+- tool: update_tag
+  category: Tags
+  api: openapi/altr-tag-masking-openapi.yml
+  rest:
+  - PUT /tag/{tag-group-id}
+  binding: rest
+  confidence: medium
+  note: Tag Masking API declares no operationIds; bound by method+path.
+- tool: disconnect_tag
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - deleteTagGroup
+  binding: rest
+  confidence: medium
+- tool: disconnect_tag_by_details
+  category: Tags
+  api: openapi/altr-dis-openapi.yml
+  rest:
+  - deleteTagValue
+  binding: rest
+  confidence: medium
+- tool: get_policies
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - getPolicies
+  binding: rest
+  confidence: high
+- tool: get_rules
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - getRules
+  binding: rest
+  confidence: high
+- tool: get_roles
+  category: Policies & Rules
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - getUserGroups
+  binding: rest
+  confidence: high
+  note: ALTR roles are called user groups in the console and in MAPI.
+- tool: create_policy
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - createPolicy
+  binding: rest
+  confidence: high
+  note: createPolicyWithRules and createGrantPolicyDatabricks back the PUSHDOWN/Databricks variants.
+- tool: add_rules
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - createRule
+  binding: rest
+  confidence: high
+- tool: update_rule
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - updateRule
+  binding: rest
+  confidence: high
+- tool: delete_rule
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - deleteRule
+  binding: rest
+  confidence: high
+- tool: delete_policy
+  category: Policies & Rules
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - deletePolicy
+  binding: rest
+  confidence: high
+- tool: get_classifiers
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /classifiers
+  binding: rest
+  confidence: high
+- tool: get_classifier
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /classifiers/{classifier_name}
+  binding: rest
+  confidence: high
+- tool: create_classifier
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /classifiers
+  binding: rest
+  confidence: high
+- tool: update_classifier
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - PATCH /classifiers/{classifier_name}
+  binding: rest
+  confidence: high
+- tool: delete_classifier
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - DELETE /classifiers/{classifier_name}
+  binding: rest
+  confidence: high
+- tool: get_collections
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /collections
+  binding: rest
+  confidence: high
+- tool: get_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /collections/{collection_name}
+  binding: rest
+  confidence: high
+- tool: create_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /collections
+  binding: rest
+  confidence: high
+- tool: update_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - PATCH /collections/{collection_name}
+  binding: rest
+  confidence: high
+- tool: delete_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - DELETE /collections/{collection_name}
+  binding: rest
+  confidence: high
+- tool: get_collection_classifiers
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /collections/{collection_name}/classifiers
+  binding: rest
+  confidence: high
+- tool: add_classifiers_to_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - PATCH /collections/{collection_name}/classifiers/append
+  binding: rest
+  confidence: high
+- tool: remove_classifiers_from_collection
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - PATCH /collections/{collection_name}/classifiers/remove
+  binding: rest
+  confidence: high
+- tool: import_altr_managed_classifiers
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /collections/altr-managed/import
+  binding: rest
+  confidence: high
+  note: Also fans out to POST /collections/altr-managed/import-all and /{slug}/import.
+- tool: get_altr_managed_timestamp
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /collections/altr-managed/timestamp
+  binding: rest
+  confidence: high
+- tool: list_altr_managed_classifiers
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /collections/altr-managed/classifiers
+  binding: rest
+  confidence: high
+- tool: get_jobs
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs
+  binding: rest
+  confidence: high
+- tool: get_active_jobs
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/active
+  binding: rest
+  confidence: high
+- tool: get_job
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}
+  binding: rest
+  confidence: high
+- tool: get_job_summary
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/summary
+  binding: rest
+  confidence: high
+- tool: create_job
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/snowflake
+  binding: rest
+  confidence: high
+  note: POST /jobs is marked deprecated in the spec.
+- tool: create_gdlp_job
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/snowflake
+  binding: rest
+  confidence: medium
+  note: GDLP is a processing mode of the Snowflake job endpoint.
+- tool: create_databricks_job
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/databricks
+  binding: rest
+  confidence: high
+- tool: create_oltp_job
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/oltp
+  binding: rest
+  confidence: high
+- tool: update_job_status
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - PATCH /jobs
+  binding: rest
+  confidence: high
+- tool: get_job_findings
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings
+  binding: rest
+  confidence: high
+- tool: get_job_findings_schemas
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings/databases/{database}/schemas
+  binding: rest
+  confidence: high
+- tool: get_job_findings_tables
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings/databases/{database}/schemas/{schema}/tables
+  binding: rest
+  confidence: high
+- tool: get_job_findings_columns
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings/databases/{database}/schemas/{schema}/tables/{table}/columns
+  binding: rest
+  confidence: high
+- tool: get_job_findings_classifiers
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings/databases/{database}/schemas/{schema}/tables/{table}/columns/{column}/classifiers
+  binding: rest
+  confidence: high
+- tool: get_job_findings_lineage
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/findings/databases/{database}/schemas/{schema}/tables/{table}/columns/{column}/classifiers/{classifier_name}/lineage
+  binding: rest
+  confidence: high
+- tool: record_job_decision
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/{job_id}/decisions
+  binding: rest
+  confidence: high
+- tool: get_job_decisions
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/decisions
+  binding: rest
+  confidence: high
+- tool: revoke_job_decisions
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - DELETE /jobs/{job_id}/decisions
+  binding: rest
+  confidence: high
+- tool: get_job_review_status
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - GET /jobs/{job_id}/review-status
+  binding: rest
+  confidence: high
+- tool: get_classification_report
+  category: Classification
+  api: openapi/altr-classification-openapi.yml
+  rest:
+  - POST /jobs/{job_id}/report
+  binding: rest
+  confidence: medium
+  note: Report create/confirm/cancel trio.
+- tool: create_snowflake_access_policy
+  category: Access Management
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - createAccessManagementPolicySnowflake
+  binding: rest
+  confidence: high
+- tool: update_snowflake_access_policy
+  category: Access Management
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - updateAccessManagementPolicySnowflake
+  binding: rest
+  confidence: high
+- tool: create_oltp_access_policy
+  category: Access Management
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - createAccessManagementPolicyOltp
+  binding: rest
+  confidence: high
+- tool: trigger_access_policy_check
+  category: Access Management
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - triggerAccessManagementPolicyCheck
+  binding: rest
+  confidence: high
+- tool: create_access_request
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - createAccessRequest
+  binding: rest
+  confidence: high
+- tool: get_access_requests
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - getAccessRequests
+  binding: rest
+  confidence: high
+- tool: get_access_request
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - getAccessRequestById
+  binding: rest
+  confidence: high
+- tool: approve_access_request
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - approveAccessRequest
+  binding: rest
+  confidence: high
+- tool: deny_access_request
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - denyAccessRequest
+  binding: rest
+  confidence: high
+- tool: cancel_access_request
+  category: Access Requests
+  api: openapi/altr-unified-policy-openapi.yml
+  rest:
+  - cancelAccessRequest
+  binding: rest
+  confidence: high
+- tool: search_audits
+  category: Audits
+  api: openapi/altr-sidecar-audit-openapi.yml
+  rest:
+  - POST /audits
+  binding: rest
+  confidence: high
+  note: Sidecar Audit API declares no operationIds; bound by method+path.
+- tool: get_audit_results
+  category: Audits
+  api: openapi/altr-sidecar-audit-openapi.yml
+  rest:
+  - GET /audits/{search_uuid}
+  binding: rest
+  confidence: high
+  note: Sidecar Audit API declares no operationIds; bound by method+path.
+- tool: search_query_audits
+  category: Audits
+  api: openapi/altr-query-audits-openapi.yml
+  rest:
+  - POST /search
+  binding: rest
+  confidence: high
+  note: Query Audits API declares no operationIds; bound by method+path.
+- tool: get_query_audit_results
+  category: Audits
+  api: openapi/altr-query-audits-openapi.yml
+  rest:
+  - GET /results/{search_uuid}
+  binding: rest
+  confidence: high
+  note: Query Audits API declares no operationIds; bound by method+path.
+- tool: search_system_audits
+  category: Audits
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - postQuerySystemaudits
+  binding: rest
+  confidence: high
+- tool: get_system_audit_results
+  category: Audits
+  api: openapi/altr-mapi-openapi.yml
+  rest:
+  - getQuerySystemaudits
+  binding: rest
+  confidence: high
+- tool: list_report_definitions
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/
+  binding: rest
+  confidence: high
+- tool: create_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/
+  binding: rest
+  confidence: high
+- tool: get_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{definition_id}
+  binding: rest
+  confidence: high
+- tool: update_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - PUT /audit-reports/definitions/{definition_id}
+  binding: rest
+  confidence: high
+- tool: archive_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - DELETE /audit-reports/definitions/{definition_id}
+  binding: rest
+  confidence: high
+- tool: restore_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{definition_id}/restore
+  binding: rest
+  confidence: high
+- tool: trigger_report_definition
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{definition_id}/trigger
+  binding: rest
+  confidence: high
+- tool: list_report_instances
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/
+  binding: rest
+  confidence: high
+- tool: get_report_instance
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/{inst_id}
+  binding: rest
+  confidence: high
+- tool: get_report_instance_download_url
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/{inst_id}/download
+  binding: rest
+  confidence: high
+- tool: list_report_comments
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/
+  binding: rest
+  confidence: high
+- tool: create_report_comment
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/
+  binding: rest
+  confidence: high
+- tool: pin_report_comment
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/pin
+  binding: rest
+  confidence: high
+- tool: unpin_report_comment
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/unpin
+  binding: rest
+  confidence: high
+- tool: get_report_sign_off
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_off
+  binding: rest
+  confidence: high
+- tool: create_report_sign_off
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - POST /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_off
+  binding: rest
+  confidence: high
+- tool: list_report_sign_offs
+  category: Audit Reports
+  api: openapi/altr-audit-report-openapi.yml
+  rest:
+  - GET /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_offs
+  binding: rest
+  confidence: high
+- tool: get_agent_instances
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /agents/{agent_id}/instances
+  binding: rest
+  confidence: high
+- tool: get_agent_instance
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /agents/{agent_id}/instances/{instance_id}
+  binding: rest
+  confidence: high
+- tool: disconnect_agent_instance
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - DELETE /agents/{agent_id}/instances/{instance_id}
+  binding: rest
+  confidence: high
+- tool: get_agent_task_telemetry
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /agents/{agent_id}/task-telemetry
+  binding: rest
+  confidence: high
+- tool: get_sidecar_instances
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}/instances
+  binding: rest
+  confidence: high
+- tool: get_sidecar_instance
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}/instances/{instance_id}
+  binding: rest
+  confidence: high
+- tool: disconnect_sidecar_instance
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - DELETE /sidecars/{sidecar_id}/instances/{instance_id}
+  binding: rest
+  confidence: high
+- tool: get_task_telemetry
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - GET /tasks/{task_id}/task-telemetry
+  binding: rest
+  confidence: high
+- tool: delete_task_telemetry
+  category: Telemetry
+  api: openapi/altr-sidecar-telemetry-openapi.yml
+  rest:
+  - DELETE /tasks/{task_id}/task-telemetry
+  binding: rest
+  confidence: high
+- tool: list_sc_agents
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /agents
+  binding: rest
+  confidence: high
+- tool: create_sc_agent
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /agents
+  binding: rest
+  confidence: high
+- tool: get_sc_agent
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /agents/{agent_id}
+  binding: rest
+  confidence: high
+- tool: update_sc_agent
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /agents/{agent_id}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_agent
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /agents/{agent_id}
+  binding: rest
+  confidence: high
+- tool: list_sc_agent_tasks
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /agents/{agent_id}/tasks
+  binding: rest
+  confidence: high
+- tool: create_sc_agent_task
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /agents/{agent_id}/tasks
+  binding: rest
+  confidence: high
+- tool: update_sc_agent_task
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /agents/{agent_id}/tasks/{task_id}
+  binding: rest
+  confidence: high
+- tool: delete_sc_agent_task
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /agents/{agent_id}/tasks/{task_id}
+  binding: rest
+  confidence: high
+- tool: list_sc_repos
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos
+  binding: rest
+  confidence: high
+- tool: create_sc_repo
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /repos
+  binding: rest
+  confidence: high
+- tool: get_sc_repo
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: update_sc_repo
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_repo
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: list_sc_repo_users
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos/{repo_name}/users
+  binding: rest
+  confidence: high
+- tool: create_sc_repo_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /repos/{repo_name}/users
+  binding: rest
+  confidence: high
+- tool: get_sc_repo_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos/{repo_name}/users/{username}
+  binding: rest
+  confidence: high
+- tool: update_sc_repo_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /repos/{repo_name}/users/{username}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_repo_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /repos/{repo_name}/users/{username}
+  binding: rest
+  confidence: high
+- tool: list_sc_service_users
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /serviceusers
+  binding: rest
+  confidence: high
+- tool: create_sc_service_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /repos/{repo_name}/serviceusers
+  binding: rest
+  confidence: high
+- tool: get_sc_service_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos/{repo_name}/serviceusers/{username}
+  binding: rest
+  confidence: high
+- tool: update_sc_service_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /repos/{repo_name}/serviceusers/{username}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_service_user
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /repos/{repo_name}/serviceusers/{username}
+  binding: rest
+  confidence: high
+- tool: list_sc_sidecars
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /sidecars
+  binding: rest
+  confidence: high
+- tool: create_sc_sidecar
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /sidecars
+  binding: rest
+  confidence: high
+- tool: get_sc_sidecar
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}
+  binding: rest
+  confidence: high
+- tool: update_sc_sidecar
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - PATCH /sidecars/{sidecar_id}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_sidecar
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /sidecars/{sidecar_id}
+  binding: rest
+  confidence: high
+- tool: list_sc_sidecar_listeners
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}/ports
+  binding: rest
+  confidence: high
+- tool: register_sc_sidecar_listener
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /sidecars/{sidecar_id}/ports
+  binding: rest
+  confidence: high
+- tool: deregister_sc_sidecar_listener
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /sidecars/{sidecar_id}/ports/{port}
+  binding: rest
+  confidence: high
+- tool: list_sc_sidecar_bindings
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}/bindings
+  binding: rest
+  confidence: high
+- tool: list_sc_repo_bindings
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /repos/{repo_name}/bindings
+  binding: rest
+  confidence: high
+- tool: get_sc_sidecar_binding
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - GET /sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: create_sc_sidecar_binding
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - POST /sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: disconnect_sc_sidecar_binding
+  category: Sidecar Configuration
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  rest:
+  - DELETE /sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}
+  binding: rest
+  confidence: high
+- tool: critical_tokenize
+  category: Critical Tokenization
+  api: openapi/altr-critical-tokenization-openapi.yml
+  rest:
+  - POST /batch
+  binding: rest
+  confidence: high
+- tool: critical_detokenize
+  category: Critical Tokenization
+  api: openapi/altr-critical-tokenization-openapi.yml
+  rest:
+  - PUT /batch
+  binding: rest
+  confidence: high
+- tool: critical_partial_detokenize
+  category: Critical Tokenization
+  api: openapi/altr-critical-tokenization-openapi.yml
+  rest:
+  - PUT /batch/partial
+  binding: rest
+  confidence: high
+- tool: critical_delete_tokens
+  category: Critical Tokenization
+  api: openapi/altr-critical-tokenization-openapi.yml
+  rest:
+  - PUT /batch/delete
+  binding: rest
+  confidence: high
+mcp_only:
+- tool: vault_tokenize
+  category: Vault Tokenization
+  reason: Vaulted Tokenization API reference (https://docs.vault.live.altr.com/api/v2) returns HTTP 403 to anonymous callers,
+    so no public OpenAPI could be captured to bind against.
+- tool: vault_detokenize
+  category: Vault Tokenization
+  reason: Same — Vaulted Tokenization API reference is auth-gated (HTTP 403).
+- tool: vault_partial_detokenize
+  category: Vault Tokenization
+  reason: Same — Vaulted Tokenization API reference is auth-gated (HTTP 403).
+- tool: vault_delete_tokens
+  category: Vault Tokenization
+  reason: Same — Vaulted Tokenization API reference is auth-gated (HTTP 403).
+- tool: list_tweaks
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: get_tweak
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: create_tweak
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: deactivate_tweak
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: list_keys
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: get_key
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: create_key
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: deactivate_key
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+- tool: rotate_key
+  category: Key Management
+  reason: Key Management API is served per organization at https://<organization-id>.kma.live.altr.com/v1/docs, so no anonymously
+    reachable OpenAPI exists to bind against.
+rest_only:
+- api: openapi/altr-access-tokens-openapi.yml
+  title: Access Tokens API
+  operations: 2
+  operations_with_tool: 0
+  operations_without_tool: 2
+- api: openapi/altr-auto-tagging-openapi.yml
+  title: Auto Tagging API
+  operations: 12
+  operations_with_tool: 0
+  operations_without_tool: 12
+- api: openapi/altr-classification-openapi.yml
+  title: ALTR Classification Engine API
+  operations: 49
+  operations_with_tool: 36
+  operations_without_tool: 13
+- api: openapi/altr-dam-alerting-openapi.yml
+  title: ALTR DAM Alerting API
+  operations: 12
+  operations_with_tool: 0
+  operations_without_tool: 12
+- api: openapi/altr-dbx-tag-policy-openapi.yml
+  title: ALTR — Tag-based governance policy on Databricks
+  operations: 2
+  operations_with_tool: 0
+  operations_without_tool: 2
+- api: openapi/altr-dis-openapi.yml
+  title: ALTR Datastore Information Service
+  operations: 20
+  operations_with_tool: 6
+  operations_without_tool: 14
+- api: openapi/altr-mapi-openapi.yml
+  title: ALTR Management API
+  operations: 108
+  operations_with_tool: 10
+  operations_without_tool: 98
+- api: openapi/altr-notification-integration-openapi.yml
+  title: ALTR Notification Integration API
+  operations: 12
+  operations_with_tool: 0
+  operations_without_tool: 12
+- api: openapi/altr-query-dashboard-openapi.yml
+  title: Query Dashboard API
+  operations: 2
+  operations_with_tool: 0
+  operations_without_tool: 2
+- api: openapi/altr-rbac-openapi.yml
+  title: RBAC API
+  operations: 22
+  operations_with_tool: 0
+  operations_without_tool: 22
+- api: openapi/altr-service-user-openapi.yml
+  title: Service User Service
+  operations: 12
+  operations_with_tool: 1
+  operations_without_tool: 11
+- api: openapi/altr-sidecar-repo-config-openapi.yml
+  title: ALTR Sidecar/Agent Configuration API
+  operations: 39
+  operations_with_tool: 37
+  operations_without_tool: 2
+- api: openapi/altr-snowflake-metadata-openapi.yml
+  title: Snowflake Metadata API
+  operations: 13
+  operations_with_tool: 0
+  operations_without_tool: 13
+- api: openapi/altr-tag-masking-openapi.yml
+  title: Tag Masking API
+  operations: 7
+  operations_with_tool: 2
+  operations_without_tool: 5
+- api: openapi/altr-tag-refresh-openapi.yml
+  title: Snowflake Tag Value Refresh API
+  operations: 2
+  operations_with_tool: 0
+  operations_without_tool: 2
+- api: openapi/altr-unified-policy-openapi.yml
+  title: Unified Policy API
+  operations: 27
+  operations_with_tool: 17
+  operations_without_tool: 10
+notes:
+- The MCP server is a strict subset of the REST surface plus two capabilities (vaulted tokenization, FPE key management)
+  whose reference documents are not anonymously reachable.
+- No public REST operation exists for a large part of MAPI (thresholds, anomalies, row access, SSO/SCIM enablement, organization
+  preferences, API keys) — those are console/REST-only and have no agent-facing tool.

@@ -1,0 +1,52 @@
+generated: '2026-08-06'
+method: searched
+source: openapi/altr-notification-integration-openapi.yml (https://docs.notifications.live.altr.com/v1/notification-integration/docs),
+  https://docs.altr.com/release-notes/2026/
+spec_type: Webhooks
+asyncapi: null
+note: 'ALTR publishes no AsyncAPI document. It does operate a real event/delivery platform: the Notification Integration
+  API registers delivery targets (including a custom HTTP webhook) and event subscriptions that filter events by field criteria
+  and push matching events to those targets. The event catalog is captured from the API''s own enums.'
+management_api:
+  name: ALTR Notification Integration API
+  openapi: openapi/altr-notification-integration-openapi.yml
+  docs: https://docs.notifications.live.altr.com/v1/notification-integration/docs
+  baseURL: https://{orgID}.notifications.live.altr.com/v1/notification-integration
+delivery_targets:
+- type: custom_webhook
+  schema: models.CustomWebhookConfig
+  note: Outbound HTTP POST to a customer-controlled URL — this is ALTR's webhook surface.
+- type: slack
+  schema: models.SlackConfig
+- type: microsoft_teams
+  schema: models.MicrosoftTeamsConfig
+- type: pagerduty
+  schema: models.PagerDutyConfig
+- type: service_now
+  schema: models.ServiceNowConfig
+  auth:
+  - basic
+  - oauth_client_credentials
+  default_table: incident
+- type: splunk
+  schema: models.SplunkConfig
+events:
+- event_type: dam.alert.fired
+  description: A database-activity-monitoring alert rule matched and fired.
+  source: models.CreateSubscriptionRequest.event_type enum
+  produced_by: openapi/altr-dam-alerting-openapi.yml
+subscription_model:
+  filtering: criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an operator block; all entries
+    must match (AND across fields). An empty criteria object matches every event of the registered type.
+  operations:
+  - POST /integrations — create a delivery target
+  - POST /integrations/{integration_id}/subscriptions — subscribe to an event type with criteria
+  - POST /integrations/{integration_id}/test — send a test event and get {delivered, status_code, event_id}
+  - GET /subscriptions — search subscriptions across all integrations
+security_note: allow_insecure_tls on an integration skips server-certificate verification for that target's deliveries —
+  intended for self-signed / private-CA destinations, default false.
+gaps:
+- Only one event type (dam.alert.fired) is registered in the public spec enum today, so the catalog is narrow relative to
+  the platform surface.
+- No AsyncAPI document, no published webhook signature/verification scheme, and no documented delivery-retry contract were
+  found.

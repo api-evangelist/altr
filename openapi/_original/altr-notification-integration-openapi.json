@@ -1,0 +1,1650 @@
+{
+  "components": {
+    "schemas": {
+      "fiber.APIError": {
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/fiber.APIErrorResponse"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "fiber.APIErrorResponse": {
+        "properties": {
+          "error_code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.CreateIntegrationRequest": {
+        "properties": {
+          "allow_insecure_tls": {
+            "description": "AllowInsecureTLS skips server-cert verification for this integration's deliveries\n(self-signed / private-CA destinations). Default false.",
+            "type": "boolean"
+          },
+          "custom_webhook": {
+            "$ref": "#/components/schemas/models.CustomWebhookConfig"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "microsoft_teams": {
+            "$ref": "#/components/schemas/models.MicrosoftTeamsConfig"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "pagerduty": {
+            "$ref": "#/components/schemas/models.PagerDutyConfig"
+          },
+          "service_now": {
+            "$ref": "#/components/schemas/models.ServiceNowConfig"
+          },
+          "slack": {
+            "$ref": "#/components/schemas/models.SlackConfig"
+          },
+          "splunk": {
+            "$ref": "#/components/schemas/models.SplunkConfig"
+          },
+          "type": {
+            "enum": [
+              "custom_webhook",
+              "pagerduty",
+              "slack",
+              "splunk",
+              "service_now",
+              "microsoft_teams"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object"
+      },
+      "models.CreateSubscriptionRequest": {
+        "properties": {
+          "criteria": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/models.CriteriaOperators"
+            },
+            "description": "Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an\noperator block. All entries must match for the event to be delivered (AND across\nfields). Empty/omitted matches every event of the registered type.",
+            "type": "object"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "event_type": {
+            "enum": [
+              "dam.alert.fired"
+            ],
+            "maxLength": 255,
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_type"
+        ],
+        "type": "object"
+      },
+      "models.CriteriaOperators": {
+        "properties": {
+          "eq": {
+            "x-order": "0"
+          },
+          "exists": {
+            "type": "boolean",
+            "x-order": "4"
+          },
+          "gte": {
+            "x-order": "2"
+          },
+          "in": {
+            "items": {},
+            "maxItems": 500,
+            "type": "array",
+            "uniqueItems": false,
+            "x-order": "1"
+          },
+          "lte": {
+            "x-order": "3"
+          }
+        },
+        "type": "object"
+      },
+      "models.CustomWebhookConfig": {
+        "properties": {
+          "hmac_secret": {
+            "maxLength": 128,
+            "minLength": 16,
+            "type": "string"
+          },
+          "url": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "models.Integration": {
+        "properties": {
+          "allow_insecure_tls": {
+            "description": "AllowInsecureTLS skips server-cert verification for this integration's deliveries \u2014\nfor self-hosted destinations with self-signed / private-CA certs (e.g. a Splunk free\ntrial). Default false. Always present on GET responses, even when false.",
+            "type": "boolean"
+          },
+          "consecutive_failures": {
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "custom_webhook": {
+            "$ref": "#/components/schemas/models.CustomWebhookConfig"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "health_state": {
+            "enum": [
+              "healthy",
+              "unhealthy"
+            ],
+            "type": "string"
+          },
+          "integration_id": {
+            "type": "string"
+          },
+          "last_error": {
+            "description": "LastError/LastFailureAt surface the most recent delivery failure on GET so the customer can see\nwhy an integration went unhealthy. Set by RecordFailure (bounded), cleared by ClearFailures.",
+            "type": "string"
+          },
+          "last_failure_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "microsoft_teams": {
+            "$ref": "#/components/schemas/models.MicrosoftTeamsConfig"
+          },
+          "name": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "pagerduty": {
+            "$ref": "#/components/schemas/models.PagerDutyConfig"
+          },
+          "service_now": {
+            "$ref": "#/components/schemas/models.ServiceNowConfig"
+          },
+          "slack": {
+            "$ref": "#/components/schemas/models.SlackConfig"
+          },
+          "splunk": {
+            "$ref": "#/components/schemas/models.SplunkConfig"
+          },
+          "type": {
+            "enum": [
+              "custom_webhook",
+              "pagerduty",
+              "slack",
+              "splunk",
+              "service_now",
+              "microsoft_teams"
+            ],
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "integration_id",
+          "name",
+          "type"
+        ],
+        "type": "object"
+      },
+      "models.ListIntegrationsResponse": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Integration"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.ListSubscriptionsResponse": {
+        "properties": {
+          "contiguous_id": {
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Subscription"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.MicrosoftTeamsConfig": {
+        "properties": {
+          "workflow_url": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [
+          "workflow_url"
+        ],
+        "type": "object"
+      },
+      "models.PagerDutyConfig": {
+        "properties": {
+          "integration_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "integration_key"
+        ],
+        "type": "object"
+      },
+      "models.ServiceNowBasicAuth": {
+        "properties": {
+          "password": {
+            "maxLength": 512,
+            "minLength": 1,
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object"
+      },
+      "models.ServiceNowConfig": {
+        "properties": {
+          "assignment_group": {
+            "maxLength": 32,
+            "type": "string"
+          },
+          "auth_type": {
+            "enum": [
+              "basic",
+              "oauth_client_credentials"
+            ],
+            "type": "string"
+          },
+          "basic": {
+            "$ref": "#/components/schemas/models.ServiceNowBasicAuth"
+          },
+          "instance_url": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "oauth_client_credentials": {
+            "$ref": "#/components/schemas/models.ServiceNowOAuthClientCreds"
+          },
+          "table_name": {
+            "default": "incident",
+            "type": "string"
+          }
+        },
+        "required": [
+          "instance_url"
+        ],
+        "type": "object"
+      },
+      "models.ServiceNowOAuthClientCreds": {
+        "properties": {
+          "client_id": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "client_secret": {
+            "maxLength": 512,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "client_id",
+          "client_secret"
+        ],
+        "type": "object"
+      },
+      "models.SlackConfig": {
+        "properties": {
+          "webhook_url": {
+            "maxLength": 4096,
+            "type": "string"
+          }
+        },
+        "required": [
+          "webhook_url"
+        ],
+        "type": "object"
+      },
+      "models.SplunkConfig": {
+        "properties": {
+          "hec_token": {
+            "maxLength": 128,
+            "minLength": 8,
+            "type": "string"
+          },
+          "hec_url": {
+            "description": "HECURL is the Splunk HEC base URL (e.g. https://host:8088); /services/collector/event\nis appended automatically. A full collector URL is also accepted as-is.",
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "index": {
+            "maxLength": 80,
+            "type": "string"
+          }
+        },
+        "required": [
+          "hec_token",
+          "hec_url"
+        ],
+        "type": "object"
+      },
+      "models.Subscription": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "criteria": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/models.CriteriaOperators"
+            },
+            "description": "Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an\noperator block. All entries must match for the event to be delivered (AND across\nfields). Empty/omitted matches every event of the registered type.",
+            "type": "object"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "event_type": {
+            "enum": [
+              "dam.alert.fired"
+            ],
+            "maxLength": 255,
+            "type": "string"
+          },
+          "integration_id": {
+            "type": "string"
+          },
+          "subscription_id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "event_type",
+          "integration_id",
+          "subscription_id"
+        ],
+        "type": "object"
+      },
+      "models.TestIntegrationResponse": {
+        "properties": {
+          "delivered": {
+            "type": "boolean"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "integration_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status_code": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models.UpdateIntegrationRequest": {
+        "properties": {
+          "allow_insecure_tls": {
+            "type": "boolean"
+          },
+          "custom_webhook": {
+            "$ref": "#/components/schemas/models.CustomWebhookConfig"
+          },
+          "description": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "microsoft_teams": {
+            "$ref": "#/components/schemas/models.MicrosoftTeamsConfig"
+          },
+          "name": {
+            "type": "string"
+          },
+          "pagerduty": {
+            "$ref": "#/components/schemas/models.PagerDutyConfig"
+          },
+          "service_now": {
+            "$ref": "#/components/schemas/models.ServiceNowConfig"
+          },
+          "slack": {
+            "$ref": "#/components/schemas/models.SlackConfig"
+          },
+          "splunk": {
+            "$ref": "#/components/schemas/models.SplunkConfig"
+          }
+        },
+        "type": "object"
+      },
+      "models.UpdateSubscriptionRequest": {
+        "properties": {
+          "criteria": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/models.CriteriaOperators"
+            },
+            "description": "Criteria, when present, replaces the criteria map entirely (not a merge). All\nentries must match for the event to be delivered (AND across fields).",
+            "type": "object"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "Manages delivery integrations and event subscriptions for the ALTR integration platform. Configure integrations as delivery targets (Slack, ServiceNow, PagerDuty, custom webhook, etc.), then create subscriptions that filter events by criteria and deliver matching events to those targets.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "ALTR Notification Integration API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/integrations": {
+      "get": {
+        "description": "Returns a paginated list of delivery integrations.",
+        "parameters": [
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by integration type",
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "enum": [
+                "custom_webhook",
+                "pagerduty",
+                "slack",
+                "splunk",
+                "service_now",
+                "microsoft_teams"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by enabled flag",
+            "in": "query",
+            "name": "enabled",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListIntegrationsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List Integrations.",
+        "tags": [
+          "Integrations"
+        ]
+      },
+      "post": {
+        "description": "Creates a new delivery integration. The server assigns and returns a unique integration_id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateIntegrationRequest",
+                "summary": "integration",
+                "description": "Integration Request"
+              }
+            }
+          },
+          "description": "Integration Request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Integration"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create an Integration.",
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/integrations/{integration_id}": {
+      "delete": {
+        "description": "Deletes an integration. Returns 409 when subscriptions still exist under it; delete the subscriptions first, then retry.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration has subscriptions; delete them first"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Delete an Integration.",
+        "tags": [
+          "Integrations"
+        ]
+      },
+      "get": {
+        "description": "Returns a single integration by id. Secret config fields (tokens, passwords, HMAC secrets, credential URLs) are redacted; set or rotate them via create/PATCH.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Integration"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get an Integration.",
+        "tags": [
+          "Integrations"
+        ]
+      },
+      "patch": {
+        "description": "Updates the mutable fields on an integration. Send only the fields you want to change; set a field to null to clear it. `type` is immutable.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.UpdateIntegrationRequest",
+                "summary": "integration",
+                "description": "Mutable integration fields"
+              }
+            }
+          },
+          "description": "Mutable integration fields",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Integration"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Update an Integration.",
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/integrations/{integration_id}/subscriptions": {
+      "get": {
+        "description": "Returns subscriptions owned by the integration named in the path, paginated.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by event_type",
+            "in": "query",
+            "name": "event_type",
+            "schema": {
+              "enum": [
+                "dam.alert.fired"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListSubscriptionsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List Subscriptions for an Integration.",
+        "tags": [
+          "Subscriptions"
+        ]
+      },
+      "post": {
+        "description": "Creates a subscription under the integration named in the path. The server assigns and returns the subscription_id. `integration_id` in the body is ignored \u2014 the path is authoritative.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateSubscriptionRequest",
+                "summary": "subscription",
+                "description": "Subscription Request"
+              }
+            }
+          },
+          "description": "Subscription Request",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Subscription"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create a Subscription.",
+        "tags": [
+          "Subscriptions"
+        ]
+      }
+    },
+    "/integrations/{integration_id}/subscriptions/{subscription_id}": {
+      "delete": {
+        "description": "Removes a subscription.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Subscription ID",
+            "in": "path",
+            "name": "subscription_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Subscription not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Delete a Subscription.",
+        "tags": [
+          "Subscriptions"
+        ]
+      },
+      "get": {
+        "description": "Returns a single subscription by id under the named integration.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Subscription ID",
+            "in": "path",
+            "name": "subscription_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Subscription"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Subscription not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get a Subscription.",
+        "tags": [
+          "Subscriptions"
+        ]
+      },
+      "patch": {
+        "description": "Patches the mutable fields on a subscription. Only `criteria` and `enabled` are mutable; `event_type` is immutable (re-target by creating a new subscription).",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Subscription ID",
+            "in": "path",
+            "name": "subscription_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.UpdateSubscriptionRequest",
+                "summary": "subscription",
+                "description": "Mutable subscription fields"
+              }
+            }
+          },
+          "description": "Mutable subscription fields",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Subscription"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Subscription not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Update a Subscription.",
+        "tags": [
+          "Subscriptions"
+        ]
+      }
+    },
+    "/integrations/{integration_id}/test": {
+      "post": {
+        "description": "Delivers a test notification to the integration's destination and returns the outcome. HTTP 200 means the test ran; the body's `delivered` flag + `status_code` report whether the destination accepted it.",
+        "parameters": [
+          {
+            "description": "Integration ID",
+            "in": "path",
+            "name": "integration_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.TestIntegrationResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Integration not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Test an Integration.",
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/subscriptions": {
+      "get": {
+        "description": "Returns subscriptions across all integrations in the caller's org. To create or modify a subscription, use the nested `/integrations/:integration_id/subscriptions/:id` path.",
+        "parameters": [
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination token from previous response",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by event_type",
+            "in": "query",
+            "name": "event_type",
+            "schema": {
+              "enum": [
+                "dam.alert.fired"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by enabled flag",
+            "in": "query",
+            "name": "enabled",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Criteria field path to filter on (e.g. payload.rule_id); requires criteria_value",
+            "in": "query",
+            "name": "criteria_field",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Value the criteria_field must target via in/eq (e.g. a rule_id); requires criteria_field",
+            "in": "query",
+            "name": "criteria_value",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListSubscriptionsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid query parameter"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Search Subscriptions across all Integrations.",
+        "tags": [
+          "Subscriptions"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration",
+      "variables": {
+        "orgID": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

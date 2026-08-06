@@ -1,0 +1,1101 @@
+{
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "auditfilter.BetweenValue": {
+        "properties": {
+          "end": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "end",
+          "start"
+        ],
+        "type": "object"
+      },
+      "auditfilter.Dimension": {
+        "enum": [
+          "user",
+          "database",
+          "schema",
+          "table",
+          "column",
+          "statement_type",
+          "statement_text",
+          "event_name",
+          "time_of_day",
+          "query_status",
+          "repo_user",
+          "client_ip",
+          "client_app",
+          "client_port",
+          "repo_type",
+          "repo_host",
+          "sidecar_id",
+          "connection_authorized",
+          "authorization_type",
+          "oltp_row_count",
+          "bytes_returned",
+          "policy_applied",
+          "policy_type",
+          "user_email",
+          "user_group",
+          "snowflake_role",
+          "snowflake_roles",
+          "snowflake_warehouse",
+          "snowflake_warehouse_size",
+          "snowflake_ip_address",
+          "snowflake_client",
+          "snowflake_session_id",
+          "snowflake_query_tag",
+          "snowflake_row_count",
+          "snowflake_account",
+          "snowflake_account_region",
+          "snowflake_masking_policy",
+          "snowflake_column_policy",
+          "snowflake_execution_duration",
+          "snowflake_tag_name",
+          "snowflake_tag_value"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "DimUser",
+          "DimDatabase",
+          "DimSchema",
+          "DimTable",
+          "DimColumn",
+          "DimStatementType",
+          "DimStatementText",
+          "DimEventName",
+          "DimTimeOfDay",
+          "DimQueryStatus",
+          "DimRepoUser",
+          "DimClientIP",
+          "DimClientApp",
+          "DimClientPort",
+          "DimRepoType",
+          "DimRepoHost",
+          "DimSidecarID",
+          "DimConnectionAuthorized",
+          "DimAuthorizationType",
+          "DimRowCount",
+          "DimBytesReturned",
+          "DimPolicyApplied",
+          "DimPolicyType",
+          "DimUserEmail",
+          "DimUserGroup",
+          "DimSnowflakeRole",
+          "DimSnowflakeRoles",
+          "DimSnowflakeWarehouse",
+          "DimSnowflakeWarehouseSize",
+          "DimSnowflakeIPAddress",
+          "DimSnowflakeClient",
+          "DimSnowflakeSessionID",
+          "DimSnowflakeQueryTag",
+          "DimSnowflakeRowCount",
+          "DimSnowflakeAccount",
+          "DimSnowflakeAccountRegion",
+          "DimSnowflakeMaskingPolicy",
+          "DimSnowflakeColumnPolicy",
+          "DimSnowflakeExecutionDuration",
+          "DimSnowflakeTagName",
+          "DimSnowflakeTagValue"
+        ]
+      },
+      "auditfilter.KeyEqValue": {
+        "properties": {
+          "key": {
+            "maxLength": 256,
+            "type": "string"
+          },
+          "value": {
+            "maxLength": 256,
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object"
+      },
+      "auditfilter.Op": {
+        "enum": [
+          "and",
+          "or",
+          "eq",
+          "neq",
+          "in",
+          "contains",
+          "regex",
+          "cidr",
+          "gt",
+          "gte",
+          "lt",
+          "lte",
+          "range",
+          "between",
+          "exists",
+          "key_exists",
+          "key_eq"
+        ],
+        "type": "string",
+        "x-enum-varnames": [
+          "OpAnd",
+          "OpOr",
+          "OpEq",
+          "OpNeq",
+          "OpIn",
+          "OpContains",
+          "OpRegex",
+          "OpCIDR",
+          "OpGt",
+          "OpGte",
+          "OpLt",
+          "OpLte",
+          "OpRange",
+          "OpBetween",
+          "OpExists",
+          "OpKeyExists",
+          "OpKeyEq"
+        ]
+      },
+      "auditfilter.RangeValue": {
+        "properties": {
+          "max": {
+            "type": "number"
+          },
+          "min": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "max",
+          "min"
+        ],
+        "type": "object"
+      },
+      "main.FilterNodeDoc": {
+        "properties": {
+          "between": {
+            "$ref": "#/components/schemas/auditfilter.BetweenValue"
+          },
+          "children": {
+            "description": "Children is required for op=and|or. Each entry is a nested FilterNode\nwith the same shape as this object. Typed as []object here only to break\nthe recursive $ref that older Swagger UI cannot resolve.",
+            "items": {
+              "additionalProperties": {},
+              "type": "object"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "dimension": {
+            "$ref": "#/components/schemas/auditfilter.Dimension"
+          },
+          "key_eq": {
+            "$ref": "#/components/schemas/auditfilter.KeyEqValue"
+          },
+          "list_value": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": false
+          },
+          "number_value": {
+            "type": "number"
+          },
+          "op": {
+            "$ref": "#/components/schemas/auditfilter.Op"
+          },
+          "range": {
+            "$ref": "#/components/schemas/auditfilter.RangeValue"
+          },
+          "string_value": {
+            "maxLength": 1024,
+            "type": "string"
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "type": "object"
+      },
+      "main.GetResultOutput": {
+        "properties": {
+          "audits": {
+            "description": "Sidecar Audits.",
+            "items": {
+              "$ref": "#/components/schemas/management.Audit"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_page_token": {
+            "description": "Token to retrieve the next page of results. If not present, there are no more results.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "main.SearchRequestDoc": {
+        "properties": {
+          "filter": {
+            "$ref": "#/components/schemas/main.FilterNodeDoc"
+          },
+          "timezone": {
+            "description": "Timezone is the IANA zone for time_of_day comparisons (e.g.\n\"America/New_York\") \u2014 pass the dam rule's timezone to replay its\nfilter. Required when the filter contains a time_of_day dimension,\nforbidden otherwise.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.AppliedPolicy": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "result": {
+            "$ref": "#/components/schemas/management.PolicyResult"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "result",
+          "type"
+        ],
+        "type": "object"
+      },
+      "management.Audit": {
+        "properties": {
+          "client": {
+            "$ref": "#/components/schemas/management.ConnectionClient"
+          },
+          "configuration_version_id": {
+            "type": "string"
+          },
+          "connection_request": {
+            "$ref": "#/components/schemas/management.ConnectionRequest"
+          },
+          "event_id": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "event_source": {
+            "type": "string"
+          },
+          "event_time": {
+            "type": "string"
+          },
+          "event_time_nano_seconds": {
+            "type": "integer"
+          },
+          "event_version": {
+            "type": "string"
+          },
+          "org_id": {
+            "type": "string"
+          },
+          "policy_version_id": {
+            "type": "string"
+          },
+          "repo": {
+            "$ref": "#/components/schemas/management.Repo"
+          },
+          "sidecar": {
+            "$ref": "#/components/schemas/management.Sidecar"
+          },
+          "statement_request": {
+            "$ref": "#/components/schemas/management.StatementRequest"
+          },
+          "tracking_id": {
+            "type": "string"
+          },
+          "user_identity": {
+            "$ref": "#/components/schemas/management.UserIdentity"
+          }
+        },
+        "required": [
+          "client",
+          "configuration_version_id",
+          "event_id",
+          "event_name",
+          "event_source",
+          "event_time",
+          "event_time_nano_seconds",
+          "event_version",
+          "org_id",
+          "policy_version_id",
+          "repo",
+          "tracking_id",
+          "user_identity"
+        ],
+        "type": "object"
+      },
+      "management.ConnectionClient": {
+        "properties": {
+          "application_name": {
+            "type": "string"
+          },
+          "connection_id": {
+            "type": "string"
+          },
+          "connection_time": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "connection_id",
+          "connection_time",
+          "host",
+          "port"
+        ],
+        "type": "object"
+      },
+      "management.ConnectionRequest": {
+        "properties": {
+          "applied_policies": {
+            "description": "All applied policies",
+            "items": {
+              "$ref": "#/components/schemas/management.AppliedPolicy"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "applied_policy_result": {
+            "$ref": "#/components/schemas/management.PolicyResult"
+          },
+          "authorization_type": {
+            "type": "string"
+          },
+          "authorized": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "response": {
+            "$ref": "#/components/schemas/management.ConnectionResponse"
+          }
+        },
+        "required": [
+          "authorization_type",
+          "response"
+        ],
+        "type": "object"
+      },
+      "management.ConnectionResponse": {
+        "properties": {
+          "execution_time": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "execution_time",
+          "message"
+        ],
+        "type": "object"
+      },
+      "management.ConsumingUser": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "user_groups": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.DatabaseObject": {
+        "properties": {
+          "access_type": {
+            "type": "string"
+          },
+          "database": {
+            "description": "nullable",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "object_type": {
+            "type": "string"
+          },
+          "qualified_name": {
+            "type": "string"
+          },
+          "qualified_path": {
+            "items": {
+              "$ref": "#/components/schemas/management.PathSegment"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "schema": {
+            "type": "string"
+          },
+          "table": {
+            "type": "string"
+          },
+          "wildcard": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "management.PathSegment": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "object_type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.PolicyResult": {
+        "description": "Aggregate of all policy results",
+        "properties": {
+          "block": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "management.Repo": {
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "host",
+          "name",
+          "port",
+          "type"
+        ],
+        "type": "object"
+      },
+      "management.Sidecar": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "instance_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "instance_id",
+          "version"
+        ],
+        "type": "object"
+      },
+      "management.StatementRequest": {
+        "properties": {
+          "applied_policies": {
+            "description": "All applied policies",
+            "items": {
+              "$ref": "#/components/schemas/management.AppliedPolicy"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "applied_policy_result": {
+            "$ref": "#/components/schemas/management.PolicyResult"
+          },
+          "destinations": {
+            "description": "Destinations",
+            "items": {
+              "$ref": "#/components/schemas/management.DatabaseObject"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "projected_columns": {
+            "description": "Projected columns",
+            "items": {
+              "$ref": "#/components/schemas/management.DatabaseObject"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "resources": {
+            "description": "Objects the statement references (e.g. the object a GRANT applies to)",
+            "items": {
+              "$ref": "#/components/schemas/management.TargetResource"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "response": {
+            "$ref": "#/components/schemas/management.StatementResponse"
+          },
+          "scanned_columns": {
+            "description": "Scanned columns",
+            "items": {
+              "$ref": "#/components/schemas/management.DatabaseObject"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "statement": {
+            "type": "string"
+          },
+          "statement_type": {
+            "type": "string"
+          },
+          "targets": {
+            "description": "Objects the statement acts upon (e.g. the table an INSERT/UPDATE writes to)",
+            "items": {
+              "$ref": "#/components/schemas/management.TargetResource"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "required": [
+          "response",
+          "statement"
+        ],
+        "type": "object"
+      },
+      "management.StatementResponse": {
+        "description": "In future we can add session params\nto add session params we need a list of avail params",
+        "properties": {
+          "bytes": {
+            "type": "integer"
+          },
+          "execution_time": {
+            "type": "string"
+          },
+          "message": {
+            "description": "Message returned example ->  OK\"",
+            "type": "string"
+          },
+          "records": {
+            "description": "Number of records",
+            "type": "integer"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "execution_time",
+          "message"
+        ],
+        "type": "object"
+      },
+      "management.TargetResource": {
+        "description": "Slim shape for targets and resources: only access_type, qualified_path, and wildcard.",
+        "properties": {
+          "access_type": {
+            "type": "string"
+          },
+          "qualified_path": {
+            "items": {
+              "$ref": "#/components/schemas/management.PathSegment"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "wildcard": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "management.TriggerSearchOutput": {
+        "properties": {
+          "search_uuid": {
+            "description": "UUID of the search. Used to retrieve the results. Expires 30 days after creation.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "management.UserIdentity": {
+        "properties": {
+          "consuming_user": {
+            "$ref": "#/components/schemas/management.ConsumingUser"
+          },
+          "repo_user": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "repo_user"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "The Sidecar Audit API is used to get all audits generated by ALTR sidecars.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "Sidecar Audit API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/audits": {
+      "post": {
+        "description": "This endpoint triggers a search for non-cdw query audits. Chaining query parameter filters as `AND` operations.\nThe `search_uuid` that is returned expires after 30 days.",
+        "parameters": [
+          {
+            "description": "The maximum number of items to return.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10000,
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The number of items to skip.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Queries that ended before this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is 24 hours ago.",
+            "example": "2024-11-23T17:51:35.000Z",
+            "in": "query",
+            "name": "from_date_time",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Queries that ended after this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is now.",
+            "example": "2024-11-24T17:51:35.000Z",
+            "in": "query",
+            "name": "to_date_time",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The user that executed the query. Case-insensitive. Can be repeated for multiple values.",
+            "example": "johndoe",
+            "in": "query",
+            "name": "consuming_user",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The email of the user that executed the query. Case-insensitive. Can be repeated for multiple values.",
+            "example": "johndoe@altr.com",
+            "in": "query",
+            "name": "consuming_user_email",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The ID of the query. Case-insensitive. Can be repeated for multiple values.",
+            "example": "01d89caa-080e-3b34-0000-se59220b6656",
+            "in": "query",
+            "name": "query_id",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The ID of the sidecar that executed the query. Case-insensitive. Can be repeated for multiple values.",
+            "example": "01d89caa-080e-3b34-0000-se59220b6656",
+            "in": "query",
+            "name": "sidecar_id",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The ID of the sidecar instance that executed the query. Case-insensitive. Can be repeated for multiple values.",
+            "example": "01d89caa-080e-3b34-0000-se59220b6656",
+            "in": "query",
+            "name": "sidecar_instance_id",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The name of the table that was queried. Case-insensitive. Can be repeated for multiple values.",
+            "example": "users",
+            "in": "query",
+            "name": "table_name",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The name of the schema that was queried. Case-insensitive. Can be repeated for multiple values.",
+            "example": "public",
+            "in": "query",
+            "name": "schema_name",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The name of the database that was queried. Case-insensitive. Can be repeated for multiple values.",
+            "example": "altrdb",
+            "in": "query",
+            "name": "database_name",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The name of the column that was queried. Case-insensitive. Can be repeated for multiple values.",
+            "example": "email",
+            "in": "query",
+            "name": "column_name",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The name of the repository (connection) the query ran against. Distinct from database_name, which matches the per-column database. Case-insensitive. Can be repeated for multiple values.",
+            "example": "orders-db",
+            "in": "query",
+            "name": "repo_name",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The type of the statement that was executed. Case-insensitive. Can be repeated for multiple values.",
+            "in": "query",
+            "name": "statement_type",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "A string to search inside the executed statement. Case-insensitive.",
+            "example": "WHERE PUBLIC.EMPLOYEES",
+            "in": "query",
+            "name": "statement_text_contains",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The order by clause for the query. Case-insensitive.",
+            "in": "query",
+            "name": "order_by",
+            "schema": {
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "The column to sort by. Case-insensitive.",
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "default": "event_time",
+              "enum": [
+                "event_time",
+                "rows_accessed"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/main.SearchRequestDoc",
+                "summary": "request",
+                "description": "Optional filter-tree expression body. The 'filter' field accepts the same audit-filter DSL used by dam-alerting threshold rules; when present it is AND-composed with the query-string filters above. Omit the body entirely for the legacy query-param-only behavior. The 'timezone' field (IANA name) is required when the filter contains a time_of_day dimension and forbidden otherwise. Children of and/or nodes are themselves FilterNode subtrees with the same shape; the docs flatten the inner level to a generic object to keep Swagger UI happy."
+              }
+            }
+          },
+          "description": "Optional filter-tree expression body. The 'filter' field accepts the same audit-filter DSL used by dam-alerting threshold rules; when present it is AND-composed with the query-string filters above. Omit the body entirely for the legacy query-param-only behavior. The 'timezone' field (IANA name) is required when the filter contains a time_of_day dimension and forbidden otherwise. Children of and/or nodes are themselves FilterNode subtrees with the same shape; the docs flatten the inner level to a generic object to keep Swagger UI happy."
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/management.TriggerSearchOutput"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Trigger sidecar query audit search using various filters.",
+        "tags": [
+          "Sidecar Audit API"
+        ]
+      }
+    },
+    "/audits/{search_uuid}": {
+      "get": {
+        "description": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /audits endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response.",
+        "parameters": [
+          {
+            "description": "`search_uuid` received by /audits endpoint.",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "in": "path",
+            "name": "search_uuid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The token to retrieve the next page of results.",
+            "example": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew==",
+            "in": "query",
+            "name": "next_page_token",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limit the number of results returned.",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 250,
+              "maximum": 250,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.GetResultOutput"
+                }
+              }
+            },
+            "description": "Search complete. Results are ready."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.GetResultOutput"
+                }
+              }
+            },
+            "description": "Search not complete. Results are not ready."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Search UUID not found."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get the results of a search using the `search_uuid`.",
+        "tags": [
+          "Sidecar Audit API"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "security": [
+    {
+      "basic": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://{orgID}.sc-control.live.altr.com/v1",
+      "variables": {
+        "orgID": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

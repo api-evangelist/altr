@@ -1,0 +1,79 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/ (21 specs), https://trust.altr.com/, https://docs.altr.com/
+standards:
+- id: openapi-3
+  conforms: true
+  evidence: 13 of 21 harvested specs are OpenAPI 3.0.3 or 3.1.0
+- id: swagger-2
+  conforms: true
+  evidence: 8 of 21 harvested specs are still Swagger 2.0 (rbac, auto-tagging, tag-masking, tag-refresh, query-audits, snowflake-metadata,
+    service-user)
+- id: http-basic-auth
+  conforms: true
+  evidence: every spec declares an http/basic securityScheme (API key name as username, key secret as password)
+- id: oauth2
+  conforms: false
+  evidence: no oauth2 securityScheme in any of the 21 specs; ALTR REST auth is HTTP Basic only
+- id: oidc
+  conforms: false
+  evidence: no /.well-known/openid-configuration on any ALTR host; OIDC is consumed for console SSO (Okta, Microsoft Entra
+    ID) but not exposed by the APIs
+- id: saml-2.0
+  conforms: true
+  evidence: MAPI enableSso (PUT /saml/v1/enable) plus documented Okta and Microsoft Entra ID SSO configuration
+- id: scim-2.0
+  conforms: true
+  evidence: MAPI enableScim (PUT /scim/v2/enable) plus documented Okta SCIM configuration
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: no application/problem+json media type in any spec; errors use bespoke JSON envelopes
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation response header declared in any spec
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on altr.com, docs.altr.com and trust.altr.com
+- id: pagination
+  conforms: true
+  evidence: limit/offset on 75+/18 operations, cursor on 4, nextToken on 2 — three different pagination idioms across the
+    estate
+- id: idempotency
+  conforms: false
+  evidence: no Idempotency-Key header or idempotency documentation anywhere in the 21 specs
+- id: rate-limit-signalling
+  conforms: false
+  evidence: 429 responses are declared on 59 operations but no X-RateLimit-* or Retry-After headers are declared in any
+    spec; the MCP server honours Retry-After when present
+- id: soc2-type2
+  conforms: true
+  evidence: SOC 2 named on https://trust.altr.com/ with a SOC 2 Report available on request
+- id: pci-dss
+  conforms: true
+  evidence: PCI DSS named on https://trust.altr.com/; the Critical Tokenization API is described as PCI-compliant
+- id: hipaa
+  conforms: true
+  evidence: HIPAA named on https://trust.altr.com/ with a HIPAA Report available on request
+- id: iso-27001
+  conforms: false
+  evidence: not named on the trust center
+- id: fedramp
+  conforms: false
+  evidence: not named on the trust center
+- id: nist-ff3-fpe
+  conforms: true
+  evidence: ALTR publishes FF3 format-preserving-encryption implementations (github.com/altrsoftware/java-fpe, clang-fpe)
+    and the Key Management API manages FPE keys and tweaks
+- id: mcp
+  conforms: true
+  evidence: official MCP server registered as io.github.altrsoftware/altr-mcp-server in the Model Context Protocol registry
+- id: a2a
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on altr.com and docs.altr.com
+compliance_program:
+  trust_center: https://trust.altr.com/
+  certifications:
+  - SOC 2
+  - PCI DSS
+  - HIPAA
+  contact: compliance@altr.com

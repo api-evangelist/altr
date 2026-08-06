@@ -1,0 +1,241 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/ (21 specs) — components.schemas $ref graph and *_id reference fields
+entity_count: 405
+relationship_count: 595
+core_domains:
+- domain: Data sources
+  entities:
+  - Database
+  - SnowflakeAccount
+  - Repo
+  - Metastore
+  api: openapi/altr-mapi-openapi.yml
+  note: A Database is the ALTR-side handle for a connected Snowflake database, Databricks metastore or OLTP repository.
+- domain: Classification
+  entities:
+  - Classifier
+  - Collection
+  - Job
+  - Finding
+  - Decision
+  api: openapi/altr-classification-openapi.yml
+  note: Classifiers group into Collections; a Job scans a Database and produces a findings tree (database > schema > table
+    > column > classifier) against which Decisions are recorded.
+- domain: Policy
+  entities:
+  - Policy
+  - Rule
+  - Tag
+  - TagGroup
+  - UserGroup
+  api: openapi/altr-unified-policy-openapi.yml
+  note: A Policy binds to a Tag (Snowflake) or a raw tag string + database_ids (Databricks PUSHDOWN) and carries Rules mapping
+    a role to a masking policy level (10000-10009).
+- domain: Access
+  entities:
+  - AccessRequest
+  - AccessManagementPolicy
+  - UserGroup
+  api: openapi/altr-unified-policy-openapi.yml
+- domain: Sidecar estate
+  entities:
+  - Agent
+  - AgentTask
+  - Repo
+  - RepoUser
+  - ServiceUser
+  - Sidecar
+  - Listener
+  - Binding
+  api: openapi/altr-sidecar-repo-config-openapi.yml
+  note: A Sidecar listens on a port; a Binding attaches a Repo to a (sidecar, port) pair; Agents run Tasks and report instance
+    telemetry.
+- domain: Observability
+  entities:
+  - QueryAudit
+  - SystemAudit
+  - SidecarAudit
+  - Alert
+  - AlertRule
+  - ReportDefinition
+  - ReportInstance
+  api: openapi/altr-audit-report-openapi.yml
+- domain: Protection
+  entities:
+  - Token
+  - Key
+  - Tweak
+  note: Vaulted and critical tokenization plus FPE keys/tweaks. Only the Critical Tokenization spec is anonymously reachable.
+key_identifiers:
+- entity: Policy
+  form: TAG#<uuid>
+  evidence: MCP add_rules example --policy-id "TAG#abc123"
+- entity: Database
+  form: integer
+  evidence: Databricks create_policy database_ids=[2167]
+- entity: ApiKey
+  form: ALTR-<hex>
+  evidence: MAPI basicAuth description
+- entity: Organization
+  form: org id — also the tenant subdomain for most services
+masking_levels:
+  range: 10000-10009
+  docs: https://docs.altr.com/features/data-access-controls/data-masking/masking-types/
+relationships:
+- from: Alert
+  to: AckMetadata
+  kind: has_one
+  via: ack_metadata
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: Alert
+  to: alert
+  kind: belongs_to
+  via: alert_id
+  api: openapi/altr-dam-alerting-openapi.yml
+  inferred: true
+- from: Alert
+  to: MatchedEvent
+  kind: has_one
+  via: matched_event
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: Alert
+  to: rule
+  kind: belongs_to
+  via: rule_id
+  api: openapi/altr-dam-alerting-openapi.yml
+  inferred: true
+- from: Alert
+  to: rule
+  kind: belongs_to
+  via: rule_name
+  api: openapi/altr-dam-alerting-openapi.yml
+  inferred: true
+- from: Alert
+  to: ThresholdContext
+  kind: has_one
+  via: threshold_context
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: ListAlertsResponse
+  to: Alert
+  kind: has_many
+  via: items
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: ListRulesResponse
+  to: Rule
+  kind: has_many
+  via: items
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: Rule
+  to: auditfilter.FilterNode
+  kind: has_one
+  via: filter_tree
+  api: openapi/altr-dam-alerting-openapi.yml
+- from: Rule
+  to: rule
+  kind: belongs_to
+  via: rule_id
+  api: openapi/altr-dam-alerting-openapi.yml
+  inferred: true
+- from: TagList
+  to: Tag
+  kind: has_many
+  via: tags
+  api: openapi/altr-dis-openapi.yml
+- from: TagGroupsList
+  to: TagGroup
+  kind: has_many
+  via: tags
+  api: openapi/altr-dis-openapi.yml
+- from: Integration
+  to: CustomWebhookConfig
+  kind: has_one
+  via: custom_webhook
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Integration
+  to: integration
+  kind: belongs_to
+  via: integration_id
+  api: openapi/altr-notification-integration-openapi.yml
+  inferred: true
+- from: Integration
+  to: MicrosoftTeamsConfig
+  kind: has_one
+  via: microsoft_teams
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Integration
+  to: PagerDutyConfig
+  kind: has_one
+  via: pagerduty
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Integration
+  to: ServiceNowConfig
+  kind: has_one
+  via: service_now
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Integration
+  to: SlackConfig
+  kind: has_one
+  via: slack
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Integration
+  to: SplunkConfig
+  kind: has_one
+  via: splunk
+  api: openapi/altr-notification-integration-openapi.yml
+- from: ListIntegrationsResponse
+  to: Integration
+  kind: has_many
+  via: items
+  api: openapi/altr-notification-integration-openapi.yml
+- from: ListSubscriptionsResponse
+  to: Subscription
+  kind: has_many
+  via: items
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Subscription
+  to: CriteriaOperators
+  kind: has_one
+  via: criteria
+  api: openapi/altr-notification-integration-openapi.yml
+- from: Subscription
+  to: integration
+  kind: belongs_to
+  via: integration_id
+  api: openapi/altr-notification-integration-openapi.yml
+  inferred: true
+- from: Subscription
+  to: subscription
+  kind: belongs_to
+  via: subscription_id
+  api: openapi/altr-notification-integration-openapi.yml
+  inferred: true
+- from: Rule
+  to: AccessRateThreshold
+  kind: has_one
+  via: access_rate_thresholds
+  api: openapi/altr-unified-policy-openapi.yml
+- from: Rule
+  to: TimeWindowThreshold
+  kind: has_one
+  via: time_window_thresholds
+  api: openapi/altr-unified-policy-openapi.yml
+- from: AccessRequest
+  to: client
+  kind: belongs_to
+  via: client_id
+  api: openapi/altr-unified-policy-openapi.yml
+  inferred: true
+- from: AccessRequest
+  to: SnowflakeAccessManagementRule
+  kind: has_many
+  via: rules
+  api: openapi/altr-unified-policy-openapi.yml
+- from: AccessRequest
+  to: tracking
+  kind: belongs_to
+  via: tracking_id
+  api: openapi/altr-unified-policy-openapi.yml
+  inferred: true
+note: 'Relationships are derived mechanically from $ref links and *_id/_name reference fields; rows marked inferred: true
+  come from the naming convention rather than an explicit $ref.'

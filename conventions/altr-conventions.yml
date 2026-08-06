@@ -1,0 +1,82 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/ (21 specs, 375 operations), https://docs.altr.com/account-and-api/api/, https://github.com/altrsoftware/altr-mcp-server
+authentication:
+  style: HTTP Basic
+  detail: Username is the API key name (e.g. ALTR-6B12A456...), password is the API key secret. Keys are created in the
+    console at Settings > Preferences > API > Add New; the secret is shown once.
+  docs: https://docs.altr.com/account-and-api/api/api-keys/
+  artifact: authentication/altr-authentication.yml
+  note: 'One exception: the Datastore Information Service also declares a bearerAuth (JWT) scheme alongside basic.'
+idempotency:
+  supported: false
+  header: null
+  note: No Idempotency-Key header, parameter or documentation exists anywhere in the 21 public specifications. Retrying
+    a POST against ALTR is not safe by contract — the MCP server's automatic 3x retry applies only to 429/5xx, where the
+    server did not report a completed write.
+pagination:
+  consistent: false
+  styles:
+  - style: limit/offset
+    params:
+    - limit
+    - offset
+    operations: 75 operations declare limit, 18 declare offset
+    apis:
+    - classification
+    - audit-report
+    - sidecar-repo-config
+    - notification-integration
+    - mapi
+  - style: cursor
+    params:
+    - cursor
+    operations: 4 operations
+  - style: token
+    params:
+    - nextToken
+    operations: 2 operations
+  - style: contiguous_id
+    response_fields:
+    - contiguous_id
+    - has_more
+    - items
+    apis:
+    - notification-integration
+    note: ListIntegrationsResponse pages with contiguous_id + has_more.
+  note: Three-and-a-half different pagination idioms across the estate; an agent cannot assume one shape.
+versioning:
+  style: uri-path
+  artifact: lifecycle/altr-lifecycle.yml
+error_envelope:
+  rfc9457: false
+  artifact: errors/altr-problem-types.yml
+  shapes:
+  - 'AWS API Gateway {"message": ...} / {"error": {"error_code": n, "message": ...}}'
+  - 'MCP tool {"success": bool, "data": ..., "error": ...}'
+rate_limits:
+  documented: false
+  signalled: false
+  note: 429 is declared on 55 operations across 6 specs, but no X-RateLimit-* or Retry-After response headers are declared
+    in any specification and no published rate-limit table was found. The MCP server honours Retry-After when the response
+    happens to carry it.
+request_tracing:
+  request_id_header: null
+  note: No request-id or correlation-id response header is declared in any spec. The MCP server logs correlation IDs client-side
+    via structlog.
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+multi_tenancy:
+  style: org-scoped subdomain
+  detail: Most services are addressed at https://<ORG_ID>.<service>.live.altr.com — classification, sc-control, service-user,
+    audit-report, notifications, vault, critical, kma. Only api.live.altr.com and altrnet.live.altr.com are shared hosts.
+  source: https://github.com/altrsoftware/altr-mcp-server#endpoint-overrides
+content_type: application/json
+cross_links:
+  authentication: authentication/altr-authentication.yml
+  errors: errors/altr-problem-types.yml
+  lifecycle: lifecycle/altr-lifecycle.yml
+  conformance: conformance/altr-conformance.yml
+  webhooks: asyncapi/altr-events-webhooks.yml

@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for ALTR — Snowflake Tag Value Refresh API
+  version: 1.0.0
+extends: openapi/altr-tag-refresh-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: altr
+    x-apievangelist-harvested: '2026-08-06'
+    x-apievangelist-source: ALTR public Swagger UI
+    x-apievangelist-spec-version: swagger 2.0
+    x-apievangelist-operations: 2
+    x-apievangelist-operations-with-operationid: 0
+- target: $.info
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/altr-authentication.yml
+      conventions: conventions/altr-conventions.yml
+      errors: errors/altr-problem-types.yml
+      lifecycle: lifecycle/altr-lifecycle.yml
+      conformance: conformance/altr-conformance.yml
+      mcp: mcp/altr-mcp.yml
+      tool_crosswalk: mcp/altr-tool-crosswalk.yml
+- target: $.info
+  update:
+    x-apievangelist-gap-operationid: 2 of 2 operations declare no operationId, so agent tooling and the MCP tool crosswalk
+      must bind them by method+path.

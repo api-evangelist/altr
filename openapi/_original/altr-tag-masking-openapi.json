@@ -1,0 +1,932 @@
+{
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "This provides the management interface for tag masking.",
+        "title": "Tag Masking API",
+        "contact": {},
+        "version": "0.1.0"
+    },
+    "host": "api.live.altr.com/v1",
+    "basePath": "/tag/masking",
+    "paths": {
+        "/": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "List all Tag Masking for an organization.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "List Tag Masking for an organization.",
+                "parameters": [
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of items to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "The number of items to skip.",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "asc",
+                        "description": "The order of returned data for the defined field.",
+                        "name": "order_by",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "friendly_name"
+                        ],
+                        "type": "string",
+                        "default": "friendly_name",
+                        "description": "The field to sort by.",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The tag friendly name to filter by.",
+                        "name": "friendly_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The database id to filter by.",
+                        "name": "database_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The tag name to filter by.",
+                        "name": "tag_name",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "governed",
+                            "governed-pushdown",
+                            "tokenized-vault",
+                            "encryption-fpe"
+                        ],
+                        "type": "string",
+                        "default": "governed",
+                        "description": "The protection type to filter by.",
+                        "name": "protection_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The status(s) that should be included in response. (comma-delimited list) (applied, failed, pending)",
+                        "name": "status_include",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The status(s) that should not be included in response. (comma-delimited list) (applied, failed, pending)",
+                        "name": "status_exclude",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.ListTagMaskingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Create/Update a Tag Masking on the specified Tag.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Create/Update a Tag Masking.",
+                "parameters": [
+                    {
+                        "description": "the Tag Masking details to store",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.PutTagMaskingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The Tag Masking was created and will be applied."
+                    },
+                    "204": {
+                        "description": "The Tag Masking was updated and will be applied."
+                    },
+                    "400": {
+                        "description": "Something about your request isn't correct.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Tag Masking.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "We ran in to an issue, please try again.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Deletes an existing Tag Masking.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Delete a Tag Masking.",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "During the delete process ignore errors and forget the Tag Masking.",
+                        "name": "ignore_errors",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "information used to find the Tag Masking to delete.",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.DeleteTagMaskingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "The Tag Masking was successfully marked for deletion."
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Tag Masking.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/database/{db-id}/database-name/{database-name}/tag-name/{tag-name}/schema-name/{schema-name}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get a Tag Masking.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Get a Tag Masking.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ALTR DatabaseID",
+                        "name": "db-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The tag's database name",
+                        "name": "database-name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The tag's schema name",
+                        "name": "schema-name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The tag's name",
+                        "name": "tag-name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The optional protection type (e.g., governed, tokenized-vault)",
+                        "name": "protection-type",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetTagMaskingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/tag/{tag-group-id}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get a Tag Masking.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Get a Tag Masking.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Altr tag group ID",
+                        "name": "tag-group-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetTagMaskingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Creates a new Tag Masking on the specified Tag.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Creates a Tag Masking.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The Altr tag group ID",
+                        "name": "tag-group-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "the Tag Masking details to store",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.PutTagMaskingByGroupIDInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The Tag Masking was created and will be applied."
+                    },
+                    "204": {
+                        "description": "The Tag Masking was updated and will be applied."
+                    },
+                    "400": {
+                        "description": "Something about your request isn't correct.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Tag Masking.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "We ran in to an issue, please try again.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Deletes an existing Tag Masking.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tag Masking API"
+                ],
+                "summary": "Delete a Tag Masking.",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "During the delete process ignore issues and forget the Tag Masking.",
+                        "name": "ignore_errors",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Altr tag group ID",
+                        "name": "tag-group-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "The Tag Masking was successfully marked for deletion."
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Tag Masking.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.DeleteTagMaskingInput": {
+            "type": "object",
+            "required": [
+                "database_id",
+                "database_name",
+                "schema_name",
+                "tag_name"
+            ],
+            "properties": {
+                "database_id": {
+                    "description": "Which Altr DatabaseID to use in order to delete tag masking from the given tag.\nThe credentials for the provided DatabaseID are used when removing the tag masking policies.\nNote the given tag does not need to live in this given database\nas long as the databaseID's credentials can access the given tag.\nso the DatabaseID's name + schema can be different from the provided SchemaName + DatabaseName.",
+                    "type": "integer"
+                },
+                "database_name": {
+                    "description": "Database name where the given tag lives.",
+                    "type": "string"
+                },
+                "schema_name": {
+                    "description": "SchemaName name where the given tag lives.",
+                    "type": "string"
+                },
+                "tag_name": {
+                    "description": "Tag name of the given Tag.",
+                    "type": "string"
+                }
+            }
+        },
+        "main.PutTagMaskingByGroupIDInput": {
+            "type": "object",
+            "required": [
+                "database_id",
+                "friendly_name"
+            ],
+            "properties": {
+                "database_id": {
+                    "description": "The Altr Database ID's credentials to use in order to apply masking to the given Tag.\nNote the given tag does not need to live in this given database\nas long as the databaseID's credentials can access the given tag.\nso the DatabaseID's name + schema can be different from the provided tag lives.",
+                    "type": "integer"
+                },
+                "friendly_name": {
+                    "description": "Friendly Name for the Tag Masking.",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "masking": {
+                    "description": "Masking Configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Masking"
+                        }
+                    ]
+                }
+            }
+        },
+        "main.PutTagMaskingInput": {
+            "type": "object",
+            "required": [
+                "database_id",
+                "database_name",
+                "friendly_name",
+                "schema_name",
+                "tag_name"
+            ],
+            "properties": {
+                "database_id": {
+                    "description": "Which Altr DatabaseID to use in order to add tag masking for the given tag.\nThe credentials for the provided DatabaseID are used when removing the tag masking policies.\nNote the given tag does not need to live in this given database\nas long as the databaseID's credentials can access the given tag.\nso the DatabaseID's name + schema can be different from the provided SchemaName + DatabaseName.",
+                    "type": "integer",
+                    "x-order": "0"
+                },
+                "database_name": {
+                    "description": "Database name where the given tag lives.",
+                    "type": "string",
+                    "maxLength": 255,
+                    "x-order": "1"
+                },
+                "schema_name": {
+                    "description": "SchemaName name where the given tag lives.",
+                    "type": "string",
+                    "maxLength": 255,
+                    "x-order": "2"
+                },
+                "tag_name": {
+                    "description": "Tag name of the given Tag.",
+                    "type": "string",
+                    "maxLength": 255,
+                    "x-order": "3"
+                },
+                "friendly_name": {
+                    "description": "Friendly Name for the Tag Masking.",
+                    "type": "string",
+                    "maxLength": 255,
+                    "x-order": "4"
+                },
+                "masking": {
+                    "description": "Masking Configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Masking"
+                        }
+                    ],
+                    "x-order": "5"
+                }
+            }
+        },
+        "management.CustomRoleProvider": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "description": "Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.\nThe list of roles provided by the custom UDF is used by ALTR's policy decision engine for a given tag policy.",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "management.EncryptionFPEOptions": {
+            "type": "object",
+            "properties": {
+                "alphabet": {
+                    "type": "string",
+                    "enum": [
+                        "numeric",
+                        "alphabetic",
+                        "alphanumeric"
+                    ],
+                    "example": "numeric, alphabetic, or alphanumeric"
+                },
+                "is_padded": {
+                    "type": "boolean",
+                    "default": false,
+                    "example": false
+                },
+                "key_name": {
+                    "type": "string"
+                },
+                "tweak_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "management.GetTagMaskingOutput": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/types.TagMaskingItem"
+                }
+            }
+        },
+        "management.ListTagMaskingOutput": {
+            "type": "object",
+            "properties": {
+                "has_more": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ListTagMaskingItem"
+                    }
+                }
+            }
+        },
+        "management.Masking": {
+            "type": "object",
+            "properties": {
+                "custom_role_provider": {
+                    "description": "Contains the configuration related to creating a custom role provider UDF.\nThis UDF is used by you to feed in roles to be used by ALTR's policy decision engine for a given tag policy.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.CustomRoleProvider"
+                        }
+                    ]
+                },
+                "encryption_fpe_options": {
+                    "$ref": "#/definitions/management.EncryptionFPEOptions"
+                },
+                "mask_data_type_list": {
+                    "description": "MaskDataTypeList is a list of data types to mask.\nSee https://docs.snowflake.com/en/sql-reference/intro-summary-data-types\nGeospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial\nIf not set, MaskDataTypeList will default to this list of snowflake data types [\"ARRAY\",\"OBJECT\",\"VARIANT\",\"DATE\",\"TIME\",\"TIMESTAMP_LTZ\",\"TIMESTAMP_NTZ\",\"TIMESTAMP_TZ\",\"BOOLEAN\",\"BINARY\",\"VARCHAR\",\"NUMBER\",\"FLOAT\"]",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "VARCHAR",
+                        "NUMBER"
+                    ]
+                },
+                "protection_type": {
+                    "description": "What content is this mask targeting (e.g. governed, tokenized-vault)\n\n`governed` indicates that the content is un-formatted text. Content targeted with this type is\nstored or transmitted as-is, without any specialized processing.\n\n`governed-pushdown` indicates that the content is un-formatted text. Policy decision is implemented entirely inside the database\nwithout reaching out to ALTR's policy decision engine at runtime. This is sometimes needed for performance.\n\n`tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is\nset tokens will be converted back to original sensitive data, provided the user has permissions to view.\n\n`encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set\ndata will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.",
+                    "enum": [
+                        "governed",
+                        "governed-pushdown",
+                        "tokenized-vault",
+                        "encryption-fpe"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.ProtectionType"
+                        }
+                    ],
+                    "example": "governed, governed-pushdown, tokenized-vault, or encryption-fpe"
+                }
+            }
+        },
+        "management.ProtectionType": {
+            "type": "string",
+            "enum": [
+                "",
+                "governed",
+                "governed-pushdown",
+                "tokenized-vault",
+                "encryption-fpe"
+            ],
+            "x-enum-varnames": [
+                "ProtectionTypeInferGoverned",
+                "ProtectionTypeGoverned",
+                "ProtectionTypeGovernedPushdown",
+                "ProtectionTypeTokenizedVault",
+                "ProtectionTypeEncryptionFPE"
+            ]
+        },
+        "types.CustomRoleProvider": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "description": "Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "fully_qualified_function_udf_name": {
+                    "description": "FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag's masking policy to get the list of roles.\nThis list of roles is used by ALTR's policy decision engine for a given tag policy.",
+                    "type": "string"
+                }
+            }
+        },
+        "types.EncryptionFPEOptions": {
+            "type": "object",
+            "properties": {
+                "alphabet": {
+                    "type": "string"
+                },
+                "is_padded": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "key_name": {
+                    "type": "string"
+                },
+                "tweak_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.ListTagMaskingItem": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "database_id": {
+                    "type": "integer"
+                },
+                "database_name": {
+                    "type": "string"
+                },
+                "database_type_enum": {
+                    "type": "integer"
+                },
+                "friendly_name": {
+                    "type": "string"
+                },
+                "masking_applied": {
+                    "description": "This is the most recent successfully applied configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "masking_failed": {
+                    "description": "The configuration which failed to apply.\n\nIf we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.\nIn that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,\nwhile MaskingApplied is the previous configuration prior to the failed modification.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "masking_pending": {
+                    "description": "The configuration which is currently being applied.\nThis configuration will be moved to masking_applied or masking_failed depending on if it is successful.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "tag_group_id": {
+                    "type": "string"
+                },
+                "tag_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.Masking": {
+            "type": "object",
+            "properties": {
+                "custom_role_provider": {
+                    "description": "CustomRoleProvider contains the configuration related to creating a custom role provider UDF.\nThis UDF is used by you to feed in roles to be used by ALTR's policy decision engine for a given tag policy.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.CustomRoleProvider"
+                        }
+                    ]
+                },
+                "encryption_fpe_options": {
+                    "$ref": "#/definitions/types.EncryptionFPEOptions"
+                },
+                "error": {
+                    "description": "ErrorMessage contains an error message related to the failure to apply the new ALTR tag masking configuration.\nThis won't be defined for pending and applied tag masking.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.TagMaskingError"
+                        }
+                    ]
+                },
+                "force_delete": {
+                    "description": "ForceDelete When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.\nThis could result in orphaned ALTR configuration inside the snowflake host.\nCaution should be used, it is recommended to have ForceDelete set to false (default behavior).",
+                    "type": "boolean"
+                },
+                "mask_data_type_list": {
+                    "description": "MaskDataTypeList is a list of data types matched to this ALTR tag based masking policy.\nSee this for the full list of valid data types https://docs.snowflake.com/en/sql-reference/intro-summary-data-types\nGeospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "protection_type": {
+                    "description": "What content is this mask targeting (e.g. governed, tokenized-vault)\n\n`governed` indicates that the content is un-formatted text. Content targeted with this type is\nstored or transmitted as-is, without any specialized processing.\n\n`governed-pushdown` is the same as `governed`, but the implementation is done entirely with the database\nwithout reaching out to ALTR's policy decision engine at runtime. This is sometimes needed for performance.\n\n`tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is\nset tokens will be converted back to original sensitive data, provided the user has permissions to view.\n\n`encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set\ndata will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.",
+                    "type": "string"
+                },
+                "tracking_id": {
+                    "description": "TrackingID a unique ALTR trackingID.",
+                    "type": "string"
+                }
+            }
+        },
+        "types.TagMaskingError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.TagMaskingItem": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "database_id": {
+                    "type": "integer"
+                },
+                "database_name": {
+                    "type": "string"
+                },
+                "database_type_enum": {
+                    "type": "integer"
+                },
+                "friendly_name": {
+                    "type": "string"
+                },
+                "masking_applied": {
+                    "description": "This is the most recent successfully applied configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "masking_failed": {
+                    "description": "The configuration which failed to apply.\n\nIf we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.\nIn that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,\nwhile MaskingApplied is the previous configuration prior to the failed modification.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "masking_pending": {
+                    "description": "The configuration which is currently being applied.\nThis configuration will be moved to masking_applied or masking_failed depending on if it is successful.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Masking"
+                        }
+                    ]
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "tag_group_id": {
+                    "type": "string"
+                },
+                "tag_name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

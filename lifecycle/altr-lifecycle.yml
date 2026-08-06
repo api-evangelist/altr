@@ -1,0 +1,48 @@
+generated: '2026-08-06'
+method: searched
+source: https://docs.altr.com/en/what-s-new.html, https://docs.altr.com/release-notes/2026/, openapi/
+versioning:
+  scheme: uri-path
+  note: Every ALTR service is versioned in the URI path (/v1, /v2, /api). Spec info.version values are independent per service
+    — Management API 12.25.1, Unified Policy 4.11.1, Classification Engine 1.1.0, Telemetry 1.7.0, Critical Tokenization
+    1.3.0 — there is no single platform API version.
+  current:
+    management-api: 12.25.1
+    unified-policy: 4.11.1
+    classification: 1.1.0
+    critical-tokenization: 1.3.0
+    telemetry: 1.7.0
+    audit-report: 1.0.0
+    notification-integration: 1.0.0
+    dis: 3.4.3
+  docs: https://docs.altr.com/account-and-api/api/
+release_cadence:
+  observed: roughly weekly
+  source: https://docs.altr.com/release-notes/2026/
+  note: Release notes are dated, not version-numbered — 20 dated releases published between 2026-01-06 and 2026-07-24.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: ALTR publishes no formal deprecation or sunset policy and declares no RFC 8594 Sunset/Deprecation response headers.
+    Deprecations and retirements are announced only in the dated release notes.
+  announced_in_release_notes:
+  - date: '2026-07-02'
+    change: Snowflake Native retired as a standalone classification method
+  - date: '2026-01-15'
+    change: Data Usage Analytics heat map removed
+  - date: '2026-01-06'
+    change: Snowflake object tag syncing deprecated
+deprecated_operations:
+- ref: openapi/altr-classification-openapi.yml#POST /jobs
+  note: '"Create classification job (deprecated)" — superseded by POST /jobs/snowflake, /jobs/oltp and /jobs/databricks'
+alpha_surfaces:
+- ref: openapi/altr-dbx-tag-policy-openapi.yml
+  note: 'Tag-based governance policy on Databricks is explicitly labelled alpha in the spec description: "This is an alpha
+    API and may be changed or removed entirely in the future."'
+status_page: null
+sla: null
+notes:
+- No public status page was found — status.altr.com does not resolve and no statuspage.io/Atlassian/Instatus tenant for
+  ALTR was located.
+- No public SLA or uptime commitment is published.

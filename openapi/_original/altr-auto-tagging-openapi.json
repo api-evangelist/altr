@@ -1,0 +1,1232 @@
+{
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the management API for Auto Tagging. Use this API to set tags based on an ALTR classification report.",
+        "title": "Auto Tagging API",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "host": "api.live.altr.com/v1",
+    "basePath": "/tag/auto-tagging",
+    "paths": {
+        "/": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "List Auto Tagging configurations.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "List Auto Tagging configurations.",
+                "parameters": [
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of items to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "The number of items to skip.",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "all",
+                            "snowflake",
+                            "databricks"
+                        ],
+                        "type": "string",
+                        "description": "The database type.",
+                        "name": "databaseType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The classification report ID.",
+                        "name": "classification_report_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Tag Mapping Storage ID.",
+                        "name": "mapping_storage_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The ALTR Database ID.",
+                        "name": "database_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Database name.",
+                        "name": "database_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Schema name.",
+                        "name": "schema_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Table name.",
+                        "name": "table_name",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "pending",
+                            "applied",
+                            "failed"
+                        ],
+                        "type": "string",
+                        "description": "The Auto Tagging configuration status.",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "latest_created_at"
+                        ],
+                        "type": "string",
+                        "description": "The field to sort by.",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "asc",
+                        "description": "The order of returned data for the defined field.",
+                        "name": "order_by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.ListAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Create/Update an Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Create/Update an Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "description": "The Auto Tagging configuration.",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.PutAutoTaggingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The Auto Tagging was created and will be applied."
+                    },
+                    "204": {
+                        "description": "The Auto Tagging was updated and will be applied."
+                    },
+                    "400": {
+                        "description": "Something about your request isn't correct.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "A Classification report ID was not found for your organization.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Auto Tagging, or it's parent object.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "We ran in to an issue, please try again.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Delete an Auto Tagging configuration. If unset_tags is set to true, then previously set tags from this configuration will be unset.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Delete an Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "During the delete process unset the previously set tags from this configuration.",
+                        "name": "unset_tags",
+                        "in": "query"
+                    },
+                    {
+                        "description": "the Auto Tagging configuration",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.DeleteAutoTaggingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The Auto Tagging was deleted."
+                    },
+                    "400": {
+                        "description": "Something about your request isn't correct.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Another change is currently in progress for this Auto Tagging configuration.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "We ran in to an issue, please try again.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/databricks/database-id/{databaseId}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/databricks/database-id/{databaseId}/catalog-name/{catalogName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The catalog name.",
+                        "name": "catalogName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/databricks/database-id/{databaseId}/catalog-name/{catalogName}/schema-name/{schemaName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The catalog name.",
+                        "name": "catalogName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The schema name.",
+                        "name": "schemaName",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/databricks/database-id/{databaseId}/catalog-name/{catalogName}/schema-name/{schemaName}/table-name/{tableName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The catalog name.",
+                        "name": "catalogName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The schema name.",
+                        "name": "schemaName",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The table name.",
+                        "name": "tableName",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/mapping-id/{mappingID}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the tag mapping for a given mapping ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get an Auto Tagging Mapping.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Get the mapping for this mapping ID.",
+                        "name": "mappingID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mappingstorage.GetMappingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/report-url/{reportID}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get a report URL for a given report ID. This URL will only be valid for a short duration of time.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging Report URL.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Generate a URL to get this report ID.",
+                        "name": "reportID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "json",
+                            "csv"
+                        ],
+                        "type": "string",
+                        "description": "The format of the report.",
+                        "name": "format",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reportstorage.GetReportURLOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/snowflake/database-id/{databaseId}/database-name/{databaseName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The database name.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/snowflake/database-id/{databaseId}/database-name/{databaseName}/schema-name/{schemaName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The database name.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The schema name.",
+                        "name": "schemaName",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/snowflake/database-id/{databaseId}/database-name/{databaseName}/schema-name/{schemaName}/table-name/{tableName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Gets all details of specified Auto Tagging configuration.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto Tagging API"
+                ],
+                "summary": "Get Auto Tagging configuration.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The database name.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The schema name.",
+                        "name": "schemaName",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The table name.",
+                        "name": "tableName",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/management.GetAutoTaggingConfigurationOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "autotagging.TagMapping": {
+            "type": "object",
+            "required": [
+                "classifiers",
+                "priority",
+                "tag_name",
+                "tag_value"
+            ],
+            "properties": {
+                "classifiers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "priority": {
+                    "type": "integer"
+                },
+                "tag_database": {
+                    "type": "string"
+                },
+                "tag_name": {
+                    "type": "string"
+                },
+                "tag_schema": {
+                    "type": "string"
+                },
+                "tag_value": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.DatabricksInput": {
+            "type": "object",
+            "properties": {
+                "catalog_name": {
+                    "type": "string"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "table_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.DeleteAutoTaggingInput": {
+            "type": "object",
+            "properties": {
+                "database_id": {
+                    "description": "Which ALTR DatabaseID credentials to use in order to delete Auto Tagging Configuration.\nNote the given snowflake top level object does not need to live in this given DatabaseID\nas long as the databaseID's credentials has the necessary permissions to apply the given configuration.",
+                    "type": "integer"
+                },
+                "databricks_object": {
+                    "description": "The top level databricks object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.\nMutually exclusive with other objects.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/main.DatabricksInput"
+                        }
+                    ]
+                },
+                "snowflake_object": {
+                    "description": "The top level snowflake object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.\nMutually exclusive with other objects.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/main.SnowflakeInput"
+                        }
+                    ]
+                }
+            }
+        },
+        "main.PutAutoTaggingInput": {
+            "type": "object",
+            "properties": {
+                "classification_report_id": {
+                    "description": "ALTR Classification Report ID.\nThis report ID is used to determine the list of columns and their classifiers to tag.",
+                    "type": "string"
+                },
+                "create_tag_if_not_exist": {
+                    "description": "Create the tags in the given tag mapping if they do not exist.",
+                    "type": "boolean"
+                },
+                "database_id": {
+                    "description": "Which ALTR DatabaseID credentials to use in order to apply Auto Tagging configuration.\nNote the given snowflake top level object does not need to live in this given DatabaseID\nas long as the databaseID's credentials has the necessary permissions to apply the given configuration.",
+                    "type": "integer"
+                },
+                "databricks_object": {
+                    "description": "The top level snowflake object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.\nMutually exclusive with other objects.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/main.DatabricksInput"
+                        }
+                    ]
+                },
+                "snowflake_object": {
+                    "description": "The top level snowflake object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.\nMutually exclusive with other objects.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/main.SnowflakeInput"
+                        }
+                    ]
+                },
+                "tag_mapping": {
+                    "description": "The mapping of tag values to classifiers.\nA fully qualified tag value can only show up once.\nA classifier can only show up once per fully qualified tag name.\nA full list of classifiers can be found here (Google DLP) https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference and here (Snowflake) https://docs.snowflake.com/en/user-guide/classify-intro#system-tags-and-categories.\nEach tag value must have a priority.\nFor example, if NAME_COLUMN is classified as FIRST_NAME and LAST_NAME and you have 2 separate tag values in one tag ['last_name','first_name']. The tag value priority in the mapping with the lowest value will be applied.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/autotagging.TagMapping"
+                    }
+                },
+                "tag_mapping_id": {
+                    "description": "The ID for an existing the Tag Mapping.\nUse this to reuse an existing Tag Mapping.",
+                    "type": "string"
+                }
+            }
+        },
+        "main.SnowflakeInput": {
+            "type": "object",
+            "properties": {
+                "database_name": {
+                    "type": "string"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "table_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "management.AutoTaggingItem": {
+            "type": "object",
+            "properties": {
+                "auto_tagging_applied": {
+                    "description": "This is the most recent applied configuration which produced an Auto Tagging report.\nNote that this configuration may not have been completely successful.\nThe report should be inspected to determine what tags were successfully set/unset.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Configuration"
+                        }
+                    ]
+                },
+                "auto_tagging_failed": {
+                    "description": "The configuration which failed to apply due to a critical error.\nIf we fail to modify an existing masked tag, we will have both auto_tagging_failed and auto_tagging_applied defined.\nIn that situation,  auto_tagging_failed is the configuration which failed to apply due to a critical error,\nwhile auto_tagging_applied is the previous configuration prior to the failed modification.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Configuration"
+                        }
+                    ]
+                },
+                "auto_tagging_pending": {
+                    "description": "The configuration which is currently being applied.\nThis configuration will be moved to auto_tagging_applied or auto_tagging_failed upon completion.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Configuration"
+                        }
+                    ]
+                },
+                "client_id": {
+                    "type": "string"
+                },
+                "databricks": {
+                    "description": "The top level databricks object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Databricks"
+                        }
+                    ]
+                },
+                "latest_created_at": {
+                    "description": "The time of the latest configuration change.\nEach individual configuration state (applied, failed, pending) has a created at time.\nThis LatestCreatedAt time will be the most recent time of those three states.",
+                    "type": "string"
+                },
+                "snowflake": {
+                    "description": "The top level snowflake object subjected by this Auto Tagging configuration.\nThis object and it's children are impacted by this configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Snowflake"
+                        }
+                    ]
+                }
+            }
+        },
+        "management.Configuration": {
+            "type": "object",
+            "properties": {
+                "altr_tracking_id": {
+                    "type": "string"
+                },
+                "classification_report_id": {
+                    "description": "The ALTR classification report ID.",
+                    "type": "string"
+                },
+                "completed_at": {
+                    "description": "The time we finished applying this configuration.",
+                    "type": "string"
+                },
+                "create_tag_if_not_exist": {
+                    "description": "Create the tags in the given tag mapping if they do not exist.",
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "description": "Time which the configuration was initially created.",
+                    "type": "string"
+                },
+                "database_id": {
+                    "type": "integer"
+                },
+                "delete_options": {
+                    "description": "Delete options to remove this Auto Tagging configuration.\nThis will be defined if the intention is to delete this Auto Tagging configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.DeleteOptions"
+                        }
+                    ]
+                },
+                "failure": {
+                    "description": "The failure when applying this configuration.\nThis won't be defined for auto_tagging_pending and auto_tagging_applied configurations.\nThese will only be failures which place the configuration into a failed state.\nFailures in preconditions will result in this field being defined.\nFailures setting or creating tags will not result in this field being defined, those failures will exist in the report.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Failure"
+                        }
+                    ]
+                },
+                "mapping_storage_information": {
+                    "description": "Information about the stored Tag Mapping used by this auto tagging configuration.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.MappingStorageInformation"
+                        }
+                    ]
+                },
+                "override_tags": {
+                    "description": "Override tag values on the affected objects.",
+                    "type": "boolean"
+                },
+                "progress": {
+                    "description": "The progress of the auto tagging job.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.Progress"
+                        }
+                    ]
+                },
+                "report_storage_information": {
+                    "description": "Report storage information.\nhis Report contains information about the results of applying this Auto Tagging configuration.\nThis won't be defined if the configuration is in auto_tagging_failed or auto_tagging_pending.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/management.ReportStorageInformation"
+                        }
+                    ]
+                }
+            }
+        },
+        "management.Databricks": {
+            "type": "object",
+            "required": [
+                "database_id"
+            ],
+            "properties": {
+                "catalog_name": {
+                    "type": "string"
+                },
+                "database_id": {
+                    "type": "integer"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "table_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "management.DeleteOptions": {
+            "type": "object",
+            "properties": {
+                "ignore_errors": {
+                    "description": "When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.\nThis could result in orphaned ALTR configuration inside the snowflake host.\nCaution should be used, it is recommended to have ignore_errors set to false (default behavior).",
+                    "type": "boolean"
+                },
+                "unset_tags": {
+                    "description": "When set to true, ALTR will unset tags set by the applied auto tagging configuration.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "management.Failure": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "management.GetAutoTaggingConfigurationOutput": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/management.AutoTaggingItem"
+                }
+            }
+        },
+        "management.ListAutoTaggingConfigurationOutput": {
+            "type": "object",
+            "properties": {
+                "has_more": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/management.AutoTaggingItem"
+                    }
+                }
+            }
+        },
+        "management.MappingStorageInformation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ALTR Tag Mapping storage ID.",
+                    "type": "string"
+                }
+            }
+        },
+        "management.Progress": {
+            "type": "object",
+            "properties": {
+                "objects_tagged": {
+                    "description": "The number of objects we have attempted to tag.\nThis is the count of success/failed tagged objects.",
+                    "type": "integer"
+                },
+                "objects_to_tag": {
+                    "description": "The number of objects that need to be tagged.",
+                    "type": "integer"
+                },
+                "step": {
+                    "description": "The current step of the auto tagging job.",
+                    "type": "string"
+                }
+            }
+        },
+        "management.ReportStorageInformation": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ALTR Tag Mapping report ID.",
+                    "type": "string"
+                }
+            }
+        },
+        "management.Snowflake": {
+            "type": "object",
+            "required": [
+                "account_id",
+                "database_name",
+                "region"
+            ],
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "database_name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "table_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "mappingstorage.GetMappingOutput": {
+            "type": "object",
+            "properties": {
+                "tag_mappings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/autotagging.TagMapping"
+                    }
+                }
+            }
+        },
+        "reportstorage.GetReportURLOutput": {
+            "type": "object",
+            "properties": {
+                "expiration": {
+                    "type": "string"
+                },
+                "report_url": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

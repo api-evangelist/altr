@@ -1,0 +1,1006 @@
+{
+  "components": {
+    "schemas": {
+      "fiber.APIErrorResponse": {
+        "properties": {
+          "error_code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "main.APIErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/fiber.APIErrorResponse"
+          }
+        },
+        "type": "object"
+      },
+      "types.AgentInstanceItemResponse": {
+        "properties": {
+          "active_tasks": {
+            "description": "Number of active tasks the agent has",
+            "example": 4,
+            "type": "integer"
+          },
+          "agent_id": {
+            "description": "UUID of the agent that sent the telemetry data",
+            "example": "344d9ceb-b23e-400f-b1e4-3887ef4e715a",
+            "type": "string"
+          },
+          "agent_time": {
+            "description": "Unix timestamp in milliseconds since epoch of the time the agent sent the telemetry data",
+            "example": 1752074610981,
+            "type": "integer"
+          },
+          "checkin_time": {
+            "description": "Unix timestamp in milliseconds since epoch of the time that the server processed the telemetry data",
+            "example": 1752074610981,
+            "type": "integer"
+          },
+          "idle_tasks": {
+            "description": "Number of idle tasks the agent has",
+            "example": 0,
+            "type": "integer"
+          },
+          "instance_id": {
+            "description": "UUID of the instance that the agent is running on",
+            "example": "b55f7214-191b-47df-adf1-9b004fd98e39",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags associated with this instance",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "types.AgentInstancesItemResponse": {
+        "properties": {
+          "contiguous_id": {
+            "description": "Base64 encoded string representing the LastEvaluatedKey for pagination",
+            "type": "string"
+          },
+          "items": {
+            "description": "List of agent instance items",
+            "items": {
+              "$ref": "#/components/schemas/types.AgentInstanceItemResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "types.SidecarInstanceItemResponse": {
+        "properties": {
+          "active_connections": {
+            "description": "Number of active connections the sidecar has",
+            "example": 4,
+            "type": "integer"
+          },
+          "checkin_time": {
+            "description": "Unix timestamp in milliseconds since epoch of the time that the server processed the telemetry data",
+            "example": 1752074610981,
+            "type": "integer"
+          },
+          "instance_id": {
+            "description": "UUID of the instance that the sidecar is running on",
+            "example": "b55f7214-191b-47df-adf1-9b004fd98e39",
+            "type": "string"
+          },
+          "sidecar_id": {
+            "description": "UUID of the sidecar that sent the telemetry data",
+            "example": "344d9ceb-b23e-400f-b1e4-3887ef4e715a",
+            "type": "string"
+          },
+          "sidecar_version": {
+            "description": "Version of the sidecar sending the telemetry data as defined by semver.org Ex: \"1.0.0\", \"2.3.4-beta\", etc.",
+            "example": "1.2.3",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags associated with this instance",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "types.SidecarInstancesItemResponse": {
+        "properties": {
+          "contiguous_id": {
+            "description": "Base64 encoded string representing the LastEvaluatedKey for pagination",
+            "example": "eyJHU0kyUEsiOiJPUkdJRCM1MmY0MTVhNC1kZTM3LTQ5OGItYTM4Zi1jMGEzYjQ3NDczMGUjU0lERUNBUklEI2IzMDg2YTcyLWYyNGEtNDkwNS1hODQ4LWNlM2VlMjc0MzI0NiIsIkdTSTJTSyI6IkNIRUNLSU5USU1FIzIwMjUtMDctMDhUMTc6MjA6MTguOTg1WiIsIlBLIjoiVEVMRU1FVFJZI09SR0lEIzUyZjQxNWE0LWRlMzctNDk4Yi1hMzhmLWMwYTNiNDc0NzMwZSNTSURFQ0FSSUQjYjMwODZhNzItZjI0YS00OTA1LWE4NDgtY2UzZWUyNzQzMjQ2I0lOU1RBTkNFSUQjYzU4YTI5NzYtZDJkZi00YWY0LTlmYmEtYmRhNmUwOWM4YzFmIiwiU0siOiJDSEVDS0lOIn0",
+            "type": "string"
+          },
+          "items": {
+            "description": "List of sidecar instance items",
+            "items": {
+              "$ref": "#/components/schemas/types.SidecarInstanceItemResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "types.TaskMessage": {
+        "properties": {
+          "message": {
+            "description": "Human-readable message",
+            "maxLength": 1024,
+            "type": "string"
+          },
+          "severity": {
+            "description": "Severity level of the message",
+            "enum": [
+              "Error",
+              "Warning",
+              "Suggestion"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "severity"
+        ],
+        "type": "object"
+      },
+      "types.TaskTelemetryItemResponse": {
+        "properties": {
+          "agent_id": {
+            "description": "UUID of the agent",
+            "type": "string"
+          },
+          "agent_time": {
+            "description": "Unix timestamp in milliseconds",
+            "type": "integer"
+          },
+          "checkin_time": {
+            "description": "Unix timestamp in milliseconds",
+            "type": "integer"
+          },
+          "messages": {
+            "description": "Messages associated with the task",
+            "items": {
+              "$ref": "#/components/schemas/types.TaskMessage"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "repository": {
+            "description": "Repository name",
+            "type": "string"
+          },
+          "service_user": {
+            "description": "Service user",
+            "type": "string"
+          },
+          "status": {
+            "description": "Task status",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags",
+            "type": "object"
+          },
+          "task_id": {
+            "description": "UUID of the task",
+            "type": "string"
+          },
+          "task_type": {
+            "description": "Type of task",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "types.TaskTelemetryItemsResponse": {
+        "properties": {
+          "contiguous_id": {
+            "description": "Base64 encoded pagination key",
+            "type": "string"
+          },
+          "items": {
+            "description": "List of task telemetry items",
+            "items": {
+              "$ref": "#/components/schemas/types.TaskTelemetryItemResponse"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "basic": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "This is the API for managing sidecar and agent telemetry data.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "ALTR Telemetry API",
+    "version": "1.7.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/agents/{agent_id}/instances": {
+      "get": {
+        "description": "Get agent instances for a specific agent by its ID.",
+        "parameters": [
+          {
+            "description": "Agent ID",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "If provided, will return the next set of items after this ID. If not provided, will return the first set of items.",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of items to return, must be between 1 and 1000",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filter instances checked in at or after this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d).",
+            "in": "query",
+            "name": "checkin_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter instances checked in at or before this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d).",
+            "in": "query",
+            "name": "checkin_before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.AgentInstancesItemResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Agent Instances by Agent ID",
+        "tags": [
+          "Agent"
+        ]
+      }
+    },
+    "/agents/{agent_id}/instances/{instance_id}": {
+      "delete": {
+        "description": "Delete an agent instance by its ID.",
+        "parameters": [
+          {
+            "description": "Agent ID",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "instance_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete Agent Instance by ID",
+        "tags": [
+          "Agent"
+        ]
+      },
+      "get": {
+        "description": "Get a specific agent instance by its ID.",
+        "parameters": [
+          {
+            "description": "Agent ID",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "instance_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.AgentInstanceItemResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Agent Instance by ID",
+        "tags": [
+          "Agent"
+        ]
+      }
+    },
+    "/agents/{agent_id}/task-telemetry": {
+      "get": {
+        "description": "Get task telemetry for a specific agent.",
+        "parameters": [
+          {
+            "description": "Agent ID",
+            "in": "path",
+            "name": "agent_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "If provided, will return the next set of items after this ID.",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of items to return, must be between 1 and 1000",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.TaskTelemetryItemsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Task Telemetry List by Agent",
+        "tags": [
+          "Task"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/instances": {
+      "get": {
+        "description": "Get sidecar instances for a specific sidecar by its ID.",
+        "parameters": [
+          {
+            "description": "Sidecar ID",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "If provided, will return the next set of items after this ID. If not provided, will return the first set of items.",
+            "in": "query",
+            "name": "contiguous_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of items to return, must be between 1 and 1000",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Filter instances checked in at or after this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d).",
+            "in": "query",
+            "name": "checkin_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter instances checked in at or before this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d).",
+            "in": "query",
+            "name": "checkin_before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.SidecarInstancesItemResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Sidecar Instances by Sidecar ID",
+        "tags": [
+          "Sidecar"
+        ]
+      }
+    },
+    "/sidecars/{sidecar_id}/instances/{instance_id}": {
+      "delete": {
+        "description": "Delete a sidecar instance by its ID.",
+        "parameters": [
+          {
+            "description": "Sidecar ID",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "instance_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete Sidecar Instance by ID",
+        "tags": [
+          "Sidecar"
+        ]
+      },
+      "get": {
+        "description": "Get a specific sidecar instance by its ID.",
+        "parameters": [
+          {
+            "description": "Sidecar ID",
+            "in": "path",
+            "name": "sidecar_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "instance_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.SidecarInstanceItemResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Sidecar Instance by ID",
+        "tags": [
+          "Sidecar"
+        ]
+      }
+    },
+    "/tasks/{task_id}/task-telemetry": {
+      "delete": {
+        "description": "Delete a specific task telemetry item by task ID.",
+        "parameters": [
+          {
+            "description": "Task ID",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Delete Task Telemetry by Task ID",
+        "tags": [
+          "Task"
+        ]
+      },
+      "get": {
+        "description": "Get a specific task telemetry item by task ID.",
+        "parameters": [
+          {
+            "description": "Task ID",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/types.TaskTelemetryItemResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/main.APIErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ],
+        "summary": "Get Task Telemetry by Task ID",
+        "tags": [
+          "Task"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://{org_id}.sc-control.live.altr.com/v1",
+      "variables": {
+        "org_id": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

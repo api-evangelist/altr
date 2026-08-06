@@ -1,0 +1,117 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/ (21 specs, 375 operations) + https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/error-handling.md
+format: bespoke-json
+rfc9457: false
+note: ALTR declares no application/problem+json responses anywhere in its 21 public specifications. Error bodies are bespoke
+  JSON envelopes; the shape differs between the AWS API Gateway edge and the services behind it.
+envelopes:
+- surface: AWS API Gateway edge (api.live.altr.com, *.live.altr.com)
+  shape: '{"message": "Forbidden"} or {"error": {"error_code": 900000, "message": "Missing Authentication Token"}}'
+  note: Unrouted paths and unauthenticated calls are answered by API Gateway before reaching an ALTR service.
+- surface: ALTR MCP server tool responses
+  shape: '{"success": bool, "data": object|null, "error": string|null}'
+  note: 'API 4xx/5xx are surfaced inside data as {"success": false, "status_code": n, "message": "..."} and do NOT raise
+    an MCP error; only Pydantic validation failures and unhandled exceptions raise ToolError with isError: true.'
+  source: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/error-handling.md
+problems:
+- status: '400'
+  title: Bad Request
+  meaning: Invalid parameters, malformed body, or a missing required field.
+  occurrences: 308
+  specs: 19
+  spec_description: Bad request
+  remediation: Validate the request against the operation schema before retrying; retrying unchanged will fail again.
+  retryable: false
+- status: '401'
+  title: Unauthorized
+  meaning: Missing, invalid or tampered credentials — the API key name / key secret Basic pair did not authenticate.
+  occurrences: 186
+  specs: 9
+  spec_description: Invalid or tampered token
+  remediation: Re-check the MAPI key name and secret from Settings > Preferences > API; secrets are shown once at creation.
+  retryable: false
+- status: '403'
+  title: Forbidden
+  meaning: The authenticated key lacks permission, or the ALTR organization is not entitled to the feature.
+  occurrences: 53
+  specs: 4
+  spec_description: Your ALTR organization is not authorized for this feature.
+  remediation: Check the key's role/user group and the organization plan entitlement.
+  retryable: false
+- status: '404'
+  title: Not Found
+  meaning: The instance does not exist, or the identifier belongs to another organization.
+  occurrences: 171
+  specs: 19
+  spec_description: Instance not found
+  remediation: Re-resolve the id (for example via getDatabases or GET /jobs) before retrying.
+  retryable: false
+- status: '405'
+  title: Method Not Allowed
+  meaning: The HTTP method is not supported on this path.
+  occurrences: 4
+  specs: 1
+  spec_description: Method Not Allowed
+  retryable: false
+- status: '409'
+  title: Conflict
+  meaning: The resource already exists, is in a conflicting state, or a definition/quota limit was reached.
+  occurrences: 31
+  specs: 10
+  spec_description: Definition limit reached
+  remediation: Read the current state and reconcile; do not blind-retry.
+  retryable: false
+- status: '415'
+  title: Unsupported Media Type
+  meaning: Content-Type is not application/json.
+  occurrences: 3
+  specs: 1
+  retryable: false
+- status: '422'
+  title: Unprocessable Entity
+  meaning: The body parsed but failed semantic validation.
+  occurrences: 2
+  specs: 1
+  retryable: false
+- status: '429'
+  title: Too Many Requests
+  meaning: Rate limited.
+  occurrences: 55
+  specs: 6
+  spec_description: Too many requests, slow down and try again later
+  remediation: Back off and retry. The ALTR MCP server retries 429 up to 3 times with exponential backoff and jitter and
+    honours Retry-After when the response carries it; no X-RateLimit-* headers are declared in any spec.
+  retryable: true
+- status: '500'
+  title: Internal Server Error
+  meaning: Server-side failure.
+  occurrences: 344
+  specs: 21
+  spec_description: Internal server error, try again later
+  remediation: Retry with backoff; the MCP server retries up to 3 times.
+  retryable: true
+- status: '503'
+  title: Service Unavailable
+  meaning: The service is temporarily unavailable.
+  occurrences: 18
+  specs: 6
+  spec_description: Service unavailable, try again later
+  remediation: Retry with backoff; the MCP server retries up to 3 times.
+  retryable: true
+- status: 5xx
+  title: Server Error
+  meaning: Unspecified server failure class declared as a 5xx range response.
+  occurrences: 18
+  specs: 1
+  spec_description: Failure servicing this request
+  retryable: true
+retry_policy:
+  retryable_statuses:
+  - 429
+  - 500
+  - 502
+  - 503
+  client_behaviour: The official MCP server retries up to MAX_RETRIES (default 3) with exponential backoff and jitter, honours
+    Retry-After when present, and can be disabled with DISABLE_RETRY=true.
+  source: https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/error-handling.md

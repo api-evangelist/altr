@@ -1,0 +1,175 @@
+schemes: []
+swagger: '2.0'
+info:
+  description: This provides the interface to the tag value refresh jobs.
+  title: Snowflake Tag Value Refresh API
+  contact: {}
+  version: 0.1.0
+host: api.live.altr.com/v1
+basePath: /tag/refresh
+paths:
+  /:
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint initiates a tag value refresh job for a specified tag. It checks whether the provided tag
+        exists or not and if the refresh job meets the necessary validation criteria. If all conditions are met, it triggers
+        a refresh job and returns a job reference ID.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Refresh Tag Value Job
+      summary: Initiate a job to refresh a tag's allowed values.
+      parameters:
+      - description: Details of the refresh job and the tag to be refreshed
+        name: request
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateTagValueRefreshJobInput'
+      responses:
+        '201':
+          description: The job to refresh tag value was initiated successfully.
+          schema:
+            $ref: '#/definitions/main.CreateTagValueRefreshJobOutput'
+        '400':
+          description: The request has failed the validation, or the tag provided in the request does not exist. Please check
+            the request body for errors.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '409':
+          description: A job to refresh this tag's value has already been initiated recently. Please try again later.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: An internal server error occurred while attempting to initiate the job. Please try again later.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /status/{job-reference-id}:
+    get:
+      security:
+      - BasicAuth: []
+      description: Get a tag value refresh job status.
+      produces:
+      - application/json
+      tags:
+      - Refresh Tag Value Job
+      summary: Get Tag Value Refresh Job Status
+      parameters:
+      - type: string
+        description: The tag value refresh job reference ID
+        name: job-reference-id
+        in: path
+        required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/main.GetTagValueRefreshJobStatusOutput'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '503':
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+definitions:
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+  main.CreateTagValueRefreshJobInput:
+    description: The payload for creating a new refresh job for a tag's value. Both the TagGroupID and DatabaseID must be
+      provided.
+    type: object
+    required:
+    - database_id
+    - tag_group_id
+    properties:
+      database_id:
+        description: 'DatabaseID, the Altr Database ID''s credentials are used to refresh the given tag''s values.
+
+          Note that although the tag does not have to exist in this specified database, the database''s credentials need to
+          have access to the provided tag.
+
+
+          Required: true
+
+          Example: 1234'
+        type: integer
+      tag_group_id:
+        description: 'TagGroupID, the ALTR tag group ID. This is the ALTR identifier for a snowflake tag.
+
+
+          Required: true
+
+          Example: "a5a295c5-426b-41bb-85b3-aa0feb8af00b"'
+        type: string
+  main.CreateTagValueRefreshJobOutput:
+    description: The response payload for the createTagValueRefresh job. If the job was initiated successfully, it contains
+      the job's reference ID.
+    type: object
+    properties:
+      job_reference_id:
+        description: 'The job reference ID for the initiated refresh job
+
+
+          Example: "a5a295c5-426b-41-1970-01-00-00-00"'
+        type: string
+  main.GetTagValueRefreshJobStatusOutput:
+    type: object
+    properties:
+      allowed_values_count:
+        description: AllowedValuesCount specifies the total count of allowed values.
+        type: integer
+      database_id:
+        description: DatabaseID represents the ALTR ID of the database. This field is optional.
+        type: integer
+      error:
+        description: Error is the error object which will be set if the status of the job is `FAILED`. This field is optional.
+        allOf:
+        - $ref: '#/definitions/tagvaluerefreshjobmanagement.DescribeTagValueRefreshJobError'
+      imported_allowed_values_count:
+        description: ImportedAllowedValuesCount specifies the count of imported allowed values.
+        type: integer
+      job_status:
+        description: JobStatus represents the status of the refresh job. It could be `RUNNING`, `SUCCEEDED`, or `FAILED`.
+        type: string
+      tag_group_id:
+        description: TagGroupID signifies the ID of the tag group. This field is optional.
+        type: string
+      tracking_id:
+        description: TrackingID is the ID used for tracking the job status. This field is optional.
+        type: string
+  tagvaluerefreshjobmanagement.DescribeTagValueRefreshJobError:
+    type: object
+    properties:
+      error_code:
+        type: integer
+      error_message:
+        type: string
+      failed_allowed_value:
+        type: array
+        items:
+          type: string
+      query_id:
+        type: string
+securityDefinitions:
+  BasicAuth:
+    type: basic

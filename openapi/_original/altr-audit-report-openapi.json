@@ -1,0 +1,1788 @@
+{
+  "components": {
+    "schemas": {
+      "fiber.APIError": {
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/fiber.APIErrorResponse"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "fiber.APIErrorResponse": {
+        "properties": {
+          "error_code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.Comment": {
+        "properties": {
+          "author_id": {
+            "type": "string"
+          },
+          "author_name": {
+            "type": "string"
+          },
+          "comment_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "definition_id": {
+            "type": "string"
+          },
+          "instance_id": {
+            "type": "string"
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "sign_off_action": {
+            "enum": [
+              "approve"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "example": "Reviewed all SELECT queries - no anomalies found",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.CreateCommentInput": {
+        "properties": {
+          "text": {
+            "example": "Reviewed all SELECT queries - no anomalies found",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.CreateSignOffInput": {
+        "properties": {
+          "action": {
+            "enum": [
+              "approve"
+            ],
+            "type": "string"
+          },
+          "attestation": {
+            "type": "boolean"
+          },
+          "comments": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.Definition": {
+        "properties": {
+          "archived_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "definition_id": {
+            "type": "string"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/models.Delivery"
+          },
+          "description": {
+            "example": "Tracks schema changes across production databases",
+            "type": "string"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/models.ReportFilters"
+          },
+          "integration_type": {
+            "description": "Determines which audit data source and filter fields are available. \"oltp\" = ALTR sidecar audits, \"snowflake\" = Snowflake query audits.",
+            "enum": [
+              "oltp",
+              "snowflake"
+            ],
+            "example": "oltp",
+            "type": "string"
+          },
+          "last_triggered_at": {
+            "type": "string"
+          },
+          "name": {
+            "example": "Weekly DDL Audit",
+            "type": "string"
+          },
+          "report_window": {
+            "$ref": "#/components/schemas/models.ReportWindow"
+          },
+          "required_approvals": {
+            "example": 2,
+            "type": "integer"
+          },
+          "retention_days": {
+            "example": 90,
+            "type": "integer"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/models.Schedule"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.DefinitionInput": {
+        "properties": {
+          "delivery": {
+            "$ref": "#/components/schemas/models.Delivery"
+          },
+          "description": {
+            "example": "Tracks schema changes across production databases",
+            "type": "string"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/models.ReportFilters"
+          },
+          "integration_type": {
+            "enum": [
+              "oltp",
+              "snowflake"
+            ],
+            "example": "oltp",
+            "type": "string"
+          },
+          "name": {
+            "example": "Weekly DDL Audit",
+            "type": "string"
+          },
+          "report_window": {
+            "$ref": "#/components/schemas/models.ReportWindow"
+          },
+          "required_approvals": {
+            "example": 2,
+            "type": "integer"
+          },
+          "retention_days": {
+            "example": 90,
+            "type": "integer"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/models.Schedule"
+          }
+        },
+        "type": "object"
+      },
+      "models.Delivery": {
+        "properties": {
+          "channels": {
+            "items": {
+              "$ref": "#/components/schemas/models.DeliveryChannel"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.DeliveryChannel": {
+        "properties": {
+          "enabled": {
+            "example": true,
+            "type": "boolean"
+          },
+          "recipients": {
+            "example": [
+              "admin@company.com",
+              "compliance@company.com"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "type": {
+            "enum": [
+              "email"
+            ],
+            "example": "email",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.DownloadResponse": {
+        "properties": {
+          "download_url": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.Filter": {
+        "properties": {
+          "field": {
+            "description": "OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.",
+            "example": "database_name",
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "include",
+              "exclude"
+            ],
+            "example": "include",
+            "type": "string"
+          },
+          "patterns": {
+            "items": {
+              "$ref": "#/components/schemas/models.FilterPattern"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "range": {
+            "$ref": "#/components/schemas/models.NumericRange"
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "models.FilterGroup": {
+        "properties": {
+          "filters": {
+            "items": {
+              "$ref": "#/components/schemas/models.Filter"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.FilterPattern": {
+        "properties": {
+          "match_type": {
+            "description": "exact (default for scalars), contains (default for statement_text), starts_with, ends_with",
+            "enum": [
+              "exact",
+              "contains",
+              "starts_with",
+              "ends_with"
+            ],
+            "example": "starts_with",
+            "type": "string"
+          },
+          "value": {
+            "example": "PROD_",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.GetSignOffResponse": {
+        "properties": {
+          "sign_off": {
+            "$ref": "#/components/schemas/models.SignOff"
+          }
+        },
+        "type": "object"
+      },
+      "models.Instance": {
+        "properties": {
+          "definition_id": {
+            "type": "string"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "generated_at": {
+            "type": "string"
+          },
+          "instance_id": {
+            "type": "string"
+          },
+          "pdf_detail_rows": {
+            "type": "integer"
+          },
+          "period_end": {
+            "type": "string"
+          },
+          "period_start": {
+            "type": "string"
+          },
+          "required_approvals": {
+            "type": "integer"
+          },
+          "sign_off_count": {
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "generating",
+              "generated",
+              "finalizing",
+              "finalized",
+              "failed"
+            ],
+            "type": "string"
+          },
+          "summary_stats": {
+            "additionalProperties": {},
+            "type": "object"
+          },
+          "total_events": {
+            "type": "integer"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.ListDefinitionsResponse": {
+        "properties": {
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Definition"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.ListInstancesResponse": {
+        "properties": {
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Instance"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.ListSignOffsResponse": {
+        "properties": {
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.SignOff"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.NumericRange": {
+        "properties": {
+          "max": {
+            "type": "integer"
+          },
+          "min": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "models.ReportFilters": {
+        "properties": {
+          "filter_groups": {
+            "items": {
+              "$ref": "#/components/schemas/models.FilterGroup"
+            },
+            "type": "array",
+            "uniqueItems": false
+          }
+        },
+        "type": "object"
+      },
+      "models.ReportWindow": {
+        "properties": {
+          "lookback_days": {
+            "description": "Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).",
+            "example": 7,
+            "type": "integer"
+          },
+          "timezone": {
+            "example": "America/New_York",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.Schedule": {
+        "properties": {
+          "cron": {
+            "example": "0 9 ? * MON",
+            "type": "string"
+          },
+          "enabled": {
+            "example": true,
+            "type": "boolean"
+          },
+          "timezone": {
+            "example": "America/New_York",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.SignOff": {
+        "properties": {
+          "action": {
+            "enum": [
+              "approve"
+            ],
+            "type": "string"
+          },
+          "attestation": {
+            "type": "boolean"
+          },
+          "comments": {
+            "type": "string"
+          },
+          "definition_id": {
+            "type": "string"
+          },
+          "instance_id": {
+            "type": "string"
+          },
+          "signed_off_at": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "models.TriggerNowResponse": {
+        "properties": {
+          "instance_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "repository.PaginatedResult-models_Comment": {
+        "properties": {
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/models.Comment"
+            },
+            "type": "array",
+            "uniqueItems": false
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@altr.com",
+      "name": "API Support"
+    },
+    "description": "API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.",
+    "termsOfService": "https://altr.com/info/altr-solutions-inc-terms-of-service/",
+    "title": "ALTR Audit Report API",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "ALTR Documentation",
+    "url": "https://docs.altr.com/?lang=en"
+  },
+  "paths": {
+    "/audit-reports/definitions/": {
+      "get": {
+        "description": "Returns a paginated list of audit report definitions for the authenticated organization.",
+        "parameters": [
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination cursor from previous response",
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Show only archived definitions",
+            "in": "query",
+            "name": "archived",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListDefinitionsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List report definitions.",
+        "tags": [
+          "Definitions"
+        ]
+      },
+      "post": {
+        "description": "Creates a new audit report definition with filters, schedule, and delivery configuration.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.DefinitionInput",
+                "summary": "definition",
+                "description": "Report definition"
+              }
+            }
+          },
+          "description": "Report definition",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Definition"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition limit reached"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create a report definition.",
+        "tags": [
+          "Definitions"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/": {
+      "get": {
+        "description": "Returns a paginated list of generated report instances for a definition.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination cursor from previous response",
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListInstancesResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List report instances.",
+        "tags": [
+          "Instances"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}": {
+      "get": {
+        "description": "Returns a single generated report instance by ID.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Instance"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Instance not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get a report instance.",
+        "tags": [
+          "Instances"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/comments/": {
+      "get": {
+        "description": "Returns a paginated list of comments for a report instance. Pinned comments appear first.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum items per page (default 25, max 100)",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination cursor from previous response",
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/repository.PaginatedResult-models_Comment"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List comments.",
+        "tags": [
+          "Comments"
+        ]
+      },
+      "post": {
+        "description": "Adds a comment to a report instance for investigation notes or attestation context.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateCommentInput",
+                "summary": "comment",
+                "description": "Comment body"
+              }
+            }
+          },
+          "description": "Comment body",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Comment"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create a comment.",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/pin": {
+      "post": {
+        "description": "Pins a comment so it appears first in the list. Only one comment can be pinned per instance. Allowed after sign-off.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comment ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Comment"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Comment not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "A comment is already pinned"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Pin a comment.",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/unpin": {
+      "post": {
+        "description": "Unpins a comment, returning it to its chronological position. Allowed after sign-off.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Comment ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Comment"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Comment not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Unpin a comment.",
+        "tags": [
+          "Comments"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/download": {
+      "get": {
+        "description": "Returns a pre-signed S3 URL for downloading the report in PDF or CSV format.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Download format",
+            "in": "query",
+            "name": "format",
+            "schema": {
+              "default": "pdf",
+              "enum": [
+                "pdf",
+                "csv"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.DownloadResponse"
+                }
+              }
+            },
+            "description": "Pre-signed download URL"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid format parameter"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Instance not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Report not yet generated"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Download a report instance.",
+        "tags": [
+          "Instances"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/sign_off": {
+      "get": {
+        "description": "Returns the authenticated user's own sign-off record for a report instance, or null if not yet signed off. Uses the caller's identity to look up a single record \u2014 use GET .../sign_offs (plural) to list all sign-offs by all users.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.GetSignOffResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get current user's sign-off status.",
+        "tags": [
+          "Sign-Off"
+        ]
+      },
+      "post": {
+        "description": "Records an approval for a report instance.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CreateSignOffInput",
+                "summary": "request",
+                "description": "Sign-off payload"
+              }
+            }
+          },
+          "description": "Sign-off payload",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.SignOff"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Instance not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Already signed off or instance not in generated status"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Create a sign-off.",
+        "tags": [
+          "Sign-Off"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{def_id}/instances/{inst_id}/sign_offs": {
+      "get": {
+        "description": "Returns a paginated list of all sign-off records from all users for a report instance. Use GET .../sign_off (singular) to check only the current user's sign-off status.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "def_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Instance ID",
+            "in": "path",
+            "name": "inst_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Maximum number of results (default: 25, max: 100)",
+            "example": 25,
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Pagination cursor from previous response",
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.ListSignOffsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "List all sign-offs for an instance.",
+        "tags": [
+          "Sign-Off"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{definition_id}": {
+      "delete": {
+        "description": "Soft-deletes an audit report definition by setting archived_at. Archived definitions are hidden from default list view but remain queryable. Must be restored before editing or triggering.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "definition_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Definition"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition already archived"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Archive a report definition.",
+        "tags": [
+          "Definitions"
+        ]
+      },
+      "get": {
+        "description": "Returns a single audit report definition by ID.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "definition_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Definition"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Get a report definition.",
+        "tags": [
+          "Definitions"
+        ]
+      },
+      "put": {
+        "description": "Replaces the audit report definition with the provided body, preserving immutable fields.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "definition_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.DefinitionInput",
+                "summary": "definition",
+                "description": "Updated report definition"
+              }
+            }
+          },
+          "description": "Updated report definition",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Definition"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Invalid request or validation error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Update a report definition.",
+        "tags": [
+          "Definitions"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{definition_id}/restore": {
+      "post": {
+        "description": "Removes the archived status from a definition, making it active again.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "definition_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Definition"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition is not archived"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Restore an archived report definition.",
+        "tags": [
+          "Definitions"
+        ]
+      }
+    },
+    "/audit-reports/definitions/{definition_id}/trigger": {
+      "post": {
+        "description": "Queues a new report instance and starts the Step Function pipeline. Rate-limited to once per 5 minutes per definition.",
+        "parameters": [
+          {
+            "description": "Definition ID",
+            "in": "path",
+            "name": "definition_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.TriggerNowResponse"
+                }
+              }
+            },
+            "description": "Report generation initiated"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Definition not found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fiber.APIError"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "Trigger on-demand report generation.",
+        "tags": [
+          "Definitions"
+        ]
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://{orgID}.audit-report.live.altr.com/v1",
+      "variables": {
+        "orgID": {
+          "default": ""
+        }
+      }
+    }
+  ]
+}

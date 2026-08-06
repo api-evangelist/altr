@@ -1,0 +1,1209 @@
+{
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "This API provides snowflake object metadata.",
+        "title": "Snowflake Metadata API",
+        "contact": {},
+        "version": "0.1.0"
+    },
+    "host": "api.live.altr.com/v1",
+    "basePath": "/snowflake/metadata",
+    "paths": {
+        "/{databaseID}/accountLocator": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get snowflake account locator.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "Get Account Locator.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.AccountLocatorInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/accountRegion": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get snowflake account region.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "Get Account Region.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.AccountRegionInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/table/{tableName}/column/{columnName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get a column and it's information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "Get Column in Table.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the table.",
+                        "name": "tableName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the column.",
+                        "name": "columnName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ColumnInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/table/{tableName}/columns": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of column names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Column Names in Table.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the table.",
+                        "name": "tableName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of columns to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only column name(s) which contains the given string.",
+                        "name": "column_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Column Name cursor for the results. Will return column names after this given column name.",
+                        "name": "column_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListColumnInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/tables": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of table names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Table Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of tables to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only table name(s) which contains the given string.",
+                        "name": "table_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Table Name cursor for the results. Will return table names after this given table name.",
+                        "name": "table_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListTableInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/tags": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of tag names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Tag Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of tags to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only tag name(s) which contains the given string.",
+                        "name": "tag_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Tag Name cursor for the results. Will return tag names after this given tag name.",
+                        "name": "tag_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListTagInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/view/{viewName}/column/{columnName}": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get a column and it's information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "Get Column in View.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the view.",
+                        "name": "viewName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the column.",
+                        "name": "columnName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ColumnInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/view/{viewName}/columns": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of column names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Column Names in View.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the view.",
+                        "name": "viewName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of columns to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only column name(s) which contains the given string.",
+                        "name": "column_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Column Name cursor for the results. Will return column names after this given column name.",
+                        "name": "column_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListColumnInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schema/{schemaName}/views": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of view names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List View Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the schema.",
+                        "name": "schemaName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of views to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only view name(s) which contains the given string.",
+                        "name": "view_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The View Name cursor for the results. Will return view names after this given view name.",
+                        "name": "view_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListViewInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/database/{databaseName}/schemas": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of schema names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Schema Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The name of the database.",
+                        "name": "databaseName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of schemas to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only schema name(s) which contains the given string.",
+                        "name": "schema_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Schema Name cursor for the results. Will return schema names after this given schema name.",
+                        "name": "schema_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListSchemaInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/databases": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of database names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Database Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of databases to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only database name(s) which contains the given string.",
+                        "name": "database_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Database Name cursor for the results. Will return database names after this given database name.",
+                        "name": "database_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListDatabaseInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/organizationName": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the organization name.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "Get the organization name.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.OrganizationNameInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{databaseID}/roles": {
+            "get": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Get the list of role names and their information.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Snowflake Metadata API"
+                ],
+                "summary": "List Role Names.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of a connected database.",
+                        "name": "databaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 50,
+                        "description": "The maximum number of roles to return.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter to only role name(s) which contains the given string.",
+                        "name": "role_name_filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The Role Name cursor for the results. Will return role names after this given role name.",
+                        "name": "role_name_offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snowflakemetadata.ListRoleInfoOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.AccountLocatorInfo": {
+            "type": "object",
+            "properties": {
+                "account_locator": {
+                    "description": "AccountLocator represents the account locator for the Snowflake account",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.AccountRegionInfo": {
+            "type": "object",
+            "properties": {
+                "account_region": {
+                    "description": "AccountRegion represents the account region for the Snowflake account",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.ColumnInfo": {
+            "type": "object",
+            "properties": {
+                "column_name": {
+                    "description": "ColumnName represents the true column name",
+                    "type": "string",
+                    "x-order": "0"
+                },
+                "column_type": {
+                    "description": "ColumnType represents the true column type information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/snowflakemetadata.ColumnType"
+                        }
+                    ],
+                    "x-order": "1"
+                },
+                "column_options": {
+                    "description": "ColumnOptions represents metadata relevant to ALTR operations",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/snowflakemetadata.ColumnOptions"
+                        }
+                    ],
+                    "x-order": "2"
+                }
+            }
+        },
+        "snowflakemetadata.ColumnOptions": {
+            "type": "object",
+            "properties": {
+                "can_fpe": {
+                    "description": "CanFPE represents if the column can be FPE'd",
+                    "type": "boolean"
+                },
+                "can_tokenize": {
+                    "description": "CanTokenize represents if the column can be tokenized",
+                    "type": "boolean"
+                }
+            }
+        },
+        "snowflakemetadata.ColumnType": {
+            "type": "object",
+            "properties": {
+                "byte_length": {
+                    "description": "ByteLength represents the true column byte length",
+                    "type": "integer"
+                },
+                "fixed": {
+                    "description": "Fixed represents if the column is fixed",
+                    "type": "boolean"
+                },
+                "length": {
+                    "description": "Length represents the true column length",
+                    "type": "integer"
+                },
+                "nullable": {
+                    "description": "Nullable represents if the column is nullable",
+                    "type": "boolean"
+                },
+                "precision": {
+                    "description": "Precision represents the true column precision",
+                    "type": "integer"
+                },
+                "scale": {
+                    "description": "Scale represents the true column scale",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "Type represents the true column type",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.DatabaseInfo": {
+            "type": "object",
+            "properties": {
+                "database_name": {
+                    "description": "DatabaseNames represents the true database name",
+                    "type": "string"
+                },
+                "database_type": {
+                    "description": "DatabaseType represents the true database kind",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.ListColumnInfoOutput": {
+            "type": "object",
+            "properties": {
+                "columns": {
+                    "description": "Columns represents a list of column information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.ColumnInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListDatabaseInfoOutput": {
+            "type": "object",
+            "properties": {
+                "databases": {
+                    "description": "Databases represents a list of database information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.DatabaseInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListRoleInfoOutput": {
+            "type": "object",
+            "properties": {
+                "roles": {
+                    "description": "Roles represents a list of role information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.RoleInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListSchemaInfoOutput": {
+            "type": "object",
+            "properties": {
+                "schemas": {
+                    "description": "Schemas represents a list of schema information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.SchemaInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListTableInfoOutput": {
+            "type": "object",
+            "properties": {
+                "tables": {
+                    "description": "Tables represents a list of table information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.TableInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListTagInfoOutput": {
+            "type": "object",
+            "properties": {
+                "tags": {
+                    "description": "Tags represents a list of tag information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.TagInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.ListViewInfoOutput": {
+            "type": "object",
+            "properties": {
+                "views": {
+                    "description": "Views represents a list of view information",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snowflakemetadata.ViewInfo"
+                    }
+                }
+            }
+        },
+        "snowflakemetadata.OrganizationNameInfo": {
+            "type": "object",
+            "properties": {
+                "organization_name": {
+                    "description": "OrganizationName is the name of the organization",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.RoleInfo": {
+            "type": "object",
+            "properties": {
+                "role_name": {
+                    "description": "RoleName represents the true role name",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.SchemaInfo": {
+            "type": "object",
+            "properties": {
+                "schema_name": {
+                    "description": "SchemaName represents the true schema name",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.TableInfo": {
+            "type": "object",
+            "properties": {
+                "table_name": {
+                    "description": "TableName represents the true table name",
+                    "type": "string"
+                },
+                "table_type": {
+                    "description": "TableType represents the true table type",
+                    "type": "string"
+                }
+            }
+        },
+        "snowflakemetadata.TagInfo": {
+            "type": "object",
+            "properties": {
+                "tag_name": {
+                    "description": "TagName represents the true tag name",
+                    "type": "string",
+                    "x-order": "0"
+                },
+                "allowed_values": {
+                    "description": "AllowedValues represents the true tag allowed values",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "x-order": "1"
+                }
+            }
+        },
+        "snowflakemetadata.ViewInfo": {
+            "type": "object",
+            "properties": {
+                "view_name": {
+                    "description": "ViewName represents the true view name",
+                    "type": "string",
+                    "x-order": "0"
+                },
+                "is_secure": {
+                    "description": "IsSecure represents if the view is of the secure type",
+                    "type": "boolean",
+                    "x-order": "1"
+                },
+                "is_materialized": {
+                    "description": "IsMaterialized represents if the view is of the materialized type",
+                    "type": "boolean",
+                    "x-order": "2"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

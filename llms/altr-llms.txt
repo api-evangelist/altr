@@ -1,0 +1,75 @@
+# ALTR
+
+> ALTR is a unified data security platform that discovers, classifies, masks, tokenizes and monitors
+> sensitive data across Snowflake, Databricks and OLTP databases (PostgreSQL, MySQL, SQL Server,
+> Oracle, MongoDB). This file is an API Evangelist-generated index of ALTR's public API surface — it is
+> not published by ALTR.
+
+Generated: 2026-08-06 by the API Evangelist enrichment pipeline (method: generated).
+ALTR publishes no llms.txt of its own (https://altr.com/llms.txt and https://docs.altr.com/llms.txt both 404).
+
+Authentication for every REST API below is HTTP Basic: username = API key name, password = API key
+secret, created at Settings > Preferences > API in the ALTR console. There is no OAuth, no
+idempotency key, and no RFC 9457 problem+json.
+
+## Core
+
+- [ALTR](https://altr.com/): Product site.
+- [Documentation](https://docs.altr.com/): Full platform documentation.
+- [API index](https://docs.altr.com/account-and-api/api/): ALTR's own list of all 23 public APIs.
+- [API keys](https://docs.altr.com/account-and-api/api/api-keys/): How to create the Basic-auth credential pair.
+- [Release notes](https://docs.altr.com/release-notes/2026/): Dated, roughly weekly.
+- [Trust center](https://trust.altr.com/): SOC 2, PCI DSS, HIPAA; responsible disclosure control.
+- [GitHub](https://github.com/altrsoftware): MCP server, Terraform provider, Shield SDK, FPE libraries.
+
+## APIs (21 specifications harvested, 375 operations)
+
+- [Management API (MAPI)](https://altrnet.live.altr.com/api/swagger/): 108 ops, OpenAPI 3.0.3 v12.25.1. Databases, policies, users, tags, thresholds, anomalies, audits, SSO/SCIM.
+- [Unified Policy API](https://api.live.altr.com/v1/unified-policy/docs): 27 ops. Policies, rules, access management, access requests.
+- [Classification Engine API](https://docs.classification.live.altr.com/v1/docs): 49 ops. Classifiers, collections, jobs, findings tree, human review decisions.
+- [RBAC API](https://api.live.altr.com/v1/rbac/api-docs/index.html): 22 ops. Snowflake role grants.
+- [Datastore Information Service](https://api.live.altr.com/v1/dis/swagger/): 20 ops. Database/schema/table/column metadata, tags, masking types.
+- [Sidecar/Agent Configuration API](https://docs.sc-control.live.altr.com/v1/repo-config-docs): 39 ops. Agents, repos, service users, sidecars, listeners, bindings.
+- [Audit Report API](https://docs.audit-report.live.altr.com/v1/audit-reports/docs): 17 ops. Report definitions, instances, comments, sign-offs.
+- [Snowflake Metadata API](https://api.live.altr.com/v1/snowflake/metadata-api-docs/index.html): 13 ops.
+- [Auto Tagging API](https://api.live.altr.com/v1/tag/auto-tagging-api-docs/index.html): 12 ops.
+- [DAM Alerting API](https://docs.dam-alerting.live.altr.com/v1/dam-alerting/docs): 12 ops. Alert rules, triggered alerts, acknowledgement.
+- [Notification Integration API](https://docs.notifications.live.altr.com/v1/notification-integration/docs): 12 ops. Slack, Teams, PagerDuty, ServiceNow, Splunk and custom webhook delivery + event subscriptions.
+- [Service User Service API](https://docs.service-user.live.altr.com/v1/docs): 12 ops.
+- [Telemetry API](https://docs.sc-control.live.altr.com/v1/sidecars/telemetry/docs): 9 ops. Agent and sidecar instance health.
+- [Tag Masking API](https://api.live.altr.com/v1/tag/masking-api-docs/index.html): 7 ops.
+- [Critical Tokenization API](https://docs.critical.live.altr.com/v2): 4 ops. PCI-scoped tokenize/detokenize.
+- [Query Audits API](https://api.live.altr.com/v1/query-audits/api-docs/index.html): 2 ops.
+- [Query Dashboard API](https://api.live.altr.com/v1/dam/docs): 2 ops.
+- [Sidecar Audit API](https://docs.sc-control.live.altr.com/v1/audits/docs): 2 ops.
+- [Access Tokens API](https://docs.sc-control.live.altr.com/v1/access-tokens/docs): 2 ops.
+- [Tag Value Refresh API](https://api.live.altr.com/v1/tag/refresh-api-docs/index.html): 2 ops.
+- [Databricks tag policy (alpha)](https://api.live.altr.com/v1/alpha/dbx/tag-policy/docs/index.html): 2 ops. Explicitly alpha.
+
+## Not anonymously reachable
+
+- Vaulted Tokenization API (https://docs.vault.live.altr.com/api/v2) — HTTP 403 to anonymous callers.
+- Key Management API (FPE keys and tweaks) — served per organization at https://<org-id>.kma.live.altr.com/v1/docs.
+
+## Agents
+
+- [ALTR MCP Server](https://github.com/altrsoftware/altr-mcp-server): Official, open source (GPL-3.0). 156 tools over 13 domains. `uvx altr-mcp`. Registered as io.github.altrsoftware/altr-mcp-server. stdio, SSE and streamable-http. RESTRICTED_TOOLS enforces a read-only deployment at the server.
+- [MCP tool docs](https://github.com/altrsoftware/altr-mcp-server/blob/main/docs/index.md)
+- No A2A agent card is published (/.well-known/agent-card.json and /.well-known/agent.json both 404).
+
+## SDKs and tooling
+
+- [@altrsoftware/shield](https://www.npmjs.com/package/@altrsoftware/shield): Node.js Shield SDK (Apache-2.0).
+- [altr-mcp](https://pypi.org/project/altr-mcp/): PyPI, the MCP server.
+- [terraform-provider-altr](https://registry.terraform.io/providers/altrsoftware/altr/latest): v1.2.0.
+- [java-fpe](https://github.com/altrsoftware/java-fpe) / [clang-fpe](https://github.com/altrsoftware/clang-fpe): FF3 format-preserving encryption.
+
+## API Evangelist artifacts in this repository
+
+- openapi/ — 21 harvested specifications (verbatim JSON in openapi/_original/)
+- mcp/altr-mcp.yml, mcp/altr-tool-crosswalk.yml — 156 tools, 143 bound to a backing REST operation
+- authentication/, conventions/, errors/, lifecycle/, conformance/, data-model/, changelog/, cli/
+- asyncapi/altr-events-webhooks.yml — webhook/event delivery surface (no AsyncAPI published)
+- security/ — domain security probe, trust center, vulnerability disclosure
+- skills/ — six packaged agent skills grounded in verified operationIds
+- overlays/ — one OpenAPI Overlay 1.0.0 per harvested spec
