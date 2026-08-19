@@ -1,0 +1,454 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Agent Tasks API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Agent Tasks
+paths:
+  /agents/{agent_id}/tasks:
+    get:
+      description: List all Tasks for a given Agent.
+      parameters:
+      - description: ID of Agent.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListTasksOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal Server Error
+      security:
+      - basic: []
+      summary: List Tasks for an Agent.
+      tags:
+      - Agent Tasks
+    post:
+      parameters:
+      - description: ID of Agent.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tasks.CreateTaskInput'
+        description: Task details.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Task'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal Server Error
+      security:
+      - basic: []
+      summary: Create a new Task for an Agent.
+      tags:
+      - Agent Tasks
+  /agents/{agent_id}/tasks/{task_id}:
+    delete:
+      description: This will decrement the Agent's task_count by 1.
+      parameters:
+      - description: ID of Agent.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: ID of Task.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal Server Error
+      security:
+      - basic: []
+      summary: Delete Task.
+      tags:
+      - Agent Tasks
+    get:
+      parameters:
+      - description: ID of Agent.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: ID of Task.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Task'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal Server Error
+      security:
+      - basic: []
+      summary: Get a Task.
+      tags:
+      - Agent Tasks
+    patch:
+      description: Update a Task for a given Agent with the provided details. Fields that are not provided will not be updated.
+      parameters:
+      - description: ID of Agent.
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: ID of Task.
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tasks.UpdateTaskInput'
+        description: Task details to update
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Task'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too Many Requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal Server Error
+      security:
+      - basic: []
+      summary: Update a Task.
+      tags:
+      - Agent Tasks
+components:
+  schemas:
+    management.SslConfig:
+      description: SSL/TLS configuration - optional for all SIS repo types
+      properties:
+        enabled:
+          type: boolean
+        hostname_in_certificate:
+          type: string
+        trust_server_certificate:
+          type: boolean
+        trust_store_password_arn:
+          type: string
+        trust_store_path:
+          type: string
+      type: object
+    management.TaskConfiguration:
+      properties:
+        audit_file_path:
+          description: MSSQL and PostgreSQL - absolute path to audit files (e.g., /var/opt/mssql/log/*.sqlaudit or /var/lib/postgresql/audit/*.csv)
+          type: string
+        audit_file_type:
+          description: 'PostgreSQL specific - file type: "stderr", "csv", or "json"'
+          type: string
+        classification_type:
+          type: integer
+        collection_name:
+          description: Classification specific - Collection name
+          type: string
+        condition_types:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        initial_audit_timestamp:
+          description: Optional for all types - RFC3339 timestamp for initial audit cutoff
+          type: string
+        log_line_prefix:
+          description: PostgreSQL specific - log_line_prefix setting (required when audit_file_type is "stderr")
+          type: string
+        sample_size:
+          description: 'Classification specific - per-task sampling budget forwarded into each spawned job: a
+
+            positive integer row count for ROWS, or a percentage 1-100 for PERCENT. Optional; paired with sample_type.'
+          type: integer
+        sample_strategy:
+          type: string
+        sample_type:
+          description: 'Classification specific - unit for sample_size: one of ROWS or PERCENT (case-insensitive).
+
+            Optional; must be provided together with sample_size.'
+          type: string
+        service_name:
+          description: Oracle specific - Oracle service name
+          type: string
+        ssl_config:
+          $ref: '#/components/schemas/management.SslConfig'
+        table_name:
+          description: MySQL specific - table name for audit data (requires service user)
+          type: string
+      type: object
+      x-order: '4'
+    tasks.CreateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '2'
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '3'
+      type: object
+    management.ListTasksOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        tasks:
+          items:
+            $ref: '#/components/schemas/management.Task'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    tasks.UpdateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+        name:
+          description: Name If provided, the name cannot be an empty string.
+          type: string
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.Schedule:
+      properties:
+        max_duration:
+          description: MaxDuration is an optional ISO 8601 duration string that indicates the maximum expected duration of a task run.
+          type: string
+        timezone:
+          description: Timezone is an IANA timezone name (e.g., "America/New_York"). Defaults to "UTC" if omitted.
+          example: America/New_York
+          type: string
+        type:
+          enum:
+          - CRON
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+      type: object
+      x-order: '5'
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.Task:
+      properties:
+        agent_id:
+          type: string
+          x-order: '3'
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        created_at:
+          type: string
+          x-order: '8'
+        description:
+          type: string
+          x-order: '2'
+        id:
+          type: string
+          x-order: '0'
+        name:
+          type: string
+          x-order: '1'
+        repo_name:
+          type: string
+          x-order: '4'
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '5'
+        updated_at:
+          type: string
+          x-order: '9'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

@@ -1,0 +1,2142 @@
+{
+  "item": [
+    {
+      "id": "9db29e01-4d21-4dcc-9892-919a4803090d",
+      "name": "Definitions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9568ab5d-eeec-4df7-9c05-44fd89675e44",
+          "name": "List report definitions.",
+          "request": {
+            "name": "List report definitions.",
+            "description": {
+              "content": "Returns a paginated list of audit report definitions for the authenticated organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of results (default: 25, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "<boolean>",
+                  "description": "Show only archived definitions"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c78ecbb9-dedb-4f72-b19e-0264338f9ff5",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"has_more\": false,\n  \"items\": [\n    {\n      \"archived_at\": \"string\",\n      \"created_at\": \"string\",\n      \"definition_id\": \"string\",\n      \"delivery\": {\n        \"channels\": [\n          {\n            \"enabled\": true,\n            \"recipients\": [\n              \"admin@company.com\",\n              \"compliance@company.com\"\n            ],\n            \"type\": \"email\"\n          },\n          {\n            \"enabled\": true,\n            \"recipients\": [\n              \"admin@company.com\",\n              \"compliance@company.com\"\n            ],\n            \"type\": \"email\"\n          }\n        ]\n      },\n      \"description\": \"Tracks schema changes across production databases\",\n      \"filters\": {\n        \"filter_groups\": [\n          {\n            \"filters\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"filters\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"integration_type\": \"oltp\",\n      \"last_triggered_at\": \"string\",\n      \"name\": \"Weekly DDL Audit\",\n      \"report_window\": {\n        \"lookback_days\": 7,\n        \"timezone\": \"America/New_York\"\n      },\n      \"required_approvals\": 2,\n      \"retention_days\": 90,\n      \"schedule\": {\n        \"cron\": \"0 9 ? * MON\",\n        \"enabled\": true,\n        \"timezone\": \"America/New_York\"\n      },\n      \"updated_at\": \"string\"\n    },\n    {\n      \"archived_at\": \"string\",\n      \"created_at\": \"string\",\n      \"definition_id\": \"string\",\n      \"delivery\": {\n        \"channels\": [\n          {\n            \"enabled\": true,\n            \"recipients\": [\n              \"admin@company.com\",\n              \"compliance@company.com\"\n            ],\n            \"type\": \"email\"\n          },\n          {\n            \"enabled\": true,\n            \"recipients\": [\n              \"admin@company.com\",\n              \"compliance@company.com\"\n            ],\n            \"type\": \"email\"\n          }\n        ]\n      },\n      \"description\": \"Tracks schema changes across production databases\",\n      \"filters\": {\n        \"filter_groups\": [\n          {\n            \"filters\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"filters\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"integration_type\": \"oltp\",\n      \"last_triggered_at\": \"string\",\n      \"name\": \"Weekly DDL Audit\",\n      \"report_window\": {\n        \"lookback_days\": 7,\n        \"timezone\": \"America/New_York\"\n      },\n      \"required_approvals\": 2,\n      \"retention_days\": 90,\n      \"schedule\": {\n        \"cron\": \"0 9 ? * MON\",\n        \"enabled\": true,\n        \"timezone\": \"America/New_York\"\n      },\n      \"updated_at\": \"string\"\n    }\n  ],\n  \"next_cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b89b255a-97f4-47be-b399-f3a404a20467",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "af0ff67a-d345-494f-a021-0963f2e02144",
+          "name": "Create a report definition.",
+          "request": {
+            "name": "Create a report definition.",
+            "description": {
+              "content": "Creates a new audit report definition with filters, schedule, and delivery configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": \"<boolean>\",\n        \"recipients\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"type\": \"<string>\"\n      },\n      {\n        \"enabled\": \"<boolean>\",\n        \"recipients\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"type\": \"<string>\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"report_window\": {\n    \"lookback_days\": \"<integer>\",\n    \"timezone\": \"<string>\"\n  },\n  \"required_approvals\": \"<integer>\",\n  \"retention_days\": \"<integer>\",\n  \"schedule\": {\n    \"cron\": \"<string>\",\n    \"enabled\": \"<boolean>\",\n    \"timezone\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5e2250ff-41dc-4ad6-b22a-06391f7dfa86",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived_at\": \"string\",\n  \"created_at\": \"string\",\n  \"definition_id\": \"string\",\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"last_triggered_at\": \"string\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  },\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "852da53a-8fbd-4314-b608-a809e8d234fa",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "327304c1-4649-47c1-a8d1-158a80d446ae",
+              "name": "Definition limit reached",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "060ffff1-09fe-47dd-92a4-577207ad11c2",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eddc9180-bf4a-4101-86b3-d05516fb953f",
+          "name": "Archive a report definition.",
+          "request": {
+            "name": "Archive a report definition.",
+            "description": {
+              "content": "Soft-deletes an audit report definition by setting archived_at. Archived definitions are hidden from default list view but remain queryable. Must be restored before editing or triggering.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ":definition_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definition_id",
+                  "description": "(Required) Definition ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9720e7af-ecfa-43c9-837e-79df7f278403",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived_at\": \"string\",\n  \"created_at\": \"string\",\n  \"definition_id\": \"string\",\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"last_triggered_at\": \"string\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  },\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e03b95bc-e11a-4b2b-ba28-6e1429ede206",
+              "name": "Definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97543e89-ebb1-4cfd-bd48-9420bfc6d39b",
+              "name": "Definition already archived",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dac2403f-4361-4c70-9b97-393d9dda79ab",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "457cf931-aa42-4362-a55d-02e4dac770f5",
+          "name": "Get a report definition.",
+          "request": {
+            "name": "Get a report definition.",
+            "description": {
+              "content": "Returns a single audit report definition by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ":definition_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definition_id",
+                  "description": "(Required) Definition ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "abcb6751-a237-42d5-a7cc-3ebf7082e1b7",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived_at\": \"string\",\n  \"created_at\": \"string\",\n  \"definition_id\": \"string\",\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"last_triggered_at\": \"string\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  },\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "525fda23-a4cf-4a81-8b43-c8b302a208f0",
+              "name": "Definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b6b6d66-8c9e-46a8-be5d-9c49201e03b9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "72dc4a91-43d8-4fec-8327-42540adf5048",
+          "name": "Update a report definition.",
+          "request": {
+            "name": "Update a report definition.",
+            "description": {
+              "content": "Replaces the audit report definition with the provided body, preserving immutable fields.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ":definition_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definition_id",
+                  "description": "(Required) Definition ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": \"<boolean>\",\n        \"recipients\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"type\": \"<string>\"\n      },\n      {\n        \"enabled\": \"<boolean>\",\n        \"recipients\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"type\": \"<string>\"\n      }\n    ]\n  },\n  \"description\": \"<string>\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"<string>\",\n            \"mode\": \"<string>\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"report_window\": {\n    \"lookback_days\": \"<integer>\",\n    \"timezone\": \"<string>\"\n  },\n  \"required_approvals\": \"<integer>\",\n  \"retention_days\": \"<integer>\",\n  \"schedule\": {\n    \"cron\": \"<string>\",\n    \"enabled\": \"<boolean>\",\n    \"timezone\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cf26b904-5175-4cf1-8feb-568041701872",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived_at\": \"string\",\n  \"created_at\": \"string\",\n  \"definition_id\": \"string\",\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"last_triggered_at\": \"string\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  },\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b883cebc-3581-49d6-b243-072e28763514",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1dc1d35f-f0aa-4d40-b6ba-8d386411e0c1",
+              "name": "Definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac81459a-d341-435e-9532-56127bcfc9ce",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "720717f8-650a-485f-9df7-c8e2445705a4",
+          "name": "Restore an archived report definition.",
+          "request": {
+            "name": "Restore an archived report definition.",
+            "description": {
+              "content": "Removes the archived status from a definition, making it active again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ":definition_id",
+                "restore"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definition_id",
+                  "description": "(Required) Definition ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e8ac2288-fb1e-4a24-99f4-2b298dba1a70",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "restore"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"archived_at\": \"string\",\n  \"created_at\": \"string\",\n  \"definition_id\": \"string\",\n  \"delivery\": {\n    \"channels\": [\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      },\n      {\n        \"enabled\": true,\n        \"recipients\": [\n          \"admin@company.com\",\n          \"compliance@company.com\"\n        ],\n        \"type\": \"email\"\n      }\n    ]\n  },\n  \"description\": \"Tracks schema changes across production databases\",\n  \"filters\": {\n    \"filter_groups\": [\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      },\n      {\n        \"filters\": [\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          },\n          {\n            \"field\": \"database_name\",\n            \"mode\": \"include\",\n            \"patterns\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"range\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"value\": \"<boolean>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"integration_type\": \"oltp\",\n  \"last_triggered_at\": \"string\",\n  \"name\": \"Weekly DDL Audit\",\n  \"report_window\": {\n    \"lookback_days\": 7,\n    \"timezone\": \"America/New_York\"\n  },\n  \"required_approvals\": 2,\n  \"retention_days\": 90,\n  \"schedule\": {\n    \"cron\": \"0 9 ? * MON\",\n    \"enabled\": true,\n    \"timezone\": \"America/New_York\"\n  },\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8389b2aa-70f3-420a-8f43-7ce5da5d409e",
+              "name": "Definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "restore"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5aee367-1f40-4e83-bc93-de0e5e0a8944",
+              "name": "Definition is not archived",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "restore"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f414d03-1ba0-4f4a-b6dd-534aa0fb2e56",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "restore"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31fb9f17-8211-4ab1-8f0c-2c7298282ee1",
+          "name": "Trigger on-demand report generation.",
+          "request": {
+            "name": "Trigger on-demand report generation.",
+            "description": {
+              "content": "Queues a new report instance and starts the Step Function pipeline. Rate-limited to once per 5 minutes per definition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "audit-reports",
+                "definitions",
+                ":definition_id",
+                "trigger"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definition_id",
+                  "description": "(Required) Definition ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f92cba7d-98d3-4b43-b9d3-d2c348c464e6",
+              "name": "Report generation initiated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"instance_id\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2fb818f3-848f-4ba4-a88e-36ab3a9f6f89",
+              "name": "Definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb4517ad-8c2b-42cb-b619-1a7e677be07b",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1677779-1985-4ef4-a607-abd0ed18aeb6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "audit-reports",
+                    "definitions",
+                    ":definition_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definition_id",
+                      "description": "(Required) Definition ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 1239,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 9409\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.audit-report.live.altr.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "00f23896-6ea6-49b6-81fd-de79dfec89a8",
+    "name": "ALTR Audit Report Definitions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

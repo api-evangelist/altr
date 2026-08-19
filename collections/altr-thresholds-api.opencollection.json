@@ -1,0 +1,385 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Thresholds API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "thresholds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns an array of queries without full relationship data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/thresholds",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns an array of queries without full relationship data"
+        },
+        {
+          "info": {
+            "name": "Creates a new threshold with a default configuration of always on (unless specified to be off), all whitelisted, and 0 records/minute access",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/thresholds",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new threshold with a default configuration of always on (unless specified to be off), all whitelisted, and 0 records/minute access"
+        },
+        {
+          "info": {
+            "name": "Returns an a threshold with expanded details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns an a threshold with expanded details"
+        },
+        {
+          "info": {
+            "name": "Updates a threshold and its relationships.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "If there are active anomalies for this threshold, no updates can be performed on the threshold what so ever."
+        },
+        {
+          "info": {
+            "name": "Deletes a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a threshold"
+        },
+        {
+          "info": {
+            "name": "Enables or disables a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/set-enabled",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables or disables a threshold"
+        },
+        {
+          "info": {
+            "name": "Updates basic threshold details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/details",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates basic threshold details"
+        },
+        {
+          "info": {
+            "name": "Replaces existing threshold access rate",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/access-rate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces existing threshold access rate"
+        },
+        {
+          "info": {
+            "name": "Replaces existing threshold time window",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/time-window",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces existing threshold time window"
+        },
+        {
+          "info": {
+            "name": "Add IPs to the whitelist for a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/ips",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add IPs to the whitelist for a threshold"
+        },
+        {
+          "info": {
+            "name": "Remove IPs to the whitelist for a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/ips",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove IPs to the whitelist for a threshold"
+        },
+        {
+          "info": {
+            "name": "Add groups to a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/groups",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add groups to a threshold"
+        },
+        {
+          "info": {
+            "name": "Remove groups from a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/groups",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove groups from a threshold"
+        },
+        {
+          "info": {
+            "name": "Add locks to a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/locks",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add locks to a threshold"
+        },
+        {
+          "info": {
+            "name": "Remove locks from a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/locks",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove locks from a threshold"
+        },
+        {
+          "info": {
+            "name": "Add applications to a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/applications",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add applications to a threshold"
+        },
+        {
+          "info": {
+            "name": "Remove applications from a threshold",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/thresholds/:id/applications",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove applications from a threshold"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

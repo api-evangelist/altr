@@ -1,0 +1,273 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Classification Engine Classifiers API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Classifiers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List classifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Number of items to return (default: 100, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ",
+                "type": "query",
+                "description": "Continuation token for pagination (returned in previous response)"
+              },
+              {
+                "name": "prefix",
+                "value": "email",
+                "type": "query",
+                "description": "Prefix to filter classifier names (e.g., 'email' matches 'email_address', 'email_domain')"
+              },
+              {
+                "name": "order_by",
+                "value": "name",
+                "type": "query",
+                "description": "Field to order by: 'name' (alphabetical) or 'collection_count' (number of collections using this classifier)"
+              },
+              {
+                "name": "sort_order",
+                "value": "asc",
+                "type": "query",
+                "description": "Sort order: 'asc' (ascending) or 'desc' (descending)"
+              },
+              {
+                "name": "exclude_collection",
+                "value": "pii_data",
+                "type": "query",
+                "description": "Exclude classifiers that belong to this collection (useful when adding classifiers to a collection)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a list of all classifiers with optional pagination, prefix filtering, and sorting. Use exclude_collection to filter out classifiers already assigned to a specific collection."
+        },
+        {
+          "info": {
+            "name": "Create classifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new classifier. Pattern uses RE2 regex syntax. Classifier names starting with 'ALTR' are reserved. Sampling (sample_size, sample_type) is configured on the job, not the classifier.\n\nThree modes are supported:\n\n**Legacy (regex only)** — Provide a top-level `pattern` and `minimum_threshold`. No compound_ruleset needed.\n\n**Regex + metadata filter** — Same top-level pattern fields, plus a `compound_ruleset` with METADATA or COLUMN_LOCATION conditions to narrow matches.\n\n**Compound ruleset "
+        },
+        {
+          "info": {
+            "name": "Get classifier by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers/:classifier_name",
+            "params": [
+              {
+                "name": "classifier_name",
+                "value": "email_address",
+                "type": "path",
+                "description": "Classifier name (URL-encoded if contains special characters)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a specific classifier by its name, including its pattern, thresholds, and associated collections."
+        },
+        {
+          "info": {
+            "name": "Update classifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers/:classifier_name",
+            "params": [
+              {
+                "name": "classifier_name",
+                "value": "email_address",
+                "type": "path",
+                "description": "Classifier name (URL-encoded if contains special characters)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Updates a classifier's properties using RESTful PATCH semantics.\n\n**PATCH semantics**: Omitted fields are **preserved** (not modified). Only fields explicitly\nincluded in the request body are updated. This allows partial updates without affecting other fields.\n\n**Clearing fields**: To explicitly clear a field, send it with an empty/null/zero value:\n- Clear `pattern`: send `\"pattern\": \"\"` or `\"pattern\": null`\n- Clear `compound_ruleset`: send `\"compound_ruleset\": {}` or `\"compound_ruleset\": null`\n"
+        },
+        {
+          "info": {
+            "name": "Delete classifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers/:classifier_name",
+            "params": [
+              {
+                "name": "classifier_name",
+                "value": "email_address",
+                "type": "path",
+                "description": "Classifier name (URL-encoded if contains special characters)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Soft deletes a classifier by its name. This will remove it from all collections and mark it as deleted. ALTR managed classifiers cannot be deleted."
+        },
+        {
+          "info": {
+            "name": "Append collections to classifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers/:classifier_name/collections/append",
+            "params": [
+              {
+                "name": "classifier_name",
+                "value": "email_address",
+                "type": "path",
+                "description": "Classifier name (URL-encoded if contains special characters)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Adds multiple collections to an existing classifier in a single atomic transaction. All collections must exist and not already be associated with this classifier. ALTR managed collections cannot be appended to classifiers."
+        },
+        {
+          "info": {
+            "name": "Remove collections from classifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.classification.live.altr.com/v1/classifiers/:classifier_name/collections/remove",
+            "params": [
+              {
+                "name": "classifier_name",
+                "value": "email_address",
+                "type": "path",
+                "description": "Classifier name (URL-encoded if contains special characters)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Removes multiple collections from an existing classifier in a single atomic transaction. All collections must be currently associated with this classifier. Collections with names starting with \"ALTR\" (such as the ALTR Managed collection) cannot be removed from any classifier."
+        },
+        {
+          "info": {
+            "name": "List the org's tag vocabulary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/tags",
+            "params": [
+              {
+                "name": "key",
+                "value": "type",
+                "type": "query",
+                "description": "Exact-match filter on the tag key (the part before ':')"
+              },
+              {
+                "name": "prefix",
+                "value": "type:s",
+                "type": "query",
+                "description": "Prefix filter on the full key:value tag string (typeahead)"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Page size (default 100, max 500)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0",
+                "type": "query",
+                "description": "Continuation token from the previous response (infinite-scroll pagination)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns every distinct key:value tag currently in use across the org's classifiers — both condition tags (compound-ruleset nodes) and classifier attribute tags — so tag editors can offer pick-from-existing suggestions. Each entry carries the parsed key/value, the number of classifiers using the tag, and where it appears (condition, attributes, or both). Deleted classifiers are excluded; imported ALTR-managed classifiers are included."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

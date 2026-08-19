@@ -1,0 +1,725 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Anomalies API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: anomalies
+  description: Operations about anomalies
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/thresholds#Anomaly
+paths:
+  /anomalies:
+    get:
+      tags:
+      - anomalies
+      summary: Returns an array of anomalies without full data
+      operationId: getAnomalies
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          default: dt
+          enum:
+          - dt
+        description: The property on which to sort anomalies
+      - name: archived
+        in: query
+        schema:
+          type: integer
+          default: 0
+          enum:
+          - 0
+          - 1
+        description: Whether to return only open anomalies or only archived (0 - only open anomalies, 1 - only archived anomalies)
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Anomalies'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /anomalies/{id}:
+    get:
+      tags:
+      - anomalies
+      summary: Returns an anomaly with all of its details
+      operationId: getAnomalyDetails
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Anomaly'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /anomalies/{id}/archive:
+    patch:
+      tags:
+      - anomalies
+      summary: Archives an anomaly and applies an AccessStatus to the actor
+      operationId: archiveAnomaly
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BaseAnomaly'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /anomalies/{id}/note:
+    post:
+      tags:
+      - anomalies
+      summary: Adds a note to an anomaly
+      operationId: addAnomalyNote
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                  minLength: 1
+                  maxLength: 500
+                  description: The body of the note to post
+                  example: This anomaly was closed because it was a false positive.
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The ID of the note
+                      typeId:
+                        type: integer
+                        description: The ID of the anomaly this note was posted to
+                      userId:
+                        type: integer
+                        description: The ID of the administrator who added this note
+                      dt:
+                        type: string
+                        format: date-time
+                        description: The date-time from the moment this note was added
+                      note:
+                        type: string
+                        description: The actual text of this note
+                        example: This anomaly was closed because it was a false positive.
+                      user:
+                        type: object
+                        properties:
+                          firstName:
+                            type: string
+                            description: First name of the current user.
+                          lastName:
+                            type: string
+                            description: Last name of the current user.
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    BaseAnomaly:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the anomaly being requested
+          example: 1
+        machineId:
+          type: integer
+          description: The ID of the machine used to make the query that caused the anomaly (must appear with userId, will never appear with serverId).
+          example: 8
+        userId:
+          type: integer
+          description: The ID of the user who made the query that caused the anomaly (must appear with machineId, will never appear with serverId)
+          example: 2
+        serverId:
+          type: integer
+          description: The ID of the application who executed the query that caused the anomaly (will never appear with serverId or machineId)
+          example: 7
+        thresholdId:
+          type:
+          - integer
+          - 'null'
+          description: The ID of the threshold that triggered the anomaly (preserved if threshold is deleted)
+          example: 5
+        thresholdName:
+          type: string
+          description: The name of the threshold that triggered the anomaly (preserved if threshold is deleted), if this is a UAP (Unified Access Policy) anomaly it is the name of the policy
+          example: Threshold Name Here
+        archived:
+          description: Either false OR the date-time the anomaly was closed
+          type: string
+          format: date-time
+        dt:
+          type: string
+          format: date-time
+          description: The date-time from when the anomaly was generated
+        timeWindowStart:
+          description: Either null OR the date-time the anomaly was calculated to have been started (earliest point transactions contributed to the anomaly)
+          type:
+          - string
+          - 'null'
+          format: date-time
+        ruleId:
+          description: If this is a UAP (Unified Access Policy) anomaly then this points to the UAP rule that triggered it.
+          type:
+          - string
+          - 'null'
+    FullThreshold:
+      type: object
+      properties:
+        details:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+              description: The id of the threshold that is returned
+            name:
+              type: string
+              example: My Threshold
+              description: The name of the threshold that is returned
+            isEnabled:
+              type: boolean
+              example: true
+              description: Whether or not this threshold is currently being applied
+            action:
+              type: integer
+              example: What action this threshold will take when ruleset is violated
+        hasActiveAnomalies:
+          description: A boolean to indicate whether or not this threshold can be modified
+          type: boolean
+          example: false
+        groups:
+          type: array
+          description: An array of objects describing threshold-to-group relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the group relationship to this threshold
+
+
+              **userGroupId** - The unique id of the group itself
+
+
+              **userGroupName** - The display name of the related group
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 8
+              userGroupId:
+                type: integer
+                example: 1
+              userGroupName:
+                type: string
+                example: User Group Name
+        locks:
+          type: array
+          description: An array of objects describing threshold-to-lock relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the lock relationship to this threshold
+
+
+              **lockId** - The unique id of the lock itself
+
+
+              **lockName** - The display name of the related lock
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 7
+              lockId:
+                type: integer
+                example: 1
+              lockName:
+                type: string
+                example: 1
+        applications:
+          type: array
+          description: An array of objects describing threshold-to-application relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the application relationship to this threshold
+
+
+              **serverId** - The unique id of the application itself
+
+
+              **serverFriendlyName** - The display name of the related application
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 7
+              serverId:
+                type: integer
+                example: 1
+              serverFriendlyName:
+                type: string
+                example: Applications Name
+        users:
+          type: integer
+          description: The number of users this threshold is applied to (as a result of group membership)
+          example: 2
+        accessRate:
+          description: 'Details on the access rate for this threshold
+
+
+            **limit** - Number of records per unit (below) that may be accessed before action is taken
+
+
+            **unit** - The time frame inside which the above limit is tracked
+
+            '
+          type: object
+          properties:
+            limit:
+              type: integer
+              example: 1
+            unit:
+              type: string
+              example: minute
+        ips:
+          description: An array of IP address that are whitelisted for this threshold. No IPs here means ALL IPs are whitelisted. Non-whitelisted IPs cannot access data.
+          type: array
+          items:
+            type: object
+            description: 'Each IP object has these properties
+
+
+              **id** - The ID of the threshold-to-ip relationship
+
+
+              **ipAddress** - The string value of the IP address/range
+
+              '
+            properties:
+              id:
+                type: integer
+                example: 7
+              ipAddress:
+                type: string
+                example: 192.0.0.1
+                description: Can be ipv4 or ipv6
+        timeWindow:
+          description: An array of objects that describe the time window rules (if any).
+          type: array
+          items:
+            type: object
+            description: 'Each object has these properties
+
+
+              **days** - Which days per week should this threshold be in effect
+
+
+              **startTime** - Which time on each active day should the threshold start being in effect
+
+
+              **endTime** - Which time on each active day should the threshold stop being in effect
+
+
+              **timezone** - A zoneinfo/tz-database string for what timezone the threshold times should be applied in
+
+              '
+            properties:
+              day:
+                type: string
+                enum:
+                - sunday
+                - monday
+                - tuesday
+                - wednesday
+                - thursday
+                - friday
+                - saturday
+              startTime:
+                type: string
+                format: date-time
+              endTime:
+                type: string
+                format: date-time
+              timezone:
+                type: string
+                example: UTC
+        success:
+          type: boolean
+    Anomaly:
+      allOf:
+      - $ref: '#/components/schemas/Anomalies'
+      - type: object
+        properties:
+          notes:
+            description: An array of notes that have been posted to this anomaly
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: The ID of the note
+                typeId:
+                  type: integer
+                  description: The ID of the anomaly this note was posted to
+                userId:
+                  type: integer
+                  description: The ID of the administrator who added this note
+                dt:
+                  type: string
+                  format: date-time
+                  description: The date-time from the moment this note was added
+                note:
+                  type: string
+                  description: The actual text of this note
+                  example: This anomaly was closed due to being a false positive.
+                user:
+                  $ref: '#/components/schemas/Administrator'
+          threshold:
+            $ref: '#/components/schemas/FullThreshold'
+          transactions:
+            description: An array of objects that describe what data has been accessed in this anomaly
+            type: array
+            items:
+              type: object
+              properties:
+                columnName:
+                  type: string
+                  description: The name of a column requested by the actor during this anomaly
+                records:
+                  type: integer
+                  description: The number of times this column was queried during this anomaly
+                dt:
+                  type: string
+                  format: date-time
+                  description: The date-time from the most recent time this column was queried
+                ip:
+                  oneOf:
+                  - type: string
+                    format: ipv4
+                  - type: string
+                    format: ipv6
+                  description: The IP address the actor executed the most recent query from
+    Anomalies:
+      allOf:
+      - $ref: '#/components/schemas/BaseAnomaly'
+      - type: object
+        properties:
+          user:
+            description: If the actor was a user, its information will appear here.
+            type: object
+            properties:
+              id:
+                type: integer
+                description: The ID of the user who executed the queries that caused the anomaly
+                example: 2
+              firstName:
+                type: string
+                description: The first name of the user who executed the queries that caused the anomaly (may be a query tag instead)
+                example: ALTR_USER
+              lastName:
+                type: string
+                description: The last name of the user who executed the queries that caused the anomaly (may be null instead)
+                example: ALTR_USER
+              accessStatus:
+                type: integer
+                enum:
+                - 0
+                - 1
+                - 2
+                description: The current access status of the application (0 = normal, 1 = quicksanded, 2 = blocked)
+                example: 0
+          application:
+            description: If the actor was an application, its information will appear here
+            type: object
+            properties:
+              serverId:
+                type: integer
+                description: The ID of the application who executed the queries that caused the anomaly
+                example: 7
+              serverFriendlyName:
+                type: string
+                description: The display name of the application who executed the queries that caused the anomaly
+                example: Application Created Via Swagger
+              accessStatus:
+                type: integer
+                enum:
+                - 0
+                - 1
+                - 2
+                description: The current access status of the application (0 = normal, 1 = quicksanded, 2 = blocked)
+                example: 0
+          device:
+            description: This will be along side the user property if it's present. This will not present if application is the machine.
+            type: object
+            properties:
+              machineId:
+                type: integer
+                description: The ID of the application who executed the queries that caused the anomaly
+                example: 8
+              machineName:
+                type: string
+                description: The name of the device who executed the queries that caused the anomaly
+                example: DEFAULT_DEVICE
+              accessStatus:
+                type: integer
+                enum:
+                - 0
+                - 1
+                - 2
+                description: The current access status of the application (0 = normal, 1 = quicksanded, 2 = blocked)
+                example: 0
+    Administrator:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 100
+        firstName:
+          type: string
+          example: George
+        lastName:
+          type: string
+          example: Washington
+        name:
+          type: string
+          description: Combination of `lastName, firstName`
+          example: Washington, George
+        email:
+          type: string
+          example: George@altr.com
+        phone:
+          type: integer
+          example: 1115555555
+        phoneNumber:
+          type: string
+          description: Combination of country code and phone
+          example: '+11115555555'
+        activityTimestamp:
+          type: string
+          format: date-time
+        userStatus:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+          example: active
+        role:
+          type: string
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+          example: SUPERADMINISTRATOR
+        countryCode:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '1732-02-22T20:00:37.000Z'
+        isLocked:
+          type: boolean
+          description: Whether the administrator is locked out of their account or not.
+          example: false
+        username:
+          type: string
+          example: George3
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

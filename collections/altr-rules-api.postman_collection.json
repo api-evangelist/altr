@@ -1,0 +1,4116 @@
+{
+  "item": [
+    {
+      "id": "bdd2155a-b361-49c1-8da7-5e17bcb4b31c",
+      "name": "Rules",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6ffeecd5-7712-4f1b-991d-21e85fe15a93",
+          "name": "Create a Rule.",
+          "request": {
+            "name": "Create a Rule.",
+            "description": {
+              "content": "Creates a new rule with filters, severity, and delivery configuration",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rules"
+              ],
+              "host": [
+                "{{rules-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"data_source_scope\": \"<string>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"rule_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"threshold\": \"<integer>\",\n  \"timezone\": \"<string>\",\n  \"window_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c7f8d257-471e-4c46-ad98-61283a7cbc13",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules"
+                  ],
+                  "host": [
+                    "{{rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"data_source_scope\": \"<string>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"rule_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"threshold\": \"<integer>\",\n  \"timezone\": \"<string>\",\n  \"window_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_source_scope\": \"all\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"string\",\n  \"rule_id\": \"string\",\n  \"rule_type\": \"threshold\",\n  \"severity\": \"high\",\n  \"comment_required\": false,\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"email_rate_limit_seconds\": 46187,\n  \"email_recipients\": [\n    \"string\",\n    \"string\"\n  ],\n  \"enabled\": false,\n  \"threshold\": 2665,\n  \"timezone\": \"string\",\n  \"updated_at\": \"string\",\n  \"window_type\": \"daily\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de80b4ad-8759-4a0f-a687-39a71d5417af",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules"
+                  ],
+                  "host": [
+                    "{{rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"data_source_scope\": \"<string>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"rule_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"threshold\": \"<integer>\",\n  \"timezone\": \"<string>\",\n  \"window_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "697ce542-28f4-4d01-9f80-4f1f38d57d4b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules"
+                  ],
+                  "host": [
+                    "{{rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"data_source_scope\": \"<string>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"rule_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"threshold\": \"<integer>\",\n  \"timezone\": \"<string>\",\n  \"window_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90bf2f3d-b657-4048-868e-8fe0f42f4b40",
+          "name": "List Rules.",
+          "request": {
+            "name": "List Rules.",
+            "description": {
+              "content": "Returns a paginated list of DAM alerting rules",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rules",
+                ""
+              ],
+              "host": [
+                "{{rules--Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of results (default: 25, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Pagination token from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "enabled",
+                  "value": "<boolean>",
+                  "description": "Filter by enabled flag"
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Filter by severity"
+                },
+                {
+                  "disabled": false,
+                  "key": "rule_type",
+                  "value": "<string>",
+                  "description": "Filter by rule type"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9a63b175-3fec-48d0-98d3-bb77ebeac496",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ""
+                  ],
+                  "host": [
+                    "{{rules--Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"has_more\": false,\n  \"items\": [\n    {\n      \"data_source_scope\": \"snowflake\",\n      \"filter_tree\": {\n        \"op\": \"<string>\",\n        \"between\": {\n          \"end\": \"<string>\",\n          \"start\": \"<string>\"\n        },\n        \"children\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n          }\n        ],\n        \"dimension\": \"<string>\",\n        \"key_eq\": {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        \"list_value\": [\n          \"<string>\"\n        ],\n        \"number_value\": \"<number>\",\n        \"range\": {\n          \"max\": \"<number>\",\n          \"min\": \"<number>\"\n        },\n        \"string_value\": \"<string>\"\n      },\n      \"name\": \"string\",\n      \"rule_id\": \"string\",\n      \"rule_type\": \"threshold\",\n      \"severity\": \"low\",\n      \"comment_required\": false,\n      \"created_at\": \"string\",\n      \"description\": \"string\",\n      \"email_rate_limit_seconds\": 70835,\n      \"email_recipients\": [\n        \"string\",\n        \"string\"\n      ],\n      \"enabled\": true,\n      \"threshold\": 7258,\n      \"timezone\": \"string\",\n      \"updated_at\": \"string\",\n      \"window_type\": \"daily\"\n    },\n    {\n      \"data_source_scope\": \"oltp\",\n      \"filter_tree\": {\n        \"op\": \"<string>\",\n        \"between\": {\n          \"end\": \"<string>\",\n          \"start\": \"<string>\"\n        },\n        \"children\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n          }\n        ],\n        \"dimension\": \"<string>\",\n        \"key_eq\": {\n          \"key\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        \"list_value\": [\n          \"<string>\"\n        ],\n        \"number_value\": \"<number>\",\n        \"range\": {\n          \"max\": \"<number>\",\n          \"min\": \"<number>\"\n        },\n        \"string_value\": \"<string>\"\n      },\n      \"name\": \"string\",\n      \"rule_id\": \"string\",\n      \"rule_type\": \"match\",\n      \"severity\": \"high\",\n      \"comment_required\": true,\n      \"created_at\": \"string\",\n      \"description\": \"string\",\n      \"email_rate_limit_seconds\": 28899,\n      \"email_recipients\": [\n        \"string\",\n        \"string\"\n      ],\n      \"enabled\": false,\n      \"threshold\": 4673,\n      \"timezone\": \"string\",\n      \"updated_at\": \"string\",\n      \"window_type\": \"daily\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "686a5c59-bac7-4cbc-975f-c6575c1bd5df",
+              "name": "Invalid query parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ""
+                  ],
+                  "host": [
+                    "{{rules--Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bea3f44-4720-4440-89c5-98b640e67e56",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ""
+                  ],
+                  "host": [
+                    "{{rules--Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6eddcc27-d20e-492f-9f13-b6d9cebfc869",
+          "name": "Delete a rule.",
+          "request": {
+            "name": "Delete a rule.",
+            "description": {
+              "content": "Permanently deletes a rule and stops further evaluation against it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) Rule ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b3815050-52a5-4563-a7c2-ee36552871fa",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ac973292-265d-4862-8d3e-5b468151e230",
+              "name": "Rule not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f14eb78-d706-4656-92c6-7528f1b3f179",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b34af0e4-c597-42ba-a127-ea2beea045d1",
+          "name": "Get a Rule.",
+          "request": {
+            "name": "Get a Rule.",
+            "description": {
+              "content": "Returns a single rule by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) Rule ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d79806f3-40ed-44de-b559-5095bfc364e0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_source_scope\": \"all\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"string\",\n  \"rule_id\": \"string\",\n  \"rule_type\": \"threshold\",\n  \"severity\": \"high\",\n  \"comment_required\": false,\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"email_rate_limit_seconds\": 46187,\n  \"email_recipients\": [\n    \"string\",\n    \"string\"\n  ],\n  \"enabled\": false,\n  \"threshold\": 2665,\n  \"timezone\": \"string\",\n  \"updated_at\": \"string\",\n  \"window_type\": \"daily\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b68a625-b986-497a-8171-bd42afd535e3",
+              "name": "Rule not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "25753d6c-4b63-47ce-84bd-738af3d2813a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6875742f-c5be-4f48-a73f-b7f61a24cc40",
+          "name": "Update a rule.",
+          "request": {
+            "name": "Update a rule.",
+            "description": {
+              "content": "Patches the mutable fields on a rule. Immutable fields (rule_type, filter_tree, data_source_scope, window_type, threshold, timezone) cannot be changed and must be set via delete+recreate.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) Rule ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"severity\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ca0e2a57-c62e-4922-a6dc-7068e45b1e77",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"severity\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data_source_scope\": \"all\",\n  \"filter_tree\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      },\n      {\n        \"value\": \"<Circular reference to #/components/schemas/auditfilter.FilterNode detected>\"\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"name\": \"string\",\n  \"rule_id\": \"string\",\n  \"rule_type\": \"threshold\",\n  \"severity\": \"high\",\n  \"comment_required\": false,\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"email_rate_limit_seconds\": 46187,\n  \"email_recipients\": [\n    \"string\",\n    \"string\"\n  ],\n  \"enabled\": false,\n  \"threshold\": 2665,\n  \"timezone\": \"string\",\n  \"updated_at\": \"string\",\n  \"window_type\": \"daily\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abced314-096e-44b6-ad62-4c3d77f3ac9f",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"severity\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc385644-07c1-42ce-aee7-276f50a3c559",
+              "name": "Rule not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"severity\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ffa0658-99df-4fec-ac27-4bce0d90dcc5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) Rule ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment_required\": \"<boolean>\",\n  \"description\": \"<string>\",\n  \"email_rate_limit_seconds\": \"<integer>\",\n  \"email_recipients\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enabled\": \"<boolean>\",\n  \"name\": \"<string>\",\n  \"severity\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 4972,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3696\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c85dee97-909c-4719-b91d-d94ae3120363",
+          "name": "Creates a new rule",
+          "request": {
+            "name": "Creates a new rule",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules",
+                "batch"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-batch-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": \"<integer>\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": \"<integer>\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"<string>\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"<string>\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": \"<integer>\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": \"<integer>\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"<string>\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"<string>\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": \"<boolean>\",\n    \"database_ids\": \"<object>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0065744d-0de6-4102-87a2-83ba8e5cf74a",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-batch-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": true,\n    \"database_ids\": {\n      \"4\": \"add\",\n      \"5\": \"delete\",\n      \"6\": \"force-delete\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "390b6b8d-0ec2-494e-858d-c0c22b451002",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-batch-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": true,\n    \"database_ids\": {\n      \"4\": \"add\",\n      \"5\": \"delete\",\n      \"6\": \"force-delete\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44c5358e-6822-4b1d-839a-98ada919da8a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-batch-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": true,\n    \"database_ids\": {\n      \"4\": \"add\",\n      \"5\": \"delete\",\n      \"6\": \"force-delete\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f05091cb-34d7-4f94-8c73-57a101e56f48",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-batch-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": true,\n    \"database_ids\": {\n      \"4\": \"add\",\n      \"5\": \"delete\",\n      \"6\": \"force-delete\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da4590bd-3f2a-4b02-96df-20ec32be73a8",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-batch-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": [\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    },\n    {\n      \"rule_id\": \"<string>\",\n      \"action\": \"<string>\",\n      \"rule\": {\n        \"access_rate_thresholds\": [\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          },\n          {\n            \"access_rate_unit\": \"<string>\",\n            \"access_rate_limit\": 100,\n            \"action\": \"<string>\"\n          }\n        ],\n        \"time_window_thresholds\": [\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          },\n          {\n            \"day\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"start_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"end_time\": {\n              \"hour\": \"<integer>\",\n              \"minute\": \"<integer>\"\n            },\n            \"timezone\": \"America/New_York\",\n            \"action\": \"<string>\"\n          }\n        ],\n        \"masking_policy\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"tag_value\": \"<string>\",\n        \"tag_value_regex\": \"<string>\"\n      }\n    }\n  ],\n  \"policy\": {\n    \"active\": true,\n    \"database_ids\": {\n      \"4\": \"add\",\n      \"5\": \"delete\",\n      \"6\": \"force-delete\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2396461-1257-408d-95e7-1fbc48b0e112",
+          "name": "Creates a new rule",
+          "request": {
+            "name": "Creates a new rule",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": \"<integer>\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": \"<integer>\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"<string>\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"<string>\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d308cbf1-be9b-41c9-aeac-96ecaa66663e",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"rule_id\": \"TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805\"\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95157c4e-c3f8-40ae-92d7-2f29e09c2239",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adc35eb7-edee-4917-a7e2-aea982656338",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2b85e56-3162-4f8e-9266-40b1d8739c69",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eff8dd09-0ccf-4181-bfdd-a1972248c866",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\",\n  \"role\": \"<string>\",\n  \"tag_value\": \"<string>\",\n  \"tag_value_regex\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "509acd13-a6d1-4b23-aeb4-a8734e604664",
+          "name": "Get all the rules associated with the given policy_id",
+          "request": {
+            "name": "Get all the rules associated with the given policy_id",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "The number of rules to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "exclusive_start_key",
+                  "value": "<string>",
+                  "description": "The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`. If the value is present, it can be used to get the next set of policies."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "89119f9a-7377-4234-9f7d-a7c328eb87d4",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"count\": 1,\n    \"items\": {\n      \"9417c2bc077fda72be5677930613049eCREDIT_CARD\": [\n        {\n          \"rule_id\": \"TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343#ROLE#0ad4fa3dac4f39ca0d653cfaa47182dafa5b8923dec019a5ecafeca3aa6d55a7#TAG_VALUE#99443317afac8b4204d2c07e8b8ae3cdb1633016e7142b8ba77ad1615cfbb409\",\n          \"rule_hash\": \"9417c2bc077fda72be5677930613049eCREDIT_CARD\",\n          \"pending_rule_json\": {},\n          \"success_rule_json\": {\n            \"masking_policy\": \"10001\"\n          },\n          \"failed_rule_json\": {},\n          \"policy_id\": \"TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343\",\n          \"role\": \"DEVELOPER_ROLE\",\n          \"tag_value\": \"CREDIT_CARD\",\n          \"updated_at\": \"2023-10-01T12:00:00Z\"\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90428355-9d13-479b-baad-7ad85d63e29c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "286ffc87-f19d-4408-8a31-8b102641c440",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfd1b855-eba9-4a53-bf19-5b60fdf52c9c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "806cc743-8d03-47d1-872e-ea55b8c52e21",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bba54e21-bad4-444e-ac77-007fd0f459d7",
+          "name": "Get details for a specific rule",
+          "request": {
+            "name": "Get details for a specific rule",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a303e981-464c-4728-8aab-94fc77910f17",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"rule_id\": \"TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805\",\n  \"pending_rule_json\": {\n    \"time_window_thresholds\": [\n      {\n        \"day\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"end_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"timezone\": \"America/New_York\",\n        \"action\": \"<string>\"\n      },\n      {\n        \"day\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"end_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"timezone\": \"America/New_York\",\n        \"action\": \"<string>\"\n      }\n    ],\n    \"masking_policy\": 10001,\n    \"access_rate_thresholds\": [\n      {\n        \"access_rate_unit\": \"<string>\",\n        \"access_rate_limit\": 100,\n        \"action\": \"<string>\"\n      },\n      {\n        \"access_rate_unit\": \"<string>\",\n        \"access_rate_limit\": 100,\n        \"action\": \"<string>\"\n      }\n    ]\n  },\n  \"success_rule_json\": {\n    \"time_window_thresholds\": [\n      {\n        \"day\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"end_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"timezone\": \"America/New_York\",\n        \"action\": \"<string>\"\n      },\n      {\n        \"day\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"end_time\": {\n          \"hour\": \"<integer>\",\n          \"minute\": \"<integer>\"\n        },\n        \"timezone\": \"America/New_York\",\n        \"action\": \"<string>\"\n      }\n    ],\n    \"masking_policy\": 10001,\n    \"access_rate_thresholds\": [\n      {\n        \"access_rate_unit\": \"<string>\",\n        \"access_rate_limit\": 100,\n        \"action\": \"<string>\"\n      },\n      {\n        \"access_rate_unit\": \"<string>\",\n        \"access_rate_limit\": 100,\n        \"action\": \"<string>\"\n      }\n    ]\n  },\n  \"role\": \"ACCOUNTADMIN\",\n  \"tag_value\": \"yellow\",\n  \"tag_value_regex\": \"*\",\n  \"updated_at\": \"2023-10-01T12:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1139f8d7-0039-4ac4-aaf4-4ff9d34e4646",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6d2f9b4-a1a7-48c7-ba63-23268349583f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3da0cdc8-4823-4901-a7fe-efc2c80e878a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bef3b003-6e98-45a0-9dac-ccba80ab7fac",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1dba7208-b7b8-4eb5-849a-a6be024a38d8",
+          "name": "Delete an existing rule",
+          "request": {
+            "name": "Delete an existing rule",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "acb6f98d-8a63-42d2-85df-b2cf7b58f048",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ea50225-5ef5-4c7b-9140-91034ec8bec6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93f7e61e-347f-430b-b915-b0da01a6692d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b5a3883-c653-466e-af3c-4e65b64ec793",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d545fd2f-01f2-4f8b-a91a-4ab1555539e3",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "241e161c-7e28-46f0-b202-bf7fe8aba861",
+          "name": "Updates an existing rule",
+          "request": {
+            "name": "Updates an existing rule",
+            "description": {},
+            "url": {
+              "path": [
+                "policy",
+                ":policy_id",
+                "rules",
+                ":rule_id"
+              ],
+              "host": [
+                "{{policy-policy_id-rules-rule_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policy_id",
+                  "description": "(Required) The unique identifier for the policy"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "rule_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": \"<integer>\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": \"<integer>\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"<string>\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"<string>\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ef9bca79-b50a-4f7a-b77c-bd9299ba148a",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"rule_id\": \"string\"\n  },\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9545677a-fcfd-404a-9921-a0ab2aa9f7e4",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "203c5c6b-22b4-4ccc-8cbd-783af21e3fc1",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0fcfef0e-a417-4723-98b7-006afb1ad31f",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3be2c38e-4b5b-4da3-9d8e-9bfc18c1f332",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "policy",
+                    ":policy_id",
+                    "rules",
+                    ":rule_id"
+                  ],
+                  "host": [
+                    "{{policy-policy_id-rules-rule_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policy_id",
+                      "description": "(Required) The unique identifier for the policy"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "rule_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"access_rate_thresholds\": [\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    },\n    {\n      \"access_rate_unit\": \"<string>\",\n      \"access_rate_limit\": 100,\n      \"action\": \"<string>\"\n    }\n  ],\n  \"time_window_thresholds\": [\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    },\n    {\n      \"day\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"end_time\": {\n        \"hour\": \"<integer>\",\n        \"minute\": \"<integer>\"\n      },\n      \"timezone\": \"America/New_York\",\n      \"action\": \"<string>\"\n    }\n  ],\n  \"masking_policy\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "baseUrl"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "rules-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "rules--Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "rules-rule_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/unified-policy/management/",
+      "key": "policy-policy_id-rules-batch-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/unified-policy/management/",
+      "key": "policy-policy_id-rules-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/unified-policy/management/",
+      "key": "policy-policy_id-rules-rule_id-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "60b286ee-6c79-41f2-bef3-a34c7d4e6340",
+    "name": "Altr Rules API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Rules across 2 of this provider's published API definitions: altr-dam-alerting-openapi.yml, altr-unified-policy-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

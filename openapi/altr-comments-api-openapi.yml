@@ -1,0 +1,272 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Audit Report Comments API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.audit-report.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Comments
+paths:
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/:
+    get:
+      description: Returns a paginated list of comments for a report instance. Pinned comments appear first.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      - description: Maximum items per page (default 25, max 100)
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repository.PaginatedResult-models_Comment'
+          description: OK
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List comments.
+      tags:
+      - Comments
+    post:
+      description: Adds a comment to a report instance for investigation notes or attestation context.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.CreateCommentInput'
+              summary: comment
+              description: Comment body
+        description: Comment body
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Comment'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create a comment.
+      tags:
+      - Comments
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/pin:
+    post:
+      description: Pins a comment so it appears first in the list. Only one comment can be pinned per instance. Allowed after sign-off.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Comment'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Comment not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: A comment is already pinned
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Pin a comment.
+      tags:
+      - Comments
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/unpin:
+    post:
+      description: Unpins a comment, returning it to its chronological position. Allowed after sign-off.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Comment'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Comment not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Unpin a comment.
+      tags:
+      - Comments
+components:
+  schemas:
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    repository.PaginatedResult-models_Comment:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.Comment:
+      properties:
+        author_id:
+          type: string
+        author_name:
+          type: string
+        comment_id:
+          type: string
+        created_at:
+          type: string
+        definition_id:
+          type: string
+        instance_id:
+          type: string
+        pinned:
+          type: boolean
+        sign_off_action:
+          enum:
+          - approve
+          type: string
+        text:
+          example: Reviewed all SELECT queries - no anomalies found
+          type: string
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.CreateCommentInput:
+      properties:
+        text:
+          example: Reviewed all SELECT queries - no anomalies found
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

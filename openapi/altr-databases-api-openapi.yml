@@ -1,0 +1,1145 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Databases API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: databases
+  description: Operations about data sources
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/tutorial-and-user-guide/connecting-a-data-source
+paths:
+  /databases:
+    get:
+      tags:
+      - databases
+      summary: Returns an array of databases that have been connected through the ALTR platform
+      operationId: getDatabases
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          default: friendlyDatabaseName
+          enum:
+          - friendlyDatabaseName
+          - id
+        description: Sets which property name to sort the result set by
+      - name: friendlyDatabaseName
+        in: query
+        schema:
+          type: string
+        description: Filter by the friendly database name.
+      - name: userid
+        in: query
+        schema:
+          type: string
+        description: Filter by all databases associated with the particular service-user
+      - name: databaseType
+        in: query
+        schema:
+          type: string
+          enum:
+          - sqlserver
+          - mysql
+          - redshift
+          - snowflake_external_functions
+          - databricks
+        description: Filter by the database type
+      - name: dataUsageHistory
+        in: query
+        schema:
+          type: boolean
+        description: Filter the data source by whether it has data usage history enabled or not.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      databases:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            clientId:
+                              type: string
+                            friendlyDatabaseName:
+                              type: string
+                            databaseType:
+                              type: string
+                              enum:
+                              - sqlserver
+                              - mysql
+                              - redshift
+                              - snowflake_external_functions
+                              - databricks
+                            databaseName:
+                              type: string
+                            databaseUsername:
+                              type: string
+                            SFCount:
+                              type: integer
+                            inProgress:
+                              type: integer
+                            lastConnectedTime:
+                              type: string
+                              format: date-time
+                              example: '2020-06-10T20:00:37.000Z'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - databases
+      summary: Connects a new data source to the ALTR platform.
+      operationId: createDatabase
+      description: 'Fields databasePort, databaseName, databaseUsername, databasePassword, and hostname must appear together.
+
+        Field connectionString may not appear with ANY of the above.
+
+        Only one of the above configurations is allowed in a request.
+
+        See the different type of examples below.
+
+        '
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDatabaseBody'
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Database'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/Unprocessed'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /databases/{id}:
+    parameters:
+    - $ref: '#/components/parameters/idPath'
+    get:
+      summary: Fetch a single database by ID
+      operationId: getDatabase
+      description: Returns a single database with the provided ID.
+      tags:
+      - databases
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Database'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      summary: Disconnects and removes a single database by ID
+      operationId: deleteDatabase
+      parameters:
+      - name: ignoreErrors
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to ignore the errors when deleting a data source.
+      description: Deletes and disconnects single database given the ID of the database, returns no content.
+      tags:
+      - databases
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      description: Updates a database with the provided database id.
+      tags:
+      - databases
+      summary: Update a database by ID
+      operationId: updateDatabase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: 'Only ''friendlyDatabaseName'' may be submitted alone.
+
+                If updating any other properties, you must also submit full credential information for changes to be applied.
+
+                Either ''connectionString'' or ''databasePassword'' and ''databaseUsername'' must be sent.
+
+                If you are updating a SnowflakeDB connection, you may also supply the ''snowflakeRole'' and ''warehouseName'' properties, but only if the connection
+
+                is not using a connection string AND the other two credential fields are supplied.
+
+                With that information, you can also update max number of connections and/or batches.
+
+
+                Set ''reinvoke'' to true to retry a failed database connection.
+
+                '
+              properties:
+                friendlyDatabaseName:
+                  type: string
+                  example: George Washington's Database Updated via Swagger
+                maxNumberOfConnections:
+                  type: integer
+                  example: 5
+                maxNumberOfBatches:
+                  type: integer
+                  example: 15
+                serviceUserID:
+                  type: string
+                  example: 0ujtsYcgvSTl8PAuAdqWYSMnLOv
+                connectionString:
+                  type: string
+                  example: mysql://urlhere
+                databasePassword:
+                  type: string
+                  example: password
+                databaseUsername:
+                  type: string
+                  example: ROOT
+                snowflakeRole:
+                  type: string
+                  example: null
+                warehouseName:
+                  type: string
+                  example: null
+                shouldClassify:
+                  type: boolean
+                  description: Optional field only valid for Snowflake CI connections that requests a data classification job to be started automatically after the database is connected.
+                  example: false
+                dataUsageHistory:
+                  type: boolean
+                  default: false
+                  description: For Snowflake CI only. Whether this database has opted in or out for data usage history for analytics.
+                  example: false
+                classificationType:
+                  type: string
+                  description: 'Optional value, the classification type and/or import type that you wish to run. If not passed will default to `1`.
+
+                    * `1` - Google DLP
+
+                    * `3` - Snowflake Tag Import
+
+                    * `4` - Snowflake Classify and Tag Import
+
+                    '
+                  default: '1'
+                  enum:
+                  - '1'
+                  - '3'
+                  - '4'
+                reinvoke:
+                  type: boolean
+                  default: false
+                  description: 'For Snowflake CI only. When set to true, triggers the CDM service to re-establish the database connection and refresh ALTR scaffolding in Snowflake.
+
+                    This includes recreating external functions, API integrations, and other ALTR-managed objects.
+
+                    Use this when scaffolding needs to be rebuilt, such as after infrastructure changes or to resolve connection issues.
+
+                    '
+                  example: true
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Database'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /databases/{id}/status:
+    parameters:
+    - $ref: '#/components/parameters/idPath'
+    get:
+      summary: Fetches the connectivity status of a database by ID.
+      tags:
+      - databases
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      isConnected:
+                        type: boolean
+                        example: true
+                      inProgress:
+                        type: integer
+                        example: 0
+                      lastConnectedTime:
+                        type: string
+                        format: date-time
+                        example: '2020-06-10T20:00:37.000Z'
+                      missingPermissions:
+                        type: boolean
+                        example: true
+                        description: For Snowflake CI, if there are permission issues when this database is connected, this value will be true. Otherwise false if all permissions are granted.
+                      missingPermissionsDescription:
+                        type: object
+                        example: {}
+                        description: For Snowflake CI, if there are permission issues when this database is connected, this value will contain a list of the missing permissions.
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      operationId: getDatabaseStatus
+      description: Retrieves the connectivity status of a database from the CDM by the provided ID.
+    patch:
+      description: Triggers a request to update the databases status. This will set the database to in progress until the status job is completed.
+      tags:
+      - databases
+      summary: Trigger database status sync
+      operationId: updateDatabaseStatus
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /databases/snowflake/accounts:
+    get:
+      summary: Fetch the users snowflake accounts information
+      tags:
+      - databases
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      accounts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            username:
+                              type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                title: ApiError
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: This functionality is currently unavailable.
+                      statusCode:
+                        type: integer
+                        example: 405
+                      date:
+                        type: string
+                  success:
+                    type: boolean
+        '500':
+          $ref: '#/components/responses/InternalError'
+      operationId: getSnowflakeAccounts
+  /databases/snowflake/accounts/{id}:
+    patch:
+      summary: Update snowflake account information
+      tags:
+      - databases
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: optional
+                password:
+                  type: string
+                  description: optional
+                role:
+                  type: string
+                  description: optional
+                warehouse:
+                  type: string
+                  description: optional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Database'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                title: ApiError
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: This functionality is currently unavailable.
+                      statusCode:
+                        type: integer
+                        example: 405
+                      date:
+                        type: string
+                  success:
+                    type: boolean
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /databases/snowflake/accounts/{id}/databases:
+    parameters:
+    - $ref: '#/components/parameters/idPath'
+    get:
+      summary: Fetch the available databases that belongs to the users snowflake account.
+      tags:
+      - databases
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      databases:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            created_on:
+                              type: string
+                              format: date-time
+                            name:
+                              type: string
+                              example: DB
+                            origin:
+                              type: string
+                              example: ''
+                            comment:
+                              type: string
+                              example: ''
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                title: ApiError
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: This functionality is currently unavailable.
+                      statusCode:
+                        type: integer
+                        example: 405
+                      date:
+                        type: string
+                  success:
+                    type: boolean
+        '500':
+          $ref: '#/components/responses/InternalError'
+      operationId: getSnowflakeAccountDatabases
+  /databases/snowflake/connect:
+    post:
+      summary: Connects a snowflake database given the id of the account and the database name.
+      tags:
+      - databases
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                friendlyDatabaseName:
+                  type: string
+                  description: The friendly database name for this database connection.
+                  example: George Washington's Database Update Via Swagger
+                databaseName:
+                  type: string
+                  description: The database name from /snowflake/accounts/{id}/databases
+                  example: DB
+                accountId:
+                  type: integer
+                  description: The id from a account from the /snowflake/accounts
+                  example: 1
+                shouldClassify:
+                  default: false
+                  type: boolean
+                  description: Whether to classify upon creating the database or not.
+                  example: false
+                dataUsageHistory:
+                  default: false
+                  type: boolean
+                  description: For Snowflake CI only. Whether this database has opted in or out for data usage history for analytics.
+                  example: false
+                classificationType:
+                  type: string
+                  description: 'Optional value, the classification type and/or import type that you wish to run. If not passed will default to `1`.
+
+                    * `1` - Google DLP
+
+                    * `3` - Snowflake Tag Import
+
+                    * `4` - Snowflake Classify and Tag Import
+
+                    '
+                  default: '1'
+                  enum:
+                  - '1'
+                  - '3'
+                  - '4'
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Database'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                title: ApiError
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: This functionality is currently unavailable.
+                      statusCode:
+                        type: integer
+                        example: 405
+                      date:
+                        type: string
+                  success:
+                    type: boolean
+        '500':
+          $ref: '#/components/responses/InternalError'
+      operationId: createSnowflakeConnection
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Database:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of a database
+          example: 1
+        friendlyDatabaseName:
+          type: string
+          description: The display name of a database
+          example: George Washington's Database
+        maxNumberOfConnections:
+          type: integer
+          description: The maximum number of concurrent connections the CDM client will open to a database
+          example: 5
+        maxNumberOfBatches:
+          type: integer
+          description: The maximum number of concurrent open batches the CDM client will execute against a database
+          example: 15
+        databasePort:
+          type: integer
+          description: The port number the CDM client will use to connect to a database
+          example: 443
+        databaseUsername:
+          type: string
+          description: The username the CDM client will use to connect to a database
+          example: ROOT
+        databaseType:
+          type: string
+          description: The database type the CDM client expects a database to be
+          enum:
+          - sqlserver
+          - mysql
+          - redshift
+          - snowflake_external_functions
+          - databricks
+          example: snowflake_external_functions
+        databaseName:
+          type: string
+          description: The name of the database on the host that the CDM client will connect to
+          example: COMPANY_DB
+        hostname:
+          type: string
+          description: The hostname the CDM client will use to connect to a database
+          example: snowflake.com
+        connectionString:
+          type: boolean
+          description: Indicates whether or not a connection string was used to connect a database and must be used to update the connection
+          example: false
+        clientId:
+          type: string
+          description: The ALTR UUID for the organization a database was created for.
+          example: 969276ae-9118-11ed-a1eb-0242ac120002
+        snowflakeRole:
+          type: string
+          description: A field for SnowflakeDB connections that will only appear if the database type is "snowflake_external_functions" AND was filled when the database connection was initially connected or last updated.
+          example: ''
+        warehouseName:
+          type: string
+          description: A field for SnowflakeDB connections that will only appear if the database type is "snowflake_external_functions" AND was filled when the database connection was initially connected or last updated.
+          example: ''
+        SFCount:
+          type: integer
+          description: The number of columns protected in the connected database
+          example: 2
+        dataUsageHistory:
+          type: boolean
+          description: For Snowflake CI only. Whether this database has opted in or out for data usage history for analytics.
+          example: false
+        classificationStarted:
+          type: boolean
+          description: If one starts classification, this property will be returned to indicate whether the process has started or not.
+          example: false
+        CDMServiceEnabled:
+          type: integer
+          example: 1
+        lastConnectedTime:
+          type: string
+          format: date-time
+          example: '2020-06-10T20:00:37.000Z'
+          description: The timestamp that the status was last checked.
+        inProgress:
+          type: integer
+          description: Whether the database status is in progress, when this value is greater than 0, it means that an update cannot be performed on this database if you are updating credentials.
+        databricksServicePrincipalId:
+          type: string
+          description: A field for Databricks connections that will only appear if the database type is "databricks".
+          example: 3bda4my-serv-princ-uuid-f016f8248c6a
+        databricksClusterId:
+          type: string
+          description: A field for Databricks connections that will only appear if the database type is "databricks".
+          example: 23my-3dbx23-cluster3432
+  examples:
+    sfdbdetailed:
+      summary: Snowflake Database Connection Advanced Example
+      description: 'Snowflake Database Connection for more advanced settings. With this, you can set both the warehouse name and the snowflake role.
+
+        In addition, this will set the max number of connections to 5, and max number of batches to 15.'
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+    driverdbconnectionstring:
+      summary: Driver Database Connection String Example
+      description: 'Instead of passing each property individually, you can pass an entire connection string instead.
+
+
+        Please keep in mind that this is only for Driver databases, connection strings are not available for Snowflake Databases.
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        connectionString: jdbc:altr:mysql://someURl.amazonaws.com:3306/myschema?user=mysqlusername&password=mysqlpassword
+    sfdbc:
+      summary: Snowflake Database Connection & Import Data Usage History Example
+      description: 'Connect a Snowflake database that will scan and analyze the last 30 days of data access in this database so you can understand how data is used.
+
+
+        Setting the property value of `dataUsageHistory` to true, will populate the Analytics page in the ALTRNet.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        dataUsageHistory: true
+    sfdb:
+      summary: Snowflake Database Connection Example
+      description: The bare minimum that is needed to connect a Snowflake database
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+    sfdballproperties:
+      summary: Snowflake Database Connection; All Properties set.
+      description: 'Connect a Snowflake database, this property assigns every possible property for a snowflake database connection.
+
+
+        This database connection will connect a snowflake database with an assigned snowflake role, warehouse, 30 day usage history, and classification type `4` which will run Snowflake Classify and Tag Imports.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+        databasePort: 3305
+        dataUsageHistory: true
+        shouldClassify: true
+        classificationType: 3
+    driverdb:
+      summary: Driver Database Connection Example
+      description: 'This connects a driver database with the bare minimum settings.
+
+        In this example, it connects a MySQL database. See the documentation for all database types that we support (or expand the schema section in the swagger docs)
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        databaseUsername: mysqlusername
+        databasePassword: mysqlpassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.mysql.com
+        databasePort: 3306
+    databricks:
+      summary: Databricks Connection Example
+      description: The bare minimum that is needed to connect to Databricks
+      value:
+        friendlyDatabaseName: My Databricks Connection
+        databaseType: databricks
+        databasePassword: jose17mysvcprincipaloauthsecret10690
+        hostname: https://6my-45wrkbook34-host32.cloud.databricks.com/
+        databricksServicePrincipalId: 3bda4my-serv-princ-uuid-f016f8248c6a
+        databricksClusterId: 23my-3dbx23-cluster3432
+    sfdbt:
+      summary: Snowflake Database Connection & Tag Data by Classification Example
+      description: 'Connect a Snowflake database that will scan and tag columns in your database based on classification.
+
+        An email will be sent when done.
+
+        By default, Google DLP is applied, this can be changed by adding a `classificationType` property and setting it to 2 or 4. Read more by expanding the schema to see all options.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        shouldClassify: true
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unprocessable Entity
+              statusCode: 422
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  requestBodies:
+    CreateDatabaseBody:
+      description: The JSON object containing database information.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              friendlyDatabaseName:
+                type: string
+                description: The display name in the frontend for this database
+              databasePort:
+                type: number
+              maxNumberOfConnections:
+                type: string
+              maxNumberOfBatches:
+                type: string
+              databaseName:
+                type: string
+                description: The name of the database on the host you are trying to connect
+              databasePassword:
+                type: string
+                description: The password of the database on the host you're trying to connect
+              databaseType:
+                type: string
+                enum:
+                - sqlserver
+                - mysql
+                - redshift
+                - snowflake_external_functions
+                - databricks
+                description: The type of database you're trying to connect
+              hostname:
+                type: string
+                description: The host where the database you're trying to connect is located
+              serviceUserID:
+                type: string
+                description: The identifier of the service user responsible for managing this database.
+              databaseUsername:
+                type: string
+                description: The username of the user on the database you're trying to connect as
+              connectionString:
+                type: string
+                description: A connection string that contains all the required information for the database you're trying to connect. This is not available for snowflake_external_functions.
+              snowflakeRole:
+                type:
+                - string
+                - 'null'
+                description: An optional field for SnowflakeDB connections that is ONLY ALLOWED when the database type is "snowflake_external_functions"
+              warehouseName:
+                type:
+                - string
+                - 'null'
+                description: An optional field for SnowflakeDB connections that is ONLY ALLOWED when the database type is "snowflake_external_functions"
+              shouldClassify:
+                type: boolean
+                description: Optional field only valid for Snowflake CI connections that requests a data classification job to be started automatically after the database is connected.
+              dataUsageHistory:
+                type: boolean
+                description: For Snowflake CI only. Whether this database has opted in or out for data usage history for analytics.
+              classificationType:
+                type: string
+                description: 'Optional value, the classification type and/or import type that you wish to run. If this property is not passed, it will default to `1`.
+
+                  * `1` - Google DLP
+
+                  * `3` - Snowflake Tag Import
+
+                  * `4` - Snowflake Classify and Tag Import
+
+                  '
+                default: '1'
+                enum:
+                - '1'
+                - '3'
+                - '4'
+          examples:
+            sfdb:
+              $ref: '#/components/examples/sfdb'
+            sfdbt:
+              $ref: '#/components/examples/sfdbt'
+            sfdbdetailed:
+              $ref: '#/components/examples/sfdbdetailed'
+            databricks:
+              $ref: '#/components/examples/databricks'
+            sfdbc:
+              $ref: '#/components/examples/sfdbc'
+            sfdballproperties:
+              $ref: '#/components/examples/sfdballproperties'
+            driverdb:
+              $ref: '#/components/examples/driverdb'
+            driverdbconnectionstring:
+              $ref: '#/components/examples/driverdbconnectionstring'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

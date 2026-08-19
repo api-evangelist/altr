@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Access Tokens Control Plane API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Control Plane",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Access Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/access-tokens",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Sorts by the time the access token was created"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a list of access tokens for a user based on the provided query parameters."
+        },
+        {
+          "info": {
+            "name": "Creates Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/access-tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a new access token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

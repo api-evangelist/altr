@@ -1,0 +1,313 @@
+{
+  "item": [
+    {
+      "id": "ddb49716-8694-4325-9ad1-7969b3c152e7",
+      "name": "Utility",
+      "description": {
+        "content": "Access DIS job and third party import information.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9e3f64a8-407b-4ee2-8600-4a7f7fb92d0d",
+          "name": "Gets DIS job information.",
+          "request": {
+            "name": "Gets DIS job information.",
+            "description": {
+              "content": "Returns information on a DIS job or third party import.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "utility",
+                "v1",
+                "job",
+                ":jobId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "jobId",
+                  "description": "(Required) DIS job id, can be retrieved by the v2/status endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61321138-b9d8-4653-a0ed-a0c0cc004d61",
+              "name": "Successfully retrieved DIS job info.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "utility",
+                    "v1",
+                    "job",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) DIS job id, can be retrieved by the v2/status endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"databaseID\": 1,\n  \"jobUUID\": \"dis-asdf125-1234-1adf-982c-asdfvfadsfa\",\n  \"databaseName\": \"DatabaseOne\",\n  \"startTimeStamp\": \"2006-01-02T15:04:05Z\",\n  \"startTimeSinceEpoch\": 1656255468000,\n  \"completeTimeStamp\": \"2006-01-02T15:04:05Z\",\n  \"completeTimeSinceEpoch\": 1656255468000,\n  \"dataDiscoveryTypeString\": \"Google DLP\",\n  \"dataDiscoveryType\": 1,\n  \"status\": \"IN_PROGRESS\",\n  \"totalColumns\": 10000,\n  \"totalTables\": 1000,\n  \"completedColumns\": 5000,\n  \"completedTables\": 500,\n  \"columnsCompletePercentage\": 50,\n  \"tablesCompletePercentage\": 50\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e2a8c87-f6bd-4477-aa37-c16a7a8d3eab",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "utility",
+                    "v1",
+                    "job",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) DIS job id, can be retrieved by the v2/status endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4009ed71-5091-49db-9bbd-a25f8705a4f3",
+              "name": "DIS job id not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "utility",
+                    "v1",
+                    "job",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) DIS job id, can be retrieved by the v2/status endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e6d2edd-5cf6-4581-aedd-e7669c9796a1",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "utility",
+                    "v1",
+                    "job",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) DIS job id, can be retrieved by the v2/status endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/v1/dis ",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e91c0b1e-256b-4661-8f29-e3e8fcebbb71",
+    "name": "ALTR Datastore Information Service Utility API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.\n\nDIS does not include the endpoints for ALTR's tokenization API; documentation on ALTR's tokenization API can be found here.\n\nDIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

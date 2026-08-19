@@ -1,0 +1,1079 @@
+openapi: 3.2.0
+info:
+  title: ALTR Datastore Information Service Data Discovery API
+  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
+
+
+    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
+
+
+    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  version: 3.4.3
+servers:
+- url: '/v1/dis '
+security:
+- bearerAuth: []
+  basicAuth: []
+tags:
+- name: Data Discovery
+  description: Data Classification/Tagging job endpoints
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/classification#Classification%20Report
+paths:
+  /classification/v1/db/{databaseId}:
+    put:
+      tags:
+      - Data Discovery
+      summary: Start a Classification/Tagging Job.
+      description: Starts a classification job for the request client database.
+      operationId: startClassification
+      parameters:
+      - name: databaseId
+        in: path
+        description: The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint.
+        required: true
+        explode: true
+        schema: {}
+      - name: classificationType
+        in: query
+        description: The secondary service used for classification/tagging jobs. Defaults to Google DLP if not included. </br></br>{<blockquote>1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Object Tag Import <br />   4, // Snowflake Classification and Tag Import</blockquote>}
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+      - name: emailOnCompletion
+        in: query
+        description: Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 0
+          - 1
+      responses:
+        '202':
+          description: Classification successfully started or was already running for client database.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client database id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v1/metastore/{databaseId}:
+    put:
+      tags:
+      - Data Discovery
+      summary: Start a Classification Job.
+      description: Starts a classification job for the request client metastore.
+      operationId: startClassificationMetastore
+      parameters:
+      - name: databaseId
+        in: path
+        description: The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint.
+        required: true
+        explode: true
+        schema: {}
+      - name: emailOnCompletion
+        in: query
+        description: Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 0
+          - 1
+      responses:
+        '202':
+          description: Classification successfully started or was already running for client metastore.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client database id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/listDBs:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieve list of connected client databases.
+      description: Gets a list of databases for consumption, includes if a classification has ever been run before.
+      operationId: listDBs
+      parameters:
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: jobStarted
+        in: query
+        description: jobStarted, if not specified, will not be considered when returning data. If false, we will only return databases that have never had a data discovery job run. If true, the returned set will include databases that have had data discovery jobs started - even if they haven't completed.
+        type: boolean
+        default: null
+        required: false
+        explode: true
+        schema: {}
+      - name: jobCompleted
+        in: query
+        description: 'jobCompleted, if not specified, will not be considered when returning data. If false, we will only return databases that have never had a data discovery job complete. If true, we will only return databases that have had a data discovery job successfully complete. '
+        type: boolean
+        default: null
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved list of databases for the org.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No databases found for client org.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client organization not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/db/status/{databaseId}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieve classification job(s) status(es).
+      description: 'Returns an array of all classification jobs by the latest run of each distinct classification type for a database specific request. You can specify a classification type to only return the status for a specific type '
+      operationId: retrieveJobStatusDB
+      parameters:
+      - name: databaseId
+        in: path
+        description: Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint
+        required: true
+        explode: true
+        schema: {}
+      - name: dataDiscoveryJobType
+        in: query
+        description: Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}
+        type: string
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: dataDiscoveryJobType
+        in: query
+        description: Specify to return only jobs of a specific type. If not included, returns jobs of all types.
+        type: int
+        default: 1
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: 'Successfully retrieved data discovery job statuses. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDiscoveryJobList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No databases found for client org.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client organization not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/status:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieve classification job(s) status(es).
+      description: 'Returns an array of all classification jobs by the latest run of each distinct classification type for an org level request. You can specify a classification type to only return the status for a specific type '
+      operationId: retrieveJobStatusOrg
+      parameters:
+      - name: dataDiscoveryJobType
+        in: query
+        description: Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}
+        type: string
+        required: false
+        explode: true
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: dataDiscoveryJobType
+        in: query
+        description: Specify to return only jobs of a specific type. If not included, returns jobs of all types.
+        type: int
+        default: 1
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: 'Successfully retrieved data discovery job statuses. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDiscoveryJobList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No databases found for client org.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client organization not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/db/summary/{databaseId}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieves summary of successful classifications.
+      description: 'Returns list of found classification types for a client database. '
+      operationId: retrieveJobSummaryDB
+      parameters:
+      - name: databaseId
+        in: path
+        description: The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint.
+        required: false
+        explode: true
+        schema: {}
+      - name: jobUUID
+        in: query
+        description: Get historical job summary
+        required: false
+        explode: true
+        schema:
+          type: string
+          default: null
+      responses:
+        '200':
+          description: Successfully retrieved list of classifier types for client database.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassificationSummary'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No database in request has a classification available.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Client database id not found or no client databases.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/db/column/type/{type}/{id}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieves database level column list associated with classification types.
+      description: 'Returns database level list of columns with classification types.  '
+      operationId: retrieveColumnClassificationsDB
+      parameters:
+      - name: type
+        in: path
+        description: Comes from GET classification/v1/summary and is case insensitive
+        required: true
+        explode: true
+        schema: {}
+      - name: id
+        in: path
+        description: Represents the database id retrieved from /listDBs.
+        required: true
+        explode: true
+        schema: {}
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: jobUUID
+        in: query
+        description: Get historical job information
+        required: false
+        explode: true
+        schema:
+          type: string
+          default: null
+      responses:
+        '200':
+          description: Successfully retrieved list (or partial) of columns for client database (or client databases)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassificationColumnTypeList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+              description: Returns a tracking identification UUID for the request.
+            totalAvailableItems:
+              schema:
+                type: integer
+                example: 100
+              description: Gives a total number of columns for the type requested to use for offsets/limits.
+        '204':
+          description: No database in request has a classification available.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Classification type or id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v2/column/type/{type}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieves org level column list associated with classification types.
+      description: 'Returns list of columns with classification types.  '
+      operationId: retrieveColumnClassificationsOrg
+      parameters:
+      - name: type
+        in: path
+        description: Comes from GET classification/v1/summary and is case insensitive
+        required: true
+        explode: true
+        schema: {}
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved list (or partial) of columns for client database (or client databases)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassificationColumnTypeList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+              description: Returns a tracking identification UUID for the request.
+            totalAvailableItems:
+              schema:
+                type: integer
+                example: 100
+              description: Gives a total number of columns for the type requested to use for offsets/limits.
+        '204':
+          description: No database in request has a classification available.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Classification type or id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v1/db/listTableFailures/{jobId}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieves list of table failures.
+      description: Returns of table failures with corresponding information for a job.
+      operationId: retrieveTableFailuresList
+      parameters:
+      - name: jobId
+        in: path
+        description: Comes from GET classification/v2/status and is case insensitive
+        required: true
+        explode: true
+        schema: {}
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved list (or partial) of tables with corresponding failures for a data discovery job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDiscoveryTableFailureList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+              description: Returns a tracking identification UUID for the request.
+            totalAvailableItems:
+              schema:
+                type: integer
+                example: 100
+              description: Gives a total number of table failures for the type requested to use for offsets/limits.
+        '204':
+          description: No job in request has table failures.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Data discovery job id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /classification/v1/db/listTableInfo/{jobId}:
+    get:
+      tags:
+      - Data Discovery
+      summary: Retrieves list of completed table info.
+      description: Returns of tables with corresponding information for a job.
+      operationId: retrieveTableList
+      parameters:
+      - name: jobId
+        in: path
+        description: Comes from GET classification/v2/status and is case insensitive
+        required: true
+        explode: true
+        schema: {}
+      - name: offset
+        in: query
+        description: Table failures list offset
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: Table failures list return limit
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved list (or partial) of tables with corresponding info for a data discovery job.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDiscoveryTableList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+              description: Returns a tracking identification UUID for the request.
+            totalAvailableItems:
+              schema:
+                type: integer
+                example: 100
+              description: Gives a total number of table failures for the type requested to use for offsets/limits.
+        '204':
+          description: No job in request has succesfully completed tables..
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Data discovery job id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+components:
+  schemas:
+    DataDiscoveryTableFailureList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTableFailure'
+    DataDiscoveryTableFailure:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableJobID:
+          type: string
+          example: UUID
+        tableJobError:
+          type: string
+          example: Job error message here
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        columnsFailed:
+          type: integer
+          example: 10
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    ClassificationSummaryItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: SSN
+        percent:
+          type: float
+          example: 20
+        amount:
+          type: string
+          example: Requested ID did not exist.
+    Database:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        databaseName:
+          type: string
+          example: TEST_DATABASE
+        databaseFriendlyName:
+          type: string
+          example: Test Database
+        dataDiscoveryJobRan:
+          type: boolean
+          example: true
+    DataDiscoveryJob:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        jobUUID:
+          type: string
+          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
+        databaseName:
+          type: string
+          example: DatabaseOne
+        startTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        startTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        completeTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        completeTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        dataDiscoveryTypeString:
+          type: string
+          example: Google DLP
+        dataDiscoveryType:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: IN_PROGRESS
+        totalColumns:
+          type: integer
+          example: 10000
+        totalTables:
+          type: integer
+          example: 1000
+        completedColumns:
+          type: integer
+          example: 5000
+        completedTables:
+          type: integer
+          example: 500
+        columnsCompletePercentage:
+          type: float
+          example: 50.0
+        tablesCompletePercentage:
+          type: float
+          example: 50.0
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    DatabaseList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Database'
+    DataDiscoveryTableList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTable'
+    DataDiscoveryTable:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    ClassificationColumnTypeRequestItem:
+      type: object
+      properties:
+        clientDatabaseID:
+          type: integer
+          example: 1
+        databaseTypeName:
+          type: string
+          example: SnowflakeExternalFunction
+        databaseTypeID:
+          type: integer
+          example: 9
+        friendlyDatabaseName:
+          type: string
+          example: Database One
+        database:
+          type: string
+          example: DATABASE_ONE
+        schemaName:
+          type: string
+          example: SCHEMA_ONE
+        tableName:
+          type: string
+          example: TABLE_ONE
+        columnName:
+          type: string
+          example: COLUMN_ONE
+        classifier:
+          type: array
+          example:
+          - FIRST_NAME
+        alsoAppearsAs:
+          type: array
+          example:
+          - MALE_NAME
+          - FEMALE_NAME
+        isGovernable:
+          type: boolean
+          example: true
+        isScatterable:
+          type: boolean
+          example: true
+        dataType:
+          type: string
+          example: Varchar
+        confidence:
+          type: string
+          example: LIKELY
+        dataState:
+          type: string
+          example: REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */
+        fullyQualifiedTableName:
+          type: string
+          example: DATABASE_ONE.SCHEMA_ONE.TABLE_ONE
+    ClassificationColumnTypeList:
+      type: object
+      properties:
+        Columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationColumnTypeRequestItem'
+        Totals:
+          type: object
+          properties:
+            column_count:
+              type: integer
+              example: 100
+    ClassificationSummary:
+      type: object
+      properties:
+        classifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationSummaryItem'
+        totals:
+          type: object
+          properties:
+            classifiedColumns:
+              type: integer
+              example: 200
+            totalColumns:
+              type: integer
+              example: 500
+            percentSuccessfullyClassified:
+              type: float
+              example: 22.5
+    DataDiscoveryJobList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryJob'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: DIS uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>DIS/MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Info here
+externalDocs:
+  description: Find out more about ALTR
+  url: https://docs.altr.com

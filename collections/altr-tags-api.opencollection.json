@@ -1,0 +1,83 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Tags API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list of available tags for the organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/tags",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Search for a tag based on its properties."
+              }
+            ]
+          },
+          "docs": "Returns a list of available tags for the organization"
+        },
+        {
+          "info": {
+            "name": "Returns a list of columns that are in the given tag.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/tags/column-assignments/:tagId",
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "The tag id"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of columns that are in the given tag."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

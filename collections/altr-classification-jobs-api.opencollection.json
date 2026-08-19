@@ -1,0 +1,995 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Classification Engine Classification Jobs API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Classification Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List classification jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum number of jobs to return (default: 50, max: 50)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "status",
+                "value": "RUNNING",
+                "type": "query",
+                "description": "Filter by job status"
+              },
+              {
+                "name": "job_type",
+                "value": "FULL",
+                "type": "query",
+                "description": "Filter by job type"
+              },
+              {
+                "name": "database_id",
+                "value": "1",
+                "type": "query",
+                "description": "Filter by database ID (numeric)"
+              },
+              {
+                "name": "agent_id",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "query",
+                "description": "Filter by agent ID (UUID v4). Only matches OLTP jobs."
+              },
+              {
+                "name": "classification_type",
+                "value": "5",
+                "type": "query",
+                "description": "Filter by classification type"
+              },
+              {
+                "name": "order",
+                "value": "desc",
+                "type": "query",
+                "description": "Sort order by start time (asc or desc, default: desc)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a paginated list of classification jobs with optional filtering by status, type, or database."
+        },
+        {
+          "info": {
+            "name": "Create classification job (deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Deprecated: Use POST /jobs/snowflake or POST /jobs/oltp instead. Creates a new classification job. If agent_id is present, creates an OLTP job; otherwise creates a Snowflake job."
+        },
+        {
+          "info": {
+            "name": "Update classification job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "path",
+                "description": "Job ID (Only supports OLTP agent-managed jobs: ALTRNative type 5, GDLPByok type 6)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Updates the status of an existing classification job. Use to pause, resume, or cancel jobs."
+        },
+        {
+          "info": {
+            "name": "List active classification jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/active",
+            "params": [
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum number of jobs to return (default: 50, max: 50)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "status",
+                "value": "RUNNING",
+                "type": "query",
+                "description": "Filter by active job status"
+              },
+              {
+                "name": "job_type",
+                "value": "FULL",
+                "type": "query",
+                "description": "Filter by job type"
+              },
+              {
+                "name": "database_id",
+                "value": "1",
+                "type": "query",
+                "description": "Filter by database ID (numeric)"
+              },
+              {
+                "name": "agent_id",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "query",
+                "description": "Filter by agent ID (UUID v4). Only matches OLTP jobs."
+              },
+              {
+                "name": "classification_type",
+                "value": "5",
+                "type": "query",
+                "description": "Filter by classification type"
+              },
+              {
+                "name": "order",
+                "value": "desc",
+                "type": "query",
+                "description": "Sort order (asc or desc, default: desc)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a paginated list of active (non-terminal) classification jobs. Uses a sparse index for efficient queries — only jobs with non-terminal statuses (CREATED, RESUMED, PAUSED, RUNNING, PENDING_CANCEL, UPLOADING_REPORT, PROCESSING_REPORT, PROCESSING_FINDINGS, AWAITING_REVIEW) are included."
+        },
+        {
+          "info": {
+            "name": "Create Databricks GDLP classification job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new Databricks classification job using Google DLP. Scans all accessible catalogs and tables in the connected Databricks workspace.\n\n**GDLP collection:** Optionally specify `collection_name` to restrict classification to the infoTypes defined in that collection. When omitted, all default Google DLP infoTypes are used."
+        },
+        {
+          "info": {
+            "name": "List report groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/groups",
+            "params": [
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum number of groups to return (default: 50, max: 50)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by report status (group's latest run); repeat the param to OR across multiple (e.g. status=confirmed&status=needs_review)"
+              },
+              {
+                "name": "connection_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by connection type; repeat the param to OR across multiple (e.g. connection_type=databricks&connection_type=mysql)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves classification runs grouped by (collection × classification method × datasource) — the report-list view, ordered by each group's most recent run. Optional status and connection_type filters run server-side; keep them stable across pages, as contiguous_id is a native index cursor. Pagination: page until contiguous_id is absent, NOT until the first empty page — with a selective filter a 200 can return groups: [] together with a non-empty contiguous_id (there may be matches deeper in the "
+        },
+        {
+          "info": {
+            "name": "List a report group's runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/groups/:group_id/runs",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path",
+                "description": "Opaque report-group id from GET /jobs/groups"
+              },
+              {
+                "name": "limit",
+                "value": "50",
+                "type": "query",
+                "description": "Maximum runs to return (default: 50, max: 50)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns one page of a report group's classification runs, newest-first. The group is identified by the opaque group_id from GET /jobs/groups. Paginated with a native cursor."
+        },
+        {
+          "info": {
+            "name": "Create OLTP classification job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/oltp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new agent-based (OLTP) classification job. Requires an agent_id identifying the classification agent, repository connection details, and service user credentials."
+        },
+        {
+          "info": {
+            "name": "Create Snowflake classification job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/snowflake",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new Snowflake-based classification job.\n\n**Classification type:** Controls which classification engine runs the job.\n- `altr_native` (default when omitted): ALTR's built-in regex classification via Snowflake UDFs. Requires `collection_name` and `job_type`.\n- `gdlp`: Google DLP-powered classification hosted by ALTR. Does not require `job_type` (defaults to FULL). Optionally accepts `collection_name` to scope which infoTypes are inspected.\n\n**Sample strategies:** ROWS (sample a fixed num"
+        },
+        {
+          "info": {
+            "name": "Get classification job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "path",
+                "description": "Job ID (UUID v4)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves the status and details of a classification job by its ID, including progress and completion information."
+        },
+        {
+          "info": {
+            "name": "List classification decisions for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/decisions",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "query",
+                "description": "Scope filter: limit decisions to this database (top of the contiguous scope chain)"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "query",
+                "description": "Scope filter: limit to this schema (requires database)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query",
+                "description": "Scope filter: limit to this table (requires schema)"
+              },
+              {
+                "name": "column",
+                "value": "",
+                "type": "query",
+                "description": "Scope filter: limit to this column (requires table)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of decisions to return (default: 100, max: 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response (next_page_token)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a paginated flat list of classification decisions recorded for the job, across all classifiers and all cascade levels. Optionally scope the result to an object subtree with the database/schema/table/column query params — the scope chain must be contiguous (a column filter requires table, schema, and database). A scoped read returns only that subtree's decisions without paginating past the rest. The classifier axis is not filterable. Use next_page_token to fetch subsequent pages."
+        },
+        {
+          "info": {
+            "name": "Record a classification decision",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/decisions",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Records an approve or reject decision for a job. A decision targets an object path (database, schema, table, column — contiguous from the database down) and may additionally narrow to a single classifier via classifier_name, an optional filter at any object level. Examples: {database} approves every classifier under the database; {database, classifier_name} approves one classifier across the whole database; {database, schema, table, column, classifier_name} is the match scope. Read-time preceden"
+        },
+        {
+          "info": {
+            "name": "Revoke a classification decision",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/decisions",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Removes a previously-recorded decision and decrements the corresponding rollup counters at all populated levels. Returns 404 if the decision does not exist; revocation is explicit failure, not idempotent. Request body carries the same identifier fields as POST. Note: DELETE-with-body is HTTP-legal (RFC 9110 §9.3.5) but unusual for some HTTP clients/proxies; document the contract here."
+        },
+        {
+          "info": {
+            "name": "List databases in findings tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 100, max 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor from previous response"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "query",
+                "description": "Repeat to filter by multiple classifiers (OR semantics)"
+              },
+              {
+                "name": "confirmed_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by decision status: approved/rejected keep rows decided that status — a decision of that status in the subtree, or an ancestor object decision covering the row; pending keeps rows that are not fully decided"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the root level of the findings tree — sorted list of databases under this job. Each row carries distinct_classifier_count, findings_count (the (column × classifier) leaf count in the subtree — a column matched by N classifiers counts as N findings; reflects the classifier filter when one is supplied), and aggregated match_rate_avg for its subtree. Optional multi-value filter classifier_name (repeat the query param to OR multiple values)."
+        },
+        {
+          "info": {
+            "name": "List schemas under a database in findings tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings/databases/:database/schemas",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "Database name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 100, max 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor from previous response"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "query",
+                "description": "Repeat to filter by multiple classifiers (OR semantics)"
+              },
+              {
+                "name": "confirmed_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by decision status: approved/rejected keep rows decided that status — a decision of that status in the subtree, or an ancestor object decision covering the row; pending keeps rows that are not fully decided"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the schema level of the findings tree — sorted list of schemas under the given database. Each row carries distinct_classifier_count, findings_count (the (column × classifier) leaf count in the subtree — a column matched by N classifiers counts as N findings; reflects the classifier filter when one is supplied), and aggregated match_rate_avg for its subtree. Optional multi-value filter classifier_name (repeat the query param to OR multiple values)."
+        },
+        {
+          "info": {
+            "name": "List tables under a database+schema in findings tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings/databases/:database/schemas/:schema/tables",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "Database name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "path",
+                "description": "Schema name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 100, max 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor from previous response"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "query",
+                "description": "Repeat to filter by multiple classifiers (OR semantics)"
+              },
+              {
+                "name": "confirmed_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by decision status: approved/rejected keep rows decided that status — a decision of that status in the subtree, or an ancestor object decision covering the row; pending keeps rows that are not fully decided"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the table level of the findings tree — sorted list of tables under the given database and schema. Each row carries distinct_classifier_count, findings_count (the (column × classifier) leaf count in the subtree — a column matched by N classifiers counts as N findings; reflects the classifier filter when one is supplied), and aggregated match_rate_avg for its subtree. Optional multi-value filter classifier_name (repeat the query param to OR multiple values)."
+        },
+        {
+          "info": {
+            "name": "List columns under a table in findings tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings/databases/:database/schemas/:schema/tables/:table/columns",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "Database name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "path",
+                "description": "Schema name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 100, max 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor from previous response"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "query",
+                "description": "Repeat to filter by multiple classifiers (OR semantics)"
+              },
+              {
+                "name": "confirmed_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by decision status: approved/rejected keep rows decided that status — a decision of that status in the subtree, or an ancestor object decision covering the row; pending keeps rows that are not fully decided"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the non-leaf column level — sorted columns within the given database+schema+table. Each row carries distinct_classifier_count, findings_count (the column's (column × classifier) leaf count = its distinct classifier count), classifier_names (the sorted distinct classifiers matched on the column), fully_decided (true when no pending finding leaf remains under the column — either an all-classifier object-scope decision at or above it covers it, or every leaf beneath it is covered by the com"
+        },
+        {
+          "info": {
+            "name": "List classifier leaves under a column in findings tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings/databases/:database/schemas/:schema/tables/:table/columns/:column/classifiers",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "Database name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "path",
+                "description": "Schema name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "column",
+                "value": "",
+                "type": "path",
+                "description": "Column name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 100, max 1000)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor from previous response"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "query",
+                "description": "Repeat to filter by multiple classifiers (OR semantics)"
+              },
+              {
+                "name": "confirmed_status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by leaf-level effective decision status (applies only at leaf): matches the per-row confirmed_status decision overlay resolved through the full object-first cascade (match > column > table > schema > database), so an approve/reject at any object scope is reflected here; rows with no covering decision are pending"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the leaf level — sorted classifiers within the given column. Each row carries classifier_name, total_findings, match_rate_avg, and status counts (status_pending, status_confirmed, status_rejected). Multi-classifier OR filter via repeated classifier_name. confirmed_status is a multi-value OR filter (repeated param): pass approved/rejected/pending to keep only classifiers whose effective decision status matches one of the given values (the per-row confirmed_status decision overlay resolved"
+        },
+        {
+          "info": {
+            "name": "Get a finding's decision lineage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/findings/databases/:database/schemas/:schema/tables/:table/columns/:column/classifiers/:classifier_name/lineage",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "Database name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "path",
+                "description": "Schema name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "column",
+                "value": "",
+                "type": "path",
+                "description": "Column name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              },
+              {
+                "name": "classifier_name",
+                "value": "",
+                "type": "path",
+                "description": "Classifier name (URL-encoded; characters /, =, spaces, unicode all supported)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the per-(column, classifier) compound-ruleset evaluation tree (types.DecisionLineage): the top-level operator (AND/OR) and result, and the recursive condition results carrying each condition's target (ROW_DATA / GDLP / METADATA / COLUMN_LOCATION / SNOWFLAKE_NATIVE / CONTENT_TYPE), evaluated/result/negated flags, and the actual-observed vs threshold evidence (match_count/total_count/match_ratio vs minimum_match_ratio; actual_likelihood vs minimum_likelihood; actual_confidence/actual_cover"
+        },
+        {
+          "info": {
+            "name": "Create classification job report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/report",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID (UUID v4)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new classification job report for a specific job."
+        },
+        {
+          "info": {
+            "name": "Cancel a job's report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/report/cancel",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Cancels a review-gated job (created with requires_review=true) while it is still in the review lifecycle (PROCESSING_FINDINGS or AWAITING_REVIEW), transitioning the job to CANCELLED and reclaiming its review substrate. Rejects a job whose confirm has already been accepted (PROCESSING_REPORT), a terminal job, or a non-gated job. The report-scoped counterpart to POST /jobs/{job_id}/report/confirm."
+        },
+        {
+          "info": {
+            "name": "Confirm a job's report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/report/confirm",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Accepts confirmation for a review-gated job (created with requires_review=true). Verifies every finding has a decision, then queues async generation of the consumable report (rejected object × classifier findings excluded) by transitioning the job to PROCESSING_REPORT. Returns 202 immediately; clients poll job status until COMPLETED, at which point report_status is confirmed. Only valid while the report is in_review; once accepted, decisions are locked."
+        },
+        {
+          "info": {
+            "name": "Get review progress for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/review-status",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns total/approved/rejected/pending counts for the job's review progress. approved/rejected are FINDINGS covered by decisions (resolved through the most-specific-wins decision cascade), not raw decision counts — an object-scope decision covers every finding beneath it. Counts come from the materialized findings-index rollups (no full scan)."
+        },
+        {
+          "info": {
+            "name": "Get classification summary for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/summary",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the per-classifier counts and column totals for a job. Equivalent to the data in summary.json but delivered inline as a snake_case JSON body so callers do not need to follow a presigned URL. For an HitL-gated job (`requires_review`) still awaiting confirmation, the summary is derived from the review substrate so it is available before the report is confirmed — its counts are UNFILTERED (they reflect the full scan, not the post-confirm decision-filtered report). The legacy presigned-URL f"
+        },
+        {
+          "info": {
+            "name": "Upload classification results",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{orgID}.classification.live.altr.com/v1/jobs/:job_id/upload",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "Job ID (UUID v4)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Uploads a chunk of classification results for a specific job. The request body contains a \"records\" array of classification results and a chunk_index for ordering."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

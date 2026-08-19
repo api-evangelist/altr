@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Sidecar/Agent Configuration Sidecar Listeners API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sidecar Listeners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all listener ports for given sidecarID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/ports",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the sidecar"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "The Contiguous ID for pagination"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List all sidecar listeners for a given sidecar."
+        },
+        {
+          "info": {
+            "name": "Register a new sidecar listener port.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/ports",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the sidecar"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Register a new sidecar listener port with the provided details."
+        },
+        {
+          "info": {
+            "name": "Deregister a Sidecar Listener.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/ports/:port",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the sidecar"
+              },
+              {
+                "name": "port",
+                "value": "",
+                "type": "path",
+                "description": "Port of the Sidecar Listener"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Deregister a Sidecar Listener."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

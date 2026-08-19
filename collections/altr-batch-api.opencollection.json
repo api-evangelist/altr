@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Critical Tokenization V2 Batch API",
+    "version": "1.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Batch Write",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{customerId}.critical.live.altr.com/v2/batch",
+            "headers": [
+              {
+                "name": "X-ALTR-DETERMINISM",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint tokenizes plaintext data. Up to 1024 values can be tokenized at once. Only string values can be tokenized. Values can be up to 128 UTF-8 code units long. Smaller batches may increase performance."
+        },
+        {
+          "info": {
+            "name": "Batch Read",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{customerId}.critical.live.altr.com/v2/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. Tokens are case sensitive. If you send values to this endpoint that are not valid tokens, the request will fail. Using smaller batch sizes may improve performance."
+        },
+        {
+          "info": {
+            "name": "Partial Batch Read",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{customerId}.critical.live.altr.com/v2/batch/partial",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. If you send values to this endpoint that are not valid tokens, the request will not fail. Instead, any non-token values supplied will be returned back to the user. Using smaller batch sizes may improve performance."
+        },
+        {
+          "info": {
+            "name": "Batch Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{customerId}.critical.live.altr.com/v2/batch/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint deletes tokens from ALTR's token vault. Up to 1024 values can be deleted at once. If a determinstic token is deleted from ALTR, a new POST for that tokens value will result in a newly minted token. If you send values to this endpoint that are not valid tokens, the invalid tokens will be ignored. Using smaller batch sizes may improve performance.\n\n Delete batches may be partially executed. Tokens from the batch that fail to be deleted are returned with their cause for failure."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

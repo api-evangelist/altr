@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Datastore Information Service Data Tagging API",
+    "version": "3.4.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Tagging",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve list of ALTR Tags.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /tags/v2/tags/list",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filters search string on tag source, tag name or tag value, default no filter."
+              },
+              {
+                "name": "dataTagGroupID",
+                "value": "",
+                "type": "query",
+                "description": "Filters search string on the data tags group ID, default no filter."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all tags found for a client to empower locks/thresholds decisions."
+        },
+        {
+          "info": {
+            "name": "Retrieve list of ALTR Group Tags.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /tags/v1/tags/groups/list",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filters search string on tag name property, default no filter."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all tag groupings found for a client to empower locks/thresholds decisions. If a tag has many values, this will return the higher level tag names de-duped."
+        },
+        {
+          "info": {
+            "name": "Retrieve tagged column information for a tag-id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /tags/v2/tags/details/:tagId",
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details on specific tags."
+              }
+            ]
+          },
+          "docs": "Retrieves if a tag-id is valid, and gets a list of relevant details"
+        },
+        {
+          "info": {
+            "name": "Delete tag information for a tag-id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v1/dis /tags/v1/tags/:tagId",
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details on specific tags."
+              }
+            ]
+          },
+          "docs": "Deletes a tag-id if it is valid"
+        },
+        {
+          "info": {
+            "name": "Retrieve details about tag-group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /tags/v1/tags/groups/details/:tagGroupID",
+            "params": [
+              {
+                "name": "tagGroupID",
+                "value": "",
+                "type": "path",
+                "description": "Comes from the tag-group-id returned from the tags/v1/tags/groups/list endpoint to get more details on specific tag groupings."
+              }
+            ]
+          },
+          "docs": "Retrieves if a tag-group-id is valid, and gets a list of relevant details"
+        },
+        {
+          "info": {
+            "name": "Delete a tag group and tags within the group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v1/dis /tags/v1/tags/groups/:tagGroupID",
+            "params": [
+              {
+                "name": "tagGroupID",
+                "value": "",
+                "type": "path",
+                "description": "Comes from the tag-group-id returned from the tags/v1/tags/groups/list endpoint to get more details on specific tags."
+              }
+            ]
+          },
+          "docs": "Delete tag group information for a tag-id, as well as all corresponding tag values within the group."
+        },
+        {
+          "info": {
+            "name": "Retrieves list of columns associated to tags.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /tags/v2/tags/columns/list/:tagId",
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details columns associated with the tag."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              },
+              {
+                "name": "isActive",
+                "value": "",
+                "type": "query",
+                "description": "True returns only actively tagged columns, false returns historical list of columns that have ever been associated to the tag."
+              }
+            ]
+          },
+          "docs": "Returns list of columns associated to tags."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

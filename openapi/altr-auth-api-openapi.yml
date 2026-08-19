@@ -1,0 +1,205 @@
+openapi: 3.2.0
+info:
+  description: 'Welcome to the Swagger documentation for ALTR''s Service User API. This API allows ALTR customers to manage service users used to connect to third-party applications such as Snowflake.
+
+    API credentials can be obtained under Settings > Preferences > API of ALTR''s portal for Usernames are the ''Key Names'' listed on that page and Passwords are the ''Key Secret'' provided when an API key is created.'
+  title: Service User Service Auth API
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  contact:
+    name: Support
+    email: support@altr.com
+  version: '1.0'
+servers:
+- url: /v1
+tags:
+- name: Auth
+paths:
+  /services/{service}/users/{userID}/auth/keypair:
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint generates a new RSA keypair for the specified user and service, encrypts the private key,
+      tags:
+      - Auth
+      summary: Create Key Pair handles the request to create a keypair for a user.
+      parameters:
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userID
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - description: Set as Active Authentication Method
+        name: set_active
+        in: query
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.CreateKeypairResponse'
+  /services/{service}/users/{userID}/auth/password:
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint creates a password authentication method for a user in the specified organization.
+      tags:
+      - Auth
+      summary: Create Password handles the request to create a password authentication method.
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userID
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Set as Active Authentication Method
+        name: set_active
+        in: query
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.CreatePasswordResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dto.CreatePasswordBody'
+        description: Create Password Request
+        required: true
+  /services/{service}/users/{userid}/auth/{auth}/{authid}/set-active:
+    post:
+      security:
+      - BasicAuth: []
+      description: Set an authentication method as active for a user.
+      tags:
+      - Auth
+      summary: Set Active Authentication
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Authentication Type
+        name: auth
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - password
+          - keypair
+      - description: Authentication ID
+        name: authid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    dto.CreatePasswordBody:
+      type: object
+      required:
+      - password
+      properties:
+        password:
+          type: string
+          maxLength: 128
+          minLength: 8
+    dto.CreatePasswordResponse:
+      type: object
+      properties:
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+    types.AuthType:
+      type: string
+      enum:
+      - UNSUPPORTED
+      - NONE
+      - PASSWORD
+      - KEYPAIR
+      x-enum-varnames:
+      - AuthTypeUnsupported
+      - AuthTypeNone
+      - AuthTypePassword
+      - AuthTypeKeypair
+    dto.CreateKeypairResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

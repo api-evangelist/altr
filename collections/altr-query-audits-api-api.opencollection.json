@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Query Audits Query Audits API API",
+    "version": "1.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Query Audits API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the results of a search using the `search_uuid`.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/query-audits/results/:search_uuid",
+            "params": [
+              {
+                "name": "search_uuid",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "path",
+                "description": "`search_uuid` received by /search endpoint."
+              },
+              {
+                "name": "next_page_token",
+                "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew==",
+                "type": "query",
+                "description": "The token to retrieve the next page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of results returned."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /search endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response."
+        },
+        {
+          "info": {
+            "name": "Trigger search using various filters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/query-audits/search",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to skip."
+              },
+              {
+                "name": "from_date_time",
+                "value": "2024-11-23T17:51:35.000Z",
+                "type": "query",
+                "description": "Queries that ended before this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is 24 hours ago."
+              },
+              {
+                "name": "to_date_time",
+                "value": "2024-11-24T17:51:35.000Z",
+                "type": "query",
+                "description": "Queries that ended after this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is now."
+              },
+              {
+                "name": "executing_role",
+                "value": "BI_SERVICE_ROLE",
+                "type": "query",
+                "description": "The role that executed the query. Case-insensitive."
+              },
+              {
+                "name": "executing_user",
+                "value": "BI_SERVICE_USER",
+                "type": "query",
+                "description": "The user that executed the query. Case-insensitive."
+              },
+              {
+                "name": "query_id",
+                "value": "01d89caa-080e-3b34-0000-se59220b6656",
+                "type": "query",
+                "description": "The ID of the query. Case-insensitive."
+              },
+              {
+                "name": "policy_tag_name",
+                "value": "PII_TAG",
+                "type": "query",
+                "description": "The policy tag name to filter by. Case-insensitive."
+              },
+              {
+                "name": "policy_tag_value",
+                "value": "EMAIL",
+                "type": "query",
+                "description": "The policy tag value to filter by. Case-insensitive."
+              },
+              {
+                "name": "policy_column_database_name",
+                "value": "EXAMPLE_DB",
+                "type": "query",
+                "description": "The policy column database name to filter by. Case-insensitive."
+              },
+              {
+                "name": "policy_column_schema_name",
+                "value": "EXAMPLE_SCHEMA",
+                "type": "query",
+                "description": "The policy column schema name to filter by. Case-insensitive."
+              },
+              {
+                "name": "policy_column_table_name",
+                "value": "EXAMPLE_TABLE",
+                "type": "query",
+                "description": "The policy column table name to filter by. Case-insensitive."
+              },
+              {
+                "name": "policy_column_name",
+                "value": "",
+                "type": "query",
+                "description": "The policy column name to filter by. Case-insensitive."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "The order by clause for the query. Case-insensitive."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "The column to sort by. Case-insensitive."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint triggers a search for query audits. Chaining query parameter filters as `AND` operations.\nThe `search_uuid` that is returned expires after 30 days."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

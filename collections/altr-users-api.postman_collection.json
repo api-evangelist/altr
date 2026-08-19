@@ -1,0 +1,836 @@
+{
+  "item": [
+    {
+      "id": "dbbea1be-3906-41f9-a2dd-6fb15304063b",
+      "name": "Users",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "66626b2e-5e3e-4e74-a24a-2e250e2b72f9",
+          "name": "Get Service Users handles the request to get service users.",
+          "request": {
+            "name": "Get Service Users handles the request to get service users.",
+            "description": {
+              "content": "This endpoint retrieves a list of service users based on the provided query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "services",
+                ":service",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Limit the number of results returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "prefix",
+                  "value": "<string>",
+                  "description": "Filter results by prefix"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "asc",
+                  "description": "Order by ascending or descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Contiguous ID for pagination"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service",
+                  "description": "(Required) Service Type"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f57e46b2-38f2-457f-959f-79881a7583d0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "\"user_\""
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "\"eyJDb250aW\""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service",
+                      "description": "(Required) Service Type"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"auth\": {\n    \"algorithm\": \"string\",\n    \"auth_type\": \"UNSUPPORTED\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"id\": [\n      5345,\n      1473\n    ],\n    \"public_key\": \"string\",\n    \"public_key_encoding\": \"string\",\n    \"public_key_fingerprint\": \"string\",\n    \"public_key_format\": \"string\"\n  },\n  \"user\": {\n    \"auth_type\": \"UNSUPPORTED\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"display_name\": \"string\",\n    \"hostname\": \"string\",\n    \"port\": 38801,\n    \"service_type\": \"UNSUPPORTED\",\n    \"updated_at\": \"string\",\n    \"user_id\": \"string\",\n    \"username\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c5a3178c-1ace-41f3-98cd-e1d7214ea105",
+          "name": "Register Service User handles the request to register a new service user.",
+          "request": {
+            "name": "Register Service User handles the request to register a new service user.",
+            "description": {
+              "content": "This endpoint creates a new service user based on the provided request body.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "services",
+                ":service",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service",
+                  "description": "(Required) Service Type"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<string>\",\n  \"username\": \"<string>\",\n  \"hostname\": \"<string>\",\n  \"port\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c192a0f8-5d1a-4305-ad0f-969c3d8bdf3d",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service",
+                      "description": "(Required) Service Type"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"username\": \"<string>\",\n  \"hostname\": \"<string>\",\n  \"port\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"user\": {\n    \"auth_type\": \"NONE\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"display_name\": \"string\",\n    \"hostname\": \"string\",\n    \"port\": 25464,\n    \"service_type\": \"UNSUPPORTED\",\n    \"updated_at\": \"string\",\n    \"user_id\": \"string\",\n    \"username\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "61a1eaf2-da51-41e3-abb8-a7c4d7106018",
+          "name": "Get Service User handles the request to get a service user.",
+          "request": {
+            "name": "Get Service User handles the request to get a service user.",
+            "description": {
+              "content": "This endpoint retrieves a service user based on the provided service type and user ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "services",
+                ":service",
+                "users",
+                ":userid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service",
+                  "description": "(Required) Service Type"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userid",
+                  "description": "(Required) User ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "426d5686-422e-4436-8204-69f938586343",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service",
+                    "users",
+                    ":userid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service",
+                      "description": "(Required) Service Type"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userid",
+                      "description": "(Required) User ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"auth\": {\n    \"algorithm\": \"string\",\n    \"auth_type\": \"PASSWORD\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"id\": [\n      4867,\n      5740\n    ],\n    \"public_key\": \"string\",\n    \"public_key_encoding\": \"string\",\n    \"public_key_fingerprint\": \"string\",\n    \"public_key_format\": \"string\"\n  },\n  \"user\": {\n    \"auth_type\": \"PASSWORD\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"display_name\": \"string\",\n    \"hostname\": \"string\",\n    \"port\": 5154,\n    \"service_type\": \"SNOWFLAKE\",\n    \"updated_at\": \"string\",\n    \"user_id\": \"string\",\n    \"username\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f60e1f4-c5b9-4b27-a4d5-04c138eeaeca",
+          "name": "Delete Service User handles the request to delete a service user.",
+          "request": {
+            "name": "Delete Service User handles the request to delete a service user.",
+            "description": {
+              "content": "This endpoint deletes a service user based on the provided service type and user ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "services",
+                ":service",
+                "users",
+                ":userid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service",
+                  "description": "(Required) Service Type"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userid",
+                  "description": "(Required) User ID"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d12dc184-1176-413a-b91d-886fadcb984b",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service",
+                    "users",
+                    ":userid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service",
+                      "description": "(Required) Service Type"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userid",
+                      "description": "(Required) User ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d97e475e-bc7f-47b7-a192-04e836279af4",
+          "name": "Update Service User handles the request to update a service user.",
+          "request": {
+            "name": "Update Service User handles the request to update a service user.",
+            "description": {
+              "content": "This endpoint updates a service user based on the provided service type and user ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "services",
+                ":service",
+                "users",
+                ":userid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service",
+                  "description": "(Required) Service Type"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userid",
+                  "description": "(Required) User ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<string>\",\n  \"username\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "594ba829-fab6-4a36-99ca-223414deafe5",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "services",
+                    ":service",
+                    "users",
+                    ":userid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service",
+                      "description": "(Required) Service Type"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userid",
+                      "description": "(Required) User ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"username\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"auth\": {\n    \"algorithm\": \"string\",\n    \"auth_type\": \"PASSWORD\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"id\": [\n      4867,\n      5740\n    ],\n    \"public_key\": \"string\",\n    \"public_key_encoding\": \"string\",\n    \"public_key_fingerprint\": \"string\",\n    \"public_key_format\": \"string\"\n  },\n  \"user\": {\n    \"auth_type\": \"PASSWORD\",\n    \"created_at\": \"string\",\n    \"deactivated_at\": \"string\",\n    \"display_name\": \"string\",\n    \"hostname\": \"string\",\n    \"port\": 5154,\n    \"service_type\": \"SNOWFLAKE\",\n    \"updated_at\": \"string\",\n    \"user_id\": \"string\",\n    \"username\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89fe2bd8-de77-4b92-a9af-1c1fb42dd134",
+          "name": "Get Users handles the request to get users.",
+          "request": {
+            "name": "Get Users handles the request to get users.",
+            "description": {
+              "content": "This endpoint retrieves a list of users based on the provided query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Limit the number of results returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "prefix",
+                  "value": "<string>",
+                  "description": "Filter results by prefix"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "asc",
+                  "description": "Order by ascending or descending"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Contiguous ID for pagination"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7acac995-83a1-47b0-b618-954ee12f37c2",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "\"user_\""
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "\"eyJDb250aW\""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"users\": [\n    {\n      \"auth\": {\n        \"algorithm\": \"string\",\n        \"auth_type\": \"KEYPAIR\",\n        \"created_at\": \"string\",\n        \"deactivated_at\": \"string\",\n        \"id\": [\n          578,\n          8323\n        ],\n        \"public_key\": \"string\",\n        \"public_key_encoding\": \"string\",\n        \"public_key_fingerprint\": \"string\",\n        \"public_key_format\": \"string\"\n      },\n      \"user\": {\n        \"auth_type\": \"UNSUPPORTED\",\n        \"created_at\": \"string\",\n        \"deactivated_at\": \"string\",\n        \"display_name\": \"string\",\n        \"hostname\": \"string\",\n        \"port\": 12891,\n        \"service_type\": \"SNOWFLAKE\",\n        \"updated_at\": \"string\",\n        \"user_id\": \"string\",\n        \"username\": \"string\"\n      }\n    },\n    {\n      \"auth\": {\n        \"algorithm\": \"string\",\n        \"auth_type\": \"NONE\",\n        \"created_at\": \"string\",\n        \"deactivated_at\": \"string\",\n        \"id\": [\n          4242,\n          758\n        ],\n        \"public_key\": \"string\",\n        \"public_key_encoding\": \"string\",\n        \"public_key_fingerprint\": \"string\",\n        \"public_key_format\": \"string\"\n      },\n      \"user\": {\n        \"auth_type\": \"UNSUPPORTED\",\n        \"created_at\": \"string\",\n        \"deactivated_at\": \"string\",\n        \"display_name\": \"string\",\n        \"hostname\": \"string\",\n        \"port\": 58412,\n        \"service_type\": \"UNSUPPORTED\",\n        \"updated_at\": \"string\",\n        \"user_id\": \"string\",\n        \"username\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bd97898b-ac19-456e-b9f3-28501562ad46",
+    "name": "Service User Service Users API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Service User API. This API allows ALTR customers to manage service users used to connect to third-party applications such as Snowflake.\nAPI credentials can be obtained under Settings > Preferences > API of ALTR's portal for Usernames are the 'Key Names' listed on that page and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

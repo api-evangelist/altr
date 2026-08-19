@@ -1,0 +1,2127 @@
+{
+  "item": [
+    {
+      "id": "b982b843-b4e7-401f-916d-3418da68cddc",
+      "name": "access_request",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "048b1af7-617d-41fb-8ab1-2ed972d9d7a2",
+          "name": "Create a new access request",
+          "request": {
+            "name": "Create a new access request",
+            "description": {
+              "content": "An access request represents a user's request to access specific resources or perform certain actions within the system. This endpoint allows you to create a new access request. The request body must include details about the requester, justification, metadata, and rules defining the access request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"<string>\",\n    \"email\": \"<string>\",\n    \"role\": \"<string>\"\n  },\n  \"justification\": \"<string>\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"table\": \"<string>\",\n              \"view\": \"<string>\"\n            },\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"table\": \"<string>\",\n              \"view\": \"<string>\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"name\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"tag_condition\": \"<string>\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"name\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"tag_condition\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"table\": \"<string>\",\n              \"view\": \"<string>\"\n            },\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"table\": \"<string>\",\n              \"view\": \"<string>\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"name\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"tag_condition\": \"<string>\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"<string>\",\n              \"schema\": \"<string>\",\n              \"name\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"tag_condition\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": \"<number>\",\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "60d52a62-777c-4097-8b4c-315e6e2580ff",
+              "name": "Access request created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"NAME\",\n    \"email\": \"name@company.com\",\n    \"role\": \"DEV_ROLE\"\n  },\n  \"justification\": \"Need access to perform data analysis.\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": 1,\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n    \"tracking_id\": \"c4773270-0265-4f41-9c98-80f7d8679b18\",\n    \"created_at\": \"2025-06-12T18:20:05.713Z\",\n    \"rules\": [\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      },\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      }\n    ],\n    \"requester\": \"ADAM\",\n    \"requester_identity\": {\n      \"requester\": \"ADAM\",\n      \"email\": \"ADAM@company.com\",\n      \"role\": \"DEVELOPER_ROLE\"\n    },\n    \"requester_justification\": \"Need access for testing purposes.\",\n    \"snowflake_metadata\": {\n      \"account_region\": \"AWS_US_WEST_2\",\n      \"account_name\": \"ORG\",\n      \"organization_name\": \"COMPANY_ORG\"\n    },\n    \"status\": \"OPEN\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3df3857-215f-45cf-bc16-ff7bbc2670b9",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"NAME\",\n    \"email\": \"name@company.com\",\n    \"role\": \"DEV_ROLE\"\n  },\n  \"justification\": \"Need access to perform data analysis.\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": 1,\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "317d255c-c399-4d21-9de8-413485f329a0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"NAME\",\n    \"email\": \"name@company.com\",\n    \"role\": \"DEV_ROLE\"\n  },\n  \"justification\": \"Need access to perform data analysis.\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": 1,\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bd3933c-3d58-46cf-ae53-562918e36ba4",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"NAME\",\n    \"email\": \"name@company.com\",\n    \"role\": \"DEV_ROLE\"\n  },\n  \"justification\": \"Need access to perform data analysis.\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": 1,\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9a1d09c-906c-4b52-9e84-2b105131472f",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requester_identity\": {\n    \"requester\": \"NAME\",\n    \"email\": \"name@company.com\",\n    \"role\": \"DEV_ROLE\"\n  },\n  \"justification\": \"Need access to perform data analysis.\",\n  \"rules\": [\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    },\n    {\n      \"actors\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_ROLE\",\n            \"ADMINISTRATOR_ROLE\"\n          ]\n        }\n      ],\n      \"access\": [\n        {\n          \"name\": \"<string>\"\n        }\n      ],\n      \"objects\": [\n        {\n          \"type\": \"<string>\",\n          \"condition\": \"<string>\",\n          \"identifiers\": [\n            \"DEVELOPER_DATABASE\",\n            \"ADMINISTRATOR_DATABASE\"\n          ],\n          \"fully_qualified_identifiers\": [\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            },\n            {\n              \"database\": \"DEVELOPER_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"table\": \"USERS\",\n              \"view\": \"USERS\"\n            }\n          ]\n        }\n      ],\n      \"tagged_objects\": [\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        },\n        {\n          \"check_against\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"tagged_with\": [\n            {\n              \"database\": \"MY_DATABASE\",\n              \"schema\": \"PUBLIC\",\n              \"name\": \"sensitive_data\",\n              \"value\": \"PII\"\n            }\n          ],\n          \"tag_condition\": \"and\"\n        }\n      ]\n    }\n  ],\n  \"connection_id\": 1,\n  \"snowflake_metadata\": {\n    \"account_region\": \"<string>\",\n    \"account_name\": \"<string>\",\n    \"organization_name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc4fe69a-d68c-46db-9a8c-7b938a7b2921",
+          "name": "Retrieve all access requests",
+          "request": {
+            "name": "Retrieve all access requests",
+            "description": {
+              "content": "This endpoint retrieves all access requests for the client. It supports pagination using the `exclusive_start_key` and `limit` query parameters. `exclusive_start_key` can be found in the response of the previous request under `last_evaluated_key`, under the `id` property. Use that value to get the next set of access requests.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "The maximum number of access requests to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "requester",
+                  "value": "<string>",
+                  "description": "The name of the individual who issued the access request."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "OPEN",
+                  "description": "The statues of the access request."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "desc",
+                  "description": "The sort order of the access requests."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclusive_start_key",
+                  "value": "<string>",
+                  "description": "The key to start pagination from. This is an encoded JSON string."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f171927d-3023-43fc-96ba-78e42c5d1295",
+              "name": "Access request retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "requester",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n      \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n      \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n      \"created_at\": \"2025-06-12T18:20:05.713Z\",\n      \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n      \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n      \"status\": \"CLOSED_DENIED\",\n      \"rules\": [\n        {\n          \"actors\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_ROLE\",\n                \"ADMINISTRATOR_ROLE\"\n              ]\n            }\n          ],\n          \"access\": [\n            {\n              \"name\": \"<string>\"\n            }\n          ],\n          \"objects\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_DATABASE\",\n                \"ADMINISTRATOR_DATABASE\"\n              ],\n              \"fully_qualified_identifiers\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ],\n          \"tagged_objects\": [\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            },\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            }\n          ]\n        },\n        {\n          \"actors\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_ROLE\",\n                \"ADMINISTRATOR_ROLE\"\n              ]\n            }\n          ],\n          \"access\": [\n            {\n              \"name\": \"<string>\"\n            }\n          ],\n          \"objects\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_DATABASE\",\n                \"ADMINISTRATOR_DATABASE\"\n              ],\n              \"fully_qualified_identifiers\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ],\n          \"tagged_objects\": [\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            },\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            }\n          ]\n        }\n      ],\n      \"requester_identity\": {\n        \"requester\": \"USER\",\n        \"email\": \"user@company.com\",\n        \"role\": \"DEVELOPER_ROLE\"\n      },\n      \"requester_justification\": \"Need access for testing purposes\",\n      \"approver_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"approver_justification\": \"Approved by the manager\",\n      \"denier_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"denier_justification\": \"Justification for the action\",\n      \"canceller_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"canceller_justification\": \"string\",\n      \"snowflake_metadata\": {\n        \"organization_name\": \"DMHDHZU\",\n        \"account_region\": \"AWS_US_WEST_2\",\n        \"ip\": \"unknown\",\n        \"account_name\": \"ALTR\"\n      },\n      \"policy_reference\": \"string\",\n      \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n      \"progress_step\": \"Updating status.\",\n      \"failure_reason\": \"string\"\n    },\n    {\n      \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n      \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n      \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n      \"created_at\": \"2025-06-12T18:20:05.713Z\",\n      \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n      \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n      \"status\": \"CLOSED_DENIED\",\n      \"rules\": [\n        {\n          \"actors\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_ROLE\",\n                \"ADMINISTRATOR_ROLE\"\n              ]\n            }\n          ],\n          \"access\": [\n            {\n              \"name\": \"<string>\"\n            }\n          ],\n          \"objects\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_DATABASE\",\n                \"ADMINISTRATOR_DATABASE\"\n              ],\n              \"fully_qualified_identifiers\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ],\n          \"tagged_objects\": [\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            },\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            }\n          ]\n        },\n        {\n          \"actors\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_ROLE\",\n                \"ADMINISTRATOR_ROLE\"\n              ]\n            }\n          ],\n          \"access\": [\n            {\n              \"name\": \"<string>\"\n            }\n          ],\n          \"objects\": [\n            {\n              \"type\": \"<string>\",\n              \"condition\": \"<string>\",\n              \"identifiers\": [\n                \"DEVELOPER_DATABASE\",\n                \"ADMINISTRATOR_DATABASE\"\n              ],\n              \"fully_qualified_identifiers\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ]\n            }\n          ],\n          \"tagged_objects\": [\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            },\n            {\n              \"check_against\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tagged_with\": [\n                {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              ],\n              \"tag_condition\": \"and\"\n            }\n          ]\n        }\n      ],\n      \"requester_identity\": {\n        \"requester\": \"USER\",\n        \"email\": \"user@company.com\",\n        \"role\": \"DEVELOPER_ROLE\"\n      },\n      \"requester_justification\": \"Need access for testing purposes\",\n      \"approver_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"approver_justification\": \"Approved by the manager\",\n      \"denier_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"denier_justification\": \"Justification for the action\",\n      \"canceller_identity\": [\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        },\n        {\n          \"id\": \"12345\",\n          \"role\": \"ADMIN\",\n          \"email\": \"example@company.com\",\n          \"username\": \"ADMIN\"\n        }\n      ],\n      \"canceller_justification\": \"string\",\n      \"snowflake_metadata\": {\n        \"organization_name\": \"DMHDHZU\",\n        \"account_region\": \"AWS_US_WEST_2\",\n        \"ip\": \"unknown\",\n        \"account_name\": \"ALTR\"\n      },\n      \"policy_reference\": \"string\",\n      \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n      \"progress_step\": \"Updating status.\",\n      \"failure_reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2dd77caa-0b46-492f-9cfe-f5edfdbb343c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "requester",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28cfdaa2-f1d0-40c3-adb3-b1463213d0b5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "requester",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b569f251-e70c-4e03-901f-9ebeb3e55ab6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "requester",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fc76e8f-d251-4b27-b0dd-578a752d8db2",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "requester",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "exclusive_start_key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11e9f44e-a7f6-43ef-941d-b65b56b8d389",
+          "name": "Retrieve a specific access request",
+          "request": {
+            "name": "Retrieve a specific access request",
+            "description": {
+              "content": "This endpoint retrieves a specific access request by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the access request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bd5545f3-8139-40cc-99ad-e42aca99c8f1",
+              "name": "Access request retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n    \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n    \"created_at\": \"2025-06-12T18:20:05.713Z\",\n    \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n    \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"status\": \"CLOSED_DENIED\",\n    \"rules\": [\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      },\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      }\n    ],\n    \"requester_identity\": {\n      \"requester\": \"USER\",\n      \"email\": \"user@company.com\",\n      \"role\": \"DEVELOPER_ROLE\"\n    },\n    \"requester_justification\": \"Need access for testing purposes\",\n    \"approver_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"approver_justification\": \"Approved by the manager\",\n    \"denier_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"denier_justification\": \"Justification for the action\",\n    \"canceller_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"canceller_justification\": \"string\",\n    \"snowflake_metadata\": {\n      \"organization_name\": \"DMHDHZU\",\n      \"account_region\": \"AWS_US_WEST_2\",\n      \"ip\": \"unknown\",\n      \"account_name\": \"ALTR\"\n    },\n    \"policy_reference\": \"string\",\n    \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n    \"progress_step\": \"Updating status.\",\n    \"failure_reason\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb04ca2e-e460-456d-816e-18ad6a60ef12",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b71d621-6f67-43d6-80a6-fedd51458a96",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f4624e7-adc0-4bd9-a3d1-430d3c98e658",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2abcc54a-df58-410b-b40d-19d507828765",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f522aca-e75d-4354-9628-7870f770982d",
+          "name": "Approve an access request",
+          "request": {
+            "name": "Approve an access request",
+            "description": {
+              "content": "This endpoint approves a specific access request by its ID. The access request must be in an OPEN status to be approved.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest",
+                ":id",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the access request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2dd840d5-3701-4bf6-af52-47bedeaaa7a4",
+              "name": "Access request approved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "approve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n    \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n    \"created_at\": \"2025-06-12T18:20:05.713Z\",\n    \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n    \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"status\": \"CLOSED_DENIED\",\n    \"rules\": [\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      },\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      }\n    ],\n    \"requester_identity\": {\n      \"requester\": \"USER\",\n      \"email\": \"user@company.com\",\n      \"role\": \"DEVELOPER_ROLE\"\n    },\n    \"requester_justification\": \"Need access for testing purposes\",\n    \"approver_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"approver_justification\": \"Approved by the manager\",\n    \"denier_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"denier_justification\": \"Justification for the action\",\n    \"canceller_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"canceller_justification\": \"string\",\n    \"snowflake_metadata\": {\n      \"organization_name\": \"DMHDHZU\",\n      \"account_region\": \"AWS_US_WEST_2\",\n      \"ip\": \"unknown\",\n      \"account_name\": \"ALTR\"\n    },\n    \"policy_reference\": \"string\",\n    \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n    \"progress_step\": \"Updating status.\",\n    \"failure_reason\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56e488fb-e6a5-41d6-898c-e28283286de4",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "approve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16f44dd5-3bb1-4e5c-a692-3e7d2cb1b263",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "approve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2dc511eb-ca8f-4d9e-89ce-bac59e295547",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "approve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5c675c0-d9d7-4c0d-802e-f866f324a587",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "approve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48179c6f-17c6-424a-b4f6-5daa6c01b48c",
+          "name": "Deny an access request",
+          "request": {
+            "name": "Deny an access request",
+            "description": {
+              "content": "This endpoint denies a specific access request by its ID. The access request must be in an OPEN status to be denied.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest",
+                ":id",
+                "deny"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the access request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fa811304-b6b3-432d-b7a7-a31bc3fb852f",
+              "name": "Access request denied successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "deny"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n    \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n    \"created_at\": \"2025-06-12T18:20:05.713Z\",\n    \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n    \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"status\": \"CLOSED_DENIED\",\n    \"rules\": [\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      },\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      }\n    ],\n    \"requester_identity\": {\n      \"requester\": \"USER\",\n      \"email\": \"user@company.com\",\n      \"role\": \"DEVELOPER_ROLE\"\n    },\n    \"requester_justification\": \"Need access for testing purposes\",\n    \"approver_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"approver_justification\": \"Approved by the manager\",\n    \"denier_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"denier_justification\": \"Justification for the action\",\n    \"canceller_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"canceller_justification\": \"string\",\n    \"snowflake_metadata\": {\n      \"organization_name\": \"DMHDHZU\",\n      \"account_region\": \"AWS_US_WEST_2\",\n      \"ip\": \"unknown\",\n      \"account_name\": \"ALTR\"\n    },\n    \"policy_reference\": \"string\",\n    \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n    \"progress_step\": \"Updating status.\",\n    \"failure_reason\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63703633-d6c3-427e-93e3-c35acb2b4073",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "deny"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef883b89-2969-4e44-adf0-841e183a312f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "deny"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a48f4958-3cb3-4205-85cd-64f1c9ae6d79",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "deny"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9771ce5-2865-4874-a36e-f63a144c394e",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "deny"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "152858a4-2d4e-4e17-8f48-20c9ec4d784c",
+          "name": "Cancel an access request",
+          "request": {
+            "name": "Cancel an access request",
+            "description": {
+              "content": "This endpoint cancels a specific access request by its ID. The access request must be in an OPEN status to be canceled.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accessRequest",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the access request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e143abbf-06e7-4fd8-947e-947fdded05a0",
+              "name": "Access request canceled successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"PK\": \"ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST\",\n    \"SK\": \"ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"client_id\": \"12e06dcd-8b2e-4102-82db-c8a692d87c52\",\n    \"created_at\": \"2025-06-12T18:20:05.713Z\",\n    \"updated_at\": \"2025-06-12T18:20:05.718Z\",\n    \"id\": \"a56f3f23-e523-46a8-880e-a41339ae7e3c\",\n    \"status\": \"CLOSED_DENIED\",\n    \"rules\": [\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      },\n      {\n        \"actors\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_ROLE\",\n              \"ADMINISTRATOR_ROLE\"\n            ]\n          }\n        ],\n        \"access\": [\n          {\n            \"name\": \"<string>\"\n          }\n        ],\n        \"objects\": [\n          {\n            \"type\": \"<string>\",\n            \"condition\": \"<string>\",\n            \"identifiers\": [\n              \"DEVELOPER_DATABASE\",\n              \"ADMINISTRATOR_DATABASE\"\n            ],\n            \"fully_qualified_identifiers\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"table\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"view\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ]\n          }\n        ],\n        \"tagged_objects\": [\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          },\n          {\n            \"check_against\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"tagged_with\": [\n              {\n                \"database\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"schema\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"name\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"value\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            ],\n            \"tag_condition\": \"and\"\n          }\n        ]\n      }\n    ],\n    \"requester_identity\": {\n      \"requester\": \"USER\",\n      \"email\": \"user@company.com\",\n      \"role\": \"DEVELOPER_ROLE\"\n    },\n    \"requester_justification\": \"Need access for testing purposes\",\n    \"approver_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"approver_justification\": \"Approved by the manager\",\n    \"denier_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"denier_justification\": \"Justification for the action\",\n    \"canceller_identity\": [\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      },\n      {\n        \"id\": \"12345\",\n        \"role\": \"ADMIN\",\n        \"email\": \"example@company.com\",\n        \"username\": \"ADMIN\"\n      }\n    ],\n    \"canceller_justification\": \"string\",\n    \"snowflake_metadata\": {\n      \"organization_name\": \"DMHDHZU\",\n      \"account_region\": \"AWS_US_WEST_2\",\n      \"ip\": \"unknown\",\n      \"account_name\": \"ALTR\"\n    },\n    \"policy_reference\": \"string\",\n    \"tracking_id\": \"b8490d10-0808-44f0-80b6-e244724d4030\",\n    \"progress_step\": \"Updating status.\",\n    \"failure_reason\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41120126-1894-4c9b-82d7-e187e7cb9b3e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Bad Request\",\n  \"statusCode\": 400,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9ce6380-be70-4968-a05e-984aa350e99d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\",\n  \"statusCode\": 401,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e633cfa7-3bd9-4c22-9619-cb37732bdf9c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource is forbidden\",\n  \"statusCode\": 403,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36c04291-efbc-4aa3-97ca-e55a9e806f62",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accessRequest",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the access request."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"justification\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Internal Server Error\",\n  \"statusCode\": 500,\n  \"date\": \"2022-07-20T18:00:58.723Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/unified-policy/management/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "89de4334-7db5-4ae1-a57c-e557173490ce",
+    "name": "Unified Policy Access Request API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Unified Policy API. This API allows ALTR customers to manage the policy they enact on Data Sources. These policies include column-level masking, tag-based, pushddown and access management.\n\nThe API provides endpoints to create, update, retrieve, and delete policies, as well as manage rules and thresholds associated with them. It supports advanced features such as time-based and rate-based thresholds, role-based access control, and integration with Snowflake and Databricks.\n\nFor more details, refer to the examples and schemas provided in this documentation.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

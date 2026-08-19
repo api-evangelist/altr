@@ -1,0 +1,444 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Applications API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: applications
+  description: Operations about applications
+paths:
+  /applications:
+    get:
+      tags:
+      - applications
+      summary: Returns all applications along with query filter capabilities
+      operationId: getApplications
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - description
+          - serverFriendlyName
+          default: serverFriendlyName
+        description: Sort by either the 'description' or the 'serverFriendlyName'
+      - name: serverFriendlyName
+        in: query
+        schema:
+          type: string
+        description: Filter by the serverFriendlyName
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      apps:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Applications'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - applications
+      summary: Creates a new application given the appropriate body. If successful returns the application created and the driver installId, the driver installId is only valid for a single use.
+      operationId: createApplication
+      requestBody:
+        description: The applications creation request body
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - serverFriendlyName
+              - os
+              - ips
+              properties:
+                serverFriendlyName:
+                  type: string
+                  example: My Application
+                os:
+                  type: string
+                  example: Linux
+                description:
+                  type: string
+                  example: My example application created via Swagger UI
+                ips:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - 192.168.1.1
+                onQuerySettings:
+                  required:
+                  - enabled
+                  type: object
+                  description: If 'enabled' value is true, all other properties are then required.
+                  properties:
+                    enabled:
+                      type: boolean
+                      example: true
+                    analysisUrl:
+                      type: string
+                      example: https://altr.com
+                    defaultAction:
+                      type: string
+                      enum:
+                      - DENY
+                      - ALLOW
+                      example: ALLOW
+                    scrubQuery:
+                      type: boolean
+                      example: true
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                    - $ref: '#/components/schemas/Applications'
+                    - type: object
+                      properties:
+                        installId:
+                          type: string
+                          example: ALTR-15DB322B8E4D4C168B8FD923140402EE
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /applications/{id}:
+    get:
+      tags:
+      - applications
+      summary: Returns individual application by the given id.
+      operationId: getApplication
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Application'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - applications
+      summary: Updates an individual application by the given id.
+      operationId: patchApplication
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: The applications update body
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                serverFriendlyName:
+                  type: string
+                  example: Updated Application
+                status:
+                  type: string
+                  enum:
+                  - registered
+                  - unregistered
+                  example: registered
+                  description: Having the application "unregistered" is NOT the same as disabling it.
+                disabled:
+                  type: boolean
+                  example: false
+                description:
+                  type: string
+                  example: Updated application via Swagger UI.
+                ips:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - 192.168.1.1
+                onQuerySettings:
+                  required:
+                  - enabled
+                  type: object
+                  description: If 'enabled' value is true, all other properties are then required.
+                  properties:
+                    enabled:
+                      type: boolean
+                    analysisUrl:
+                      type: string
+                    defaultAction:
+                      type: string
+                      enum:
+                      - DENY
+                      - ALLOW
+                    scrubQuery:
+                      type: boolean
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Applications'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Application:
+      type: object
+      properties:
+        serverId:
+          type: integer
+          example: 1
+        serverFriendlyName:
+          type: string
+          example: Snowflake Cloud Integration
+        os:
+          type: string
+          example: linux
+        description:
+          type: string
+          example: Managed by ALTR. Do not modify or remove.
+        serverStatus:
+          type: string
+          example: active
+        uiStatus:
+          type: string
+          example: Registered
+          description: This is used by the ALTRNet UI to display what the status of the application is. Just a different term/name for the application.
+        creationDate:
+          type: string
+          format: date-time
+        accessStatus:
+          type: integer
+          example: 0
+        clientId:
+          type: string
+          example: 969276ae-9118-11ed-a1eb-0242ac1200020
+        IP:
+          type: string
+          example: 192.168.0.0,192.168.1.1
+          description: This contains, in a string format, all the IPs associated to this application.
+        serverAddress:
+          type: array
+          items:
+            type: string
+          example:
+          - 192.168.0.1
+          - 192.168.1.1
+          description: This contains, in an array format, all the IPs associated to this application.
+        onQuerySettings:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+              description: The unique identifier for the onQuery settings
+            serverId:
+              type: integer
+              example: 1
+              description: The unique identifier of the application in which the onQuery settings belong too
+            enabled:
+              type: boolean
+              example: false
+            analysisUrl:
+              type: string
+              example: https://altr.com
+            defaultAction:
+              type: string
+              enum:
+              - DENY
+              - ALLOW
+              example: ALLOW
+            scrubQuery:
+              type: boolean
+              example: true
+    Applications:
+      allOf:
+      - $ref: '#/components/schemas/Application'
+      - type: object
+        properties:
+          clientId_bin:
+            type: object
+            description: This is the binary definition of the clientId
+          connectionCountLimit:
+            type: integer
+            example: 1
+          disabled:
+            type: boolean
+            example: false
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

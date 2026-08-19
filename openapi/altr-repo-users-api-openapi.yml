@@ -1,0 +1,403 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Repo Users API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Repo Users
+paths:
+  /repos/{repo_name}/users:
+    get:
+      description: List all users for a repo.
+      parameters:
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: The name of the repo to list users for.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListRepoUsersOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List all users for a repo.
+      tags:
+      - Repo Users
+    post:
+      description: 'Create a new Repo User with the provided details. Exactly one credential provider must be specified:
+
+
+        - **aws_secrets_manager** — reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).
+
+        - **azure_key_vault** — reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).
+
+        - **environment_variable** — read the credential from an OS environment variable (field: variable_name).
+
+        - **secret_file** — read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. "db_password" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.'
+      parameters:
+      - description: Name of repo.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/repousers.CreateRepoUserInput'
+        description: Repo User details
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.RepoUser'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Create a new Repo User.
+      tags:
+      - Repo Users
+  /repos/{repo_name}/users/{username}:
+    delete:
+      description: Delete a user from a Repo.
+      parameters:
+      - description: Name of Repo.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      - description: Name of User.
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Delete a Repo User.
+      tags:
+      - Repo Users
+    get:
+      description: Get the user for a given repo name and user name.
+      parameters:
+      - description: Name of repo.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      - description: Name of user.
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.RepoUser'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Get a Repo User.
+      tags:
+      - Repo Users
+    patch:
+      description: 'Update a Repo User. When changing the credential provider, supply exactly one of:
+
+
+        - **aws_secrets_manager** — reference a secret in AWS Secrets Manager (fields: secrets_path, optional iam_role).
+
+        - **azure_key_vault** — reference a secret in Azure Key Vault (fields: key_vault_uri, secret_name).
+
+        - **environment_variable** — read the credential from an OS environment variable (field: variable_name).
+
+        - **secret_file** — read the credential from a file under /altr/secrets/ (field: path). The path must be a simple filename with no directory separators or traversal (e.g. "db_password" resolves to /altr/secrets/db_password). The file is re-read on every credential fetch, supporting live secret rotation. Mount your secrets directory to /altr/secrets/ in the container.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/repousers.UpdateRepoUserInput'
+        description: The Repo User to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.RepoUser'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Update a Repo User.
+      tags:
+      - Repo Users
+components:
+  schemas:
+    repousers.CreateRepoUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        username:
+          type: string
+          x-order: '0'
+      type: object
+    management.AzureKeyVault:
+      properties:
+        key_vault_uri:
+          type: string
+          x-order: '0'
+        secret_name:
+          type: string
+          x-order: '1'
+      required:
+      - key_vault_uri
+      - secret_name
+      type: object
+      x-order: '2'
+    management.ListRepoUsersOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        users:
+          items:
+            $ref: '#/components/schemas/management.RepoUser'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    management.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+          x-order: '0'
+      required:
+      - variable_name
+      type: object
+      x-order: '3'
+    management.AWSSecretsManager:
+      properties:
+        iam_role:
+          description: validate that this is an arn
+          type: string
+          x-order: '0'
+        secrets_path:
+          description: could change to id and name
+          type: string
+          x-order: '1'
+      required:
+      - secrets_path
+      type: object
+      x-order: '1'
+    repousers.UpdateRepoUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+      type: object
+    management.SecretFile:
+      properties:
+        path:
+          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
+
+            Example: "db_password" → /altr/secrets/db_password'
+          type: string
+          x-order: '0'
+      required:
+      - path
+      type: object
+      x-order: '4'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.RepoUser:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        created_at:
+          type: string
+          x-order: '6'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        repo_name:
+          type: string
+          x-order: '1'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        updated_at:
+          type: string
+          x-order: '7'
+        username:
+          type: string
+          x-order: '0'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

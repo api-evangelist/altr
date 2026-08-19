@@ -1,0 +1,2148 @@
+{
+  "item": [
+    {
+      "id": "d4936d2c-001f-4a4a-865b-eb2f16e241c3",
+      "name": "Agent Tasks",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55f9b730-404f-4e2c-b10d-8bfdf59af506",
+          "name": "List Tasks for an Agent.",
+          "request": {
+            "name": "List Tasks for an Agent.",
+            "description": {
+              "content": "List all Tasks for a given Agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "agents",
+                ":agent_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50",
+                  "description": "The maximum number of items to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "The Contiguous ID for pagination"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) ID of Agent."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2dd0d52f-fcb9-4d21-9e16-53f1d30f8a36",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"tasks\": [\n    {\n      \"agent_id\": \"string\",\n      \"configuration\": {\n        \"audit_file_path\": \"string\",\n        \"audit_file_type\": \"string\",\n        \"classification_type\": 6442,\n        \"collection_name\": \"string\",\n        \"condition_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"initial_audit_timestamp\": \"string\",\n        \"log_line_prefix\": \"string\",\n        \"sample_size\": 9919,\n        \"sample_strategy\": \"string\",\n        \"sample_type\": \"string\",\n        \"service_name\": \"string\",\n        \"ssl_config\": {\n          \"enabled\": true,\n          \"hostname_in_certificate\": \"string\",\n          \"trust_server_certificate\": true,\n          \"trust_store_password_arn\": \"string\",\n          \"trust_store_path\": \"string\"\n        },\n        \"table_name\": \"string\"\n      },\n      \"created_at\": \"string\",\n      \"description\": \"string\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"repo_name\": \"string\",\n      \"schedule\": {\n        \"type\": \"CRON\",\n        \"value\": \"string\",\n        \"max_duration\": \"string\",\n        \"timezone\": \"America/New_York\"\n      },\n      \"service_user\": \"string\",\n      \"updated_at\": \"string\"\n    },\n    {\n      \"agent_id\": \"string\",\n      \"configuration\": {\n        \"audit_file_path\": \"string\",\n        \"audit_file_type\": \"string\",\n        \"classification_type\": 9144,\n        \"collection_name\": \"string\",\n        \"condition_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"initial_audit_timestamp\": \"string\",\n        \"log_line_prefix\": \"string\",\n        \"sample_size\": 114,\n        \"sample_strategy\": \"string\",\n        \"sample_type\": \"string\",\n        \"service_name\": \"string\",\n        \"ssl_config\": {\n          \"enabled\": true,\n          \"hostname_in_certificate\": \"string\",\n          \"trust_server_certificate\": false,\n          \"trust_store_password_arn\": \"string\",\n          \"trust_store_path\": \"string\"\n        },\n        \"table_name\": \"string\"\n      },\n      \"created_at\": \"string\",\n      \"description\": \"string\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"repo_name\": \"string\",\n      \"schedule\": {\n        \"type\": \"CRON\",\n        \"value\": \"string\",\n        \"max_duration\": \"string\",\n        \"timezone\": \"America/New_York\"\n      },\n      \"service_user\": \"string\",\n      \"updated_at\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae3aa1d1-df67-46e6-a11d-df90025f5962",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "536cd345-057a-461a-9e08-c47a5b8cfed6",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79952161-884e-46cd-b4ea-e7311a21255f",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d9fdfc82-8948-4f10-a69b-eb97ef0f72b9",
+          "name": "Create a new Task for an Agent.",
+          "request": {
+            "name": "Create a new Task for an Agent.",
+            "description": {},
+            "url": {
+              "path": [
+                "agents",
+                ":agent_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) ID of Agent."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"<string>\"\n  },\n  \"service_user\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "01662c7e-e722-4f79-b064-1f245eb38d1d",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent_id\": \"string\",\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"repo_name\": \"string\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6cf29bba-df44-4afb-8b37-ace93cac17d5",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1837c79-2d98-4ba8-a329-8d468fd6e59c",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8440800-aff2-4264-98da-0acc7c3eeb74",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6667d69d-6592-49c2-bf14-dbd19d631da0",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"repo_name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "596b997f-eb77-4fad-bf02-25d1a08946a7",
+          "name": "Delete Task.",
+          "request": {
+            "name": "Delete Task.",
+            "description": {
+              "content": "This will decrement the Agent's task_count by 1.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "agents",
+                ":agent_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) ID of Agent."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of Task."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "43d7b9b7-2322-438e-b639-f507634a9af7",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d61d2ba7-fb93-49dd-9ecc-ebef69239d1f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d06c36de-6103-463d-8181-c082890d2516",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9e92c96-56e5-4a5b-b848-c2b631dba3c3",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd4f14fd-cc8e-45c1-b3fe-f0462f0a8592",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c743b566-2845-43cb-93e0-b324c4e19897",
+          "name": "Get a Task.",
+          "request": {
+            "name": "Get a Task.",
+            "description": {},
+            "url": {
+              "path": [
+                "agents",
+                ":agent_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) ID of Agent."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of Task."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "323f48de-a5fb-4c77-825d-0a4cf829ce4b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent_id\": \"string\",\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"repo_name\": \"string\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d53f87bf-023c-45af-b86f-05838aa758cf",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81560fff-1584-46ae-85e5-79d172b6e04f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "223b650a-52e6-405a-96d9-9653ef5b1bf0",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66636b31-7639-4d8b-90c4-916081766918",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e16c712-d820-46d7-9123-13297dff8468",
+          "name": "Update a Task.",
+          "request": {
+            "name": "Update a Task.",
+            "description": {
+              "content": "Update a Task for a given Agent with the provided details. Fields that are not provided will not be updated.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "agents",
+                ":agent_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) ID of Agent."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of Task."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d0dde15-d58c-46e3-a31b-82dc43889a53",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agent_id\": \"string\",\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"created_at\": \"string\",\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"repo_name\": \"string\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  },\n  \"service_user\": \"string\",\n  \"updated_at\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "857e8c58-3992-41dd-b0a9-fe367b058add",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02a817dd-bdb5-49ca-b05c-34d846dd114b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f4523ab-187f-4611-8929-4eadcd77826a",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e2cbe2e-88e1-4d62-bb59-ac03ca2dd055",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent_id",
+                    "tasks",
+                    ":task_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) ID of Agent."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) ID of Task."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"configuration\": {\n    \"audit_file_path\": \"<string>\",\n    \"audit_file_type\": \"<string>\",\n    \"classification_type\": \"<integer>\",\n    \"collection_name\": \"<string>\",\n    \"condition_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"initial_audit_timestamp\": \"<string>\",\n    \"log_line_prefix\": \"<string>\",\n    \"sample_size\": \"<integer>\",\n    \"sample_strategy\": \"<string>\",\n    \"sample_type\": \"<string>\",\n    \"service_name\": \"<string>\",\n    \"ssl_config\": {\n      \"enabled\": \"<boolean>\",\n      \"hostname_in_certificate\": \"<string>\",\n      \"trust_server_certificate\": \"<boolean>\",\n      \"trust_store_password_arn\": \"<string>\",\n      \"trust_store_path\": \"<string>\"\n    },\n    \"table_name\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"schedule\": {\n    \"type\": \"<string>\",\n    \"value\": \"<string>\",\n    \"max_duration\": \"<string>\",\n    \"timezone\": \"America/New_York\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8191,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4442\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.sc-control.live.altr.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0e58c19a-a228-496e-b0d5-7392c73b056c",
+    "name": "ALTR Sidecar/Agent Configuration Agent Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the API for managing Sidecars, Agents and their configurations.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

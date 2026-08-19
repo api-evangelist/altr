@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Me API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "me",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get information about the currently logged-in user and the organizations that user has access to.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/me"
+          },
+          "docs": "Get information about the currently logged-in user and the organizations that user has access to."
+        },
+        {
+          "info": {
+            "name": "logout the user, if hit using an api key return 204",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/me/logout"
+          },
+          "docs": "logout the user, if hit using an api key return 204"
+        },
+        {
+          "info": {
+            "name": "Updates preferences of the currently logged in administrator.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/me/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates preferences of the currently logged in administrator."
+        },
+        {
+          "info": {
+            "name": "Send a verification code to update your two factor settings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/twofactor/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a verification code to update your two factor settings."
+        },
+        {
+          "info": {
+            "name": "Update your two factor code after providing the two factor code and password.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/twofactor",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update your two factor code after providing the two factor code and password."
+        },
+        {
+          "info": {
+            "name": "List the current user's WebAuthn credentials.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/webauthn/credentials"
+          },
+          "docs": "Returns all registered WebAuthn (passkey) credentials for the currently logged-in user. This endpoint requires a browser session and cannot be accessed via an API key."
+        },
+        {
+          "info": {
+            "name": "Rename a WebAuthn credential.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/webauthn/credentials/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Internal numeric ID of the registered WebAuthn credential."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the display name of a registered WebAuthn (passkey) credential. This endpoint requires a browser session and cannot be accessed via an API key."
+        },
+        {
+          "info": {
+            "name": "Delete a WebAuthn credential.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/webauthn/credentials/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Internal numeric ID of the registered WebAuthn credential."
+              }
+            ]
+          },
+          "docs": "Removes a registered WebAuthn (passkey) credential by its ID. This endpoint requires a browser session and cannot be accessed via an API key."
+        },
+        {
+          "info": {
+            "name": "Validate the authenticated administrator's password.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/me/validate-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Used by the Portal before first-time WebAuthn credential registration to gate the zero-credentials path. Returns `{ success: true }` if the password is valid; otherwise responds with `400 Invalid Credentials`. Cannot be accessed via Basic Auth."
+        },
+        {
+          "info": {
+            "name": "Start a WebAuthn registration ceremony.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/webauthn/register/options",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates the challenge and options required to begin registering a new WebAuthn (passkey) credential. The returned options should be passed to the browser's `navigator.credentials.create()` call. This endpoint requires a browser session and cannot be accessed via an API key."
+        },
+        {
+          "info": {
+            "name": "Complete a WebAuthn registration ceremony.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/me/preferences/webauthn/register/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verifies the authenticator's response and saves the new WebAuthn credential. The `response` field should be the JSON-serialised `AuthenticatorAttestationResponse` returned by `navigator.credentials.create()`. This endpoint requires a browser session and cannot be accessed via an API key."
+        },
+        {
+          "info": {
+            "name": "Emails support@altr.com with a generic request for support.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/me/help",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

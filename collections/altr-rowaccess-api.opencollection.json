@@ -1,0 +1,187 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Rowaccess API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "rowaccess",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list of all policies for the organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/rowaccess",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "The order of returned data for the defined field."
+              }
+            ]
+          },
+          "docs": "Returns a list of all policies for the organization."
+        },
+        {
+          "info": {
+            "name": "Returns a list of all policies for the organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/rowaccess/database/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The id of the database that contains this policy."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of all policies for the organization."
+        },
+        {
+          "info": {
+            "name": "Emails support@altr.com with an email about a row access error.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/rowAccess/help",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Emails support@altr.com with an email about a row access error."
+        },
+        {
+          "info": {
+            "name": "Get an individual existing policy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/rowaccess/database/:databaseId/table/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The id of the database that contains this policy."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the table that contains this policy."
+              }
+            ]
+          },
+          "docs": "Get an individual existing policy."
+        },
+        {
+          "info": {
+            "name": "Upserts a new row policy to protect the given table in the specified database.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/rowaccess/database/:databaseId/table/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The id of the database that contains this policy."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the table that contains this policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upserts a new row policy to protect the given table in the specified database."
+        },
+        {
+          "info": {
+            "name": "Deletes an existing policy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/rowaccess/database/:databaseId/table/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The id of the database that contains this policy."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the table that contains this policy."
+              }
+            ]
+          },
+          "docs": "Deletes an existing policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

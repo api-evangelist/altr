@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Sidecar/Agent Configuration Sidecar Listener Port and Repo bindings API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sidecar Listener Port and Repo bindings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List repo bindings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/repos/:repo_name/bindings",
+            "params": [
+              {
+                "name": "repo_name",
+                "value": "",
+                "type": "path",
+                "description": "The repo name"
+              },
+              {
+                "name": "ports",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of ports to filter by"
+              },
+              {
+                "name": "sidecar_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of sidecar IDs to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "The Contiguous ID for pagination"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List all bindings for a specific repo with optional filtering by ports and sidecar IDs."
+        },
+        {
+          "info": {
+            "name": "List sidecar bindings.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/bindings",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "The sidecar ID"
+              },
+              {
+                "name": "ports",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of ports to filter by"
+              },
+              {
+                "name": "repo_names",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of repo names to filter by"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "The Contiguous ID for pagination"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List all bindings for a specific sidecar with optional filtering by ports and repo names."
+        },
+        {
+          "info": {
+            "name": "Get a Repo Sidecar Binding.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/bindings/ports/:port/repos/:repo_name",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of sidecar."
+              },
+              {
+                "name": "port",
+                "value": "",
+                "type": "path",
+                "description": "Port number."
+              },
+              {
+                "name": "repo_name",
+                "value": "",
+                "type": "path",
+                "description": "Repository name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the repo sidecar binding for a given sidecar ID, port, and repo name."
+        },
+        {
+          "info": {
+            "name": "Create a new Repo Sidecar Binding.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/bindings/ports/:port/repos/:repo_name",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "The sidecar ID to bind."
+              },
+              {
+                "name": "repo_name",
+                "value": "",
+                "type": "path",
+                "description": "The repo name to bind."
+              },
+              {
+                "name": "port",
+                "value": "",
+                "type": "path",
+                "description": "The sidecar listener port to bind."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Repo Sidecar Binding with the provided details."
+        },
+        {
+          "info": {
+            "name": "Delete a Repo Sidecar Binding.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/sidecars/:sidecar_id/bindings/ports/:port/repos/:repo_name",
+            "params": [
+              {
+                "name": "sidecar_id",
+                "value": "",
+                "type": "path",
+                "description": "The sidecar ID."
+              },
+              {
+                "name": "repo_name",
+                "value": "",
+                "type": "path",
+                "description": "The repo name."
+              },
+              {
+                "name": "port",
+                "value": "",
+                "type": "path",
+                "description": "The sidecar listener port."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete an existing Repo Sidecar Binding."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

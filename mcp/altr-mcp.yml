@@ -32,12 +32,12 @@ authentication:
     description: ALTR management API secret
     secret: true
   docs: https://docs.altr.com/account-and-api/api/api-keys/
-  note: The server authenticates to the ALTR REST APIs with HTTP Basic (key name / key secret), the same credential model
-    as the REST surface.
+  note: The server authenticates to the ALTR REST APIs with HTTP Basic (key name / key secret), the same
+    credential model as the REST surface.
 governance:
   restricted_tools_env: RESTRICTED_TOOLS
-  description: A comma-separated allow-deny list removes named tools from tools/list and blocks direct calls, so a read-only
-    deployment can be enforced at the server.
+  description: A comma-separated allow-deny list removes named tools from tools/list and blocks direct
+    calls, so a read-only deployment can be enforced at the server.
   read_only_example: RESTRICTED_TOOLS=disconnect_database,delete_policy,delete_rule,disconnect_tag,disconnect_tag_by_details,delete_classifier,delete_collection,disconnect_sc_repo,disconnect_sc_sidecar
 response_envelope: '{"success": bool, "data": object|null, "error": string|null}'
 clients_documented:
@@ -709,5 +709,14 @@ x-evidence:
   - url: https://registry.modelcontextprotocol.io/v0/servers?search=altr
     http_status: 200
   note: tools/list could not be called anonymously — the server is stdio-first and requires ORG_ID/MAPI_KEY/MAPI_SECRET,
-    so the tool list is taken verbatim from the provider-published docs/ tree in its own repository. Input schemas require
-    authenticated introspection.
+    so the tool list is taken verbatim from the provider-published docs/ tree in its own repository. Input
+    schemas require authenticated introspection.
+deployment:
+  mode: none
+  endpoint: https://registry.modelcontextprotocol.io/v0/servers?search=altr
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,428 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Organization API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: organization
+  description: Operations about organization
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/settings#Preferences
+paths:
+  /organization:
+    patch:
+      tags:
+      - organization
+      summary: Update organization information
+      requestBody:
+        description: The organization info update body, only SUPERADMINISTRATOR user roles can update organizations.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Organization Name via Swagger
+                  description: The name of the organization to update.
+                phone:
+                  type: string
+                  example: '2024561111'
+                  description: The phone number associated to the organization
+                address:
+                  type: string
+                  example: 1600 Pennsylvania Avenue NW
+                  description: The physical address of the organization.
+                city:
+                  type: string
+                  example: DC
+                  description: The city of the organization
+                state:
+                  type: string
+                  example: DC
+                  description: optional
+                zip:
+                  type: string
+                  example: 20500
+                  description: optional
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Organization'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /organization/preferences:
+    get:
+      tags:
+      - organization
+      summary: Returns the users organization preferences.
+      operationId: getOrganizationPreferences
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Organization'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - organization
+      summary: Updates organization two-factor authentication preferences.
+      operationId: updateOrganizationPreferences
+      requestBody:
+        description: The organization preferences update body, only SUPERADMINISTRATOR user roles can update organizations.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - totp
+              - sms
+              - email
+              - password
+              properties:
+                totp:
+                  type: boolean
+                sms:
+                  type: boolean
+                email:
+                  type: boolean
+                webauthn:
+                  type: boolean
+                password:
+                  type: string
+                  description: Password of the currently logged in user to confirm update action.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                        example: true
+                        description: If it was successful or not
+                  success:
+                    type: boolean
+                    default: true
+                    description: The request overall was successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /organization/s3:
+    patch:
+      tags:
+      - organization
+      summary: Updates organization S3 preferences.
+      operationId: updateOrganizationS3Preferences
+      description: Both `bucketName` and `arn` are required only if one or the other properties are present.
+      requestBody:
+        description: The organization S3 preferences update body, only SUPERADMINISTRATOR user roles can update organizations.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - bucketName
+              - arn
+              properties:
+                bucketName:
+                  type: string
+                  example: docexamplebucket1
+                arn:
+                  type: string
+                  example: arn:aws:iam::123456789012:user/Development/product_1234/*
+                region:
+                  description: The AWS region code in which this S3 bucket is in.
+                  type: string
+                  example: us-east-1
+                newQueryAudits:
+                  type: boolean
+                customAudits:
+                  type: boolean
+                systemAudits:
+                  type: boolean
+                vaultedTokenizationAudits:
+                  type: boolean
+                sidecarAudits:
+                  type: boolean
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                        example: true
+                        description: If it was successful or not
+                  success:
+                    type: boolean
+                    default: true
+                    description: The request overall was successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /organization/s3/test:
+    post:
+      tags:
+      - organization
+      summary: Tests organization S3 preferences, does not save the preferences.
+      operationId: testOrganizationS3Preferences
+      requestBody:
+        description: The test S3 preferences request body, only SUPERADMINISTRATOR user roles can test s3 organization preferences.
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Both `bucketName` and `arn` are required.
+              type: object
+              required:
+              - bucketName
+              - arn
+              properties:
+                bucketName:
+                  type: string
+                  example: docexamplebucket1
+                arn:
+                  type: string
+                  example: arn:aws:iam::123456789012:user/Development/product_1234/*
+                region:
+                  description: The AWS region code in which this S3 bucket is in.
+                  type: string
+                  example: us-east-1
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                        example: true
+                        description: If it was successful or not
+                  success:
+                    type: boolean
+                    default: true
+                    description: The request overall was successful
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Organizations Name Here
+        twoFactor:
+          type: object
+          properties:
+            totp:
+              type: boolean
+            sms:
+              type: boolean
+            email:
+              type: boolean
+            webauthn:
+              type: boolean
+        domains:
+          type: array
+          items:
+            type: string
+            example: altr.com
+        s3:
+          type: object
+          properties:
+            dataToDeliver:
+              type: object
+              properties:
+                anomalies:
+                  type: boolean
+                queryAudit:
+                  type: boolean
+                newQueryAudits:
+                  type: boolean
+                customAudits:
+                  type: boolean
+                systemAudits:
+                  type: boolean
+                vaultedTokenizationAudits:
+                  type: boolean
+                sidecarAudits:
+                  type: boolean
+            bucketName:
+              type: string
+              example: doc-example-bucket-1
+            arn:
+              type: string
+              example: arn:aws:iam::123456789012:user/Development/product_1234/*
+            region:
+              description: The AWS region code in which this S3 bucket is in.
+              type: string
+              example: us-east-1
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

@@ -1,0 +1,198 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Audit Report Definitions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Definitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List report definitions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor from previous response"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query",
+                "description": "Show only archived definitions"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of audit report definitions for the authenticated organization."
+        },
+        {
+          "info": {
+            "name": "Create a report definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new audit report definition with filters, schedule, and delivery configuration."
+        },
+        {
+          "info": {
+            "name": "Get a report definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:definition_id",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single audit report definition by ID."
+        },
+        {
+          "info": {
+            "name": "Update a report definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:definition_id",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Replaces the audit report definition with the provided body, preserving immutable fields."
+        },
+        {
+          "info": {
+            "name": "Archive a report definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:definition_id",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Soft-deletes an audit report definition by setting archived_at. Archived definitions are hidden from default list view but remain queryable. Must be restored before editing or triggering."
+        },
+        {
+          "info": {
+            "name": "Restore an archived report definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:definition_id/restore",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Removes the archived status from a definition, making it active again."
+        },
+        {
+          "info": {
+            "name": "Trigger on-demand report generation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:definition_id/trigger",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Queues a new report instance and starts the Step Function pipeline. Rate-limited to once per 5 minutes per definition."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

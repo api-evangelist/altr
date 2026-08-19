@@ -1,0 +1,510 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: Manages DAM alerting rules and alerts. Supports rule CRUD, alert inbox, and acknowledgment for ALTR's Data Access Monitoring feature.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR DAM Alerting Alerts API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Alerts
+paths:
+  /alerts/:
+    get:
+      description: Returns a paginated list of alerts, newest first
+      parameters:
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination token from previous response
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Filter by rule ID
+        in: query
+        name: rule_id
+        schema:
+          type: string
+      - description: Filter by state
+        in: query
+        name: state
+        schema:
+          enum:
+          - new
+          - acknowledged
+          type: string
+      - description: Filter by severity
+        in: query
+        name: severity
+        schema:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListAlertsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid query parameter
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List Alerts.
+      tags:
+      - Alerts
+  /alerts/{alert_id}:
+    get:
+      description: Returns a single alert by ID
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alert_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Alert'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Alert not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get an Alert.
+      tags:
+      - Alerts
+  /alerts/{alert_id}/acknowledge:
+    patch:
+      description: Acknowledges an active alert. If the alert's rule has comment_required=true a non-empty comment must be supplied.
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alert_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.AckRequest'
+              summary: ack
+              description: Acknowledgment
+        description: Acknowledgment
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Alert'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or missing required comment
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Alert not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Alert already acknowledged
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Acknowledge an active alert.
+      tags:
+      - Alerts
+  /alerts/{alert_id}/comments:
+    get:
+      description: Returns a paginated list of comments for an alert, oldest first.
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alert_id
+        required: true
+        schema:
+          type: string
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination token from previous response
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListCommentsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid query parameter
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List alert comments.
+      tags:
+      - Alerts
+    post:
+      description: Adds an investigation comment to an alert. Comments are append-only — there is no edit or delete path.
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alert_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.CreateCommentRequest'
+              summary: comment
+              description: Comment body
+        description: Comment body
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Comment'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Alert not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create an alert comment.
+      tags:
+      - Alerts
+components:
+  schemas:
+    models.CreateCommentRequest:
+      properties:
+        text:
+          maxLength: 5000
+          type: string
+      required:
+      - text
+      type: object
+    models.ListAlertsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Alert'
+          type: array
+          uniqueItems: false
+      type: object
+    models.AckRequest:
+      properties:
+        comment:
+          type: string
+      type: object
+    models.ListCommentsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.Comment:
+      properties:
+        alert_id:
+          type: string
+        author_id:
+          type: string
+        author_name:
+          type: string
+        comment_id:
+          type: string
+        created_at:
+          type: string
+        text:
+          type: string
+      type: object
+    models.MatchedEvent:
+      properties:
+        oltp_audit:
+          $ref: '#/components/schemas/models.OLTPAudit'
+        snowflake_audit:
+          $ref: '#/components/schemas/models.SnowflakeAudit'
+        source:
+          type: string
+      type: object
+    models.SnowflakeAudit:
+      properties:
+        account:
+          type: string
+        account_region:
+          type: string
+        client:
+          type: string
+        column:
+          type: string
+        column_policies:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        database:
+          type: string
+        event_name:
+          type: string
+        execution_duration:
+          type: integer
+        ip_address:
+          type: string
+        masking_policies:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        query_tag:
+          additionalProperties:
+            type: string
+          type: object
+        role:
+          type: string
+        roles:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        row_count:
+          type: integer
+        schema:
+          type: string
+        session_id:
+          type: string
+        statement_text:
+          type: string
+        statement_type:
+          type: string
+        table:
+          type: string
+        user:
+          type: string
+        warehouse:
+          type: string
+        warehouse_size:
+          type: string
+      type: object
+    models.ThresholdContext:
+      properties:
+        threshold:
+          type: integer
+        threshold_count:
+          type: integer
+        window_start:
+          type: string
+        window_type:
+          type: string
+      type: object
+    models.OLTPAudit:
+      properties:
+        authorization_type:
+          type: string
+        bytes_returned:
+          type: integer
+        client_app:
+          type: string
+        client_ip:
+          type: string
+        column:
+          type: string
+        connection_authorized:
+          type: boolean
+        database:
+          type: string
+        event_name:
+          type: string
+        policies_applied:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        policy_types:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        query_status:
+          type: string
+        repo_host:
+          type: string
+        repo_type:
+          type: string
+        repo_user:
+          type: string
+        row_count:
+          type: integer
+        schema:
+          type: string
+        sidecar_id:
+          type: string
+        statement_text:
+          type: string
+        statement_type:
+          type: string
+        table:
+          type: string
+        user:
+          type: string
+        user_email:
+          type: string
+        user_group:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    models.AckMetadata:
+      properties:
+        acked_at:
+          type: string
+        acked_by_id:
+          type: string
+        acked_by_name:
+          type: string
+        comment:
+          type: string
+      type: object
+    models.Alert:
+      properties:
+        ack_metadata:
+          $ref: '#/components/schemas/models.AckMetadata'
+        alert_id:
+          type: string
+        comment_required:
+          type: boolean
+        data_source_scope:
+          type: string
+        fired_at:
+          type: string
+        matched_event:
+          $ref: '#/components/schemas/models.MatchedEvent'
+        rule_id:
+          type: string
+        rule_name:
+          type: string
+        rule_type:
+          type: string
+        severity:
+          type: string
+        state:
+          type: string
+        threshold_context:
+          $ref: '#/components/schemas/models.ThresholdContext'
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

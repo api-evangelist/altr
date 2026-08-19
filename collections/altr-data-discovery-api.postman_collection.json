@@ -1,0 +1,3411 @@
+{
+  "item": [
+    {
+      "id": "06d158d8-fed0-4f88-b38d-154f55229f17",
+      "name": "Data Discovery",
+      "description": {
+        "content": "Data Classification/Tagging job endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7618b0d-b287-4174-9575-d51aac91b34b",
+          "name": "Start a Classification/Tagging Job.",
+          "request": {
+            "name": "Start a Classification/Tagging Job.",
+            "description": {
+              "content": "Starts a classification job for the request client database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v1",
+                "db",
+                ":databaseId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "classificationType",
+                  "value": "1",
+                  "description": "The secondary service used for classification/tagging jobs. Defaults to Google DLP if not included. </br></br>{<blockquote>1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Object Tag Import <br />   4, // Snowflake Classification and Tag Import</blockquote>}"
+                },
+                {
+                  "disabled": false,
+                  "key": "emailOnCompletion",
+                  "value": "1",
+                  "description": "Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "databaseId",
+                  "description": "(Required) The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "365255e3-4700-4c92-9969-33a0ca165496",
+              "name": "Classification successfully started or was already running for client database.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "classificationType",
+                      "value": "1"
+                    },
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4885867c-ce19-45bf-91ef-9eda6b130154",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "classificationType",
+                      "value": "1"
+                    },
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1fbc2e0d-2435-4ea7-bdcb-addb0b3b3325",
+              "name": "Client database id not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "classificationType",
+                      "value": "1"
+                    },
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55cc4050-46de-4952-a796-607be2a1c6df",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "classificationType",
+                      "value": "1"
+                    },
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "06c28372-a19c-4579-a6c8-4e09634b03c4",
+          "name": "Start a Classification Job.",
+          "request": {
+            "name": "Start a Classification Job.",
+            "description": {
+              "content": "Starts a classification job for the request client metastore.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v1",
+                "metastore",
+                ":databaseId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "emailOnCompletion",
+                  "value": "1",
+                  "description": "Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "databaseId",
+                  "description": "(Required) The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fdd562b9-a9c2-42ae-923a-547db25ae9cb",
+              "name": "Classification successfully started or was already running for client metastore.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "metastore",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cbd30f2d-088b-418b-9676-01657c1f5ba5",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "metastore",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9583caa0-c1da-4968-9a73-21b74b0a1f7c",
+              "name": "Client database id not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "metastore",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa8347a6-7f1f-4064-9c32-fd5209636b0b",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "metastore",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "emailOnCompletion",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1219743-61e2-4280-a283-6ea1b9d0dbbb",
+          "name": "Retrieve list of connected client databases.",
+          "request": {
+            "name": "Retrieve list of connected client databases.",
+            "description": {
+              "content": "Gets a list of databases for consumption, includes if a classification has ever been run before.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "listDBs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "49da074f-5bf0-4555-a336-71019ee4b982",
+              "name": "Successfully retrieved list of databases for the org.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "listDBs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"databaseID\": 1,\n    \"databaseName\": \"TEST_DATABASE\",\n    \"databaseFriendlyName\": \"Test Database\",\n    \"dataDiscoveryJobRan\": true\n  },\n  {\n    \"databaseID\": 1,\n    \"databaseName\": \"TEST_DATABASE\",\n    \"databaseFriendlyName\": \"Test Database\",\n    \"dataDiscoveryJobRan\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b86ebeb4-4ac7-4103-afa1-2f3c602cffc3",
+              "name": "No databases found for client org.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "listDBs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ce851e5a-6ce7-43f7-bf4c-dec4f056bfcb",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "listDBs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "67490c83-76a8-4661-ad9a-8123218d432a",
+              "name": "Client organization not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "listDBs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3ff5621-66a1-4e06-bb3a-67636ae416b9",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "listDBs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6bada4cb-473d-4a2f-8c65-16eef3177517",
+          "name": "Retrieve classification job(s) status(es).",
+          "request": {
+            "name": "Retrieve classification job(s) status(es).",
+            "description": {
+              "content": "Returns an array of all classification jobs by the latest run of each distinct classification type for a database specific request. You can specify a classification type to only return the status for a specific type ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "db",
+                "status",
+                ":databaseId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataDiscoveryJobType",
+                  "value": "1",
+                  "description": "Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "databaseId",
+                  "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "044abb76-aa1e-42f6-9142-754f3f08e14b",
+              "name": "Successfully retrieved data discovery job statuses. ",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "status",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"databaseID\": 1,\n    \"jobUUID\": \"dis-asdf125-1234-1adf-982c-asdfvfadsfa\",\n    \"databaseName\": \"DatabaseOne\",\n    \"startTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"startTimeSinceEpoch\": 1656255468000,\n    \"completeTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"completeTimeSinceEpoch\": 1656255468000,\n    \"dataDiscoveryTypeString\": \"Google DLP\",\n    \"dataDiscoveryType\": 1,\n    \"status\": \"IN_PROGRESS\",\n    \"totalColumns\": 10000,\n    \"totalTables\": 1000,\n    \"completedColumns\": 5000,\n    \"completedTables\": 500,\n    \"columnsCompletePercentage\": 50,\n    \"tablesCompletePercentage\": 50\n  },\n  {\n    \"databaseID\": 1,\n    \"jobUUID\": \"dis-asdf125-1234-1adf-982c-asdfvfadsfa\",\n    \"databaseName\": \"DatabaseOne\",\n    \"startTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"startTimeSinceEpoch\": 1656255468000,\n    \"completeTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"completeTimeSinceEpoch\": 1656255468000,\n    \"dataDiscoveryTypeString\": \"Google DLP\",\n    \"dataDiscoveryType\": 1,\n    \"status\": \"IN_PROGRESS\",\n    \"totalColumns\": 10000,\n    \"totalTables\": 1000,\n    \"completedColumns\": 5000,\n    \"completedTables\": 500,\n    \"columnsCompletePercentage\": 50,\n    \"tablesCompletePercentage\": 50\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b5ac12f-8518-4527-ab30-a8418f4ccfeb",
+              "name": "No databases found for client org.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "status",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "366a9cac-9510-4f3b-b5c6-5eaefc879a23",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "status",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0539008b-b838-4b9c-ae1c-3b294eaf29f6",
+              "name": "Client organization not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "status",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b3c750d-f3b0-48da-b682-254e3c559417",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "status",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "(Required) Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe77a80a-64a4-45e2-8530-29c92500fdaa",
+          "name": "Retrieve classification job(s) status(es).",
+          "request": {
+            "name": "Retrieve classification job(s) status(es).",
+            "description": {
+              "content": "Returns an array of all classification jobs by the latest run of each distinct classification type for an org level request. You can specify a classification type to only return the status for a specific type ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataDiscoveryJobType",
+                  "value": "1",
+                  "description": "Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b8e482cc-7133-43f2-a321-8fd97b42e066",
+              "name": "Successfully retrieved data discovery job statuses. ",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"databaseID\": 1,\n    \"jobUUID\": \"dis-asdf125-1234-1adf-982c-asdfvfadsfa\",\n    \"databaseName\": \"DatabaseOne\",\n    \"startTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"startTimeSinceEpoch\": 1656255468000,\n    \"completeTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"completeTimeSinceEpoch\": 1656255468000,\n    \"dataDiscoveryTypeString\": \"Google DLP\",\n    \"dataDiscoveryType\": 1,\n    \"status\": \"IN_PROGRESS\",\n    \"totalColumns\": 10000,\n    \"totalTables\": 1000,\n    \"completedColumns\": 5000,\n    \"completedTables\": 500,\n    \"columnsCompletePercentage\": 50,\n    \"tablesCompletePercentage\": 50\n  },\n  {\n    \"databaseID\": 1,\n    \"jobUUID\": \"dis-asdf125-1234-1adf-982c-asdfvfadsfa\",\n    \"databaseName\": \"DatabaseOne\",\n    \"startTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"startTimeSinceEpoch\": 1656255468000,\n    \"completeTimeStamp\": \"2006-01-02T15:04:05Z\",\n    \"completeTimeSinceEpoch\": 1656255468000,\n    \"dataDiscoveryTypeString\": \"Google DLP\",\n    \"dataDiscoveryType\": 1,\n    \"status\": \"IN_PROGRESS\",\n    \"totalColumns\": 10000,\n    \"totalTables\": 1000,\n    \"completedColumns\": 5000,\n    \"completedTables\": 500,\n    \"columnsCompletePercentage\": 50,\n    \"tablesCompletePercentage\": 50\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "391c1781-9d58-4b45-96b4-c57decb9f001",
+              "name": "No databases found for client org.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "51f0490a-1343-4aa4-8158-2c3b4a49054e",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "87d2e31d-8239-4d04-845f-1c63e64d6353",
+              "name": "Client organization not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de0ba49f-4990-4d33-a4aa-814a61b8b297",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataDiscoveryJobType",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b855f007-1d80-4301-9101-4107f595ca27",
+          "name": "Retrieves summary of successful classifications.",
+          "request": {
+            "name": "Retrieves summary of successful classifications.",
+            "description": {
+              "content": "Returns list of found classification types for a client database. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "db",
+                "summary",
+                ":databaseId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "jobUUID",
+                  "value": "",
+                  "description": "Get historical job summary"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "databaseId",
+                  "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00e99a84-0207-42a0-8565-7f45660d3ea4",
+              "name": "Successfully retrieved list of classifier types for client database.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "summary",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifications\": [\n    {\n      \"type\": \"SSN\",\n      \"percent\": 20,\n      \"amount\": \"Requested ID did not exist.\"\n    },\n    {\n      \"type\": \"SSN\",\n      \"percent\": 20,\n      \"amount\": \"Requested ID did not exist.\"\n    }\n  ],\n  \"totals\": {\n    \"classifiedColumns\": 200,\n    \"totalColumns\": 500,\n    \"percentSuccessfullyClassified\": 22.5\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47a70034-bb72-4d1b-b5ab-13c89987b74f",
+              "name": "No database in request has a classification available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "summary",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e940dad9-b805-4869-b363-f6edc4c8dbb0",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "summary",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2ae583f2-4691-4f36-9a7e-df28aa2a30f0",
+              "name": "Client database id not found or no client databases.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "summary",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9324b0f-40a6-4488-98ba-e034231c9fa0",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "summary",
+                    ":databaseId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "databaseId",
+                      "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "941dd942-ec1b-4d57-bf94-1e9bcc794911",
+          "name": "Retrieves database level column list associated with classification types.",
+          "request": {
+            "name": "Retrieves database level column list associated with classification types.",
+            "description": {
+              "content": "Returns database level list of columns with classification types.  ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "db",
+                "column",
+                "type",
+                ":type",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "jobUUID",
+                  "value": "",
+                  "description": "Get historical job information"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "type",
+                  "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "id",
+                  "description": "(Required) Represents the database id retrieved from /listDBs."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2b6a5d6a-d315-4298-ba1f-026b814532cd",
+              "name": "Successfully retrieved list (or partial) of columns for client database (or client databases)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "column",
+                    "type",
+                    ":type",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "id",
+                      "description": "(Required) Represents the database id retrieved from /listDBs."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Returns a tracking identification UUID for the request.",
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f"
+                },
+                {
+                  "disabled": false,
+                  "description": "Gives a total number of columns for the type requested to use for offsets/limits.",
+                  "key": "totalAvailableItems",
+                  "value": "100"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Columns\": [\n    {\n      \"clientDatabaseID\": 1,\n      \"databaseTypeName\": \"SnowflakeExternalFunction\",\n      \"databaseTypeID\": 9,\n      \"friendlyDatabaseName\": \"Database One\",\n      \"database\": \"DATABASE_ONE\",\n      \"schemaName\": \"SCHEMA_ONE\",\n      \"tableName\": \"TABLE_ONE\",\n      \"columnName\": \"COLUMN_ONE\",\n      \"classifier\": [\n        \"FIRST_NAME\"\n      ],\n      \"alsoAppearsAs\": [\n        \"MALE_NAME\",\n        \"FEMALE_NAME\"\n      ],\n      \"isGovernable\": true,\n      \"isScatterable\": true,\n      \"dataType\": \"Varchar\",\n      \"confidence\": \"LIKELY\",\n      \"dataState\": \"REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */\",\n      \"fullyQualifiedTableName\": \"DATABASE_ONE.SCHEMA_ONE.TABLE_ONE\"\n    },\n    {\n      \"clientDatabaseID\": 1,\n      \"databaseTypeName\": \"SnowflakeExternalFunction\",\n      \"databaseTypeID\": 9,\n      \"friendlyDatabaseName\": \"Database One\",\n      \"database\": \"DATABASE_ONE\",\n      \"schemaName\": \"SCHEMA_ONE\",\n      \"tableName\": \"TABLE_ONE\",\n      \"columnName\": \"COLUMN_ONE\",\n      \"classifier\": [\n        \"FIRST_NAME\"\n      ],\n      \"alsoAppearsAs\": [\n        \"MALE_NAME\",\n        \"FEMALE_NAME\"\n      ],\n      \"isGovernable\": true,\n      \"isScatterable\": true,\n      \"dataType\": \"Varchar\",\n      \"confidence\": \"LIKELY\",\n      \"dataState\": \"REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */\",\n      \"fullyQualifiedTableName\": \"DATABASE_ONE.SCHEMA_ONE.TABLE_ONE\"\n    }\n  ],\n  \"Totals\": {\n    \"column_count\": 100\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c75d4f5a-773f-4cdb-a40d-2cf75b3a8afe",
+              "name": "No database in request has a classification available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "column",
+                    "type",
+                    ":type",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "id",
+                      "description": "(Required) Represents the database id retrieved from /listDBs."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "75b4866d-b9f7-4f6e-8b32-babc364f3f0d",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "column",
+                    "type",
+                    ":type",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "id",
+                      "description": "(Required) Represents the database id retrieved from /listDBs."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5f0d8dbe-bbe8-46cb-9c7b-2c53a135d470",
+              "name": "Classification type or id not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "column",
+                    "type",
+                    ":type",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "id",
+                      "description": "(Required) Represents the database id retrieved from /listDBs."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f301dd94-8f88-434d-bc30-ad8469d13d68",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "db",
+                    "column",
+                    "type",
+                    ":type",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "jobUUID",
+                      "value": ""
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "id",
+                      "description": "(Required) Represents the database id retrieved from /listDBs."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "214acbdd-982a-41da-bbd1-f2639495ecfd",
+          "name": "Retrieves org level column list associated with classification types.",
+          "request": {
+            "name": "Retrieves org level column list associated with classification types.",
+            "description": {
+              "content": "Returns list of columns with classification types.  ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v2",
+                "column",
+                "type",
+                ":type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "type",
+                  "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "73813af3-af9f-46a1-96b7-e116a5a70ad4",
+              "name": "Successfully retrieved list (or partial) of columns for client database (or client databases)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "column",
+                    "type",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Returns a tracking identification UUID for the request.",
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f"
+                },
+                {
+                  "disabled": false,
+                  "description": "Gives a total number of columns for the type requested to use for offsets/limits.",
+                  "key": "totalAvailableItems",
+                  "value": "100"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Columns\": [\n    {\n      \"clientDatabaseID\": 1,\n      \"databaseTypeName\": \"SnowflakeExternalFunction\",\n      \"databaseTypeID\": 9,\n      \"friendlyDatabaseName\": \"Database One\",\n      \"database\": \"DATABASE_ONE\",\n      \"schemaName\": \"SCHEMA_ONE\",\n      \"tableName\": \"TABLE_ONE\",\n      \"columnName\": \"COLUMN_ONE\",\n      \"classifier\": [\n        \"FIRST_NAME\"\n      ],\n      \"alsoAppearsAs\": [\n        \"MALE_NAME\",\n        \"FEMALE_NAME\"\n      ],\n      \"isGovernable\": true,\n      \"isScatterable\": true,\n      \"dataType\": \"Varchar\",\n      \"confidence\": \"LIKELY\",\n      \"dataState\": \"REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */\",\n      \"fullyQualifiedTableName\": \"DATABASE_ONE.SCHEMA_ONE.TABLE_ONE\"\n    },\n    {\n      \"clientDatabaseID\": 1,\n      \"databaseTypeName\": \"SnowflakeExternalFunction\",\n      \"databaseTypeID\": 9,\n      \"friendlyDatabaseName\": \"Database One\",\n      \"database\": \"DATABASE_ONE\",\n      \"schemaName\": \"SCHEMA_ONE\",\n      \"tableName\": \"TABLE_ONE\",\n      \"columnName\": \"COLUMN_ONE\",\n      \"classifier\": [\n        \"FIRST_NAME\"\n      ],\n      \"alsoAppearsAs\": [\n        \"MALE_NAME\",\n        \"FEMALE_NAME\"\n      ],\n      \"isGovernable\": true,\n      \"isScatterable\": true,\n      \"dataType\": \"Varchar\",\n      \"confidence\": \"LIKELY\",\n      \"dataState\": \"REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */\",\n      \"fullyQualifiedTableName\": \"DATABASE_ONE.SCHEMA_ONE.TABLE_ONE\"\n    }\n  ],\n  \"Totals\": {\n    \"column_count\": 100\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "223bc0be-b881-457f-9321-243717b6309a",
+              "name": "No database in request has a classification available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "column",
+                    "type",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0511b869-0496-4b7e-8ab4-478c6db5bc32",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "column",
+                    "type",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0ca8fdce-0731-47eb-b40b-bcca079e6bd1",
+              "name": "Classification type or id not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "column",
+                    "type",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63f385ff-3f02-437f-9c06-3f4ba4e88fa9",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v2",
+                    "column",
+                    "type",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "type",
+                      "description": "(Required) Comes from GET classification/v1/summary and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff7d835f-9611-403c-99eb-4e393f7e47e0",
+          "name": "Retrieves list of table failures.",
+          "request": {
+            "name": "Retrieves list of table failures.",
+            "description": {
+              "content": "Returns of table failures with corresponding information for a job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v1",
+                "db",
+                "listTableFailures",
+                ":jobId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "jobId",
+                  "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "05181cf3-5e6c-40fb-ac38-976447d8862f",
+              "name": "Successfully retrieved list (or partial) of tables with corresponding failures for a data discovery job.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableFailures",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Returns a tracking identification UUID for the request.",
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f"
+                },
+                {
+                  "disabled": false,
+                  "description": "Gives a total number of table failures for the type requested to use for offsets/limits.",
+                  "key": "totalAvailableItems",
+                  "value": "100"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"jobID\": \"DIS-UUID\",\n    \"tableJobID\": \"UUID\",\n    \"tableJobError\": \"Job error message here\",\n    \"tableName\": \"Table1\",\n    \"schemaName\": \"Schema1\",\n    \"tableJobErrorCode\": 65000,\n    \"totalColumns\": 10,\n    \"columnsTagged\": 5,\n    \"columnsSucceeded\": 0,\n    \"columnsFailed\": 10,\n    \"tableFailureTimestamp\": \"8/8/22 15:15:15\"\n  },\n  {\n    \"jobID\": \"DIS-UUID\",\n    \"tableJobID\": \"UUID\",\n    \"tableJobError\": \"Job error message here\",\n    \"tableName\": \"Table1\",\n    \"schemaName\": \"Schema1\",\n    \"tableJobErrorCode\": 65000,\n    \"totalColumns\": 10,\n    \"columnsTagged\": 5,\n    \"columnsSucceeded\": 0,\n    \"columnsFailed\": 10,\n    \"tableFailureTimestamp\": \"8/8/22 15:15:15\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ff2131c-2568-4887-a266-1a963cdf28ca",
+              "name": "No job in request has table failures.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableFailures",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bd79ed8f-977d-4436-bfc1-ed9852345180",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableFailures",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fed0a6ee-ab76-4a02-98b0-d91dd2f95d63",
+              "name": "Data discovery job id not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableFailures",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "240e6f10-b433-4a63-9bc8-a7defc54082f",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableFailures",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b67f3ab-d962-4d31-a374-adc0cca073b2",
+          "name": "Retrieves list of completed table info.",
+          "request": {
+            "name": "Retrieves list of completed table info.",
+            "description": {
+              "content": "Returns of tables with corresponding information for a job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classification",
+                "v1",
+                "db",
+                "listTableInfo",
+                ":jobId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "jobId",
+                  "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f7c9afc9-ac80-4420-af01-3edff761668b",
+              "name": "Successfully retrieved list (or partial) of tables with corresponding info for a data discovery job.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableInfo",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Returns a tracking identification UUID for the request.",
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f"
+                },
+                {
+                  "disabled": false,
+                  "description": "Gives a total number of table failures for the type requested to use for offsets/limits.",
+                  "key": "totalAvailableItems",
+                  "value": "100"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"jobID\": \"DIS-UUID\",\n    \"tableName\": \"Table1\",\n    \"schemaName\": \"Schema1\",\n    \"tableJobErrorCode\": 65000,\n    \"totalColumns\": 10,\n    \"columnsTagged\": 5,\n    \"columnsSucceeded\": 0,\n    \"tableFailureTimestamp\": \"8/8/22 15:15:15\"\n  },\n  {\n    \"jobID\": \"DIS-UUID\",\n    \"tableName\": \"Table1\",\n    \"schemaName\": \"Schema1\",\n    \"tableJobErrorCode\": 65000,\n    \"totalColumns\": 10,\n    \"columnsTagged\": 5,\n    \"columnsSucceeded\": 0,\n    \"tableFailureTimestamp\": \"8/8/22 15:15:15\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5452544-e24e-4225-ab9e-99787a4a632f",
+              "name": "No job in request has succesfully completed tables..",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableInfo",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "496a9fe9-3087-4005-9a89-230811cfd466",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableInfo",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62fd4154-7907-4e6b-a4d9-ce34eed3647a",
+              "name": "Data discovery job id not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableInfo",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d7ce5ae-5688-483d-a482-d377e3dacaee",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classification",
+                    "v1",
+                    "db",
+                    "listTableInfo",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "jobId",
+                      "description": "(Required) Comes from GET classification/v2/status and is case insensitive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/v1/dis ",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "520b9648-a0fe-4fc8-b401-c15164548626",
+    "name": "ALTR Datastore Information Service Data Discovery API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.\n\nDIS does not include the endpoints for ALTR's tokenization API; documentation on ALTR's tokenization API can be found here.\n\nDIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

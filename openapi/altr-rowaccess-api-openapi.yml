@@ -1,0 +1,468 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Rowaccess API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: rowaccess
+  description: Operations related to row access policy
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/row-access-policy
+paths:
+  /rowaccess:
+    get:
+      tags:
+      - rowaccess
+      summary: Returns a list of all policies for the organization.
+      operationId: getRowAccessList
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - friendly_name
+          default: friendly_name
+        description: The order of returned data for the defined field.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      has_more:
+                        type: boolean
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RowPolicy'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /rowaccess/database/{databaseId}:
+    get:
+      tags:
+      - rowaccess
+      summary: Returns a list of all policies for the organization.
+      operationId: rowaccessByDatabaseId
+      parameters:
+      - name: databaseId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The id of the database that contains this policy.
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      has_more:
+                        type: boolean
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/RowPolicy'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /rowAccess/help:
+    put:
+      tags:
+      - rowaccess
+      summary: Emails support@altr.com with an email about a row access error.
+      operationId: rowAccessHelp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                emails:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of emails to be provided to altr support, current users email automatically added.
+                databaseId:
+                  type: string
+                  description: Data source id associated with error.
+                databaseName:
+                  type: string
+                  description: Data source name associated with error.
+                tableName:
+                  type: string
+                  description: Table name associated with error.
+                error:
+                  type: string
+                  description: Stringified error object.
+                comment:
+                  type: string
+                  description: Comment to send to ALTR support representative.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /rowaccess/database/{databaseId}/table/{tableName}:
+    get:
+      tags:
+      - rowaccess
+      summary: Get an individual existing policy.
+      operationId: getRowAccess
+      parameters:
+      - name: databaseId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The id of the database that contains this policy.
+      - name: tableName
+        in: path
+        schema:
+          type: string
+        required: true
+        description: The name of the table that contains this policy.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RowPolicy'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+      - rowaccess
+      summary: Upserts a new row policy to protect the given table in the specified database.
+      operationId: upsertRowaccess
+      parameters:
+      - name: databaseId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The id of the database that contains this policy.
+      - name: tableName
+        in: path
+        schema:
+          type: string
+        required: true
+        description: The name of the table that contains this policy.
+      requestBody:
+        description: The row policy create body
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                friendly_name:
+                  type: string
+                policy:
+                  type: string
+                  description: "The policy must be a JSON string that contains the following information:\n\n```json\n  {\n    \"language_version\": 1,\n    \"reference_columns\": [\n      \"SNN\"\n    ],\n    \"statements\": [\n      {\n        \"roles\": [\n          \"ADMINISTRATOR\"\n        ],\n        \"column_values\": [\n          \"123-45-6789\"\n        ]\n      }\n    ]\n  }\n```\n\n* language_version: int, currently only allowed to be 1\n* reference_columns: array(string), min=1, max=1\n* roles: array, string, min=1, unique, string=>0,257\n* column_values: array, string, min=1, unique, string=>0\n\nNote: Policy text (when stringified) cannot exceed 10k\n"
+                  example: '{"language_version":1,"reference_columns":["SNN"],"statements":["roles":["ADMINISTRATOR"],"column_values":["123-45-6789"]}]}'
+      responses:
+        '201':
+          description: The policy was successfully created and will be applied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                  success:
+                    type: boolean
+        '204':
+          description: The policy was update and will be applied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Another change is currently in progress for this policy.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - rowaccess
+      summary: Deletes an existing policy.
+      operationId: deleteRowAccess
+      parameters:
+      - name: databaseId
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The id of the database that contains this policy.
+      - name: tableName
+        in: path
+        schema:
+          type: string
+        required: true
+        description: The name of the table that contains this policy.
+      responses:
+        '202':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Another change is currently in progress for this policy.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    RowPolicy:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        database_id:
+          type: integer
+          example: 123
+        friendly_name:
+          type: string
+        impacted_user_groups:
+          type: array
+          items:
+            type: string
+        policy_applied:
+          type: object
+          properties:
+            impacted_user_groups:
+              type: array
+              items:
+                type: string
+            reference_columns:
+              type: array
+              items:
+                type: string
+            text:
+              type: string
+        policy:
+          type: string
+        reference_columns:
+          type: array
+          items:
+            type: string
+        table_name:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        policy_failed:
+          type: object
+          properties:
+            reference_columns:
+              type: array
+            impacted_user_groups:
+              type: array
+            error:
+              type: object
+              properties:
+                error:
+                  type: string
+                message:
+                  type: string
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

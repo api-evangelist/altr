@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Telemetry Agent API",
+    "version": "1.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Agent Instances by Agent ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/agents/:agent_id/instances",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "Agent ID"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will return the next set of items after this ID. If not provided, will return the first set of items."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return, must be between 1 and 1000"
+              },
+              {
+                "name": "checkin_after",
+                "value": "",
+                "type": "query",
+                "description": "Filter instances checked in at or after this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d)."
+              },
+              {
+                "name": "checkin_before",
+                "value": "",
+                "type": "query",
+                "description": "Filter instances checked in at or before this time (inclusive). Accepts unix milliseconds or relative duration (e.g. 5m, 1h, 24h, 7d)."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get agent instances for a specific agent by its ID."
+        },
+        {
+          "info": {
+            "name": "Get Agent Instance by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/agents/:agent_id/instances/:instance_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "Agent ID"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a specific agent instance by its ID."
+        },
+        {
+          "info": {
+            "name": "Delete Agent Instance by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/agents/:agent_id/instances/:instance_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "Agent ID"
+              },
+              {
+                "name": "instance_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete an agent instance by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

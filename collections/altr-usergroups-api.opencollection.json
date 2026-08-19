@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Usergroups API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "usergroups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns user groups with filtering capabilities.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/usergroups",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "The value you want to sort by"
+              },
+              {
+                "name": "description",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the description of the user group"
+              },
+              {
+                "name": "userGroupName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the name of the user group"
+              },
+              {
+                "name": "groupTag",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the groupTag of the user group"
+              }
+            ]
+          },
+          "docs": "Returns user groups with filtering capabilities."
+        },
+        {
+          "info": {
+            "name": "Creates a new user group.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/usergroups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new user group."
+        },
+        {
+          "info": {
+            "name": "Returns a single user group by the id given.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/usergroups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a single user group by the id given."
+        },
+        {
+          "info": {
+            "name": "Updates a user group given the id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/usergroups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a user group given the id."
+        },
+        {
+          "info": {
+            "name": "Deletes a user group given the id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/usergroups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Note: Along with deleting the user groups, it will also delete other objects that are related to user groups"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

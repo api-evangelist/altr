@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sidecar Audit Sidecar Audit API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sidecar Audit API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger sidecar query audit search using various filters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/audits",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to skip."
+              },
+              {
+                "name": "from_date_time",
+                "value": "2024-11-23T17:51:35.000Z",
+                "type": "query",
+                "description": "Queries that ended before this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is 24 hours ago."
+              },
+              {
+                "name": "to_date_time",
+                "value": "2024-11-24T17:51:35.000Z",
+                "type": "query",
+                "description": "Queries that ended after this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is now."
+              },
+              {
+                "name": "consuming_user",
+                "value": "johndoe",
+                "type": "query",
+                "description": "The user that executed the query. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "consuming_user_email",
+                "value": "johndoe@altr.com",
+                "type": "query",
+                "description": "The email of the user that executed the query. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "query_id",
+                "value": "01d89caa-080e-3b34-0000-se59220b6656",
+                "type": "query",
+                "description": "The ID of the query. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "sidecar_id",
+                "value": "01d89caa-080e-3b34-0000-se59220b6656",
+                "type": "query",
+                "description": "The ID of the sidecar that executed the query. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "sidecar_instance_id",
+                "value": "01d89caa-080e-3b34-0000-se59220b6656",
+                "type": "query",
+                "description": "The ID of the sidecar instance that executed the query. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "table_name",
+                "value": "users",
+                "type": "query",
+                "description": "The name of the table that was queried. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "schema_name",
+                "value": "public",
+                "type": "query",
+                "description": "The name of the schema that was queried. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "database_name",
+                "value": "altrdb",
+                "type": "query",
+                "description": "The name of the database that was queried. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "column_name",
+                "value": "email",
+                "type": "query",
+                "description": "The name of the column that was queried. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "repo_name",
+                "value": "orders-db",
+                "type": "query",
+                "description": "The name of the repository (connection) the query ran against. Distinct from database_name, which matches the per-column database. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "statement_type",
+                "value": "",
+                "type": "query",
+                "description": "The type of the statement that was executed. Case-insensitive. Can be repeated for multiple values."
+              },
+              {
+                "name": "statement_text_contains",
+                "value": "WHERE PUBLIC.EMPLOYEES",
+                "type": "query",
+                "description": "A string to search inside the executed statement. Case-insensitive."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "The order by clause for the query. Case-insensitive."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "The column to sort by. Case-insensitive."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint triggers a search for non-cdw query audits. Chaining query parameter filters as `AND` operations.\nThe `search_uuid` that is returned expires after 30 days."
+        },
+        {
+          "info": {
+            "name": "Get the results of a search using the `search_uuid`.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/audits/:search_uuid",
+            "params": [
+              {
+                "name": "search_uuid",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "type": "path",
+                "description": "`search_uuid` received by /audits endpoint."
+              },
+              {
+                "name": "next_page_token",
+                "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew==",
+                "type": "query",
+                "description": "The token to retrieve the next page of results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the number of results returned."
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /audits endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

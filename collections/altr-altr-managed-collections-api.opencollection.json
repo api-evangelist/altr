@@ -1,0 +1,177 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Classification Engine ALTR Managed Collections API",
+    "version": "1.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ALTR Managed Collections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available ALTR managed classifiers (regex)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/classifiers",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves the list of ALTR Managed (regex) classifiers available for import. Backward-compatible alias for /collections/altr-managed/regex/classifiers."
+        },
+        {
+          "info": {
+            "name": "Import ALTR managed classifiers (regex)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/import",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Imports the ALTR Managed (regex / ALTR-native) classifiers into your organization and creates/updates the \"ALTR Managed\" collection. Idempotent - safe to call repeatedly to get the latest classifiers. Backward-compatible alias for /collections/altr-managed/regex/import."
+        },
+        {
+          "info": {
+            "name": "Import all ALTR managed collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/import-all",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates/updates every ALTR managed collection (regex, gdlp, aws-comprehend, snowflake-native, stoplight) and syncs their classifiers to the latest shipped versions. Idempotent."
+        },
+        {
+          "info": {
+            "name": "Get ALTR managed collection version timestamps (regex)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/timestamp",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns version information for the ALTR Managed (regex) classifiers. Compare altr_managed_classifiers_timestamp (latest available) with org_altr_managed_classifiers_timestamp (installed) to determine if an update is available. Backward-compatible alias for /collections/altr-managed/regex/timestamp."
+        },
+        {
+          "info": {
+            "name": "Get version timestamps for all ALTR managed collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/timestamps",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns, per collection slug, the latest-available and installed timestamps so a client can detect which managed collections are stale in one call."
+        },
+        {
+          "info": {
+            "name": "List available ALTR managed classifiers for a collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/:slug/classifiers",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "Managed collection slug (regex, gdlp, aws-comprehend, snowflake-native, stoplight)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves the list of ALTR managed classifiers available for import for the given collection slug."
+        },
+        {
+          "info": {
+            "name": "Import a specific ALTR managed collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/:slug/import",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "Managed collection slug (regex, gdlp, aws-comprehend, snowflake-native, stoplight)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Imports the ALTR managed classifiers for the given collection slug (regex, gdlp, aws-comprehend, snowflake-native, stoplight) and creates/updates the corresponding collection. Idempotent."
+        },
+        {
+          "info": {
+            "name": "Get a specific ALTR managed collection's version timestamps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.classification.live.altr.com/v1/collections/altr-managed/:slug/timestamp",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "Managed collection slug (regex, gdlp, aws-comprehend, snowflake-native, stoplight)"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns latest-available vs installed timestamps for the given managed collection slug."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

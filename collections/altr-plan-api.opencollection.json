@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Plan API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "plan",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns a list features the organization has access to.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/plan"
+          },
+          "docs": "Returns a list features the organization has access to."
+        },
+        {
+          "info": {
+            "name": "Upgrades the organization to Enterprise, but only if they are in free tier.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/plan/upgrade",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key"
+        },
+        {
+          "info": {
+            "name": "Sends a request to upgrade to Enterprise Plus.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/plan/contact",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,360 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Unified Policy API",
+    "version": "4.11.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a policy with rules attached in a single request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/withRules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to create a policy and attach rules to it in a single API call. The policy defines the overarching structure, while the rules specify the conditions and actions to enforce. Rules can include access rate thresholds, time window thresholds, masking policies, and role-based or tag-based conditions. This endpoint is useful for creating fully configured policies without needing to make multiple API calls to add rules separately.\n\nNote that the policy limitations of POST /poli"
+        },
+        {
+          "info": {
+            "name": "Fetch supported masking types for different databases and policy types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/rules/supportedMaskingTypes",
+            "params": [
+              {
+                "name": "policy_type",
+                "value": "",
+                "type": "query",
+                "description": "Type of the policy for which masking types are being queried. E.g.,  'tag','column', 'tag_pushdown'."
+              },
+              {
+                "name": "database_type",
+                "value": "",
+                "type": "query",
+                "description": "The database type for which the masking types are being requested. E.g., 'snowflake', 'databricks'."
+              },
+              {
+                "name": "field_id",
+                "value": "",
+                "type": "query",
+                "description": " A corresponding field id for column based requests"
+              }
+            ]
+          },
+          "docs": "Retrieve all supported masking types for policies based on the policy type and database type."
+        },
+        {
+          "info": {
+            "name": "Generates a S3 presigned URL which contains the policy report from the most recent report id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/reportUrl/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The policy id, this can be found in the response of an access management policy."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Given the policy id, this endpoint will generate a presigned URL that will allow you to download the report. The URL will expire in 15 minutes. This endpoint grabs the most recent report id for the policy and generates a presigned URL for that report."
+        },
+        {
+          "info": {
+            "name": "Generates a S3 presigned URL which contains the policy report given the policy id and report id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/reportUrl/:policy_id/:report_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The policy id, this can be found in the response of an access management policy."
+              },
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "The report id, this can be found in the response of an access management policy."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Given the policy id and report id, this endpoint will generate a presigned URL that will allow you to download the report. The URL will expire in 15 minutes. This endpoint generates a presigned URL for the given report and policy."
+        },
+        {
+          "info": {
+            "name": "Returns all reports for a policy.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/:policy_id/reports",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The policy id, this can be found in the response of an access management policy."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The number of policies to return"
+              },
+              {
+                "name": "exclusive_start_key",
+                "value": "",
+                "type": "query",
+                "description": "The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`. If the value is present, it can be used to get the next set of policies."
+              }
+            ]
+          },
+          "docs": "Given the policy id, this endpoint will return a list of reports."
+        },
+        {
+          "info": {
+            "name": "Creates a access management policy for a Snowflake datasource.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/accessManagement/snowflake",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a access management policy for a Snowflake datasource."
+        },
+        {
+          "info": {
+            "name": "Creates a access management policy for an OLTP datasource.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/accessManagement/oltp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a access management policy for an OLTP datasource."
+        },
+        {
+          "info": {
+            "name": "Updates an existing access management policy for a Snowflake datasource.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/accessManagement/snowflake/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing access management policy for a Snowflake datasource."
+        },
+        {
+          "info": {
+            "name": "Trigger a manual check for a grant policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/accessManagement/triggerCheck/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy."
+              }
+            ]
+          },
+          "docs": "This endpoint triggers a manual run for a grant policy and updates its status to pending."
+        },
+        {
+          "info": {
+            "name": "Creates a grant policy for a Databricks catalog.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/grant/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a grant policy for a Databricks catalog."
+        },
+        {
+          "info": {
+            "name": "Get information on all the policies in your organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The number of policies to return"
+              },
+              {
+                "name": "exclusive_start_key",
+                "value": "",
+                "type": "query",
+                "description": "The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`. If the value is present, it can be used to get the next set of policies."
+              },
+              {
+                "name": "policy_type",
+                "value": "",
+                "type": "query",
+                "description": "Type of the policy to be queried. E.g., 'TAG','COLUMN', 'PUSHDOWN'."
+              },
+              {
+                "name": "sort_by",
+                "value": "updated_at",
+                "type": "query",
+                "description": " The order of the returned policies to sort by"
+              },
+              {
+                "name": "order_by",
+                "value": "asc",
+                "type": "query",
+                "description": "The order of the returned policies"
+              }
+            ]
+          },
+          "docs": "Get information on all the policies in your organization."
+        },
+        {
+          "info": {
+            "name": "Creates a policy without any rules attached.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to create a policy without any associated rules. Rules can be added using the appropriate `/policy/{policy_id}/rules` endpoints or by creating a policy with rules by using the `policy/withRules` endpoint."
+        },
+        {
+          "info": {
+            "name": "Get information on a policy in your organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              }
+            ]
+          },
+          "docs": "Get information on a policy in your organization."
+        },
+        {
+          "info": {
+            "name": "Delete an existing policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              },
+              {
+                "name": "force-delete",
+                "value": "true",
+                "type": "query",
+                "description": "Flag to force delete the policy"
+              }
+            ]
+          },
+          "docs": "Delete an existing policy"
+        },
+        {
+          "info": {
+            "name": "Create an impersonation policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/policy/impersonation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to create an impersonation policy. The policy specifies consumer users, consumer groups, repository users, and the repository ID to enforce impersonation rules."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

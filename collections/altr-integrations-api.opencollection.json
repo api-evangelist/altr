@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Notification Integration Integrations API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Integrations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by integration type"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter by enabled flag"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of delivery integrations."
+        },
+        {
+          "info": {
+            "name": "Create an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new delivery integration. The server assigns and returns a unique integration_id."
+        },
+        {
+          "info": {
+            "name": "Get an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single integration by id. Secret config fields (tokens, passwords, HMAC secrets, credential URLs) are redacted; set or rotate them via create/PATCH."
+        },
+        {
+          "info": {
+            "name": "Update an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Updates the mutable fields on an integration. Send only the fields you want to change; set a field to null to clear it. `type` is immutable."
+        },
+        {
+          "info": {
+            "name": "Delete an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Deletes an integration. Returns 409 when subscriptions still exist under it; delete the subscriptions first, then retry."
+        },
+        {
+          "info": {
+            "name": "Test an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/test",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delivers a test notification to the integration's destination and returns the outcome. HTTP 200 means the test ran; the body's `delivered` flag + `status_code` report whether the destination accepted it."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

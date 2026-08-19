@@ -1,0 +1,1683 @@
+{
+  "item": [
+    {
+      "id": "b337924e-b633-4961-a399-dbe66b1a4b0c",
+      "name": "Alerts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "215df894-3d9f-4eed-ace2-d658b1ab90f2",
+          "name": "List Alerts.",
+          "request": {
+            "name": "List Alerts.",
+            "description": {
+              "content": "Returns a paginated list of alerts, newest first",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of results (default: 25, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Pagination token from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "rule_id",
+                  "value": "<string>",
+                  "description": "Filter by rule ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by state"
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Filter by severity"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cfb7193a-e3f6-4f4f-b574-e7b3797f8671",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"has_more\": false,\n  \"items\": [\n    {\n      \"ack_metadata\": {\n        \"acked_at\": \"string\",\n        \"acked_by_id\": \"string\",\n        \"acked_by_name\": \"string\",\n        \"comment\": \"string\"\n      },\n      \"alert_id\": \"string\",\n      \"comment_required\": false,\n      \"data_source_scope\": \"string\",\n      \"fired_at\": \"string\",\n      \"matched_event\": {\n        \"oltp_audit\": {\n          \"authorization_type\": \"string\",\n          \"bytes_returned\": 258,\n          \"client_app\": \"string\",\n          \"client_ip\": \"string\",\n          \"column\": \"string\",\n          \"connection_authorized\": true,\n          \"database\": \"string\",\n          \"event_name\": \"string\",\n          \"policies_applied\": [\n            \"string\",\n            \"string\"\n          ],\n          \"policy_types\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_status\": \"string\",\n          \"repo_host\": \"string\",\n          \"repo_type\": \"string\",\n          \"repo_user\": \"string\",\n          \"row_count\": 6536,\n          \"schema\": \"string\",\n          \"sidecar_id\": \"string\",\n          \"statement_text\": \"string\",\n          \"statement_type\": \"string\",\n          \"table\": \"string\",\n          \"user\": \"string\",\n          \"user_email\": \"string\",\n          \"user_group\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"snowflake_audit\": {\n          \"account\": \"string\",\n          \"account_region\": \"string\",\n          \"client\": \"string\",\n          \"column\": \"string\",\n          \"column_policies\": [\n            \"string\",\n            \"string\"\n          ],\n          \"database\": \"string\",\n          \"event_name\": \"string\",\n          \"execution_duration\": 2750,\n          \"ip_address\": \"string\",\n          \"masking_policies\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_tag\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"role\": \"string\",\n          \"roles\": [\n            \"string\",\n            \"string\"\n          ],\n          \"row_count\": 3184,\n          \"schema\": \"string\",\n          \"session_id\": \"string\",\n          \"statement_text\": \"string\",\n          \"statement_type\": \"string\",\n          \"table\": \"string\",\n          \"user\": \"string\",\n          \"warehouse\": \"string\",\n          \"warehouse_size\": \"string\"\n        },\n        \"source\": \"string\"\n      },\n      \"rule_id\": \"string\",\n      \"rule_name\": \"string\",\n      \"rule_type\": \"string\",\n      \"severity\": \"string\",\n      \"state\": \"string\",\n      \"threshold_context\": {\n        \"threshold\": 64,\n        \"threshold_count\": 4979,\n        \"window_start\": \"string\",\n        \"window_type\": \"string\"\n      }\n    },\n    {\n      \"ack_metadata\": {\n        \"acked_at\": \"string\",\n        \"acked_by_id\": \"string\",\n        \"acked_by_name\": \"string\",\n        \"comment\": \"string\"\n      },\n      \"alert_id\": \"string\",\n      \"comment_required\": false,\n      \"data_source_scope\": \"string\",\n      \"fired_at\": \"string\",\n      \"matched_event\": {\n        \"oltp_audit\": {\n          \"authorization_type\": \"string\",\n          \"bytes_returned\": 4892,\n          \"client_app\": \"string\",\n          \"client_ip\": \"string\",\n          \"column\": \"string\",\n          \"connection_authorized\": true,\n          \"database\": \"string\",\n          \"event_name\": \"string\",\n          \"policies_applied\": [\n            \"string\",\n            \"string\"\n          ],\n          \"policy_types\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_status\": \"string\",\n          \"repo_host\": \"string\",\n          \"repo_type\": \"string\",\n          \"repo_user\": \"string\",\n          \"row_count\": 5732,\n          \"schema\": \"string\",\n          \"sidecar_id\": \"string\",\n          \"statement_text\": \"string\",\n          \"statement_type\": \"string\",\n          \"table\": \"string\",\n          \"user\": \"string\",\n          \"user_email\": \"string\",\n          \"user_group\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"snowflake_audit\": {\n          \"account\": \"string\",\n          \"account_region\": \"string\",\n          \"client\": \"string\",\n          \"column\": \"string\",\n          \"column_policies\": [\n            \"string\",\n            \"string\"\n          ],\n          \"database\": \"string\",\n          \"event_name\": \"string\",\n          \"execution_duration\": 3820,\n          \"ip_address\": \"string\",\n          \"masking_policies\": [\n            \"string\",\n            \"string\"\n          ],\n          \"query_tag\": {\n            \"key_0\": \"string\"\n          },\n          \"role\": \"string\",\n          \"roles\": [\n            \"string\",\n            \"string\"\n          ],\n          \"row_count\": 687,\n          \"schema\": \"string\",\n          \"session_id\": \"string\",\n          \"statement_text\": \"string\",\n          \"statement_type\": \"string\",\n          \"table\": \"string\",\n          \"user\": \"string\",\n          \"warehouse\": \"string\",\n          \"warehouse_size\": \"string\"\n        },\n        \"source\": \"string\"\n      },\n      \"rule_id\": \"string\",\n      \"rule_name\": \"string\",\n      \"rule_type\": \"string\",\n      \"severity\": \"string\",\n      \"state\": \"string\",\n      \"threshold_context\": {\n        \"threshold\": 9366,\n        \"threshold_count\": 7991,\n        \"window_start\": \"string\",\n        \"window_type\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e466877b-1c9e-4bc2-a117-13a7eb72170b",
+              "name": "Invalid query parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f478ded2-4352-48c5-9a11-b5b3a199bd73",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rule_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42df691b-2395-4d18-8872-7c6dfd3fb7ae",
+          "name": "Get an Alert.",
+          "request": {
+            "name": "Get an Alert.",
+            "description": {
+              "content": "Returns a single alert by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts",
+                ":alert_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) Alert ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bd0e5209-46c2-418b-9053-2786ad5d9448",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ack_metadata\": {\n    \"acked_at\": \"string\",\n    \"acked_by_id\": \"string\",\n    \"acked_by_name\": \"string\",\n    \"comment\": \"string\"\n  },\n  \"alert_id\": \"string\",\n  \"comment_required\": true,\n  \"data_source_scope\": \"string\",\n  \"fired_at\": \"string\",\n  \"matched_event\": {\n    \"oltp_audit\": {\n      \"authorization_type\": \"string\",\n      \"bytes_returned\": 2403,\n      \"client_app\": \"string\",\n      \"client_ip\": \"string\",\n      \"column\": \"string\",\n      \"connection_authorized\": true,\n      \"database\": \"string\",\n      \"event_name\": \"string\",\n      \"policies_applied\": [\n        \"string\",\n        \"string\"\n      ],\n      \"policy_types\": [\n        \"string\",\n        \"string\"\n      ],\n      \"query_status\": \"string\",\n      \"repo_host\": \"string\",\n      \"repo_type\": \"string\",\n      \"repo_user\": \"string\",\n      \"row_count\": 6840,\n      \"schema\": \"string\",\n      \"sidecar_id\": \"string\",\n      \"statement_text\": \"string\",\n      \"statement_type\": \"string\",\n      \"table\": \"string\",\n      \"user\": \"string\",\n      \"user_email\": \"string\",\n      \"user_group\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"snowflake_audit\": {\n      \"account\": \"string\",\n      \"account_region\": \"string\",\n      \"client\": \"string\",\n      \"column\": \"string\",\n      \"column_policies\": [\n        \"string\",\n        \"string\"\n      ],\n      \"database\": \"string\",\n      \"event_name\": \"string\",\n      \"execution_duration\": 7056,\n      \"ip_address\": \"string\",\n      \"masking_policies\": [\n        \"string\",\n        \"string\"\n      ],\n      \"query_tag\": {\n        \"key_0\": \"string\"\n      },\n      \"role\": \"string\",\n      \"roles\": [\n        \"string\",\n        \"string\"\n      ],\n      \"row_count\": 937,\n      \"schema\": \"string\",\n      \"session_id\": \"string\",\n      \"statement_text\": \"string\",\n      \"statement_type\": \"string\",\n      \"table\": \"string\",\n      \"user\": \"string\",\n      \"warehouse\": \"string\",\n      \"warehouse_size\": \"string\"\n    },\n    \"source\": \"string\"\n  },\n  \"rule_id\": \"string\",\n  \"rule_name\": \"string\",\n  \"rule_type\": \"string\",\n  \"severity\": \"string\",\n  \"state\": \"string\",\n  \"threshold_context\": {\n    \"threshold\": 6983,\n    \"threshold_count\": 4265,\n    \"window_start\": \"string\",\n    \"window_type\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e325cbde-d8df-4a2c-96ad-a2d6bfbd035b",
+              "name": "Alert not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cd36f38-7b16-4802-8e69-927b9dce5b63",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7c9c38c-9d8a-4b39-b106-c628e8545369",
+          "name": "Acknowledge an active alert.",
+          "request": {
+            "name": "Acknowledge an active alert.",
+            "description": {
+              "content": "Acknowledges an active alert. If the alert's rule has comment_required=true a non-empty comment must be supplied.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts",
+                ":alert_id",
+                "acknowledge"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) Alert ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "81ced5aa-3367-4a5d-a8fc-afb1bae4ae66",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ack_metadata\": {\n    \"acked_at\": \"string\",\n    \"acked_by_id\": \"string\",\n    \"acked_by_name\": \"string\",\n    \"comment\": \"string\"\n  },\n  \"alert_id\": \"string\",\n  \"comment_required\": true,\n  \"data_source_scope\": \"string\",\n  \"fired_at\": \"string\",\n  \"matched_event\": {\n    \"oltp_audit\": {\n      \"authorization_type\": \"string\",\n      \"bytes_returned\": 2403,\n      \"client_app\": \"string\",\n      \"client_ip\": \"string\",\n      \"column\": \"string\",\n      \"connection_authorized\": true,\n      \"database\": \"string\",\n      \"event_name\": \"string\",\n      \"policies_applied\": [\n        \"string\",\n        \"string\"\n      ],\n      \"policy_types\": [\n        \"string\",\n        \"string\"\n      ],\n      \"query_status\": \"string\",\n      \"repo_host\": \"string\",\n      \"repo_type\": \"string\",\n      \"repo_user\": \"string\",\n      \"row_count\": 6840,\n      \"schema\": \"string\",\n      \"sidecar_id\": \"string\",\n      \"statement_text\": \"string\",\n      \"statement_type\": \"string\",\n      \"table\": \"string\",\n      \"user\": \"string\",\n      \"user_email\": \"string\",\n      \"user_group\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"snowflake_audit\": {\n      \"account\": \"string\",\n      \"account_region\": \"string\",\n      \"client\": \"string\",\n      \"column\": \"string\",\n      \"column_policies\": [\n        \"string\",\n        \"string\"\n      ],\n      \"database\": \"string\",\n      \"event_name\": \"string\",\n      \"execution_duration\": 7056,\n      \"ip_address\": \"string\",\n      \"masking_policies\": [\n        \"string\",\n        \"string\"\n      ],\n      \"query_tag\": {\n        \"key_0\": \"string\"\n      },\n      \"role\": \"string\",\n      \"roles\": [\n        \"string\",\n        \"string\"\n      ],\n      \"row_count\": 937,\n      \"schema\": \"string\",\n      \"session_id\": \"string\",\n      \"statement_text\": \"string\",\n      \"statement_type\": \"string\",\n      \"table\": \"string\",\n      \"user\": \"string\",\n      \"warehouse\": \"string\",\n      \"warehouse_size\": \"string\"\n    },\n    \"source\": \"string\"\n  },\n  \"rule_id\": \"string\",\n  \"rule_name\": \"string\",\n  \"rule_type\": \"string\",\n  \"severity\": \"string\",\n  \"state\": \"string\",\n  \"threshold_context\": {\n    \"threshold\": 6983,\n    \"threshold_count\": 4265,\n    \"window_start\": \"string\",\n    \"window_type\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9ccc0eb-7ceb-418b-828a-36a1525ea793",
+              "name": "Invalid request or missing required comment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1313a92e-299b-4f40-a2c6-87b92db0b2da",
+              "name": "Alert not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "978835ea-595f-447c-8bce-64150ed1b24f",
+              "name": "Alert already acknowledged",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12cb07d1-3527-4d08-8cdd-eb2f99d1c734",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"comment\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ebc0044d-655a-47c2-ba52-ea77f99b6903",
+          "name": "List alert comments.",
+          "request": {
+            "name": "List alert comments.",
+            "description": {
+              "content": "Returns a paginated list of comments for an alert, oldest first.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts",
+                ":alert_id",
+                "comments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of results (default: 25, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Pagination token from previous response"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) Alert ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "be7aa92e-9b02-4afa-bc99-cdd389ac585c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"has_more\": true,\n  \"items\": [\n    {\n      \"alert_id\": \"string\",\n      \"author_id\": \"string\",\n      \"author_name\": \"string\",\n      \"comment_id\": \"string\",\n      \"created_at\": \"string\",\n      \"text\": \"string\"\n    },\n    {\n      \"alert_id\": \"string\",\n      \"author_id\": \"string\",\n      \"author_name\": \"string\",\n      \"comment_id\": \"string\",\n      \"created_at\": \"string\",\n      \"text\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20619975-4fb1-4c2f-8d27-1f948ce3a1a3",
+              "name": "Invalid query parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c0343b8-c0f0-413b-950a-b7014a605e70",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99acc04a-b36e-43cb-b75d-e08d16288d74",
+          "name": "Create an alert comment.",
+          "request": {
+            "name": "Create an alert comment.",
+            "description": {
+              "content": "Adds an investigation comment to an alert. Comments are append-only — there is no edit or delete path.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts",
+                ":alert_id",
+                "comments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) Alert ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "50269574-7d81-42ba-9bb0-b1a97e7966ae",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"alert_id\": \"string\",\n  \"author_id\": \"string\",\n  \"author_name\": \"string\",\n  \"comment_id\": \"string\",\n  \"created_at\": \"string\",\n  \"text\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74fa448f-4f00-47d5-bee4-2eb032bdffbf",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfa32fe5-ecaf-43b8-bb7d-0c5d2bbdaaa1",
+              "name": "Alert not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a402f6e8-7758-44ae-a411-14a821d133ad",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts",
+                    ":alert_id",
+                    "comments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "alert_id",
+                      "description": "(Required) Alert ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 8156,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 1162\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "dc7b8dde-cdf6-4548-ad70-0d8bd2dc20b3",
+    "name": "ALTR DAM Alerting Alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manages DAM alerting rules and alerts. Supports rule CRUD, alert inbox, and acknowledgment for ALTR's Data Access Monitoring feature.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

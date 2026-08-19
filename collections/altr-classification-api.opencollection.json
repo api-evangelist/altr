@@ -1,0 +1,183 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Classification API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "classification",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Starts a data classification job for a database with the provided database ID, currently only for Snowflake CI.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/classification/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "classificationType",
+                "value": "",
+                "type": "query",
+                "description": "Optional value, the classification type that you wish to run. If not passed will default to `1`\n* `1` - Google DLP\n"
+              }
+            ]
+          },
+          "docs": "This endpoint is deprecated and will be removed in the next major version."
+        },
+        {
+          "info": {
+            "name": "Gets a list of databases with classifier information attached. Can be filtered using params.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/classification/databases",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "disStarted",
+                "value": "",
+                "type": "query",
+                "description": "Filters the result set to only return databases that have (or have not if set to false) had a classification started before. This includes classifications that have finished. Ignored if unset."
+              },
+              {
+                "name": "disCompleted",
+                "value": "",
+                "type": "query",
+                "description": "Filters the result set to only return databases that have (or have not if set to false) had a classification completed before. Ignored if unset."
+              }
+            ]
+          },
+          "docs": "Gets a list of databases with classifier information attached. Can be filtered using params."
+        },
+        {
+          "info": {
+            "name": "Gets the classification status of a database. May be running, complete, or 204 no data.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/classification/status/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Gets the classification status of a database. May be running, complete, or 204 no data."
+        },
+        {
+          "info": {
+            "name": "Gets a list of classifier types (and total number of columns classified as that type) for one database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/classification/classifiers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Gets a list of classifier types (and total number of columns classified as that type) for one database"
+        },
+        {
+          "info": {
+            "name": "Gets list of columns for all databases that have been classified as the provided type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/classification/columns/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "The classifier type to get column data for (classifier types provided by /classification/classifiers and /classification/classifiers/{id} routes)"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets list of columns for all databases that have been classified as the provided type"
+        },
+        {
+          "info": {
+            "name": "Gets list of columns for a database that have been classified as the provided type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/classification/columns/:type/:id",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "The classifier type to get column data for (classifier types provided by /classification/classifiers and /classification/classifiers/{id} routes)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets list of columns for a database that have been classified as the provided type"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

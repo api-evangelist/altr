@@ -1,0 +1,235 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Maskingpolicies API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: maskingpolicies
+  description: Operations related to masking policies
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/locks#Dynamic%20Data%20Masking
+paths:
+  /maskingpolicies:
+    get:
+      tags:
+      - maskingpolicies
+      summary: Returns a list of masking policies with pagination support
+      operationId: getMaskingPolicies
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          default: maskType
+          enum:
+          - maskType
+          - name
+        description: The property on which to sort masking policies by.
+      - name: name
+        in: query
+        schema:
+          type: string
+        description: Filter by the name of the masking policy.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      maskingpolicies:
+                        description: An array of objects that represent the masking polices that the requested column can use.
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MaskingPolicy'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    MaskingPolicy:
+      type: object
+      description: An individual masking policy information.
+      properties:
+        id:
+          type: integer
+          description: The unique id of this masking policy
+          example: 10000
+        name:
+          type: string
+          description: The name of this masking policy
+          example: Constant Mask
+        details:
+          type: object
+          description: Contains additional details about this policy.
+          properties:
+            tooltip:
+              type: string
+              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
+              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
+            example:
+              type: string
+              description: An example of how this masking policy will be applied.
+              example: '****-**-1234'
+        description:
+          type: string
+          description: The description of the masking policy
+          example: For all your constant masking needs.
+        parameters:
+          type:
+          - object
+          - 'null'
+          description: A custom object that can be NULL, defines the options for custom masking policies.
+        maskType:
+          type: integer
+          enum:
+          - 0
+          - 2
+          - 3
+          - 4
+          - 5
+          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
+
+            '
+          example: 1
+        isEditable:
+          type: boolean
+          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
+          example: false
+        clientId:
+          type: string
+          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
+          example: '0'
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  description: 'Welcome to the Swagger documentation for ALTR''s Service User API. This API allows ALTR customers to manage service users used to connect to third-party applications such as Snowflake.
+
+    API credentials can be obtained under Settings > Preferences > API of ALTR''s portal for Usernames are the ''Key Names'' listed on that page and Passwords are the ''Key Secret'' provided when an API key is created.'
+  title: Service User Service Tasks API
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  contact:
+    name: Support
+    email: support@altr.com
+  version: '1.0'
+servers:
+- url: /v1
+tags:
+- name: Tasks
+paths:
+  /services/{service}/users/{userID}/auth/{auth}/{authid}/test:
+    post:
+      security:
+      - BasicAuth: []
+      description: Creates an **asynchronous** job that validates the specified authentication item. The endpoint returns immediately with a job‐identifier you can poll later.
+      tags:
+      - Tasks
+      summary: Start a task which validates the authentication method
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Authentication Type
+        name: auth
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - password
+          - keypair
+      - description: Authentication ID
+        name: authid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Test job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.CreateAuthTestJobResponse'
+        '404':
+          description: Authentication item not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '409':
+          description: Test already in progress or overlapping request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+  /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/latest:
+    get:
+      security:
+      - BasicAuth: []
+      description: Returns the most recent authentication-test task created for a given user, service and auth.
+      tags:
+      - Tasks
+      summary: Retrieve the status of the latest authentication-test task
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Authentication Type
+        name: authtype
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - password
+          - keypair
+      - description: Authentication ID
+        name: authid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Latest job found – status returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.AuthTestJobStatusResponse'
+        '404':
+          description: Job not found – no prior test has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '503':
+          description: Auth service unavailable – caller should retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+  /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/{testid}:
+    get:
+      security:
+      - BasicAuth: []
+      description: Returns the status of the authentication-test task for the specified service, user, and authentication identifiers.
+      tags:
+      - Tasks
+      summary: Retrieve the status of a specific authentication-test task
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: 2w6ALEtk50T5ZWyw9cIuvhTjVGt
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Authentication Type
+        name: authtype
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - password
+          - keypair
+      - description: Authentication ID
+        name: authid
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Authentication-test ID
+        name: testid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Job found – status returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.AuthTestJobStatusResponse'
+        '404':
+          description: Job not found – no prior test has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+        '503':
+          description: Auth service unavailable – caller should retry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.Error'
+components:
+  schemas:
+    dto.CreateAuthTestJobResponse:
+      type: object
+      properties:
+        created_at:
+          type: string
+        status:
+          type: string
+        task_id:
+          type: array
+          items:
+            type: integer
+    dto.AuthTestJobStatusResponse:
+      type: object
+      properties:
+        completed_at:
+          type: string
+        created_at:
+          type: string
+        detail:
+          description: optional
+          type: string
+        status:
+          description: PENDING|RUNNING|SUCCESS|FAILED
+          type: string
+        task_id:
+          type: array
+          items:
+            type: integer
+    dto.Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

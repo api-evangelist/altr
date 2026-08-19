@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Telemetry Task API",
+    "version": "1.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Task",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Task Telemetry List by Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/agents/:agent_id/task-telemetry",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "Agent ID"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will return the next set of items after this ID."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return, must be between 1 and 1000"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get task telemetry for a specific agent."
+        },
+        {
+          "info": {
+            "name": "Get Task Telemetry by Task ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/tasks/:task_id/task-telemetry",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "Task ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a specific task telemetry item by task ID."
+        },
+        {
+          "info": {
+            "name": "Delete Task Telemetry by Task ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{org_id}.sc-control.live.altr.com/v1/tasks/:task_id/task-telemetry",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "Task ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete a specific task telemetry item by task ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

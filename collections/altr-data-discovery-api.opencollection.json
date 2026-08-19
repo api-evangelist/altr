@@ -1,0 +1,346 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Datastore Information Service Data Discovery API",
+    "version": "3.4.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start a Classification/Tagging Job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/v1/dis /classification/v1/db/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID to run a classification/tagging job on. Can be found via the listDBs endpoint."
+              },
+              {
+                "name": "classificationType",
+                "value": "",
+                "type": "query",
+                "description": "The secondary service used for classification/tagging jobs. Defaults to Google DLP if not included. </br></br>{<blockquote>1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Object Tag Import <br />   4, // Snowflake Classification and Tag Import</blockquote>}"
+              },
+              {
+                "name": "emailOnCompletion",
+                "value": "",
+                "type": "query",
+                "description": "Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}"
+              }
+            ]
+          },
+          "docs": "Starts a classification job for the request client database."
+        },
+        {
+          "info": {
+            "name": "Start a Classification Job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/v1/dis /classification/v1/metastore/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID to run a classification job on. Can be found via the listDBs endpoint."
+              },
+              {
+                "name": "emailOnCompletion",
+                "value": "",
+                "type": "query",
+                "description": "Defaults to sending an email, this header allows you to opt in or out of the job completion email. </br></br>{<blockquote>    0,  //  False<br/>    1  //   True</blockquote>}"
+              }
+            ]
+          },
+          "docs": "Starts a classification job for the request client metastore."
+        },
+        {
+          "info": {
+            "name": "Retrieve list of connected client databases.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/listDBs",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              },
+              {
+                "name": "jobStarted",
+                "value": "",
+                "type": "query",
+                "description": "jobStarted, if not specified, will not be considered when returning data. If false, we will only return databases that have never had a data discovery job run. If true, the returned set will include databases that have had data discovery jobs started - even if they haven't completed."
+              },
+              {
+                "name": "jobCompleted",
+                "value": "",
+                "type": "query",
+                "description": "jobCompleted, if not specified, will not be considered when returning data. If false, we will only return databases that have never had a data discovery job complete. If true, we will only return databases that have had a data discovery job successfully complete. "
+              }
+            ]
+          },
+          "docs": "Gets a list of databases for consumption, includes if a classification has ever been run before."
+        },
+        {
+          "info": {
+            "name": "Retrieve classification job(s) status(es).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/db/status/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "Optional database ID - if included will only return jobs specific to this database ID. Database ID can be retrieved via the listDBs endpoint"
+              },
+              {
+                "name": "dataDiscoveryJobType",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              }
+            ]
+          },
+          "docs": "Returns an array of all classification jobs by the latest run of each distinct classification type for a database specific request. You can specify a classification type to only return the status for a specific type "
+        },
+        {
+          "info": {
+            "name": "Retrieve classification job(s) status(es).",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/status",
+            "params": [
+              {
+                "name": "dataDiscoveryJobType",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the secondary service used for classification/tagging jobs. </br></br>{<blockquote>0,  //  Returns last ran job of ANY type<br /> 1,  //  Google DLP<br />    2, //  Snowflake Native (Deprecated)<br />    3, // Snowflake Tag Import <br />   4, // Snowflake Classify and Tag Import</blockquote>}"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              }
+            ]
+          },
+          "docs": "Returns an array of all classification jobs by the latest run of each distinct classification type for an org level request. You can specify a classification type to only return the status for a specific type "
+        },
+        {
+          "info": {
+            "name": "Retrieves summary of successful classifications.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/db/summary/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID to retrieve successful classifications from. Can be found via the listDBs endpoint."
+              },
+              {
+                "name": "jobUUID",
+                "value": "",
+                "type": "query",
+                "description": "Get historical job summary"
+              }
+            ]
+          },
+          "docs": "Returns list of found classification types for a client database. "
+        },
+        {
+          "info": {
+            "name": "Retrieves database level column list associated with classification types.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/db/column/type/:type/:id",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Comes from GET classification/v1/summary and is case insensitive"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Represents the database id retrieved from /listDBs."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              },
+              {
+                "name": "jobUUID",
+                "value": "",
+                "type": "query",
+                "description": "Get historical job information"
+              }
+            ]
+          },
+          "docs": "Returns database level list of columns with classification types.  "
+        },
+        {
+          "info": {
+            "name": "Retrieves org level column list associated with classification types.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v2/column/type/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Comes from GET classification/v1/summary and is case insensitive"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              }
+            ]
+          },
+          "docs": "Returns list of columns with classification types.  "
+        },
+        {
+          "info": {
+            "name": "Retrieves list of table failures.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v1/db/listTableFailures/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from GET classification/v2/status and is case insensitive"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "List return offset. Minimum 0."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "List return limit. Minimum 1, Maximum 100."
+              }
+            ]
+          },
+          "docs": "Returns of table failures with corresponding information for a job."
+        },
+        {
+          "info": {
+            "name": "Retrieves list of completed table info.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /classification/v1/db/listTableInfo/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from GET classification/v2/status and is case insensitive"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Table failures list offset"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Table failures list return limit"
+              }
+            ]
+          },
+          "docs": "Returns of tables with corresponding information for a job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

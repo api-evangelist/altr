@@ -1,0 +1,287 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Data API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sorts the data"
+              },
+              {
+                "name": "autoComplete",
+                "value": "",
+                "type": "query",
+                "description": "Used to search protected data by nickname."
+              },
+              {
+                "name": "nickname",
+                "value": "",
+                "type": "query",
+                "description": "Used to search protected data by nickname."
+              },
+              {
+                "name": "columnName",
+                "value": "",
+                "type": "query",
+                "description": "Used to search protected data by columnName."
+              },
+              {
+                "name": "queryType",
+                "value": "",
+                "type": "query",
+                "description": "What type of operation to perform against this data set, defaults to an \"OR\" query and can only be \"OR\"."
+              }
+            ]
+          },
+          "docs": "Returns an array of data objects"
+        },
+        {
+          "info": {
+            "name": "Create a new governed, protected, tokenized, or fpe column",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/data",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint can be used to govern or detokenize a column in a view or table, or to protect, govern or detokenize a column in a table. Protect is only available for non-SFCI Databases. Tokenized is only available for SFCI Databases."
+        },
+        {
+          "info": {
+            "name": "Get data with given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ]
+          },
+          "docs": "Fetches a govern, protected, tokenized, or fpe data field by its corresponding ID."
+        },
+        {
+          "info": {
+            "name": "Updates data with given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Converts a governed column to protect, tokenized, or fpe. A tokenized column to govern, protect, or fpe. A fpe column to govern, protect, or tokenized.\nCan also be used to update a field's friendlyName if desired. Can also update alphabet, keyName, or tweakName if column is fpe.\n\nSet 'reinvoke' to true to retry a failed column connection.\n"
+        },
+        {
+          "info": {
+            "name": "Delete data with given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              },
+              {
+                "name": "ignoreErrors",
+                "value": "",
+                "type": "query",
+                "description": "Whether to ignore the errors when deleting a column."
+              }
+            ]
+          },
+          "docs": "Deletes a govern, protected, tokenized, or fpe data field by its corresponding ID.\n\nIf the field provided is currently in a scattered state a job will be queued and the field will be set to a removal_pending state and eventually from the database. \n\nIf the field provided is in a governed-only state then the field will be removed immediately."
+        },
+        {
+          "info": {
+            "name": "Returns the scatter status and percent completion for given id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId/status",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ]
+          },
+          "docs": "Returns the scatter status and percent completion for a given fieldId."
+        },
+        {
+          "info": {
+            "name": "DEPRECATED - Returns all metadata for a given specified fieldId.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId/metadata",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ]
+          },
+          "docs": "Returns all metadata for a given specified fieldId."
+        },
+        {
+          "info": {
+            "name": "Deletes all relationships between a field and all of the fields corresponding locks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId/locks",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ]
+          },
+          "docs": "Deletes all relationships between a field and all of the fields corresponding locks."
+        },
+        {
+          "info": {
+            "name": "Returns all of the foreign keys associated with a given fieldId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId/foreign-keys",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              }
+            ]
+          },
+          "docs": "Returns all of the foreign keys associated with a given fieldId"
+        },
+        {
+          "info": {
+            "name": "Returns a list of the available masking policies for the given field id, with pagination support.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/data/:fieldId/maskingpolicies",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "The ID that corresponds to govern, protected, tokenized, or fpe column."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "The property on which to sort masking policies by."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the masking policies name."
+              }
+            ]
+          },
+          "docs": "If the `fieldId`` passed is a valid Snowflake CI Column, you will get a result of all the available masking policies that can applied for this column.\n\nIf the `fieldId`` passed is not a Snowflake CI Column, you will always get the default masking policy type of 0, No Mask.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

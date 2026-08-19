@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Datastore Information Service Data Masking API",
+    "version": "3.4.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Masking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Checks column masking types.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /masking/v2/column/types/:fieldId/",
+            "params": [
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path",
+                "description": "Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+              }
+            ]
+          },
+          "docs": "Checks to see if the column can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every"
+        },
+        {
+          "info": {
+            "name": "Checks column masking types for input array.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /masking/v2/column/types/array",
+            "params": [
+              {
+                "name": "fieldIDs",
+                "value": "",
+                "type": "query",
+                "description": "Comma delimited list of field ID integers. Checks masking types for each of the field ids included in the input list. Field ids come from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+              }
+            ]
+          },
+          "docs": "Checks to see if the columns in the input array can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;        "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

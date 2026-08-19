@@ -1,0 +1,182 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR DAM Alerting Alerts API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Alerts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Alerts.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/alerts/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by rule ID"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by state"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by severity"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of alerts, newest first"
+        },
+        {
+          "info": {
+            "name": "Get an Alert.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/alerts/:alert_id",
+            "params": [
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path",
+                "description": "Alert ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single alert by ID"
+        },
+        {
+          "info": {
+            "name": "Acknowledge an active alert.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/alerts/:alert_id/acknowledge",
+            "params": [
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path",
+                "description": "Alert ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Acknowledges an active alert. If the alert's rule has comment_required=true a non-empty comment must be supplied."
+        },
+        {
+          "info": {
+            "name": "List alert comments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/alerts/:alert_id/comments",
+            "params": [
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path",
+                "description": "Alert ID"
+              },
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of comments for an alert, oldest first."
+        },
+        {
+          "info": {
+            "name": "Create an alert comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/alerts/:alert_id/comments",
+            "params": [
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path",
+                "description": "Alert ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Adds an investigation comment to an alert. Comments are append-only — there is no edit or delete path."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

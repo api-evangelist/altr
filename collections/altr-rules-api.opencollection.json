@@ -1,0 +1,345 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Altr Rules API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Rule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/rules",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new rule with filters, severity, and delivery configuration"
+        },
+        {
+          "info": {
+            "name": "List Rules.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/rules/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter by enabled flag"
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by severity"
+              },
+              {
+                "name": "rule_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by rule type"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of DAM alerting rules"
+        },
+        {
+          "info": {
+            "name": "Get a Rule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/rules/:rule_id",
+            "params": [
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path",
+                "description": "Rule ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single rule by ID"
+        },
+        {
+          "info": {
+            "name": "Update a rule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/rules/:rule_id",
+            "params": [
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path",
+                "description": "Rule ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Patches the mutable fields on a rule. Immutable fields (rule_type, filter_tree, data_source_scope, window_type, threshold, timezone) cannot be changed and must be set via delete+recreate."
+        },
+        {
+          "info": {
+            "name": "Delete a rule.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/rules/:rule_id",
+            "params": [
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path",
+                "description": "Rule ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Permanently deletes a rule and stops further evaluation against it."
+        },
+        {
+          "info": {
+            "name": "Creates a new rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules/batch",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new rule"
+        },
+        {
+          "info": {
+            "name": "Get all the rules associated with the given policy_id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The number of rules to return"
+              },
+              {
+                "name": "exclusive_start_key",
+                "value": "",
+                "type": "query",
+                "description": "The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`. If the value is present, it can be used to get the next set of policies."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get all the rules associated with the given policy_id"
+        },
+        {
+          "info": {
+            "name": "Creates a new rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new rule"
+        },
+        {
+          "info": {
+            "name": "Get details for a specific rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules/:rule_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              },
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get details for a specific rule"
+        },
+        {
+          "info": {
+            "name": "Updates an existing rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules/:rule_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              },
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Updates an existing rule"
+        },
+        {
+          "info": {
+            "name": "Delete an existing rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting/policy/:policy_id/rules/:rule_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the policy"
+              },
+              {
+                "name": "rule_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete an existing rule"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Service User Service Tasks API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start a task which validates the authentication method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/services/:service/users/:userID/auth/:auth/:authid/test",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "2w6ALEtk50T5ZWyw9cIuvhTjVGt",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "auth",
+                "value": "",
+                "type": "path",
+                "description": "Authentication Type"
+              },
+              {
+                "name": "authid",
+                "value": "",
+                "type": "path",
+                "description": "Authentication ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates an **asynchronous** job that validates the specified authentication item. The endpoint returns immediately with a job‐identifier you can poll later."
+        },
+        {
+          "info": {
+            "name": "Retrieve the status of the latest authentication-test task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/services/:service/users/:userid/auth/:authtype/:authid/test/latest",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "2w6ALEtk50T5ZWyw9cIuvhTjVGt",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "authtype",
+                "value": "",
+                "type": "path",
+                "description": "Authentication Type"
+              },
+              {
+                "name": "authid",
+                "value": "",
+                "type": "path",
+                "description": "Authentication ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the most recent authentication-test task created for a given user, service and auth."
+        },
+        {
+          "info": {
+            "name": "Retrieve the status of a specific authentication-test task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/services/:service/users/:userid/auth/:authtype/:authid/test/:testid",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "2w6ALEtk50T5ZWyw9cIuvhTjVGt",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "authtype",
+                "value": "",
+                "type": "path",
+                "description": "Authentication Type"
+              },
+              {
+                "name": "authid",
+                "value": "",
+                "type": "path",
+                "description": "Authentication ID"
+              },
+              {
+                "name": "testid",
+                "value": "",
+                "type": "path",
+                "description": "Authentication-test ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the status of the authentication-test task for the specified service, user, and authentication identifiers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

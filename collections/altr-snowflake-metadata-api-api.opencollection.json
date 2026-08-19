@@ -1,0 +1,600 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Snowflake Metadata Snowflake Metadata API API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Snowflake Metadata API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Account Locator.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/accountLocator",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get snowflake account locator."
+        },
+        {
+          "info": {
+            "name": "Get Account Region.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/accountRegion",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get snowflake account region."
+        },
+        {
+          "info": {
+            "name": "Get Column in Table.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/table/:tableName/column/:columnName",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the table."
+              },
+              {
+                "name": "columnName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the column."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a column and it's information."
+        },
+        {
+          "info": {
+            "name": "List Column Names in Table.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/table/:tableName/columns",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the table."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of columns to return."
+              },
+              {
+                "name": "column_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only column name(s) which contains the given string."
+              },
+              {
+                "name": "column_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Column Name cursor for the results. Will return column names after this given column name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of column names and their information."
+        },
+        {
+          "info": {
+            "name": "List Table Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/tables",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of tables to return."
+              },
+              {
+                "name": "table_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only table name(s) which contains the given string."
+              },
+              {
+                "name": "table_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Table Name cursor for the results. Will return table names after this given table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of table names and their information."
+        },
+        {
+          "info": {
+            "name": "List Tag Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/tags",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of tags to return."
+              },
+              {
+                "name": "tag_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only tag name(s) which contains the given string."
+              },
+              {
+                "name": "tag_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Tag Name cursor for the results. Will return tag names after this given tag name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of tag names and their information."
+        },
+        {
+          "info": {
+            "name": "Get Column in View.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/view/:viewName/column/:columnName",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "viewName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the view."
+              },
+              {
+                "name": "columnName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the column."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a column and it's information."
+        },
+        {
+          "info": {
+            "name": "List Column Names in View.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/view/:viewName/columns",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "viewName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the view."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of columns to return."
+              },
+              {
+                "name": "column_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only column name(s) which contains the given string."
+              },
+              {
+                "name": "column_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Column Name cursor for the results. Will return column names after this given column name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of column names and their information."
+        },
+        {
+          "info": {
+            "name": "List View Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schema/:schemaName/views",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the schema."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of views to return."
+              },
+              {
+                "name": "view_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only view name(s) which contains the given string."
+              },
+              {
+                "name": "view_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The View Name cursor for the results. Will return view names after this given view name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of view names and their information."
+        },
+        {
+          "info": {
+            "name": "List Schema Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/database/:databaseName/schemas",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of schemas to return."
+              },
+              {
+                "name": "schema_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only schema name(s) which contains the given string."
+              },
+              {
+                "name": "schema_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Schema Name cursor for the results. Will return schema names after this given schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of schema names and their information."
+        },
+        {
+          "info": {
+            "name": "List Database Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/databases",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of databases to return."
+              },
+              {
+                "name": "database_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only database name(s) which contains the given string."
+              },
+              {
+                "name": "database_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Database Name cursor for the results. Will return database names after this given database name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of database names and their information."
+        },
+        {
+          "info": {
+            "name": "Get the organization name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/organizationName",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the organization name."
+        },
+        {
+          "info": {
+            "name": "List Role Names.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/snowflake/metadata/:databaseID/roles",
+            "params": [
+              {
+                "name": "databaseID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of roles to return."
+              },
+              {
+                "name": "role_name_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only role name(s) which contains the given string."
+              },
+              {
+                "name": "role_name_offset",
+                "value": "",
+                "type": "query",
+                "description": "The Role Name cursor for the results. Will return role names after this given role name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the list of role names and their information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

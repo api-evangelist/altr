@@ -1,0 +1,809 @@
+openapi: 3.2.0
+info:
+  title: Unified Policy Access Request API
+  version: 4.11.1
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  description: 'Welcome to the Swagger documentation for ALTR''s Unified Policy API. This API allows ALTR customers to manage the policy they enact on Data Sources. These policies include column-level masking, tag-based, pushddown and access management.
+
+
+    The API provides endpoints to create, update, retrieve, and delete policies, as well as manage rules and thresholds associated with them. It supports advanced features such as time-based and rate-based thresholds, role-based access control, and integration with Snowflake and Databricks.
+
+
+    For more details, refer to the examples and schemas provided in this documentation.'
+servers:
+- url: https://api.live.altr.com/v1/unified-policy/management/
+security:
+- basicAuth: []
+tags:
+- name: access_request
+paths:
+  /accessRequest:
+    post:
+      operationId: createAccessRequest
+      tags:
+      - access_request
+      summary: Create a new access request
+      description: An access request represents a user's request to access specific resources or perform certain actions within the system. This endpoint allows you to create a new access request. The request body must include details about the requester, justification, metadata, and rules defining the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requester_identity:
+                  type: object
+                  properties:
+                    requester:
+                      type: string
+                      example: NAME
+                      description: The name of the requester.
+                    email:
+                      type: string
+                      example: name@company.com
+                      description: The email of the requester.
+                    role:
+                      type: string
+                      example: DEV_ROLE
+                      description: The role of the requester.
+                  required:
+                  - requester
+                justification:
+                  type: string
+                  example: Need access to perform data analysis.
+                  description: Reason for the access request.
+                snowflake_metadata:
+                  type: object
+                  properties:
+                    account_region:
+                      type: string
+                      description: Region of the account.
+                    account_name:
+                      type: string
+                      description: Name of the account.
+                    organization_name:
+                      type: string
+                      description: Name of the current organization.
+                rules:
+                  type: array
+                  description: Rules defining the access request.
+                  items:
+                    $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+                connection_id:
+                  type: number
+                  example: 1
+                  description: Connection ID associated with the access request.
+              required:
+              - requester_identity
+              - justification
+              - rules
+              - connection_id
+      responses:
+        '200':
+          description: Access request created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequestPostResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    get:
+      operationId: getAccessRequests
+      tags:
+      - access_request
+      summary: Retrieve all access requests
+      description: This endpoint retrieves all access requests for the client. It supports pagination using the `exclusive_start_key` and `limit` query parameters. `exclusive_start_key` can be found in the response of the previous request under `last_evaluated_key`, under the `id` property. Use that value to get the next set of access requests.
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 10
+        description: The maximum number of access requests to retrieve.
+      - name: requester
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The name of the individual who issued the access request.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          default: OPEN
+        description: The statues of the access request.
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: The sort order of the access requests.
+      - name: exclusive_start_key
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The key to start pagination from. This is an encoded JSON string.
+      responses:
+        '200':
+          description: Access request retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}:
+    get:
+      operationId: getAccessRequestById
+      tags:
+      - access_request
+      summary: Retrieve a specific access request
+      description: This endpoint retrieves a specific access request by its ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      responses:
+        '200':
+          description: Access request retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/approve:
+    put:
+      operationId: approveAccessRequest
+      tags:
+      - access_request
+      summary: Approve an access request
+      description: This endpoint approves a specific access request by its ID. The access request must be in an OPEN status to be approved.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for approving the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request approved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/deny:
+    put:
+      operationId: denyAccessRequest
+      tags:
+      - access_request
+      summary: Deny an access request
+      description: This endpoint denies a specific access request by its ID. The access request must be in an OPEN status to be denied.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for denying the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request denied successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /accessRequest/{id}/cancel:
+    put:
+      operationId: cancelAccessRequest
+      tags:
+      - access_request
+      summary: Cancel an access request
+      description: This endpoint cancels a specific access request by its ID. The access request must be in an OPEN status to be canceled.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the access request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                justification:
+                  type: string
+                  description: Reason for canceling the access request.
+              required:
+              - justification
+      responses:
+        '200':
+          description: Access request canceled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/AccessRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
+    AccessRequest:
+      type: object
+      description: Represents an access request entity.
+      properties:
+        PK:
+          type: string
+          example: ORG#12e06dcd-8b2e-4102-82db-c8a692d87c52#ACCESS_REQUEST
+          description: The partition key for the access request.
+        SK:
+          type: string
+          example: ACCESS_REQUEST#a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The sort key for the access request.
+        client_id:
+          type: string
+          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+          description: The client ID associated with the access request.
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.713Z'
+          description: The timestamp when the access request was created.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.718Z'
+          description: The timestamp when the access request was last updated.
+        id:
+          type: string
+          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The unique identifier for the access request.
+        status:
+          type: string
+          example: CLOSED_DENIED
+          description: The current status of the access request.
+          enum:
+          - NONE
+          - PENDING_CREATION
+          - OPEN
+          - PENDING
+          - PENDING_APPROVED
+          - CLOSED_APPROVED
+          - PENDING_DENIED
+          - CLOSED_DENIED
+          - PENDING_CANCELLED
+          - CLOSED_CANCELLED
+          - CLOSED
+          - FAILED
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+          description: The rules defining the access request.
+        requester_identity:
+          type: object
+          description: Information about the requester.
+          properties:
+            requester:
+              type: string
+              example: USER
+              description: The name of the requester.
+            email:
+              type: string
+              example: user@company.com
+              description: The email of the requester.
+            role:
+              type: string
+              example: DEVELOPER_ROLE
+              description: The role of the requester.
+        requester_justification:
+          type: string
+          example: Need access for testing purposes
+          description: The justification provided by the requester.
+        approver_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the approver(s).
+        approver_justification:
+          type: string
+          example: Approved by the manager
+          description: The justification provided by the approver.
+        denier_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the denier(s).
+        denier_justification:
+          type: string
+          example: Justification for the action
+          description: The justification provided by the denier.
+        canceller_identity:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: '12345'
+                description: The unique identifier for the approver. This is the ALTR administrator id.
+              role:
+                type: string
+                example: ADMIN
+                description: The ALTR role of the approver.
+              email:
+                type: string
+                example: example@company.com
+                description: The ALTR email address of the approver.
+              username:
+                type: string
+                example: ADMIN
+                description: The ALTR username of the approver.
+          description: Information about the canceller(s).
+        canceller_justification:
+          type: string
+          example: null
+          description: The justification provided by the canceller.
+        snowflake_metadata:
+          type: object
+          description: Metadata related to Snowflake.
+          properties:
+            organization_name:
+              type: string
+              example: DMHDHZU
+              description: The name of the organization.
+            account_region:
+              type: string
+              example: AWS_US_WEST_2
+              description: The region of the account.
+            ip:
+              type: string
+              example: unknown
+              description: The IP address associated with the request.
+            account_name:
+              type: string
+              example: ALTR
+              description: The name of the account.
+        policy_reference:
+          type: string
+          example: null
+          description: Reference to the associated policy.
+        tracking_id:
+          type: string
+          example: b8490d10-0808-44f0-80b6-e244724d4030
+          description: The tracking ID for the access request.
+        progress_step:
+          type: string
+          example: Updating status.
+          description: The current progress step of the access request.
+        failure_reason:
+          type: string
+          example: null
+          description: The reason for failure, if applicable.
+    SnowflakeAccessManagementRule:
+      type: object
+      properties:
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - role
+              condition:
+                type: string
+                enum:
+                - equals
+                - starts_with
+                - ends_with
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_ROLE
+                - ADMINISTRATOR_ROLE
+            required:
+            - type
+            - condition
+          minItems: 1
+        objects:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - database
+                - schema
+                - table
+                - view
+              condition:
+                type: string
+                enum:
+                - equals
+                - starts_with
+                - ends_with
+                - fully_qualified
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_DATABASE
+                - ADMINISTRATOR_DATABASE
+              fully_qualified_identifiers:
+                description: This field is required if the condition is fully_qualified
+                type: array
+                items:
+                  description: This field is required if the condition is fully_qualified
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    database:
+                      type: string
+                      example: DEVELOPER_DATABASE
+                    schema:
+                      type: string
+                      example: PUBLIC
+                    table:
+                      type: string
+                      example: USERS
+                    view:
+                      type: string
+                      example: USERS
+            required:
+            - type
+            - condition
+          minItems: 1
+        tagged_objects:
+          type: array
+          items:
+            type: object
+            properties:
+              check_against:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - databases
+                  - schemas
+                  - tables
+                  - views
+                  example:
+                  - databases
+                  - schemas
+              tagged_with:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    database:
+                      type: string
+                      example: MY_DATABASE
+                    schema:
+                      type: string
+                      example: PUBLIC
+                    name:
+                      type: string
+                      example: sensitive_data
+                    value:
+                      type: string
+                      example: PII
+                minItems: 1
+              tag_condition:
+                type: string
+                enum:
+                - or
+                - and
+                example: and
+        access:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                enum:
+                - read
+                - write
+            required:
+            - name
+          minItems: 1
+          maxItems: 2
+      required:
+      - actors
+      - access
+    AccessRequestPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The unique identifier for the access request.
+        client_id:
+          type: string
+          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+          description: The client ID associated with the access request.
+        tracking_id:
+          type: string
+          example: c4773270-0265-4f41-9c98-80f7d8679b18
+          description: The tracking ID for the access request.
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.713Z'
+          description: The timestamp when the access request was created.
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+          description: The rules defining the access request.
+        requester:
+          type: string
+          example: ADAM
+          description: The name of the requester.
+        requester_identity:
+          type: object
+          properties:
+            requester:
+              type: string
+              example: ADAM
+              description: The name of the requester.
+            email:
+              type: string
+              example: ADAM@company.com
+              description: The email of the requester.
+            role:
+              type: string
+              example: DEVELOPER_ROLE
+              description: The role of the requester.
+        requester_justification:
+          type: string
+          example: Need access for testing purposes.
+          description: The justification provided by the requester.
+        snowflake_metadata:
+          type: object
+          properties:
+            account_region:
+              type: string
+              example: AWS_US_WEST_2
+              description: The region of the account.
+            account_name:
+              type: string
+              example: ORG
+              description: The name of the account.
+            organization_name:
+              type: string
+              example: COMPANY_ORG
+              description: The name of the organization.
+        status:
+          type: string
+          example: OPEN
+          description: The current status of the access request.
+          enum:
+          - NONE
+          - PENDING_CREATION
+          - OPEN
+          - PENDING
+          - PENDING_APPROVED
+          - CLOSED_APPROVED
+          - PENDING_DENIED
+          - CLOSED_DENIED
+          - PENDING_CANCELLED
+          - CLOSED_CANCELLED
+          - CLOSED
+          - FAILED
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
+            date: '2022-07-20T18:00:58.723Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Resource is forbidden
+            statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Internal Server Error
+            statusCode: 500
+            date: '2022-07-20T18:00:58.723Z'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Unified Policy uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>ALTR API keys are created and obtained on the API page in the ALTRnet (Settings > Preferences > API).<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/
+x-servers-not-selectable: true

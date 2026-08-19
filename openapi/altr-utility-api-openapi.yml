@@ -1,0 +1,151 @@
+openapi: 3.2.0
+info:
+  title: ALTR Datastore Information Service Utility API
+  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
+
+
+    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
+
+
+    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  version: 3.4.3
+servers:
+- url: '/v1/dis '
+security:
+- bearerAuth: []
+  basicAuth: []
+tags:
+- name: Utility
+  description: Access DIS job and third party import information.
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/locks#Dynamic%20Data%20Masking
+paths:
+  /utility/v1/job/{jobId}:
+    get:
+      tags:
+      - Utility
+      summary: Gets DIS job information.
+      description: Returns information on a DIS job or third party import.
+      operationId: getJobInfo
+      parameters:
+      - name: jobId
+        in: path
+        description: DIS job id, can be retrieved by the v2/status endpoint.
+        required: true
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved DIS job info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataDiscoveryJob'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: DIS job id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    DataDiscoveryJob:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        jobUUID:
+          type: string
+          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
+        databaseName:
+          type: string
+          example: DatabaseOne
+        startTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        startTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        completeTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        completeTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        dataDiscoveryTypeString:
+          type: string
+          example: Google DLP
+        dataDiscoveryType:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: IN_PROGRESS
+        totalColumns:
+          type: integer
+          example: 10000
+        totalTables:
+          type: integer
+          example: 1000
+        completedColumns:
+          type: integer
+          example: 5000
+        completedTables:
+          type: integer
+          example: 500
+        columnsCompletePercentage:
+          type: float
+          example: 50.0
+        tablesCompletePercentage:
+          type: float
+          example: 50.0
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: DIS uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>DIS/MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Info here
+externalDocs:
+  description: Find out more about ALTR
+  url: https://docs.altr.com

@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Sidecar/Agent Configuration Agent Tasks API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tasks for an Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/agents/:agent_id/tasks",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Agent."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "The Contiguous ID for pagination"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List all Tasks for a given Agent."
+        },
+        {
+          "info": {
+            "name": "Create a new Task for an Agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/agents/:agent_id/tasks",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Agent."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Task for an Agent."
+        },
+        {
+          "info": {
+            "name": "Get a Task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/agents/:agent_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Agent."
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Task."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a Task."
+        },
+        {
+          "info": {
+            "name": "Update a Task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/agents/:agent_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Agent."
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Task."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update a Task for a given Agent with the provided details. Fields that are not provided will not be updated."
+        },
+        {
+          "info": {
+            "name": "Delete Task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.sc-control.live.altr.com/v1/agents/:agent_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "agent_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Agent."
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path",
+                "description": "ID of Task."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This will decrement the Agent's task_count by 1."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

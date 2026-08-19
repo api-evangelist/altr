@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Apikeys API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "apikeys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns all ApiKeys based on the current organization along with query filter capabilities support.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/apikeys",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "The value to sort by."
+              },
+              {
+                "name": "description",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns all ApiKeys based on the current organization along with query filter capabilities support."
+        },
+        {
+          "info": {
+            "name": "Creates a new ApiKey given the appropriate body. Assigns it to the currentOrganization that the user is in.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/apikeys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The API Key `secret` is only returned after a successful creation. So be sure to save the secret after creation. Note: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key"
+        },
+        {
+          "info": {
+            "name": "Returns individual ApiKey by the given id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/apikeys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns individual ApiKey by the given id."
+        },
+        {
+          "info": {
+            "name": "Updates individual ApiKey by the given id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/apikeys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

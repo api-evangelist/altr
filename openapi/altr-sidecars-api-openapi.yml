@@ -1,0 +1,384 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Sidecars API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Sidecars
+paths:
+  /sidecars:
+    get:
+      description: List all sidecars for your organization.
+      parameters:
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListSidecarsOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List all sidecars.
+      tags:
+      - Sidecars
+    post:
+      description: Create a new Sidecar with the provided details.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sidecars.CreateSidecarInput'
+        description: Sidecar details
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Sidecar'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Create a new Sidecar.
+      tags:
+      - Sidecars
+  /sidecars/{sidecar_id}:
+    delete:
+      description: A Sidecar cannot be deleted if its listener_count > 0.
+      parameters:
+      - description: ID of sidecar.
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Delete a Sidecar.
+      tags:
+      - Sidecars
+    get:
+      description: Get the sidecar for a given sidecar ID.
+      parameters:
+      - description: ID of sidecar.
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Sidecar'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Get a Sidecar.
+      tags:
+      - Sidecars
+    patch:
+      description: Update a Sidecar.
+      parameters:
+      - description: The Sidecar ID
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sidecars.UpdateSidecarInput'
+        description: The Sidecar to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Sidecar'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Update a Sidecar.
+      tags:
+      - Sidecars
+components:
+  schemas:
+    management.PublicKey:
+      properties:
+        registered_at:
+          type: string
+        rsa_key:
+          type: string
+      type: object
+      x-order: '9'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    sidecars.UpdateSidecarInput:
+      properties:
+        description:
+          type: string
+          x-order: '1'
+        disable_platform_audits:
+          description: 'DisablePlatformAudits
+
+            When true, the sidecar will not send activity audits (connections and SQL statements) to the platform.'
+          type: boolean
+          x-order: '6'
+        hostname:
+          type: string
+          x-order: '2'
+        name:
+          type: string
+          x-order: '0'
+        public_key_1:
+          type: string
+          x-order: '3'
+        public_key_2:
+          type: string
+          x-order: '4'
+        unsupported_query_bypass:
+          description: 'UnsupportedQueryBypass
+
+            When true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.'
+          type: boolean
+          x-order: '5'
+      type: object
+    sidecars.CreateSidecarInput:
+      properties:
+        description:
+          maxLength: 400
+          type: string
+          x-order: '1'
+        disable_platform_audits:
+          description: 'DisablePlatformAudits
+
+            When true, the sidecar will not send activity audits (connections and SQL statements) to the platform.'
+          type: boolean
+          x-order: '6'
+        hostname:
+          maxLength: 500
+          type: string
+          x-order: '2'
+        name:
+          maxLength: 64
+          type: string
+          x-order: '0'
+        public_key_1:
+          maxLength: 45000
+          type: string
+          x-order: '3'
+        public_key_2:
+          maxLength: 45000
+          type: string
+          x-order: '4'
+        unsupported_query_bypass:
+          description: 'UnsupportedQueryBypass
+
+            When true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.'
+          type: boolean
+          x-order: '5'
+      required:
+      - hostname
+      - name
+      type: object
+    management.Sidecar:
+      properties:
+        created_at:
+          type: string
+          x-order: '10'
+        data_plane_url:
+          type: string
+          x-order: '5'
+        description:
+          type: string
+          x-order: '2'
+        disable_platform_audits:
+          type: boolean
+          x-order: '13'
+        hostname:
+          type: string
+          x-order: '3'
+        id:
+          type: string
+          x-order: '0'
+        listener_count:
+          type: integer
+          x-order: '7'
+        listener_repo_binding_count:
+          type: integer
+          x-order: '6'
+        name:
+          type: string
+          x-order: '1'
+        org_id:
+          type: string
+          x-order: '4'
+        public_key_1:
+          $ref: '#/components/schemas/management.PublicKey'
+        public_key_2:
+          $ref: '#/components/schemas/management.PublicKey'
+        unsupported_query_bypass:
+          type: boolean
+          x-order: '12'
+        updated_at:
+          type: string
+          x-order: '11'
+      type: object
+    management.ListSidecarsOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        sidecars:
+          items:
+            $ref: '#/components/schemas/management.Sidecar'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

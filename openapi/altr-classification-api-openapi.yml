@@ -1,0 +1,527 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Classification API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: classification
+  description: Operations about data classification
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/classification#Classification%20Report
+paths:
+  /classification/{id}:
+    put:
+      tags:
+      - classification
+      summary: Starts a data classification job for a database with the provided database ID, currently only for Snowflake CI.
+      description: This endpoint is deprecated and will be removed in the next major version.
+      operationId: startClassification
+      deprecated: true
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      - name: classificationType
+        in: query
+        description: 'Optional value, the classification type that you wish to run. If not passed will default to `1`
+
+          * `1` - Google DLP
+
+          '
+        schema:
+          type: integer
+          default: 1
+          enum:
+          - 1
+      responses:
+        '201':
+          description: No tables found to classify OR no changes since last classification
+        '202':
+          description: Response
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Failed to start classification because one is already in progress
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /classification/databases:
+    get:
+      tags:
+      - classification
+      summary: Gets a list of databases with classifier information attached. Can be filtered using params.
+      operationId: getClassificationList
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - name: disStarted
+        description: Filters the result set to only return databases that have (or have not if set to false) had a classification started before. This includes classifications that have finished. Ignored if unset.
+        in: query
+        schema:
+          type: boolean
+      - name: disCompleted
+        description: Filters the result set to only return databases that have (or have not if set to false) had a classification completed before. Ignored if unset.
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dbid:
+                          type: integer
+                          example: 1
+                        dbfriendlyname:
+                          type: string
+                          example: My Database
+                        dbname:
+                          type: string
+                          example: EMPLOYEES
+                        classified:
+                          type: boolean
+                          example: true
+                  success:
+                    type: boolean
+        '201':
+          description: No data found for request with these params
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /classification/status/{id}:
+    get:
+      tags:
+      - classification
+      summary: Gets the classification status of a database. May be running, complete, or 204 no data.
+      operationId: classificationStatus
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      Status:
+                        type: string
+                        enum:
+                        - IN_PROGRESS
+                        - COMPLETE
+                      StatusTime:
+                        type: integer
+                        description: This timestamp is number of milliseconds since epoch
+                      StatusDate:
+                        type: string
+                        format: date-time
+                        description: When the status check was last completed
+                  success:
+                    type: boolean
+        '201':
+          description: This database has never has a classification run and doesn't currently have one in progress.
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /classification/classifiers/{id}:
+    get:
+      tags:
+      - classification
+      summary: Gets a list of classifier types (and total number of columns classified as that type) for one database
+      operationId: getClassifierTypes
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      Classifications:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            Type:
+                              type: string
+                              example: PERSON_NAME
+                            Amount:
+                              description: The number of columns that were classified as this type of data
+                              type: integer
+                              example: 44
+                            Percent:
+                              description: The percentage of all classified data this column represents
+                              type: number
+                              format: float
+                              example: 22.53
+                      Totals:
+                        type: object
+                        properties:
+                          ClassifiedColumns:
+                            type: integer
+                            example: 200
+                          TotalColumns:
+                            type: integer
+                            example: 600
+                          PercentSuccesfullyClassified:
+                            type: number
+                            format: float
+                            description: The percentage of all data in the database that was classified
+                            example: 37.63
+                  success:
+                    type: boolean
+        '201':
+          description: Empty Response
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /classification/columns/{type}:
+    get:
+      tags:
+      - classification
+      summary: Gets list of columns for all databases that have been classified as the provided type
+      operationId: getClassifiedColumnsForAllDatabases
+      parameters:
+      - name: type
+        description: The classifier type to get column data for (classifier types provided by /classification/classifiers and /classification/classifiers/{id} routes)
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        clientDatabaseID:
+                          description: The internal ID assigned by ALTR to this database
+                          type: integer
+                          example: 1
+                        databaseTypeName:
+                          description: String value used internally by ALTR to identify the database type of the database containing a particular column
+                          type: integer
+                          example: SNOWFLAKEDB_EXTERNAL_FUNCTIONS
+                        databaseTypeID:
+                          description: Int value used internally by ALTR to identify the database type of the database containing a particular column
+                          type: integer
+                          example: 9
+                        database:
+                          description: The name/host of the database this classified column is in
+                          type: string
+                          example: COMPANY_DB
+                        schema:
+                          description: The name of the schema this classified column is in
+                          type: string
+                          example: PUBLIC
+                        table:
+                          description: The name of the table this classified column is in
+                          type: string
+                          example: EMPLOYEES
+                        column:
+                          description: The name of this classified column
+                          type: string
+                          example: EMAIL
+                        classifier:
+                          description: The classifier types that the data in this column was classified as
+                          type: array
+                          example:
+                          - FIRST_NAME
+                          items:
+                            type: string
+                        isGovernable:
+                          description: Indicates whether or not this column is eligible to be governed by ALTR
+                          type: integer
+                        isScatterable:
+                          description: Indicates whether or not this column is eligible to be protected by ALTR
+                          type: integer
+                          example: false
+                        dataType:
+                          description: The data type of this column in the database
+                          type: string
+                          example: VARCHAR
+                        confidence:
+                          type: string
+                          example: LIKELY
+                        fullyQualifiedTableName:
+                          type: string
+                          example: PUBLIC.EMPLOYEES
+                        alsoAppearsAs:
+                          type: array
+                          example:
+                          - EMAILS
+                          - EMAIL_ADDRESS
+                          items:
+                            type: string
+                        dataState:
+                          description: The current state of the data in the ALTR system
+                          type: string
+                          enum:
+                          - REGISTERED
+                          - GOVERNED
+                          - PROTECTED
+                  success:
+                    type: boolean
+        '201':
+          description: Empty Response
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /classification/columns/{type}/{id}:
+    get:
+      tags:
+      - classification
+      summary: Gets list of columns for a database that have been classified as the provided type
+      operationId: getClassifiedColumnsForSingleDatabase
+      parameters:
+      - name: type
+        description: The classifier type to get column data for (classifier types provided by /classification/classifiers and /classification/classifiers/{id} routes)
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/idPath'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        clientDatabaseID:
+                          description: The internal ID assigned by ALTR to this database
+                          type: integer
+                          example: 1
+                        databaseTypeName:
+                          description: String value used internally by ALTR to identify the database type of the database containing a particular column
+                          type: integer
+                          example: SNOWFLAKEDB_EXTERNAL_FUNCTIONS
+                        databaseTypeID:
+                          description: Int value used internally by ALTR to identify the database type of the database containing a particular column
+                          type: integer
+                          example: 9
+                        database:
+                          description: The name/host of the database this classified column is in
+                          type: string
+                          example: COMPANY_DB
+                        schema:
+                          description: The name of the schema this classified column is in
+                          type: string
+                          example: PUBLIC
+                        table:
+                          description: The name of the table this classified column is in
+                          type: string
+                          example: EMPLOYEES
+                        column:
+                          description: The name of this classified column
+                          type: string
+                          example: EMAIL
+                        classifier:
+                          description: The classifier types that the data in this column was classified as
+                          type: array
+                          example:
+                          - FIRST_NAME
+                          items:
+                            type: string
+                        isGovernable:
+                          description: Indicates whether or not this column is eligible to be governed by ALTR
+                          type: integer
+                        isScatterable:
+                          description: Indicates whether or not this column is eligible to be protected by ALTR
+                          type: integer
+                          example: false
+                        dataType:
+                          description: The data type of this column in the database
+                          type: string
+                          example: VARCHAR
+                        confidence:
+                          type: string
+                          example: LIKELY
+                        fullyQualifiedTableName:
+                          type: string
+                          example: PUBLIC.EMPLOYEES
+                        alsoAppearsAs:
+                          type: array
+                          example:
+                          - EMAILS
+                          - EMAIL_ADDRESS
+                          items:
+                            type: string
+                        dataState:
+                          description: The current state of the data in the ALTR system
+                          type: string
+                          enum:
+                          - REGISTERED
+                          - GOVERNED
+                          - PROTECTED
+                  success:
+                    type: boolean
+        '201':
+          description: Empty Response
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

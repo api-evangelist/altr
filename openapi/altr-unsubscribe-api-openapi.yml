@@ -1,0 +1,108 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: Manages DAM alerting rules and alerts. Supports rule CRUD, alert inbox, and acknowledgment for ALTR's Data Access Monitoring feature.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR DAM Alerting Unsubscribe API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Unsubscribe
+paths:
+  /unsubscribe:
+    get:
+      description: Validates the HMAC token embedded in a DAM alert email's unsubscribe link, removes the recipient from each referenced rule's email_recipients, and returns an HTML confirmation page. Unauthenticated — authorized solely by the signed token.
+      parameters:
+      - description: HMAC-signed unsubscribe token from the email footer link
+        in: query
+        name: token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/html:
+              schema:
+                type: string
+          description: HTML confirmation page
+        '400':
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing token
+        '401':
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid or tampered token
+      summary: Unsubscribe from DAM alert emails (human click).
+      tags:
+      - Unsubscribe
+    post:
+      description: One-click unsubscribe for Gmail/Yahoo. The token is supplied in the query string (the List-Unsubscribe URL already carries it); the `List-Unsubscribe=One-Click` request body is ignored. Unauthenticated — authorized solely by the signed token. Returns 200 with an empty body.
+      parameters:
+      - description: HMAC-signed unsubscribe token
+        in: query
+        name: token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Unsubscribed (empty body)
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing token
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid or tampered token
+      summary: Unsubscribe from DAM alert emails (RFC 8058 one-click).
+      tags:
+      - Unsubscribe
+components:
+  schemas:
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

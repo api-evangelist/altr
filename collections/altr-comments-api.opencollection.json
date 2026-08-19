@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Audit Report Comments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List comments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/comments/",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum items per page (default 25, max 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor from previous response"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of comments for a report instance. Pinned comments appear first."
+        },
+        {
+          "info": {
+            "name": "Create a comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/comments/",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Adds a comment to a report instance for investigation notes or attestation context."
+        },
+        {
+          "info": {
+            "name": "Pin a comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/comments/:id/pin",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Comment ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Pins a comment so it appears first in the list. Only one comment can be pinned per instance. Allowed after sign-off."
+        },
+        {
+          "info": {
+            "name": "Unpin a comment.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/comments/:id/unpin",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Comment ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Unpins a comment, returning it to its chronological position. Allowed after sign-off."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

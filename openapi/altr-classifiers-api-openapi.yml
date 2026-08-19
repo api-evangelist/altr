@@ -1,0 +1,1435 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This API manages classifiers, collections, and classification reports for ALTR's classification engine.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Classification Engine Classifiers API
+  version: 1.1.0
+servers:
+- url: https://{orgID}.classification.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+security:
+- basic: []
+tags:
+- name: Classifiers
+paths:
+  /classifiers:
+    get:
+      description: Retrieves a list of all classifiers with optional pagination, prefix filtering, and sorting. Use exclude_collection to filter out classifiers already assigned to a specific collection.
+      parameters:
+      - description: 'Number of items to return (default: 100, max: 100)'
+        example: 100
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Continuation token for pagination (returned in previous response)
+        example: eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Prefix to filter classifier names (e.g., 'email' matches 'email_address', 'email_domain')
+        example: email
+        in: query
+        name: prefix
+        schema:
+          type: string
+      - description: 'Field to order by: ''name'' (alphabetical) or ''collection_count'' (number of collections using this classifier)'
+        example: name
+        in: query
+        name: order_by
+        schema:
+          enum:
+          - name
+          - collection_count
+          type: string
+      - description: 'Sort order: ''asc'' (ascending) or ''desc'' (descending)'
+        example: asc
+        in: query
+        name: sort_order
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: Exclude classifiers that belong to this collection (useful when adding classifiers to a collection)
+        example: pii_data
+        in: query
+        name: exclude_collection
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.GetClassifiersOutput'
+          description: List of classifiers
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: List classifiers
+      tags:
+      - Classifiers
+    post:
+      description: 'Creates a new classifier. Pattern uses RE2 regex syntax. Classifier names starting with ''ALTR'' are reserved. Sampling (sample_size, sample_type) is configured on the job, not the classifier.
+
+
+        Three modes are supported:
+
+
+        **Legacy (regex only)** — Provide a top-level `pattern` and `minimum_threshold`. No compound_ruleset needed.
+
+
+        **Regex + metadata filter** — Same top-level pattern fields, plus a `compound_ruleset` with METADATA or COLUMN_LOCATION conditions to narrow matches.
+
+
+        **Compound ruleset (advanced)** — All logic inside `compound_ruleset`. Each leaf condition specifies its own `target` (ROW_DATA, METADATA, or COLUMN_LOCATION), pattern, and optional per-condition minimum_threshold. No top-level pattern needed.
+
+
+        Each condition supports a `negated` boolean (default false) to invert the match. Conditions can be nested groups with their own `operator` + `conditions` array.
+
+
+        **METADATA vs COLUMN_LOCATION** — A METADATA condition matches on the column NAME (e.g. `{"target":"METADATA","comparator":"contains","pattern":"ssn"}`). A COLUMN_LOCATION condition matches on WHERE the column lives and accepts only `database`, `schema`, and/or `table` (e.g. `{"target":"COLUMN_LOCATION","location":{"database":"prod_db","schema":"pii","table":"customers"}}`); `"*"` or an omitted field means any. A `column` field on COLUMN_LOCATION is rejected with 400 — use a METADATA condition for column-name matching.
+
+
+        See the request body examples dropdown for complete payloads.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/classifiers.PostClassifierInput'
+            examples:
+              Legacy (regex only):
+                summary: Regex-only classifier — sampling is configured on the job
+                value:
+                  classifier_name: ssn_regex
+                  pattern: \d{3}-\d{2}-\d{4}
+                  minimum_threshold: 70
+              Regex + metadata filter:
+                summary: Regex with compound metadata condition
+                value:
+                  classifier_name: ssn_with_name_check
+                  pattern: \d{3}-\d{2}-\d{4}
+                  minimum_threshold: 70
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: METADATA
+                      comparator: contains
+                      pattern: ssn
+              Compound ruleset (all target types):
+                summary: Self-contained compound with ROW_DATA, METADATA, and COLUMN_LOCATION. Sampling is configured on the job.
+                value:
+                  classifier_name: ssn_full_detection
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: ROW_DATA
+                      comparator: matches
+                      pattern: \d{3}-\d{2}-\d{4}
+                      minimum_threshold: 70
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)ssn|social_security
+                    - target: COLUMN_LOCATION
+                      location:
+                        schema: pii
+              Nested groups (credit card multi-path):
+                summary: Complex nested ruleset with OR-of-ANDs and negation. Sampling is configured on the job.
+                value:
+                  classifier_name: credit_card_advanced
+                  description: Detects credit cards via two detection paths with false-positive exclusion
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - operator: AND
+                      conditions:
+                      - target: METADATA
+                        comparator: matches
+                        pattern: card_num|cc_num|credit_card|pan
+                      - target: ROW_DATA
+                        comparator: matches
+                        pattern: \d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}
+                        minimum_threshold: 50
+                      - target: COLUMN_LOCATION
+                        location:
+                          schema: payments
+                    - operator: AND
+                      conditions:
+                      - target: ROW_DATA
+                        comparator: matches
+                        pattern: ^3[47]\d{13}$
+                        minimum_threshold: 80
+                      - operator: AND
+                        negated: true
+                        conditions:
+                        - target: METADATA
+                          comparator: matches
+                          pattern: phone|zip|postal|quantity|amount
+              GDLP compound (GDLP + METADATA AND):
+                summary: Classifier using GDLP infoType detection AND metadata column name check. Requires GCP credentials at classification runtime.
+                value:
+                  classifier_name: email_gdlp_compound
+                  description: Classifies email columns using Google DLP EMAIL_ADDRESS detection AND column name heuristic
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: GDLP
+                      info_type: EMAIL_ADDRESS
+                      minimum_likelihood: POSSIBLE
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)email|e_mail|mail_addr
+              'GDLP compound (OR: GDLP EMAIL or GDLP PHONE)':
+                summary: Classifier that triggers if a column contains either email addresses OR phone numbers according to Google DLP.
+                value:
+                  classifier_name: email_or_phone_gdlp
+                  description: Detects columns containing PII contact information via Google DLP
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: GDLP
+                      info_type: EMAIL_ADDRESS
+                      minimum_likelihood: LIKELY
+                    - target: GDLP
+                      info_type: PHONE_NUMBER
+                      minimum_likelihood: LIKELY
+              Snowflake Native compound (SEMANTIC_CATEGORY EMAIL):
+                summary: Classifier that fires when Snowflake's native classifier tags a column with SEMANTIC_CATEGORY = EMAIL. Auto-resolves with evaluated=false on non-Snowflake sources.
+                value:
+                  classifier_name: snowflake_native_email
+                  description: Detects email columns via Snowflake's native classifier SEMANTIC_CATEGORY tag
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: EMAIL
+              'Snowflake Native compound (OR: SEMANTIC EMAIL or METADATA hint)':
+                summary: Hybrid classifier — fires when Snowflake tags the column EMAIL OR the column name matches an email heuristic.
+                value:
+                  classifier_name: email_snowflake_or_name
+                  description: Falls back to column-name heuristic when Snowflake's native classifier did not tag the column
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: EMAIL
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)email|e_mail|mail_addr
+              Snowflake Native compound (PRIVACY_CATEGORY IDENTIFIER):
+                summary: Governance classifier scoped to columns Snowflake tagged with PRIVACY_CATEGORY = IDENTIFIER
+                value:
+                  classifier_name: snowflake_identifier
+                  description: Detects all identifier columns flagged by Snowflake's native classifier
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: SNOWFLAKE_NATIVE
+                      privacy_category: IDENTIFIER
+              Snowflake Native compound (with confidence + coverage thresholds):
+                summary: SSN classifier that fires only when Snowflake tags the column SEMANTIC_CATEGORY = US_SSN with HIGH confidence AND coverage >= 0.80. Defaults are LOW / 0.70 when these fields are omitted — set them when you want a stricter gate. minimum_confidence ranks HIGH > MEDIUM > LOW; minimum_coverage is a fraction (0.0-1.0). actual_confidence + actual_coverage are surfaced on the leaf's decision_lineage.
+                value:
+                  classifier_name: snowflake_native_ssn_strict
+                  description: Detect SSN columns only when Snowflake's native classifier emits HIGH-confidence US_SSN with at least 80% coverage
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: US_SSN
+                      minimum_confidence: HIGH
+                      minimum_coverage: 0.8
+              Cross-target hybrid (GDLP AND SNOWFLAKE_NATIVE):
+                summary: Hybrid classifier mixing Google DLP infoType detection with Snowflake's native classifier tag. On the Snowflake GDLP path the worker fetches SEMANTIC_CATEGORY / PRIVACY_CATEGORY tags from INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS so BOTH leaves evaluate against real data on the same job — extreme coverage when stacking signals from two independent classifiers. On non-Snowflake sources the SNOWFLAKE_NATIVE leaf auto-resolves with evaluated=false (vacuous-true under AND).
+                value:
+                  classifier_name: email_gdlp_and_snowflake_native
+                  description: Email classifier requiring both Google DLP EMAIL_ADDRESS detection AND a Snowflake SEMANTIC_CATEGORY=EMAIL tag — minimizes false positives by stacking two independent signals
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: GDLP
+                      info_type: EMAIL_ADDRESS
+                      minimum_likelihood: POSSIBLE
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: EMAIL
+              Cross-target hybrid (GDLP OR SNOWFLAKE_NATIVE OR METADATA):
+                summary: Maximum-recall classifier — fires if any of Google DLP, Snowflake's native classifier, or column-name heuristic flags the column. Production-shape fallback that survives missing signals from any single source.
+                value:
+                  classifier_name: email_any_signal
+                  description: Detect email columns via Google DLP OR Snowflake native classifier OR column-name heuristic — any one fires the classifier
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: GDLP
+                      info_type: EMAIL_ADDRESS
+                      minimum_likelihood: LIKELY
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: EMAIL
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)email|e_mail|mail_addr
+              All five condition targets (extreme coverage):
+                summary: Compound spanning every supported condition target — ROW_DATA + METADATA + COLUMN_LOCATION + GDLP + SNOWFLAKE_NATIVE. Demonstrates the full type system. Each leaf carries its evaluated flag in lineage; unevaluable targets on a given path (e.g., ROW_DATA on SF GDLP, SF_NATIVE on non-Snowflake) auto-resolve vacuous-true under AND.
+                value:
+                  classifier_name: ssn_all_five_targets
+                  description: Stacks regex + name heuristic + schema scoping + Google DLP US_SOCIAL_SECURITY_NUMBER + Snowflake SEMANTIC_CATEGORY tag
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: ROW_DATA
+                      comparator: matches
+                      pattern: \d{3}-\d{2}-\d{4}
+                      minimum_threshold: 70
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)ssn|social_security
+                    - target: COLUMN_LOCATION
+                      location:
+                        schema: pii
+                    - target: GDLP
+                      info_type: US_SOCIAL_SECURITY_NUMBER
+                      minimum_likelihood: LIKELY
+                    - target: SNOWFLAKE_NATIVE
+                      semantic_category: US_SOCIAL_SECURITY_NUMBER
+              CONTENT_TYPE — single format match (JSON):
+                summary: Classifier that triggers when the dominant detected content format of a column is JSON. Single content_format value performs an equality check; default dominance threshold is 0.8.
+                value:
+                  classifier_name: json_payload_columns
+                  description: Flags columns whose sampled rows are predominantly JSON-formatted
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: CONTENT_TYPE
+                      content_format: JSON
+              CONTENT_TYPE — any-of list with custom threshold:
+                summary: Multi-format any-of match. Classifier fires when the dominant detected format is JSON, XML, or YAML and the dominance ratio is at least 0.6 (60% of sampled values share the format).
+                value:
+                  classifier_name: structured_payload
+                  description: Detects columns holding structured (non-tabular) payloads
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: CONTENT_TYPE
+                      content_formats:
+                      - JSON
+                      - XML
+                      - YAML
+                      dominance_threshold: 0.6
+              CONTENT_TYPE — negated (NOT base64):
+                summary: 'Negated CT leaf: classifier triggers on every column whose dominant detected format is NOT BASE64.'
+                value:
+                  classifier_name: non_base64_columns
+                  description: Excludes opaque base64-encoded blob columns
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: CONTENT_TYPE
+                      content_format: BASE64
+                      negated: true
+              DATA_LENGTH — values longer than 100 bytes:
+                summary: Classifier that triggers when at least 80% (the default minimum_threshold) of a column's sampled values are longer than 100 bytes. Length is the true data size — the UTF-8 byte length of each sampled value.
+                value:
+                  classifier_name: long_text_columns
+                  description: Flags columns holding large free-text payloads
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: DATA_LENGTH
+                      comparator: greater_than
+                      length: 100
+              DATA_LENGTH — exact length with whitespace trimmed:
+                summary: 'Fixed-width identifier detection: fires when sampled values are exactly 9 bytes after surrounding whitespace is stripped (trim: true). Useful for CHAR(n) columns that pad values with spaces.'
+                value:
+                  classifier_name: nine_byte_identifiers
+                  description: Flags columns whose values are exactly 9 bytes once padding is trimmed (e.g. unformatted SSNs)
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: DATA_LENGTH
+                      comparator: equals
+                      length: 9
+                      trim: true
+              DATA_LENGTH — short codes with custom threshold:
+                summary: Fires when at least half the sampled values are 5 bytes or shorter (custom minimum_threshold of 50 instead of the default 80). Combine with less_than / less_than_or_equal / greater_than_or_equal for range-style rules.
+                value:
+                  classifier_name: short_code_columns
+                  description: Detects columns dominated by short codes (zip prefixes, country codes, flags)
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: DATA_LENGTH
+                      comparator: less_than_or_equal
+                      length: 5
+                      minimum_threshold: 50
+              DATA_LENGTH compound (length + METADATA — oversized values in a notes column):
+                summary: 'Compound AND combining a DATA_LENGTH check with a metadata column-name heuristic: fires on columns named like notes/comments whose values exceed 1000 bytes.'
+                value:
+                  classifier_name: oversized_notes
+                  description: Flags free-text note columns carrying unexpectedly large payloads
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: DATA_LENGTH
+                      comparator: greater_than
+                      length: 1000
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)notes|comments|description
+              COLUMN_SIZE — columns declared wider than 100:
+                summary: Classifier that fires on columns whose declared catalog size exceeds 100 (e.g. VARCHAR(255)). COLUMN_SIZE compares the declared column size from schema metadata — binary per column (no trim, no minimum_threshold) and evaluable without row sampling.
+                value:
+                  classifier_name: wide_text_columns
+                  description: Flags columns declared to hold large values
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: COLUMN_SIZE
+                      comparator: greater_than
+                      size: 100
+              COLUMN_SIZE — exact declared size:
+                summary: Fires on columns whose declared size is exactly 255 (e.g. VARCHAR(255)). Combine with less_than / less_than_or_equal / greater_than_or_equal for range-style rules on the declared size.
+                value:
+                  classifier_name: varchar_255_columns
+                  description: Flags columns declared as size 255
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: COLUMN_SIZE
+                      comparator: equals
+                      size: 255
+              COLUMN_SIZE compound (size + METADATA — oversized notes column by declaration):
+                summary: 'Compound AND combining a COLUMN_SIZE check with a metadata column-name heuristic: fires on columns named like notes/comments that are declared wider than 1000.'
+                value:
+                  classifier_name: oversized_notes_by_declaration
+                  description: Flags free-text note columns declared with very large sizes
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: COLUMN_SIZE
+                      comparator: greater_than
+                      size: 1000
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)notes|comments|description
+              CONTENT_TYPE compound (CT + METADATA — JSON column whose name suggests PII):
+                summary: Compound AND combining a CT format check with a metadata column-name heuristic. Fires only when both leaves evaluate to true on the same column.
+                value:
+                  classifier_name: json_with_email_field
+                  description: Flags JSON columns whose name suggests they contain email addresses
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: CONTENT_TYPE
+                      content_format: JSON
+                    - target: METADATA
+                      comparator: contains
+                      pattern: email
+              Amazon Comprehend — single entity (EMAIL ML detection):
+                summary: Classifier that fires when AWS Comprehend's ML PII detection finds the EMAIL entity at >= minimum_score (0.5) confidence. Requires ROW_DATA sampling and AMAZON_COMPREHEND in the job's condition_types; auto-resolves evaluated=false on METADATA-only paths or when AMAZON_COMPREHEND is absent from condition_types.
+                value:
+                  classifier_name: email_comprehend
+                  description: Detects email columns via AWS Comprehend DetectPiiEntities (EMAIL entity)
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: AMAZON_COMPREHEND
+                      entity_type: EMAIL
+                      minimum_score: 0.5
+              Amazon Comprehend compound (AC AND METADATA — SSN):
+                summary: Hybrid classifier requiring BOTH AWS Comprehend SSN detection (>= 0.8 confidence) AND a column-name heuristic — stacks an ML signal with a name check to cut false positives. AMAZON_COMPREHEND must be in condition_types and the job must sample rows.
+                value:
+                  classifier_name: ssn_comprehend_and_name
+                  description: Detects SSN columns when Comprehend finds SSN at high confidence AND the column name matches an SSN heuristic
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: AMAZON_COMPREHEND
+                      entity_type: SSN
+                      minimum_score: 0.8
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)ssn|social_security
+              'Amazon Comprehend compound (OR: EMAIL or PHONE or SSN)':
+                summary: Maximum-recall contact-PII classifier — fires when Comprehend detects ANY of EMAIL, PHONE, or SSN. Each leaf carries its own entity_type + minimum_score; the leaf's actual_score and finding_count are surfaced on the decision_lineage.
+                value:
+                  classifier_name: contact_pii_comprehend
+                  description: Detects columns containing any contact PII via AWS Comprehend
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: AMAZON_COMPREHEND
+                      entity_type: EMAIL
+                      minimum_score: 0.6
+                    - target: AMAZON_COMPREHEND
+                      entity_type: PHONE
+                      minimum_score: 0.6
+                    - target: AMAZON_COMPREHEND
+                      entity_type: SSN
+                      minimum_score: 0.6
+              Cross-target hybrid (GDLP AND AMAZON_COMPREHEND):
+                summary: 'Stacks two independent ML detectors: fires only when BOTH Google DLP and AWS Comprehend flag the column as containing names. On a given runtime each leaf auto-resolves evaluated=false where its detector is unavailable (e.g. AMAZON_COMPREHEND on the Snowflake native pushdown), vacuous-true under AND.'
+                value:
+                  classifier_name: name_gdlp_and_comprehend
+                  description: Name classifier requiring both Google DLP PERSON_NAME AND AWS Comprehend NAME detection
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: GDLP
+                      info_type: PERSON_NAME
+                      minimum_likelihood: POSSIBLE
+                    - target: AMAZON_COMPREHEND
+                      entity_type: NAME
+                      minimum_score: 0.5
+        description: Classifier creation input
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.CreateClassifierOutput'
+          description: Classifier created successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier already exists
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Create classifier
+      tags:
+      - Classifiers
+  /classifiers/{classifier_name}:
+    delete:
+      description: Soft deletes a classifier by its name. This will remove it from all collections and mark it as deleted. ALTR managed classifiers cannot be deleted.
+      parameters:
+      - description: Classifier name (URL-encoded if contains special characters)
+        example: email_address
+        in: path
+        name: classifier_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Classifier deleted successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Delete classifier
+      tags:
+      - Classifiers
+    get:
+      description: Retrieves a specific classifier by its name, including its pattern, thresholds, and associated collections.
+      parameters:
+      - description: Classifier name (URL-encoded if contains special characters)
+        example: email_address
+        in: path
+        name: classifier_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.GetClassifierByNameOutput'
+          description: Classifier retrieved successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Get classifier by name
+      tags:
+      - Classifiers
+    patch:
+      description: 'Updates a classifier''s properties using RESTful PATCH semantics.
+
+
+        **PATCH semantics**: Omitted fields are **preserved** (not modified). Only fields explicitly
+
+        included in the request body are updated. This allows partial updates without affecting other fields.
+
+
+        **Clearing fields**: To explicitly clear a field, send it with an empty/null/zero value:
+
+        - Clear `pattern`: send `"pattern": ""` or `"pattern": null`
+
+        - Clear `compound_ruleset`: send `"compound_ruleset": {}` or `"compound_ruleset": null`
+
+        - Clear `minimum_threshold`: send `"minimum_threshold": 0` or `"minimum_threshold": null`
+
+        - Clear `description`: send `"description": ""`
+
+
+        **Validation**: A request that explicitly clears both `pattern` and `compound_ruleset` in the
+
+        same request returns a 400 error.
+
+
+        Supports the same three modes as POST /classifiers (legacy, regex + metadata filter, compound ruleset). See the POST endpoint and request body examples for details.
+
+
+        Each condition supports a `negated` boolean (default false) to invert the match (NOT logic). Conditions can also be nested groups with their own `operator` + `conditions` array.'
+      parameters:
+      - description: Classifier name (URL-encoded if contains special characters)
+        example: email_address
+        in: path
+        name: classifier_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/classifiers.PatchClassifierInput'
+            examples:
+              Update pattern only:
+                summary: Update just the regex pattern
+                value:
+                  pattern: \d{3}-\d{2}-\d{4}
+                  minimum_threshold: 80
+              Add compound ruleset:
+                summary: Add a compound ruleset to an existing classifier
+                value:
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: METADATA
+                      comparator: contains
+                      pattern: ssn
+                    - target: COLUMN_LOCATION
+                      location:
+                        schema: pii
+              Remove compound ruleset:
+                summary: Remove an existing compound_ruleset by sending an empty object
+                value:
+                  compound_ruleset: {}
+              Full compound ruleset update:
+                summary: Replace with a self-contained compound ruleset. Sampling is configured on the job.
+                value:
+                  compound_ruleset:
+                    operator: AND
+                    conditions:
+                    - target: ROW_DATA
+                      comparator: matches
+                      pattern: \d{3}-\d{2}-\d{4}
+                      minimum_threshold: 70
+                    - target: METADATA
+                      comparator: matches
+                      pattern: (?i)ssn|social_security
+              Add Amazon Comprehend leaf:
+                summary: Add an AWS Comprehend ML PII condition (OR'd with the existing logic) to an existing classifier. Requires AMAZON_COMPREHEND in the job's condition_types to evaluate; otherwise auto-resolves evaluated=false.
+                value:
+                  compound_ruleset:
+                    operator: OR
+                    conditions:
+                    - target: AMAZON_COMPREHEND
+                      entity_type: EMAIL
+                      minimum_score: 0.5
+        description: Classifier update data. All fields are optional; omitted fields are preserved.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.UpdateClassifierOutput'
+          description: Classifier updated successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Update classifier
+      tags:
+      - Classifiers
+  /classifiers/{classifier_name}/collections/append:
+    patch:
+      description: Adds multiple collections to an existing classifier in a single atomic transaction. All collections must exist and not already be associated with this classifier. ALTR managed collections cannot be appended to classifiers.
+      parameters:
+      - description: Classifier name (URL-encoded if contains special characters)
+        example: email_address
+        in: path
+        name: classifier_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/classifiers.AppendCollectionsToClassifierInput'
+        description: 'Collections to append. Example: {\'
+        required: true
+      responses:
+        '204':
+          description: Collections appended successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier or collection not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Relationship already exists
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Append collections to classifier
+      tags:
+      - Classifiers
+  /classifiers/{classifier_name}/collections/remove:
+    patch:
+      description: Removes multiple collections from an existing classifier in a single atomic transaction. All collections must be currently associated with this classifier. Collections with names starting with "ALTR" (such as the ALTR Managed collection) cannot be removed from any classifier.
+      parameters:
+      - description: Classifier name (URL-encoded if contains special characters)
+        example: email_address
+        in: path
+        name: classifier_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/classifiers.RemoveCollectionsFromClassifierInput'
+        description: 'Collections to remove. Example: {\'
+        required: true
+      responses:
+        '204':
+          description: Collections removed successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Classifier not found or collection not in classifier
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Remove collections from classifier
+      tags:
+      - Classifiers
+  /tags:
+    get:
+      description: Returns every distinct key:value tag currently in use across the org's classifiers — both condition tags (compound-ruleset nodes) and classifier attribute tags — so tag editors can offer pick-from-existing suggestions. Each entry carries the parsed key/value, the number of classifiers using the tag, and where it appears (condition, attributes, or both). Deleted classifiers are excluded; imported ALTR-managed classifiers are included.
+      parameters:
+      - description: Exact-match filter on the tag key (the part before ':')
+        example: type
+        in: query
+        name: key
+        schema:
+          type: string
+      - description: Prefix filter on the full key:value tag string (typeahead)
+        example: type:s
+        in: query
+        name: prefix
+        schema:
+          type: string
+      - description: Page size (default 100, max 500)
+        example: 100
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Continuation token from the previous response (infinite-scroll pagination)
+        example: eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListTagsOutput'
+          description: Distinct tags in use, sorted by tag, with the distinct key list
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid key filter
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Too many requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: List the org's tag vocabulary
+      tags:
+      - Classifiers
+components:
+  schemas:
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    types.ClassifierItem:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        collection_count:
+          type: integer
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        deleted_at:
+          type: string
+        description:
+          type: string
+        minimum_threshold:
+          type: integer
+        org_id:
+          type: string
+        pattern:
+          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
+
+            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
+
+            empty pattern also confuses the Snowflake batch procedure, which short-circuits
+
+            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
+          type: string
+        sample_size:
+          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
+
+            moved to the job level (CreateJobInput). No longer populated by create/update paths
+
+            but existing DynamoDB items may still have values for backward compatibility.'
+          type: integer
+        sample_type:
+          $ref: '#/components/schemas/types.SampleType'
+      type: object
+    management.TagVocabularyEntry:
+      properties:
+        classifier_count:
+          description: 'ClassifierCount is the number of classifiers carrying this tag anywhere
+
+            (each classifier contributes at most once per tag).'
+          example: 3
+          type: integer
+        key:
+          example: type
+          type: string
+        sources:
+          description: 'Sources lists where the tag appears org-wide: "attributes", "condition",
+
+            or both (sorted).'
+          example:
+          - condition
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tag:
+          example: type:ssn
+          type: string
+        value:
+          example: ssn
+          type: string
+      type: object
+    management.GetClassifiersOutput:
+      properties:
+        classifiers:
+          items:
+            $ref: '#/components/schemas/types.ClassifierItem'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    management.UpdateClassifierOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    management.CreateClassifierOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    classifiers.AppendCollectionsToClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    classifiers.RemoveCollectionsFromClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
+      type: object
+    types.ContentFormat:
+      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
+
+        computed. Stay nil when the agent had no sample values (metadata-only
+
+        sampling) or when CONTENT_TYPE was excluded from condition_types.'
+      enum:
+      - JSON
+      - XML
+      - HTML
+      - YAML
+      - CSV
+      - BASE64
+      - PLAIN_TEXT
+      - PDF
+      - DOCX
+      - XLSX
+      - PPTX
+      - MS_OFFICE_LEGACY
+      - RTF
+      - ZIP
+      - GZIP
+      - PNG
+      - JPEG
+      - GIF
+      - TIFF
+      - PARQUET
+      type: string
+      x-enum-varnames:
+      - ContentFormatJSON
+      - ContentFormatXML
+      - ContentFormatHTML
+      - ContentFormatYAML
+      - ContentFormatCSV
+      - ContentFormatBase64
+      - ContentFormatPlainText
+      - ContentFormatPDF
+      - ContentFormatDOCX
+      - ContentFormatXLSX
+      - ContentFormatPPTX
+      - ContentFormatMSOfficeLegacy
+      - ContentFormatRTF
+      - ContentFormatZIP
+      - ContentFormatGZIP
+      - ContentFormatPNG
+      - ContentFormatJPEG
+      - ContentFormatGIF
+      - ContentFormatTIFF
+      - ContentFormatParquet
+    classifiers.PostClassifierInput:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          example: ssn_with_column_check
+          type: string
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        description:
+          example: SSN pattern with metadata column filter
+          type: string
+        minimum_threshold:
+          example: 70
+          type: integer
+        pattern:
+          example: \d{3}-\d{2}-\d{4}
+          type: string
+        sample_size:
+          example: 100
+          type: integer
+        sample_type:
+          enum:
+          - ROWS
+          - PERCENT
+          example: PERCENT
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    classifiers.PatchClassifierInput:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        description:
+          example: Updated SSN classifier with metadata
+          type: string
+        minimum_threshold:
+          example: 80
+          type: integer
+        pattern:
+          example: \d{3}-\d{2}-\d{4}
+          type: string
+        sample_size:
+          example: 100
+          type: integer
+        sample_type:
+          enum:
+          - ROWS
+          - PERCENT
+          example: PERCENT
+          type: string
+      type: object
+    management.GetClassifierByNameOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    management.ListTagsOutput:
+      properties:
+        contiguous_id:
+          description: ContiguousID is set when more pages remain; echo it back to resume.
+          type: string
+        keys:
+          description: 'Keys is the sorted distinct list of tag keys of the WHOLE filtered
+
+            vocabulary (not just this page) — it drives a namespace picker, so it
+
+            stays complete on every page.'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tags:
+          items:
+            $ref: '#/components/schemas/management.TagVocabularyEntry'
+          type: array
+          uniqueItems: false
+      type: object
+    gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
+      properties:
+        comparator:
+          $ref: '#/components/schemas/types.MetadataComparator'
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        content_format:
+          $ref: '#/components/schemas/types.ContentFormat'
+        content_formats:
+          items:
+            $ref: '#/components/schemas/types.ContentFormat'
+          type: array
+          uniqueItems: false
+        dominance_threshold:
+          type: number
+        entity_type:
+          description: 'AMAZON_COMPREHEND-specific leaf fields (present when Target == AMAZON_COMPREHEND).
+
+            The leaf passes when the column''s Comprehend PII detection finds EntityType
+
+            at >= MinimumScore confidence (default 0.5 when omitted/zero). Requires row
+
+            data — auto-resolves evaluated=false on METADATA-only paths or when
+
+            AMAZON_COMPREHEND is absent from condition_types.'
+          example: EMAIL
+          type: string
+        info_type:
+          description: 'GDLP-specific leaf fields (present when Target == "GDLP").
+
+            GDLP conditions are evaluated using the Google Cloud DLP API. They require GCP
+
+            credentials to be present at classification runtime. When credentials are absent,
+
+            GDLP conditions evaluate to false (lazy evaluation — the job continues without error).
+
+            Use CompoundRuleset.HasGDLPConditions() to detect these conditions before job dispatch.'
+          type: string
+        length:
+          description: 'DATA_LENGTH-specific leaf fields (present when Target == DATA_LENGTH).
+
+            The leaf compares each sampled value''s true data size — the UTF-8 byte
+
+            length of the value — against Length using Comparator (one of
+
+            greater_than, greater_than_or_equal, less_than, less_than_or_equal,
+
+            equals). When Trim is true, surrounding whitespace is stripped before
+
+            measuring. The leaf passes when at least MinimumThreshold percent of the
+
+            column''s non-null sampled values satisfy the comparison (default 80).'
+          example: 100
+          minimum: 0
+          type: integer
+        location:
+          $ref: '#/components/schemas/types.ColumnLocation'
+        minimum_confidence:
+          description: 'MinimumConfidence is an optional confidence gate (HIGH/MEDIUM/LOW) for
+
+            SNOWFLAKE_NATIVE leaves. When set, the leaf matches only when the column''s
+
+            actual Snowflake confidence tier meets or exceeds this value
+
+            (HIGH > MEDIUM > LOW). When absent AND Snowflake emitted a confidence
+
+            signal for the column, the evaluator applies the default tier (LOW) — so
+
+            any column Snowflake classified with at least LOW confidence is eligible.
+
+            When Snowflake did not emit a confidence signal (flat top-level shape),
+
+            the gate is skipped and category match alone is sufficient.'
+          example: HIGH
+          type: string
+        minimum_coverage:
+          description: 'MinimumCoverage is an optional coverage gate (0.0-1.0) for SNOWFLAKE_NATIVE
+
+            leaves. When set, the leaf matches only when the column''s actual coverage
+
+            ratio meets or exceeds this threshold. When absent AND Snowflake emitted
+
+            a coverage value, the evaluator applies the default threshold (0.70). When
+
+            Snowflake did not emit a coverage value, the gate is skipped.'
+          example: 0.7
+          type: number
+        minimum_likelihood:
+          type: string
+        minimum_score:
+          example: 0.5
+          maximum: 1
+          minimum: 0
+          type: number
+        minimum_threshold:
+          description: 'Per-leaf minimum-match threshold (optional), as a percent in (0, 100].
+
+            Used by ROW_DATA and DATA_LENGTH leaves: the leaf matches only when at
+
+            least this percent of sampled values satisfy the comparison (default 80).
+
+            Rejected at validation on COLUMN_SIZE leaves (the comparison is binary).'
+          type: number
+        negated:
+          type: boolean
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+        pattern:
+          example: (?i)ssn|social_security|ss_num
+          type: string
+        privacy_category:
+          example: IDENTIFIER
+          type: string
+        semantic_category:
+          description: 'SNOWFLAKE_NATIVE-specific leaf fields (present when Target == "SNOWFLAKE_NATIVE").
+
+            SNOWFLAKE_NATIVE conditions evaluate against the SEMANTIC_CATEGORY and/or
+
+            PRIVACY_CATEGORY tags emitted by Snowflake''s native classifier (SYSTEM$CLASSIFY /
+
+            EXTRACT_SEMANTIC_CATEGORIES). Only meaningful when the source is Snowflake and the
+
+            classification job produced TAG_IMPORT results (classification_type 2 or 4) or a
+
+            hosted-collection path that ingested those tags. When the source is not Snowflake
+
+            or no SF native tag data is available, the condition is auto-resolved with
+
+            evaluated=false in lineage (vacuously true under AND, false under OR — same pattern
+
+            as GDLP without credentials). At least one of SemanticCategory or PrivacyCategory
+
+            must be non-empty. When both are set, both must match (AND semantics within the leaf).'
+          example: EMAIL
+          type: string
+        size:
+          description: 'COLUMN_SIZE-specific leaf fields (present when Target == COLUMN_SIZE).
+
+            The leaf compares the column''s declared size (from schema/catalog metadata,
+
+            e.g. VARCHAR(255) → 255) against Size using Comparator (one of
+
+            greater_than, greater_than_or_equal, less_than, less_than_or_equal,
+
+            equals). Metadata-level: evaluates in all sampling modes including
+
+            METADATA-only. Binary per-column: no trim, no minimum_threshold.'
+          example: 100
+          minimum: 0
+          type: integer
+        tags:
+          description: 'Tags are optional semantic labels on this condition node — valid on both
+
+            leaves and groups. When the node contributes to a true evaluation outcome
+
+            its tags percolate into the decision lineage''s matched_tags, giving hits a
+
+            method-independent identity for downstream consumers (e.g. a group tagged
+
+            "type:ssn" whose GDLP, AMAZON_COMPREHEND, and ROW_DATA leaves all detect
+
+            SSNs reports "type:ssn" whichever detector fired). Each tag is a lowercase
+
+            key:value pair joined by a single required '':'' ("type:ssn", "reg:hipaa") —
+
+            bare colon-less values are rejected; at most MaxTagsPerCondition per node,
+
+            with the key at most MaxTagKeyLength bytes and the value at most
+
+            MaxTagValueLength bytes. Keys starting with "altr" are reserved for
+
+            ALTR-authored tags and rejected on user writes.'
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        target:
+          $ref: '#/components/schemas/types.ConditionTarget'
+        trim:
+          example: true
+          type: boolean
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

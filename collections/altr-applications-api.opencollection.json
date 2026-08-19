@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Applications API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns all applications along with query filter capabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/applications",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by either the 'description' or the 'serverFriendlyName'"
+              },
+              {
+                "name": "serverFriendlyName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the serverFriendlyName"
+              }
+            ]
+          },
+          "docs": "Returns all applications along with query filter capabilities"
+        },
+        {
+          "info": {
+            "name": "Creates a new application given the appropriate body. If successful returns the application created and the driver installId, the driver installId is only valid for a single use.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new application given the appropriate body. If successful returns the application created and the driver installId, the driver installId is only valid for a single use."
+        },
+        {
+          "info": {
+            "name": "Returns individual application by the given id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns individual application by the given id."
+        },
+        {
+          "info": {
+            "name": "Updates an individual application by the given id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an individual application by the given id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

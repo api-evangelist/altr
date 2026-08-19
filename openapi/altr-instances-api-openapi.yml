@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Audit Report Instances API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.audit-report.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Instances
+paths:
+  /audit-reports/definitions/{def_id}/instances/:
+    get:
+      description: Returns a paginated list of generated report instances for a definition.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListInstancesResponse'
+          description: OK
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List report instances.
+      tags:
+      - Instances
+  /audit-reports/definitions/{def_id}/instances/{inst_id}:
+    get:
+      description: Returns a single generated report instance by ID.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Instance'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Instance not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get a report instance.
+      tags:
+      - Instances
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/download:
+    get:
+      description: Returns a pre-signed S3 URL for downloading the report in PDF or CSV format.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      - description: Download format
+        in: query
+        name: format
+        schema:
+          default: pdf
+          enum:
+          - pdf
+          - csv
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.DownloadResponse'
+          description: Pre-signed download URL
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid format parameter
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Instance not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Report not yet generated
+      security:
+      - BasicAuth: []
+      summary: Download a report instance.
+      tags:
+      - Instances
+components:
+  schemas:
+    models.Instance:
+      properties:
+        definition_id:
+          type: string
+        error_message:
+          type: string
+        generated_at:
+          type: string
+        instance_id:
+          type: string
+        pdf_detail_rows:
+          type: integer
+        period_end:
+          type: string
+        period_start:
+          type: string
+        required_approvals:
+          type: integer
+        sign_off_count:
+          type: integer
+        status:
+          enum:
+          - generating
+          - generated
+          - finalizing
+          - finalized
+          - failed
+          type: string
+        summary_stats:
+          additionalProperties: {}
+          type: object
+        total_events:
+          type: integer
+        updated_at:
+          type: string
+      type: object
+    models.ListInstancesResponse:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Instance'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.DownloadResponse:
+      properties:
+        download_url:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

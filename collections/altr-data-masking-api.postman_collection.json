@@ -1,0 +1,560 @@
+{
+  "item": [
+    {
+      "id": "c500e4d5-b360-4f9c-bb59-acea7f538edb",
+      "name": "Data Masking",
+      "description": {
+        "content": "Access to column info around available masking types",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "45b0dbe2-17a1-4540-8d0c-7fbeb152937c",
+          "name": "Checks column masking types.",
+          "request": {
+            "name": "Checks column masking types.",
+            "description": {
+              "content": "Checks to see if the column can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "masking",
+                "v2",
+                "column",
+                "types",
+                ":fieldId",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "",
+                  "key": "fieldId",
+                  "description": "(Required) Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b11b9624-0d61-4dab-b1e3-e63661ef1fc2",
+              "name": "Successfully retrieved column list for tagID",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    ":fieldId",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "fieldId",
+                      "description": "(Required) Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"field_id\": 1,\n    \"canSet\": true,\n    \"maskingTypes\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"columnType\": \"String\"\n  },\n  {\n    \"field_id\": 1,\n    \"canSet\": true,\n    \"maskingTypes\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"columnType\": \"String\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62e6a6f5-bcf0-4cfb-8f04-cf3c3c72ad6b",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    ":fieldId",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "fieldId",
+                      "description": "(Required) Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e5bc58ef-287c-4639-8d29-479e2495b350",
+              "name": "No field id exists of this value.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    ":fieldId",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "fieldId",
+                      "description": "(Required) Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5022c874-3850-48e5-bd20-d81fd6630a81",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    ":fieldId",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "",
+                      "key": "fieldId",
+                      "description": "(Required) Comes from /api/data list (see <a href=\"https://altrnet.live.altr.com/api/swagger/#/data\">https://altrnet.live.altr.com/api/swagger/#/data</a>)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6ac75af1-57c1-4538-8027-b2f04d964b12",
+          "name": "Checks column masking types for input array.",
+          "request": {
+            "name": "Checks column masking types for input array.",
+            "description": {
+              "content": "Checks to see if the columns in the input array can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "masking",
+                "v2",
+                "column",
+                "types",
+                "array"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c39d4389-2236-4d87-b30b-30402551f219",
+              "name": "Successfully retrieved column list for tagID array",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    "array"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"field_id\": 1,\n    \"canSet\": true,\n    \"maskingTypes\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"columnType\": \"String\"\n  },\n  {\n    \"field_id\": 1,\n    \"canSet\": true,\n    \"maskingTypes\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"columnType\": \"String\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21f17e6c-279f-4b03-970b-20e773b437a6",
+              "name": "Invalid credentials provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    "array"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a15a74e0-f1e0-49d8-acb5-174079527210",
+              "name": "No field id exists of this value.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    "array"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "trackingID",
+                  "value": "8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": 404,\n  \"message\": \"Requested ID did not exist.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "510162d3-4775-4cc7-83b7-41730dc3d63c",
+              "name": "Failure servicing this request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "masking",
+                    "v2",
+                    "column",
+                    "types",
+                    "array"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/v1/dis ",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "10524467-e7ac-4673-aa5c-9d2f61ab465c",
+    "name": "ALTR Datastore Information Service Data Masking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.\n\nDIS does not include the endpoints for ALTR's tokenization API; documentation on ALTR's tokenization API can be found here.\n\nDIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

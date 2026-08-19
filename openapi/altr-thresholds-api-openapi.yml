@@ -1,0 +1,1200 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Thresholds API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: thresholds
+  description: Operations about thresholds
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/thresholds
+paths:
+  /thresholds:
+    get:
+      tags:
+      - thresholds
+      summary: Returns an array of queries without full relationship data
+      operationId: getThresholds
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimpleThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - thresholds
+      summary: Creates a new threshold with a default configuration of always on (unless specified to be off), all whitelisted, and 0 records/minute access
+      operationId: createThreshold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: The only required part is the two fields in details object. Providing nothing else will create a threshold with no data access.
+              properties:
+                details:
+                  type: object
+                  description: Basic info about threshold
+                  properties:
+                    name:
+                      type: string
+                      description: Name of the threshold
+                      example: George Washington's Threshold
+                    action:
+                      type: integer
+                      enum:
+                      - 0
+                      - 1
+                      - 2
+                      description: The action that will be taken when the ruleset for this threshold is violated. 0 = Anomaly, 1 = quicksand, 2 = block
+                      example: 0
+                    isEnabled:
+                      type: boolean
+                      description: Whether or not the threshold should be enabled.
+                      default: true
+                accessRate:
+                  type: object
+                  description: Set limits on how many records can be accessed inside a timeframe by specific actors
+                  properties:
+                    limit:
+                      type: integer
+                      example: 0
+                      description: Number of records that may be accessed per unit before action is taken
+                    unit:
+                      type: string
+                      example: minute
+                      enum:
+                      - minute
+                      - hour
+                      - day
+                      - week
+                      - month
+                      description: The time frame inside which the access rate number is tracked
+                ips:
+                  type: array
+                  description: IP addresses (IPv4, IPv6, CIDR accepted) this threshold apply to - Others are blacklisted. If not provided, all IPs are whitelisted.
+                  example:
+                  - 192.168.1.1
+                  items:
+                    anyOf:
+                    - type: string
+                      format: ipv4
+                    - type: string
+                      format: ipv6
+                time:
+                  type: object
+                  description: Rules about when this threshold should be in effect
+                  properties:
+                    days:
+                      type: array
+                      example:
+                      - sunday
+                      - monday
+                      items:
+                        type: string
+                        enum:
+                        - sunday
+                        - monday
+                        - tuesday
+                        - wednesday
+                        - thursday
+                        - friday
+                        - saturday
+                        description: Which days per week should this threshold be in effect
+                    startTime:
+                      type: string
+                      format: date-time
+                      description: Which time on each active day should the threshold start being in effect
+                    endTime:
+                      type: string
+                      format: date-time
+                      description: Which time on each active day should the threshold stop being in effect
+                    timezone:
+                      type: string
+                      description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in
+                      example: UTC
+                groupIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the groups that this threshold should be applied to
+                  example:
+                  - 1
+                applicationIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the applications that this threshold should be applied to
+                  example:
+                  - 1
+                lockIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the locks that this threshold should be applied to
+                  example:
+                  - 1
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}:
+    get:
+      tags:
+      - thresholds
+      summary: Returns an a threshold with expanded details
+      operationId: getThresholdDetails
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      tags:
+      - thresholds
+      summary: Updates a threshold and its relationships.
+      description: If there are active anomalies for this threshold, no updates can be performed on the threshold what so ever.
+      operationId: putThreshold
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: All properties are optional, keep in mind what you pass is what will be updated and replaced. Properties that are omitted wil neither be updated or replaced.
+              properties:
+                details:
+                  type: object
+                  description: Information about the thresholds and its relations.
+                  properties:
+                    name:
+                      type: string
+                      description: Name of the threshold
+                    action:
+                      type: integer
+                      enum:
+                      - 0
+                      - 1
+                      - 2
+                      description: The action that will be taken when the ruleset for this threshold is violated. 0 = Anomaly, 1 = quicksand, 2 = block
+                    isEnabled:
+                      type: boolean
+                      description: Whether or not the threshold should be enabled.
+                      default: true
+                accessRate:
+                  type: object
+                  description: Set limits on how many records can be accessed inside a timeframe by specific actors
+                  properties:
+                    limit:
+                      type: integer
+                      default: 0
+                      description: Number of records that may be accessed per unit before action is taken
+                    unit:
+                      type: string
+                      default: minute
+                      enum:
+                      - minute
+                      - hour
+                      - day
+                      - week
+                      - month
+                      description: The time frame inside which the access rate number is tracked
+                ips:
+                  type: array
+                  description: IP addresses (IPv4, IPv6, CIDR accepted) this threshold apply to - Others are blacklisted. If not provided, all IPs are whitelisted.
+                  items:
+                    anyOf:
+                    - type: string
+                      format: ipv4
+                    - type: string
+                      format: ipv6
+                timeWindow:
+                  type: object
+                  description: Rules about when this threshold should be in effect
+                  properties:
+                    days:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - sunday
+                        - monday
+                        - tuesday
+                        - wednesday
+                        - thursday
+                        - friday
+                        - saturday
+                        description: Which days per week should this threshold be in effect
+                    startTime:
+                      type: string
+                      format: date-time
+                      description: Which time on each active day should the threshold start being in effect
+                    endTime:
+                      type: string
+                      format: date-time
+                      description: Which time on each active day should the threshold stop being in effect
+                    timezone:
+                      type: string
+                      description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in
+                groupIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the groups that this threshold should be applied to
+                applicationIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the applications that this threshold should be applied to
+                lockIds:
+                  type: array
+                  items:
+                    type: integer
+                  description: IDs of the locks that this threshold should be applied to
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - thresholds
+      summary: Deletes a threshold
+      operationId: deleteThreshold
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/set-enabled:
+    patch:
+      tags:
+      - thresholds
+      summary: Enables or disables a threshold
+      operationId: thresholdSetEnabled
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isEnabled:
+                  type: boolean
+                  description: Whether or not the threshold should be enabled
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/details:
+    patch:
+      tags:
+      - thresholds
+      summary: Updates basic threshold details
+      operationId: updateThresholdDetails
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        description: One or both fields may be supplied
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name the existing threshold name should be replaced with
+                action:
+                  type: integer
+                  enum:
+                  - 0
+                  - 1
+                  - 2
+                  description: The action the existing threshold action should be set to. 0 = anomaly, 1 = quicksand, 2 = block
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/access-rate:
+    put:
+      tags:
+      - thresholds
+      summary: Replaces existing threshold access rate
+      operationId: updateThresholdAccessRate
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Set limits on how many records can be accessed inside a timeframe by specific actors
+              properties:
+                limit:
+                  type: integer
+                  default: 0
+                  description: Number of records that may be accessed per rate unit before action is taken
+                unit:
+                  type: string
+                  default: minute
+                  enum:
+                  - minute
+                  - hour
+                  - day
+                  - week
+                  - month
+                  description: The time frame inside which the access rate number is tracked
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/time-window:
+    put:
+      tags:
+      - thresholds
+      summary: Replaces existing threshold time window
+      operationId: updateThresholdTimeWindow
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Rules about when this threshold should be in effect
+              properties:
+                days:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - sunday
+                    - monday
+                    - tuesday
+                    - wednesday
+                    - thursday
+                    - friday
+                    - saturday
+                    description: Which days per week should this threshold be in effect
+                startTime:
+                  type: string
+                  format: date-time
+                  description: Which time on each active day should the threshold start being in effect
+                endTime:
+                  type: string
+                  format: date-time
+                  description: Which time on each active day should the threshold stop being in effect
+                timezone:
+                  type: string
+                  description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/ips:
+    post:
+      tags:
+      - thresholds
+      summary: Add IPs to the whitelist for a threshold
+      operationId: addThresholdIPs
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ips:
+                  type: array
+                  description: IP addresses (IPv4, IPv6, CIDR accepted) this threshold apply to - Others are blacklisted. If not provided, all IPs are whitelisted.
+                  items:
+                    anyOf:
+                    - type: string
+                      format: ipv4
+                    - type: string
+                      format: ipv6
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - thresholds
+      summary: Remove IPs to the whitelist for a threshold
+      operationId: removeThresholdIPs
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Relationship IDs belonging to the IP relationships that should be removed
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/groups:
+    post:
+      tags:
+      - thresholds
+      summary: Add groups to a threshold
+      operationId: addThresholdGroups
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Group IDs whose groups should be related to this threshold
+                  items:
+                    type: integer
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+    delete:
+      tags:
+      - thresholds
+      summary: Remove groups from a threshold
+      operationId: removeThresholdGroups
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Relationship IDs belonging to the Group relationships that should be removed
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/locks:
+    post:
+      tags:
+      - thresholds
+      summary: Add locks to a threshold
+      operationId: addThresholdLocks
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Lock IDs whose locks should be related to this threshold
+                  items:
+                    type: integer
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - thresholds
+      summary: Remove locks from a threshold
+      operationId: removeThresholdLocks
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Relationship IDs belonging to the Lock relationships that should be removed
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /thresholds/{id}/applications:
+    post:
+      tags:
+      - thresholds
+      summary: Add applications to a threshold
+      operationId: addThresholdApplications
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Application IDs whose applications should be related to this threshold
+                  items:
+                    type: integer
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - thresholds
+      summary: Remove applications from a threshold
+      operationId: removeThresholdApplications
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Relationship IDs belonging to the Application relationships that should be removed
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FullThreshold'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    SimpleThreshold:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the threshold
+          example: 1
+        name:
+          type: string
+          description: Name of the threshold
+          example: George Washington's Threshold
+        isEnabled:
+          type: boolean
+          description: Whether or not the threshold is in effect
+        limit:
+          type: integer
+          description: Number of records per unit (below) that may be accessed before action is taken
+          example: 100
+        unit:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          - week
+          - month
+          description: The time frame inside which the above limit is tracked
+          example: minute
+        action:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          description: The action that will be taken when the ruleset for this threshold is violated. 0 = Anomaly, 1 = quicksand, 2 = block
+          example: 0
+        userCount:
+          type: integer
+          description: The number of users affected by this threshold
+          example: 1
+        groupCount:
+          type: integer
+          description: The number of groups affected by this threshold
+          example: 1
+        serverCount:
+          type: integer
+          description: The number of applications affected by this threshold
+          example: 2
+        lockCount:
+          type: integer
+          description: The number of locks affected by this threshold
+          example: 1
+        ipAddresses:
+          type: integer
+          description: The number of IP addresses affected by this threshold
+          example: 1
+        timeWindow:
+          type: integer
+          description: The number of rules (days per week) this threshold is in effect
+          example: 3
+    FullThreshold:
+      type: object
+      properties:
+        details:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+              description: The id of the threshold that is returned
+            name:
+              type: string
+              example: My Threshold
+              description: The name of the threshold that is returned
+            isEnabled:
+              type: boolean
+              example: true
+              description: Whether or not this threshold is currently being applied
+            action:
+              type: integer
+              example: What action this threshold will take when ruleset is violated
+        hasActiveAnomalies:
+          description: A boolean to indicate whether or not this threshold can be modified
+          type: boolean
+          example: false
+        groups:
+          type: array
+          description: An array of objects describing threshold-to-group relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the group relationship to this threshold
+
+
+              **userGroupId** - The unique id of the group itself
+
+
+              **userGroupName** - The display name of the related group
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 8
+              userGroupId:
+                type: integer
+                example: 1
+              userGroupName:
+                type: string
+                example: User Group Name
+        locks:
+          type: array
+          description: An array of objects describing threshold-to-lock relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the lock relationship to this threshold
+
+
+              **lockId** - The unique id of the lock itself
+
+
+              **lockName** - The display name of the related lock
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 7
+              lockId:
+                type: integer
+                example: 1
+              lockName:
+                type: string
+                example: 1
+        applications:
+          type: array
+          description: An array of objects describing threshold-to-application relationships.
+          items:
+            type: object
+            description: 'Each object has the following properties
+
+
+              **relationshipId** - The unique id of the application relationship to this threshold
+
+
+              **serverId** - The unique id of the application itself
+
+
+              **serverFriendlyName** - The display name of the related application
+
+              '
+            properties:
+              relationshipId:
+                type: integer
+                example: 7
+              serverId:
+                type: integer
+                example: 1
+              serverFriendlyName:
+                type: string
+                example: Applications Name
+        users:
+          type: integer
+          description: The number of users this threshold is applied to (as a result of group membership)
+          example: 2
+        accessRate:
+          description: 'Details on the access rate for this threshold
+
+
+            **limit** - Number of records per unit (below) that may be accessed before action is taken
+
+
+            **unit** - The time frame inside which the above limit is tracked
+
+            '
+          type: object
+          properties:
+            limit:
+              type: integer
+              example: 1
+            unit:
+              type: string
+              example: minute
+        ips:
+          description: An array of IP address that are whitelisted for this threshold. No IPs here means ALL IPs are whitelisted. Non-whitelisted IPs cannot access data.
+          type: array
+          items:
+            type: object
+            description: 'Each IP object has these properties
+
+
+              **id** - The ID of the threshold-to-ip relationship
+
+
+              **ipAddress** - The string value of the IP address/range
+
+              '
+            properties:
+              id:
+                type: integer
+                example: 7
+              ipAddress:
+                type: string
+                example: 192.0.0.1
+                description: Can be ipv4 or ipv6
+        timeWindow:
+          description: An array of objects that describe the time window rules (if any).
+          type: array
+          items:
+            type: object
+            description: 'Each object has these properties
+
+
+              **days** - Which days per week should this threshold be in effect
+
+
+              **startTime** - Which time on each active day should the threshold start being in effect
+
+
+              **endTime** - Which time on each active day should the threshold stop being in effect
+
+
+              **timezone** - A zoneinfo/tz-database string for what timezone the threshold times should be applied in
+
+              '
+            properties:
+              day:
+                type: string
+                enum:
+                - sunday
+                - monday
+                - tuesday
+                - wednesday
+                - thursday
+                - friday
+                - saturday
+              startTime:
+                type: string
+                format: date-time
+              endTime:
+                type: string
+                format: date-time
+              timezone:
+                type: string
+                example: UTC
+        success:
+          type: boolean
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

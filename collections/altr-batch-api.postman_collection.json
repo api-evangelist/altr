@@ -1,0 +1,1716 @@
+{
+  "item": [
+    {
+      "id": "9b36f2b5-d9f1-49c1-b3a1-2a4712b66183",
+      "name": "batch",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c4a7db87-b384-404e-a6cd-e842df487f12",
+          "name": "Batch Write",
+          "request": {
+            "name": "Batch Write",
+            "description": {
+              "content": "This endpoint tokenizes plaintext data. Up to 1024 values can be tokenized at once. Only string values can be tokenized. Values can be up to 128 UTF-8 code units long. Smaller batches may increase performance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Customer ID assigned by ALTR.",
+                  "type": "any",
+                  "value": "{{customerId}}",
+                  "key": "customerId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-ALTR-DETERMINISM",
+                "value": "false",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"field000\": \"<string>\",\n  \"field001\": \"<string>\",\n  \"field002\": \"<string>\",\n  \"field003\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f20fcba4-b381-482b-9d44-e00d14fb611e",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ALTR-DETERMINISM",
+                    "value": "false",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Sample Value 1\",\n  \"field001\": \"Sample Value 2\",\n  \"field002\": \"Sample Value 3\",\n  \"field003\": \"Sample Value 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n    \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n    \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n    \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n  },\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6665769e-c4a8-41db-aa17-6c073b5ff532",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ALTR-DETERMINISM",
+                    "value": "false",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Sample Value 1\",\n  \"field001\": \"Sample Value 2\",\n  \"field002\": \"Sample Value 3\",\n  \"field003\": \"Sample Value 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Bad Request\",\n    \"statusCode\": 400\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc6b1b94-bb12-489a-9f0d-c1c29b1018c2",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ALTR-DETERMINISM",
+                    "value": "false",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Sample Value 1\",\n  \"field001\": \"Sample Value 2\",\n  \"field002\": \"Sample Value 3\",\n  \"field003\": \"Sample Value 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "164b353c-d94f-4dc3-b54c-1fcf2d7caf01",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ALTR-DETERMINISM",
+                    "value": "false",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Sample Value 1\",\n  \"field001\": \"Sample Value 2\",\n  \"field002\": \"Sample Value 3\",\n  \"field003\": \"Sample Value 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Too Many Requests\",\n    \"statusCode\": 429\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1fae684-b776-4702-adde-3b4cb9eea7d7",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ALTR-DETERMINISM",
+                    "value": "false",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Sample Value 1\",\n  \"field001\": \"Sample Value 2\",\n  \"field002\": \"Sample Value 3\",\n  \"field003\": \"Sample Value 4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Internal Server Error\",\n    \"statusCode\": 500\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da257fa6-a302-4866-9ff6-847a9cb83d1b",
+          "name": "Batch Read",
+          "request": {
+            "name": "Batch Read",
+            "description": {
+              "content": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. Tokens are case sensitive. If you send values to this endpoint that are not valid tokens, the request will fail. Using smaller batch sizes may improve performance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Customer ID assigned by ALTR.",
+                  "type": "any",
+                  "value": "{{customerId}}",
+                  "key": "customerId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"field000\": \"<string>\",\n  \"field001\": \"<string>\",\n  \"field002\": \"<string>\",\n  \"field003\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "28f1f106-11c6-4ad0-acb9-44e3950223ab",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"field000\": \"Sample Value 1\",\n    \"field001\": \"Sample Value 2\",\n    \"field002\": \"Sample Value 3\",\n    \"field003\": \"Sample Value 4\"\n  },\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a02ab93f-071d-4c3e-888b-59f8c71cc200",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Bad Request\",\n    \"statusCode\": 400\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7981b9b-745e-4446-947c-06f036f66800",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3da9e63b-5ed2-41c6-a21a-f5bd5a6c2f4d",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Not Found\",\n    \"statusCode\": 404\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de646872-d68c-42cf-877d-ce740a0d9b43",
+              "name": "Unsupported Media Type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unsupported Media Type\",\n    \"statusCode\": 415\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99bc17bc-5f44-4f06-be8f-2924414170d4",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Too Many Requests\",\n    \"statusCode\": 429\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3673cc63-197a-4b3f-bfea-f89fa34b2591",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Internal Server Error\",\n    \"statusCode\": 500\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b94bb66f-3ed3-4a09-b366-cb243c8ce32c",
+          "name": "Partial Batch Read",
+          "request": {
+            "name": "Partial Batch Read",
+            "description": {
+              "content": "This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. If you send values to this endpoint that are not valid tokens, the request will not fail. Instead, any non-token values supplied will be returned back to the user. Using smaller batch sizes may improve performance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch",
+                "partial"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Customer ID assigned by ALTR.",
+                  "type": "any",
+                  "value": "{{customerId}}",
+                  "key": "customerId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"field000\": \"<string>\",\n  \"field001\": \"<string>\",\n  \"field002\": \"<string>\",\n  \"field003\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0690c939-e54a-4735-aaf4-6f67866e39e8",
+              "name": "Partial Read Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"field000\": \"Not a token\",\n    \"field001\": \"Sample Value 2\",\n    \"field002\": \"Sample Value 3\",\n    \"field003\": \"Sample Value 4\"\n  },\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f8cd4e6-41b3-42c9-8874-aef9d6b56604",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Bad Request\",\n    \"statusCode\": 400\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aae7c042-90c5-4645-9bec-1498148bb316",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f69f852-ad70-4b00-b95d-6ae1fddea437",
+              "name": "Unsupported Media Type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unsupported Media Type\",\n    \"statusCode\": 415\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cd571f3-173d-461b-bf2a-dd9033c1a6f5",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Too Many Requests\",\n    \"statusCode\": 429\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29b74c52-2982-493f-9ee9-2f2a9d7d76ab",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "partial"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Internal Server Error\",\n    \"statusCode\": 500\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "21760a7f-c28d-4cde-948e-991813c60d64",
+          "name": "Batch Delete",
+          "request": {
+            "name": "Batch Delete",
+            "description": {
+              "content": "This endpoint deletes tokens from ALTR's token vault. Up to 1024 values can be deleted at once. If a determinstic token is deleted from ALTR, a new POST for that tokens value will result in a newly minted token. If you send values to this endpoint that are not valid tokens, the invalid tokens will be ignored. Using smaller batch sizes may improve performance.\n\n Delete batches may be partially executed. Tokens from the batch that fail to be deleted are returned with their cause for failure.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch",
+                "delete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Customer ID assigned by ALTR.",
+                  "type": "any",
+                  "value": "{{customerId}}",
+                  "key": "customerId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"field000\": \"<string>\",\n  \"field001\": \"<string>\",\n  \"field002\": \"<string>\",\n  \"field003\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "67bd652a-0a01-44c4-8191-b13bdce4c696",
+              "name": "Delete Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f01998d3-c96e-4ba3-85a9-20febbe1f883",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Bad Request\",\n    \"statusCode\": 400\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9ef4d03-b601-424c-9d31-e119335af285",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5b799ac-0f28-4252-8d46-cc1f9d11a246",
+              "name": "Unsupported Media Type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Unsupported Media Type\",\n    \"statusCode\": 415\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d89f528-a929-47aa-aace-0e73bb7f3191",
+              "name": "Too Many Requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Too Many Requests\",\n    \"statusCode\": 429\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "445b6ec5-e3b5-49db-bff7-bcde727f9eab",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "delete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer ID assigned by ALTR.",
+                      "type": "any",
+                      "value": "{{customerId}}",
+                      "key": "customerId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"field000\": \"Not a token\",\n  \"field001\": \"token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG\",\n  \"field002\": \"token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl\",\n  \"field003\": \"token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2022-07-20T18:00:58.723Z\",\n    \"message\": \"Internal Server Error\",\n    \"statusCode\": 500\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Customer ID assigned by ALTR.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "key": "customerId"
+    },
+    {
+      "type": "string",
+      "value": "https://{{customerId}}.critical.live.altr.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3509c15d-1de7-4d3e-b21d-b45f4a52c2c8",
+    "name": "Critical Tokenization V2 Batch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Critical Tokenization V2 API. Critical Tokenization V2 allows ALTR Enterprise + customers to tokenize and detokenize values using an API that is PCI compliant.\n\nTokenization credentials can be obtained under Settings > Preferences > API of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

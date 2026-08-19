@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Systemaudits/query API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "systemaudits/query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start a potentially long-running query against query audits.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/systemaudits/query/start",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of audits to return. Must be in range [1, 100]."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of audits to skip while searching all audits in the time range before returning at most `limit` audits. Must be in range [0, 9007199254740991 (aka `Number.MAX_SAFE_INTEGER`)]."
+              },
+              {
+                "name": "wait",
+                "value": "",
+                "type": "query",
+                "description": "The number of milliseconds to wait for result before returning. Set this to a negative integer to just return immedately with a `202` and the token. Must be in range [-1, 1000]."
+              },
+              {
+                "name": "from",
+                "value": "2022-07-19T18:00:58.723Z",
+                "type": "query",
+                "description": "Audits before this timestamp will not be returned. Must be provided as a UTC timestamp in ISO 8601 format `YYYY-MM-DDTHH:mm:ss.sssZ`. Defaults to 48 hours before the server received the request. The difference between `from` and `to` may be at most one week."
+              },
+              {
+                "name": "to",
+                "value": "2022-07-20T18:00:58.723Z",
+                "type": "query",
+                "description": "Audits after this timestamp will not be returned. Must be provided as a UTC timestamp in ISO 8601 format `YYYY-MM-DDTHH:mm:ss.sssZ`. Defaults to when the server received the request. The difference between `from` and `to` may be at most one week."
+              }
+            ]
+          },
+          "docs": "Start a potentially long-running query against query audits."
+        },
+        {
+          "info": {
+            "name": "Get the results of a potentially long-running query against query audits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/systemaudits/query/result/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                "type": "path",
+                "description": "The `token` provided in the `POST` response body. This may be a long string consisting of several thousand characters."
+              }
+            ]
+          },
+          "docs": "Get the results of a potentially long-running query against query audits"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

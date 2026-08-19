@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Repos API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Repos
+paths:
+  /repos:
+    get:
+      description: List all Repos with pagination.
+      parameters:
+      - description: Number of Repos to return
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Filter results by repo type
+        in: query
+        name: repo_type
+        schema:
+          enum:
+          - Oracle
+          - MSSQL
+          - MySQL
+          - Postgres
+          - MongoDB
+          - Cassandra
+          type: string
+      - description: Filter by Repo name in a `starts with` fashion. (Case-insensitive)
+        in: query
+        name: name_starts_with
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListReposOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List Repos.
+      tags:
+      - Repos
+    post:
+      description: Create a new Repo with the provided details.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/repos.CreateRepoInput'
+        description: Repo details
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Repo'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Create a new Repo.
+      tags:
+      - Repos
+  /repos/{repo_name}:
+    delete:
+      description: A Repo cannot be deleted if it its `user_count` or `binding_count` are > 0.
+      parameters:
+      - description: Name of Repo.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Delete a Repo.
+      tags:
+      - Repos
+    get:
+      description: Get the repo for a given repo name.
+      parameters:
+      - description: Name of repo.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Repo'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Get a Repo.
+      tags:
+      - Repos
+    patch:
+      description: Update a Repo.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/repos.UpdateRepoInput'
+        description: The Repo to update.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.Repo'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Update a Repo.
+      tags:
+      - Repos
+components:
+  schemas:
+    repos.CreateRepoInput:
+      properties:
+        description:
+          type: string
+          x-order: '1'
+        hostname:
+          type: string
+          x-order: '3'
+        name:
+          type: string
+          x-order: '0'
+        port:
+          type: integer
+          x-order: '4'
+        type:
+          type: string
+          x-order: '2'
+      type: object
+    repos.UpdateRepoInput:
+      properties:
+        description:
+          type: string
+          x-order: '0'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.Repo:
+      properties:
+        binding_count:
+          type: integer
+          x-order: '7'
+        created_at:
+          type: string
+          x-order: '9'
+        description:
+          type: string
+          x-order: '1'
+        hostname:
+          type: string
+          x-order: '2'
+        name:
+          type: string
+          x-order: '0'
+        org_id:
+          type: string
+          x-order: '8'
+        port:
+          type: integer
+          x-order: '3'
+        service_user_count:
+          type: integer
+          x-order: '6'
+        type:
+          type: string
+          x-order: '4'
+        updated_at:
+          type: string
+          x-order: '10'
+        user_count:
+          type: integer
+          x-order: '5'
+      type: object
+    management.ListReposOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        repos:
+          items:
+            $ref: '#/components/schemas/management.Repo'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

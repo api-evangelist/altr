@@ -1,0 +1,172 @@
+openapi: 3.2.0
+info:
+  title: ALTR Datastore Information Service Data Masking API
+  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
+
+
+    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
+
+
+    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  version: 3.4.3
+servers:
+- url: '/v1/dis '
+security:
+- bearerAuth: []
+  basicAuth: []
+tags:
+- name: Data Masking
+  description: Access to column info around available masking types
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/locks#Dynamic%20Data%20Masking
+paths:
+  /masking/v2/column/types/{fieldId}/:
+    get:
+      tags:
+      - Data Masking
+      summary: Checks column masking types.
+      description: 'Checks to see if the column can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>'
+      operationId: columnMaskTypes
+      parameters:
+      - name: fieldId
+        in: path
+        description: Comes from /api/data list (see <a href="https://altrnet.live.altr.com/api/swagger/#/data">https://altrnet.live.altr.com/api/swagger/#/data</a>)
+        required: true
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved column list for tagID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayNoMaskingType'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No field id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /masking/v2/column/types/array:
+    get:
+      tags:
+      - Data Masking
+      summary: Checks column masking types for input array.
+      description: 'Checks to see if the columns in the input array can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>'
+      operationId: columnMaskTypesArray
+      consumes: application/json
+      parameters:
+      - in: query
+        name: fieldIDs
+        description: Comma delimited list of field ID integers. Checks masking types for each of the field ids included in the input list. Field ids come from /api/data list (see <a href="https://altrnet.live.altr.com/api/swagger/#/data">https://altrnet.live.altr.com/api/swagger/#/data</a>)
+        required: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved column list for tagID array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayNoMaskingType'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No field id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    SingleNoMaskingType:
+      type: object
+      properties:
+        field_id:
+          type: integer
+          example: 1
+        canSet:
+          type: boolean
+          example: true
+        maskingTypes:
+          type: array
+          example:
+          - 0
+          - 1
+          - 2
+          - 3
+        columnType:
+          type: string
+          example: String
+    ArrayNoMaskingType:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleNoMaskingType'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: DIS uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>DIS/MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Info here
+externalDocs:
+  description: Find out more about ALTR
+  url: https://docs.altr.com

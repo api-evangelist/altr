@@ -1,0 +1,2513 @@
+{
+  "item": [
+    {
+      "id": "21d217d0-36e7-47b1-8233-8472f0e60cec",
+      "name": "Integrations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "99cefd59-5fd3-48fa-a602-8f95edf58f69",
+          "name": "List Integrations.",
+          "request": {
+            "name": "List Integrations.",
+            "description": {
+              "content": "Returns a paginated list of delivery integrations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of results (default: 25, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Pagination token from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by integration type"
+                },
+                {
+                  "disabled": false,
+                  "key": "enabled",
+                  "value": "<boolean>",
+                  "description": "Filter by enabled flag"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0515d8c1-2c19-48b4-b584-a47a584b764b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"has_more\": true,\n  \"items\": [\n    {\n      \"integration_id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"custom_webhook\",\n      \"allow_insecure_tls\": true,\n      \"consecutive_failures\": 1303,\n      \"created_at\": \"1982-04-24T03:06:47.826Z\",\n      \"custom_webhook\": {\n        \"url\": \"string\",\n        \"hmac_secret\": \"stringstringstring\"\n      },\n      \"description\": \"string\",\n      \"enabled\": true,\n      \"health_state\": \"unhealthy\",\n      \"last_error\": \"string\",\n      \"last_failure_at\": \"2013-07-09T02:27:33.181Z\",\n      \"microsoft_teams\": {\n        \"workflow_url\": \"string\"\n      },\n      \"pagerduty\": {\n        \"integration_key\": \"string\"\n      },\n      \"service_now\": {\n        \"instance_url\": \"string\",\n        \"assignment_group\": \"string\",\n        \"auth_type\": \"basic\",\n        \"basic\": {\n          \"password\": \"string\",\n          \"username\": \"string\"\n        },\n        \"oauth_client_credentials\": {\n          \"client_id\": \"string\",\n          \"client_secret\": \"string\"\n        },\n        \"table_name\": \"incident\"\n      },\n      \"slack\": {\n        \"webhook_url\": \"string\"\n      },\n      \"splunk\": {\n        \"hec_token\": \"stringstring\",\n        \"hec_url\": \"string\",\n        \"index\": \"string\"\n      },\n      \"updated_at\": \"2020-11-06T10:49:21.383Z\"\n    },\n    {\n      \"integration_id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"service_now\",\n      \"allow_insecure_tls\": true,\n      \"consecutive_failures\": 4002,\n      \"created_at\": \"1992-03-06T12:13:28.282Z\",\n      \"custom_webhook\": {\n        \"url\": \"string\",\n        \"hmac_secret\": \"stringstringstring\"\n      },\n      \"description\": \"string\",\n      \"enabled\": false,\n      \"health_state\": \"unhealthy\",\n      \"last_error\": \"string\",\n      \"last_failure_at\": \"1968-03-25T05:56:29.754Z\",\n      \"microsoft_teams\": {\n        \"workflow_url\": \"string\"\n      },\n      \"pagerduty\": {\n        \"integration_key\": \"string\"\n      },\n      \"service_now\": {\n        \"instance_url\": \"string\",\n        \"assignment_group\": \"string\",\n        \"auth_type\": \"basic\",\n        \"basic\": {\n          \"password\": \"string\",\n          \"username\": \"string\"\n        },\n        \"oauth_client_credentials\": {\n          \"client_id\": \"string\",\n          \"client_secret\": \"string\"\n        },\n        \"table_name\": \"incident\"\n      },\n      \"slack\": {\n        \"webhook_url\": \"string\"\n      },\n      \"splunk\": {\n        \"hec_token\": \"stringstring\",\n        \"hec_url\": \"string\",\n        \"index\": \"string\"\n      },\n      \"updated_at\": \"2024-09-23T23:22:51.098Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b93041a-2ec1-468c-8e69-2bf5bcacdc52",
+              "name": "Invalid query parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95f722f3-32a0-4b99-ae1e-507304d6373d",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39771765-9ff8-4c3e-a307-dce4ce9e7aa5",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b63d1804-7148-41d4-8427-766b0aa4337d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "25"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enabled",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a754b3f-fd81-4a55-a6a9-2915b88a5fe4",
+          "name": "Create an Integration.",
+          "request": {
+            "name": "Create an Integration.",
+            "description": {
+              "content": "Creates a new delivery integration. The server assigns and returns a unique integration_id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aaecf037-4aa8-4e43-9a47-05b9e7f5fa76",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"integration_id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"custom_webhook\",\n  \"allow_insecure_tls\": true,\n  \"consecutive_failures\": 8868,\n  \"created_at\": \"2004-06-13T07:46:54.840Z\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"string\",\n  \"enabled\": false,\n  \"health_state\": \"healthy\",\n  \"last_error\": \"string\",\n  \"last_failure_at\": \"1989-10-27T13:26:45.010Z\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  },\n  \"updated_at\": \"2006-06-05T23:06:32.214Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69f4c8dd-459c-4ea3-ac4f-1948e65cc25a",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6298df48-66b8-41da-a897-e51eeb5db97a",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74af4bd7-cede-4b1e-bb8c-288a1d3688aa",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0421b9a-fc47-45d6-a3ce-04f3464cb24d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4060691a-aa66-4b0e-a3f7-e90f710175b8",
+          "name": "Delete an Integration.",
+          "request": {
+            "name": "Delete an Integration.",
+            "description": {
+              "content": "Deletes an integration. Returns 409 when subscriptions still exist under it; delete the subscriptions first, then retry.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations",
+                ":integration_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "integration_id",
+                  "description": "(Required) Integration ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1d36f776-72f1-4e43-8aa6-516a67307814",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b3f2dca4-048e-4766-84a3-d3e88b270693",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62d0f955-8735-4043-ba90-2670e9795a40",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e56aa365-c708-48b5-993b-d09b3a35987e",
+              "name": "Integration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7da2e264-5045-4103-aded-dd9d9f55804d",
+              "name": "Integration has subscriptions; delete them first",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06bf0636-e1c2-4fe2-90bb-4455c6f6c6f8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc79f644-02d8-49c4-a66e-c896e7433548",
+          "name": "Get an Integration.",
+          "request": {
+            "name": "Get an Integration.",
+            "description": {
+              "content": "Returns a single integration by id. Secret config fields (tokens, passwords, HMAC secrets, credential URLs) are redacted; set or rotate them via create/PATCH.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations",
+                ":integration_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "integration_id",
+                  "description": "(Required) Integration ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "19486291-daaf-4270-8d14-5dc2d16d86ab",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"integration_id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"custom_webhook\",\n  \"allow_insecure_tls\": true,\n  \"consecutive_failures\": 8868,\n  \"created_at\": \"2004-06-13T07:46:54.840Z\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"string\",\n  \"enabled\": false,\n  \"health_state\": \"healthy\",\n  \"last_error\": \"string\",\n  \"last_failure_at\": \"1989-10-27T13:26:45.010Z\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  },\n  \"updated_at\": \"2006-06-05T23:06:32.214Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8e907fd-7d9f-404c-8d28-e41142ffe829",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "840780f2-3c27-4281-ab3b-b87d67b6e7dc",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7b8dc52-40c2-44bf-82ee-0d0941880367",
+              "name": "Integration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c5d4765-195d-4ec1-b023-68ca93e83716",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb34f566-cfbf-42dd-8a3a-f05921846b8e",
+          "name": "Update an Integration.",
+          "request": {
+            "name": "Update an Integration.",
+            "description": {
+              "content": "Updates the mutable fields on an integration. Send only the fields you want to change; set a field to null to clear it. `type` is immutable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations",
+                ":integration_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "integration_id",
+                  "description": "(Required) Integration ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a91af354-f471-4a2c-9aa1-b8d409c6f9ac",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"integration_id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"custom_webhook\",\n  \"allow_insecure_tls\": true,\n  \"consecutive_failures\": 8868,\n  \"created_at\": \"2004-06-13T07:46:54.840Z\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"string\",\n  \"enabled\": false,\n  \"health_state\": \"healthy\",\n  \"last_error\": \"string\",\n  \"last_failure_at\": \"1989-10-27T13:26:45.010Z\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  },\n  \"updated_at\": \"2006-06-05T23:06:32.214Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44ae964a-5874-44a0-87fb-50d86bf27ff4",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c76a211-1ca8-48ff-b2a1-035173e87c09",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85a2aedc-fcee-44a5-a3f0-bc6433868109",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d8c62a6-f79d-4675-bcf8-15d98ca4e8bb",
+              "name": "Integration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24b95745-292d-4740-8ee7-2a054cda5bcf",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allow_insecure_tls\": \"<boolean>\",\n  \"custom_webhook\": {\n    \"url\": \"<string>\",\n    \"hmac_secret\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"microsoft_teams\": {\n    \"workflow_url\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"pagerduty\": {\n    \"integration_key\": \"<string>\"\n  },\n  \"service_now\": {\n    \"instance_url\": \"<string>\",\n    \"assignment_group\": \"<string>\",\n    \"auth_type\": \"<string>\",\n    \"basic\": {\n      \"password\": \"<string>\",\n      \"username\": \"<string>\"\n    },\n    \"oauth_client_credentials\": {\n      \"client_id\": \"<string>\",\n      \"client_secret\": \"<string>\"\n    },\n    \"table_name\": \"incident\"\n  },\n  \"slack\": {\n    \"webhook_url\": \"<string>\"\n  },\n  \"splunk\": {\n    \"hec_token\": \"<string>\",\n    \"hec_url\": \"<string>\",\n    \"index\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e75e0105-9974-40a6-beb1-bebc596a4299",
+          "name": "Test an Integration.",
+          "request": {
+            "name": "Test an Integration.",
+            "description": {
+              "content": "Delivers a test notification to the integration's destination and returns the outcome. HTTP 200 means the test ran; the body's `delivered` flag + `status_code` report whether the destination accepted it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "integrations",
+                ":integration_id",
+                "test"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "integration_id",
+                  "description": "(Required) Integration ID"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ad9bdc29-3d8c-4e74-bff1-4853e753246a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"delivered\": false,\n  \"event_id\": \"string\",\n  \"integration_id\": \"string\",\n  \"message\": \"string\",\n  \"status_code\": 8007\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39ffa967-ecf6-45a5-a858-2d1a11525382",
+              "name": "Missing or invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b8c7f36-0567-4c98-b434-f4f6be1c9a86",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04b1c09f-1199-4567-ac23-d01384fb4590",
+              "name": "Integration not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80f37928-77c2-40f8-9b3f-5286cab23447",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "integrations",
+                    ":integration_id",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "integration_id",
+                      "description": "(Required) Integration ID"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 2627,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 3496\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.notifications.live.altr.com/v1/notification-integration",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e5aac911-4eea-44aa-bc93-afa7f9faadb4",
+    "name": "ALTR Notification Integration Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manages delivery integrations and event subscriptions for the ALTR integration platform. Configure integrations as delivery targets (Slack, ServiceNow, PagerDuty, custom webhook, etc.), then create subscriptions that filter events by criteria and deliver matching events to those targets.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

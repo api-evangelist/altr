@@ -1,0 +1,171 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Unified Policy Access Request API",
+    "version": "4.11.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "access_request",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all access requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of access requests to retrieve."
+              },
+              {
+                "name": "requester",
+                "value": "",
+                "type": "query",
+                "description": "The name of the individual who issued the access request."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The statues of the access request."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the access requests."
+              },
+              {
+                "name": "exclusive_start_key",
+                "value": "",
+                "type": "query",
+                "description": "The key to start pagination from. This is an encoded JSON string."
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves all access requests for the client. It supports pagination using the `exclusive_start_key` and `limit` query parameters. `exclusive_start_key` can be found in the response of the previous request under `last_evaluated_key`, under the `id` property. Use that value to get the next set of access requests."
+        },
+        {
+          "info": {
+            "name": "Create a new access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "An access request represents a user's request to access specific resources or perform certain actions within the system. This endpoint allows you to create a new access request. The request body must include details about the requester, justification, metadata, and rules defining the access request."
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the access request."
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific access request by its ID."
+        },
+        {
+          "info": {
+            "name": "Approve an access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest/:id/approve",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the access request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint approves a specific access request by its ID. The access request must be in an OPEN status to be approved."
+        },
+        {
+          "info": {
+            "name": "Deny an access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest/:id/deny",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the access request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint denies a specific access request by its ID. The access request must be in an OPEN status to be denied."
+        },
+        {
+          "info": {
+            "name": "Cancel an access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/unified-policy/management/accessRequest/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the access request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint cancels a specific access request by its ID. The access request must be in an OPEN status to be canceled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

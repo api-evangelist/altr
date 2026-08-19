@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Audit Report Sign Off API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sign-Off",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get current user's sign-off status.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/sign_off",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns the authenticated user's own sign-off record for a report instance, or null if not yet signed off. Uses the caller's identity to look up a single record — use GET .../sign_offs (plural) to list all sign-offs by all users."
+        },
+        {
+          "info": {
+            "name": "Create a sign-off.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/sign_off",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Records an approval for a report instance."
+        },
+        {
+          "info": {
+            "name": "List all sign-offs for an instance.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/sign_offs",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              },
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor from previous response"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of all sign-off records from all users for a report instance. Use GET .../sign_off (singular) to check only the current user's sign-off status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1038 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "RBAC RBAC API API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "RBAC API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ALTR managed privileges for your organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/databricks",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to skip."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific principal."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific catalog."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific schema. Requires `catalogName` to be specified."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific table. Requires `catalogName` and `schemaName` to be specified."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND` operation."
+        },
+        {
+          "info": {
+            "name": "Batch create/update a role's privileges.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/rbac/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Batch create/update a role's privileges."
+        },
+        {
+          "info": {
+            "name": "Add or Remove references attached to a databricks privilege.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.live.altr.com/v1/rbac/databricks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Add or Remove references attached to a databricks privilege. Used for tracking what is responsible for this grant. When all references are removed, the privilege can be revoked."
+        },
+        {
+          "info": {
+            "name": "Get the details of an ALTR managed catalog privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the details of an ALTR managed catalog privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "Get the details of an ALTR managed schema privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName/schema-name/:schemaName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the details of an ALTR managed schema privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed schema privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName/schema-name/:schemaName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed schema privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "Get the details of an ALTR managed table privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName/schema-name/:schemaName/table-name/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the details of an ALTR managed table privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed table privilege which is granted to a specified principal.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/database-id/:databaseId/principal-name/:principalName/privilege/:privilege/catalog-name/:catalogName/schema-name/:schemaName/table-name/:tableName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ALTR Database ID of a connected database."
+              },
+              {
+                "name": "principalName",
+                "value": "",
+                "type": "path",
+                "description": "The principal name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed table privilege which is granted to a specified principal."
+        },
+        {
+          "info": {
+            "name": "List privileges by a given reference.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/databricks/reference/:reference",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "nextToken",
+                "value": "",
+                "type": "query",
+                "description": "Unique pagination token for each page of results."
+              },
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path",
+                "description": "Filter privileges which are related to this given reference."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List privileges by a given reference."
+        },
+        {
+          "info": {
+            "name": "List ALTR managed privileges for your organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to skip."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific database."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific schema. Requires `databaseName` to be specified."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific table. Requires `databaseName` and `schemaName` to be specified."
+              },
+              {
+                "name": "viewName",
+                "value": "",
+                "type": "query",
+                "description": "Filter down to a specific view. Requires `databaseName` and `schemaName` to be specified."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND` operation."
+        },
+        {
+          "info": {
+            "name": "Batch create/update a role's privileges.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Batch create/update a role's privileges."
+        },
+        {
+          "info": {
+            "name": "Add or Remove references attached to a snowflake privilege.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Add or Remove references attached to a snowflake privilege. Used for tracking what is responsible for this grant. When all references are removed, the privilege can be revoked."
+        },
+        {
+          "info": {
+            "name": "Get an ALTR managed database privilege granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The database name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get all the details on an ALTR managed privilege granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed database privilege which is granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The database name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed database privilege which is granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Get an ALTR managed schema privilege granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The schema's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all the details on an ALTR managed privilege granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed schema privilege which is granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The schema's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed schema privilege which is granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Get an ALTR managed table privilege granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName/table-name/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The table's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The table's schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all the details on an ALTR managed privilege granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed table privilege which is granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName/table-name/:tableName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The table's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The table's schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed table privilege which is granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "Get an ALTR managed view privilege granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName/view-name/:viewName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The view's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The view's schema name."
+              },
+              {
+                "name": "viewName",
+                "value": "",
+                "type": "path",
+                "description": "The view name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all the details on an ALTR managed privilege granted to a specified view."
+        },
+        {
+          "info": {
+            "name": "Delete/revoke an ALTR managed view privilege which is granted to a specified role.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/database-id/:databaseId/role-name/:role/privilege/:privilege/database-name/:databaseName/schema-name/:schemaName/view-name/:viewName",
+            "headers": [
+              {
+                "name": "x-altr-ignore-errors",
+                "value": ""
+              },
+              {
+                "name": "x-altr-reference",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "role",
+                "value": "",
+                "type": "path",
+                "description": "The role name that the privilege is granted to."
+              },
+              {
+                "name": "privilege",
+                "value": "",
+                "type": "path",
+                "description": "The privilege granted to the specified role."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The view's database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The view's schema name."
+              },
+              {
+                "name": "viewName",
+                "value": "",
+                "type": "path",
+                "description": "The view name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete/revoke an ALTR managed view privilege which is granted to a specified role."
+        },
+        {
+          "info": {
+            "name": "List privileges by a given reference.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/rbac/snowflake/reference/:reference",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "nextToken",
+                "value": "",
+                "type": "query",
+                "description": "Unique pagination token for each page of results."
+              },
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path",
+                "description": "Filter privileges which are related to this given reference."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List privileges by a given reference."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Datastore Information Service Utility API",
+    "version": "3.4.3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utility",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Gets DIS job information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/dis /utility/v1/job/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "DIS job id, can be retrieved by the v2/status endpoint."
+              }
+            ]
+          },
+          "docs": "Returns information on a DIS job or third party import."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

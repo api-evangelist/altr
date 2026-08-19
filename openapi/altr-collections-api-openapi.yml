@@ -1,0 +1,885 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This API manages classifiers, collections, and classification reports for ALTR's classification engine.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Classification Engine Collections API
+  version: 1.1.0
+servers:
+- url: https://{orgID}.classification.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+security:
+- basic: []
+tags:
+- name: Collections
+paths:
+  /collections:
+    get:
+      description: Retrieves a list of collections with optional pagination and sorting. Collections are groups of classifiers; classifiers carry GDLP conditions in their compound rulesets when needed.
+      parameters:
+      - description: 'Number of items to return (default: 100, max: 100)'
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Continuation token for pagination (returned in previous response)
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: 'Sort order: ''asc'' (ascending) or ''desc'' (descending). Sorts by collection name.'
+        in: query
+        name: sort_order
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/collections.UnifiedCollectionsOutput'
+          description: List of collections
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: List collections
+      tags:
+      - Collections
+    post:
+      description: Creates a new collection as a group for organizing classifiers. Collection names starting with 'ALTR' are reserved.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/collections.PostCollectionInput'
+        description: Collection creation input
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+          description: Collection created successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection already exists
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Create collection
+      tags:
+      - Collections
+  /collections/{collection_name}:
+    delete:
+      description: Soft deletes a collection by its name. This will remove all classifier associations and mark it as deleted. ALTR managed collections cannot be deleted.
+      parameters:
+      - description: Collection name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Collection deleted successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Delete collection
+      tags:
+      - Collections
+    get:
+      description: Retrieves a specific collection by its name, including its description and classifier count.
+      parameters:
+      - description: Collection name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/collections.GetCollectionByNameResponse'
+          description: Collection retrieved successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Get collection by name
+      tags:
+      - Collections
+    patch:
+      description: Updates a collection's properties. Only provided fields will be updated. ALTR managed collections cannot be updated.
+      parameters:
+      - description: Collection name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/collections.PatchCollectionInput'
+        description: 'Collection update input. Example: {\'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.PatchCollectionOutput'
+          description: Collection updated successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request, validation error, or constraint violation
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Update collection
+      tags:
+      - Collections
+  /collections/{collection_name}/classifiers:
+    get:
+      description: Retrieves all classifiers that belong to a specific collection with optional pagination, filtering, and sorting
+      parameters:
+      - description: Collection Name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      - description: Maximum number of items to return (1-100)
+        example: 50
+        in: query
+        name: limit
+        schema:
+          default: 100
+          type: integer
+      - description: Pagination token from previous response
+        example: eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Prefix to filter classifier names (e.g., 'email' matches 'email_address', 'email_domain')
+        example: email
+        in: query
+        name: prefix
+        schema:
+          type: string
+      - description: 'Sort order: ''asc'' (ascending) or ''desc'' (descending). Sorts by classifier name.'
+        example: asc
+        in: query
+        name: sort_order
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.GetClassifiersInCollectionOutput'
+          description: Classifiers retrieved successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Get all classifiers in a collection
+      tags:
+      - Collections
+  /collections/{collection_name}/classifiers/append:
+    patch:
+      description: Adds multiple classifiers to an existing collection in a single atomic transaction. All classifiers must exist and not already be in this collection. ALTR managed collections cannot have classifiers appended.
+      parameters:
+      - description: Collection name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/collections.AppendClassifiersToCollectionInput'
+        description: 'Classifiers to append. Example: {\'
+        required: true
+      responses:
+        '204':
+          description: Classifiers appended successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection or classifier not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Relationship already exists
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Append classifiers to collection
+      tags:
+      - Collections
+  /collections/{collection_name}/classifiers/remove:
+    patch:
+      description: Removes multiple classifiers from an existing collection in a single atomic transaction. All classifiers must be currently in this collection. ALTR managed collections cannot have classifiers removed.
+      parameters:
+      - description: Collection name (URL-encoded if contains special characters)
+        example: pii_data
+        in: path
+        name: collection_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/collections.RemoveClassifiersFromCollectionInput'
+        description: 'Classifiers to remove. Example: {\'
+        required: true
+      responses:
+        '204':
+          description: Classifiers removed successfully
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Collection not found or classifier not in collection
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - basic: []
+      summary: Remove classifiers from collection
+      tags:
+      - Collections
+components:
+  schemas:
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    types.ClassifierItem:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        collection_count:
+          type: integer
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        deleted_at:
+          type: string
+        description:
+          type: string
+        minimum_threshold:
+          type: integer
+        org_id:
+          type: string
+        pattern:
+          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
+
+            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
+
+            empty pattern also confuses the Snowflake batch procedure, which short-circuits
+
+            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
+          type: string
+        sample_size:
+          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
+
+            moved to the job level (CreateJobInput). No longer populated by create/update paths
+
+            but existing DynamoDB items may still have values for backward compatibility.'
+          type: integer
+        sample_type:
+          $ref: '#/components/schemas/types.SampleType'
+      type: object
+    collections.UnifiedCollectionsOutput:
+      properties:
+        collections:
+          items:
+            $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    types.CollectionItem:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        deleted_at:
+          description: Time is always stored RFC3339
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
+      type: object
+    collections.GetCollectionByNameResponse:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+      type: object
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
+      type: object
+    types.ContentFormat:
+      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
+
+        computed. Stay nil when the agent had no sample values (metadata-only
+
+        sampling) or when CONTENT_TYPE was excluded from condition_types.'
+      enum:
+      - JSON
+      - XML
+      - HTML
+      - YAML
+      - CSV
+      - BASE64
+      - PLAIN_TEXT
+      - PDF
+      - DOCX
+      - XLSX
+      - PPTX
+      - MS_OFFICE_LEGACY
+      - RTF
+      - ZIP
+      - GZIP
+      - PNG
+      - JPEG
+      - GIF
+      - TIFF
+      - PARQUET
+      type: string
+      x-enum-varnames:
+      - ContentFormatJSON
+      - ContentFormatXML
+      - ContentFormatHTML
+      - ContentFormatYAML
+      - ContentFormatCSV
+      - ContentFormatBase64
+      - ContentFormatPlainText
+      - ContentFormatPDF
+      - ContentFormatDOCX
+      - ContentFormatXLSX
+      - ContentFormatPPTX
+      - ContentFormatMSOfficeLegacy
+      - ContentFormatRTF
+      - ContentFormatZIP
+      - ContentFormatGZIP
+      - ContentFormatPNG
+      - ContentFormatJPEG
+      - ContentFormatGIF
+      - ContentFormatTIFF
+      - ContentFormatParquet
+    collections.RemoveClassifiersFromCollectionInput:
+      properties:
+        classifier_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.GetClassifiersInCollectionOutput:
+      properties:
+        classifiers:
+          items:
+            $ref: '#/components/schemas/types.ClassifierItem'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    collections.PostCollectionInput:
+      properties:
+        collection_name:
+          type: string
+        description:
+          type: string
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    collections.PatchCollectionInput:
+      properties:
+        description:
+          type: string
+      type: object
+    management.PatchCollectionOutput:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.CollectionItem'
+      type: object
+    types.UnifiedCollectionResponse:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
+      type: object
+    collections.AppendClassifiersToCollectionInput:
+      properties:
+        classifier_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
+      properties:
+        comparator:
+          $ref: '#/components/schemas/types.MetadataComparator'
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        content_format:
+          $ref: '#/components/schemas/types.ContentFormat'
+        content_formats:
+          items:
+            $ref: '#/components/schemas/types.ContentFormat'
+          type: array
+          uniqueItems: false
+        dominance_threshold:
+          type: number
+        entity_type:
+          description: 'AMAZON_COMPREHEND-specific leaf fields (present when Target == AMAZON_COMPREHEND).
+
+            The leaf passes when the column''s Comprehend PII detection finds EntityType
+
+            at >= MinimumScore confidence (default 0.5 when omitted/zero). Requires row
+
+            data — auto-resolves evaluated=false on METADATA-only paths or when
+
+            AMAZON_COMPREHEND is absent from condition_types.'
+          example: EMAIL
+          type: string
+        info_type:
+          description: 'GDLP-specific leaf fields (present when Target == "GDLP").
+
+            GDLP conditions are evaluated using the Google Cloud DLP API. They require GCP
+
+            credentials to be present at classification runtime. When credentials are absent,
+
+            GDLP conditions evaluate to false (lazy evaluation — the job continues without error).
+
+            Use CompoundRuleset.HasGDLPConditions() to detect these conditions before job dispatch.'
+          type: string
+        length:
+          description: 'DATA_LENGTH-specific leaf fields (present when Target == DATA_LENGTH).
+
+            The leaf compares each sampled value''s true data size — the UTF-8 byte
+
+            length of the value — against Length using Comparator (one of
+
+            greater_than, greater_than_or_equal, less_than, less_than_or_equal,
+
+            equals). When Trim is true, surrounding whitespace is stripped before
+
+            measuring. The leaf passes when at least MinimumThreshold percent of the
+
+            column''s non-null sampled values satisfy the comparison (default 80).'
+          example: 100
+          minimum: 0
+          type: integer
+        location:
+          $ref: '#/components/schemas/types.ColumnLocation'
+        minimum_confidence:
+          description: 'MinimumConfidence is an optional confidence gate (HIGH/MEDIUM/LOW) for
+
+            SNOWFLAKE_NATIVE leaves. When set, the leaf matches only when the column''s
+
+            actual Snowflake confidence tier meets or exceeds this value
+
+            (HIGH > MEDIUM > LOW). When absent AND Snowflake emitted a confidence
+
+            signal for the column, the evaluator applies the default tier (LOW) — so
+
+            any column Snowflake classified with at least LOW confidence is eligible.
+
+            When Snowflake did not emit a confidence signal (flat top-level shape),
+
+            the gate is skipped and category match alone is sufficient.'
+          example: HIGH
+          type: string
+        minimum_coverage:
+          description: 'MinimumCoverage is an optional coverage gate (0.0-1.0) for SNOWFLAKE_NATIVE
+
+            leaves. When set, the leaf matches only when the column''s actual coverage
+
+            ratio meets or exceeds this threshold. When absent AND Snowflake emitted
+
+            a coverage value, the evaluator applies the default threshold (0.70). When
+
+            Snowflake did not emit a coverage value, the gate is skipped.'
+          example: 0.7
+          type: number
+        minimum_likelihood:
+          type: string
+        minimum_score:
+          example: 0.5
+          maximum: 1
+          minimum: 0
+          type: number
+        minimum_threshold:
+          description: 'Per-leaf minimum-match threshold (optional), as a percent in (0, 100].
+
+            Used by ROW_DATA and DATA_LENGTH leaves: the leaf matches only when at
+
+            least this percent of sampled values satisfy the comparison (default 80).
+
+            Rejected at validation on COLUMN_SIZE leaves (the comparison is binary).'
+          type: number
+        negated:
+          type: boolean
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+        pattern:
+          example: (?i)ssn|social_security|ss_num
+          type: string
+        privacy_category:
+          example: IDENTIFIER
+          type: string
+        semantic_category:
+          description: 'SNOWFLAKE_NATIVE-specific leaf fields (present when Target == "SNOWFLAKE_NATIVE").
+
+            SNOWFLAKE_NATIVE conditions evaluate against the SEMANTIC_CATEGORY and/or
+
+            PRIVACY_CATEGORY tags emitted by Snowflake''s native classifier (SYSTEM$CLASSIFY /
+
+            EXTRACT_SEMANTIC_CATEGORIES). Only meaningful when the source is Snowflake and the
+
+            classification job produced TAG_IMPORT results (classification_type 2 or 4) or a
+
+            hosted-collection path that ingested those tags. When the source is not Snowflake
+
+            or no SF native tag data is available, the condition is auto-resolved with
+
+            evaluated=false in lineage (vacuously true under AND, false under OR — same pattern
+
+            as GDLP without credentials). At least one of SemanticCategory or PrivacyCategory
+
+            must be non-empty. When both are set, both must match (AND semantics within the leaf).'
+          example: EMAIL
+          type: string
+        size:
+          description: 'COLUMN_SIZE-specific leaf fields (present when Target == COLUMN_SIZE).
+
+            The leaf compares the column''s declared size (from schema/catalog metadata,
+
+            e.g. VARCHAR(255) → 255) against Size using Comparator (one of
+
+            greater_than, greater_than_or_equal, less_than, less_than_or_equal,
+
+            equals). Metadata-level: evaluates in all sampling modes including
+
+            METADATA-only. Binary per-column: no trim, no minimum_threshold.'
+          example: 100
+          minimum: 0
+          type: integer
+        tags:
+          description: 'Tags are optional semantic labels on this condition node — valid on both
+
+            leaves and groups. When the node contributes to a true evaluation outcome
+
+            its tags percolate into the decision lineage''s matched_tags, giving hits a
+
+            method-independent identity for downstream consumers (e.g. a group tagged
+
+            "type:ssn" whose GDLP, AMAZON_COMPREHEND, and ROW_DATA leaves all detect
+
+            SSNs reports "type:ssn" whichever detector fired). Each tag is a lowercase
+
+            key:value pair joined by a single required '':'' ("type:ssn", "reg:hipaa") —
+
+            bare colon-less values are rejected; at most MaxTagsPerCondition per node,
+
+            with the key at most MaxTagKeyLength bytes and the value at most
+
+            MaxTagValueLength bytes. Keys starting with "altr" are reserved for
+
+            ALTR-authored tags and rejected on user writes.'
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        target:
+          $ref: '#/components/schemas/types.ConditionTarget'
+        trim:
+          example: true
+          type: boolean
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

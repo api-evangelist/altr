@@ -1,0 +1,230 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Service User Service Users API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Service Users handles the request to get service users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/services/:service/users",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of results returned"
+              },
+              {
+                "name": "prefix",
+                "value": "\"user_\"",
+                "type": "query",
+                "description": "Filter results by prefix"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Order by ascending or descending"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "\"eyJDb250aW\"",
+                "type": "query",
+                "description": "Contiguous ID for pagination"
+              },
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint retrieves a list of service users based on the provided query parameters."
+        },
+        {
+          "info": {
+            "name": "Register Service User handles the request to register a new service user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/services/:service/users",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint creates a new service user based on the provided request body."
+        },
+        {
+          "info": {
+            "name": "Get Service User handles the request to get a service user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/services/:service/users/:userid",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint retrieves a service user based on the provided service type and user ID."
+        },
+        {
+          "info": {
+            "name": "Update Service User handles the request to update a service user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/v1/services/:service/users/:userid",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint updates a service user based on the provided service type and user ID."
+        },
+        {
+          "info": {
+            "name": "Delete Service User handles the request to delete a service user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/v1/services/:service/users/:userid",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint deletes a service user based on the provided service type and user ID."
+        },
+        {
+          "info": {
+            "name": "Get Users handles the request to get users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/v1/users",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Limit the number of results returned"
+              },
+              {
+                "name": "prefix",
+                "value": "\"user_\"",
+                "type": "query",
+                "description": "Filter results by prefix"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "Order by ascending or descending"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "\"eyJDb250aW\"",
+                "type": "query",
+                "description": "Contiguous ID for pagination"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint retrieves a list of users based on the provided query parameters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

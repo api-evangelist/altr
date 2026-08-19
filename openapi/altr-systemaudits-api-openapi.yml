@@ -1,0 +1,235 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Systemaudits API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: systemaudits
+  description: Operations related to system audits
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/audit-logs#systems
+paths:
+  /systemaudits:
+    get:
+      deprecated: true
+      tags:
+      - systemaudits
+      summary: ' Deprecated - Returns system audits based on the query values specified (if any are set)'
+      operationId: getSystemAudits
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - name: showUnread
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether or not you wish to see all unread notifications
+      - name: viewAll
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: View all notifications that have been sent and have NOT been sent to users.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      systemaudits:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SystemAudit'
+                      unreadCount:
+                        type: integer
+                        description: The number of unread notifications left.
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /systemaudits/read:
+    patch:
+      deprecated: true
+      tags:
+      - systemaudits
+      summary: Deprecated - Reads a system audit, this gives the `timeread` property a timestamp
+      operationId: patchSystemaudits
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                systemaudits:
+                  type: array
+                  items:
+                    type: integer
+                    description: The ids of the system audits
+                  description: An array of the all the ids you wish to set to read
+                markAll:
+                  type: boolean
+                  description: Whether to mark all system audits belonging to the currently logged in user to read. markAll will take precedence over `systemaudits`.
+                  default: false
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: integer
+                    description: The number of system audits that were updated to be marked as 'read'.
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    SystemAudit:
+      type: object
+      description: System Audits object that contains a few properties.
+      properties:
+        id:
+          type: integer
+          example: 1
+        timeRead:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Null or a timestamp of when the system audit was read. Null meaning that it has NOT been read yet.
+        payload:
+          type: string
+          description: Stringify json that contains the message data about the system audit.
+          example: '{''actor'': {id: 2}}'
+        notificationType:
+          type: string
+          description: What type of notification this is and what entity it belongs too.
+          example: User Update
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

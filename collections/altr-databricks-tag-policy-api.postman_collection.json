@@ -1,0 +1,748 @@
+{
+  "item": [
+    {
+      "id": "ca3ed699-d2df-4efc-928d-b14ea862c664",
+      "name": "Databricks Tag Policy",
+      "description": {
+        "content": "Operations related to applying tag-based governance policies to Databricks",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a6d1b952-c770-4c8f-beff-563f21854a0a",
+          "name": "Start application of a tag-based policy",
+          "request": {
+            "name": "Start application of a tag-based policy",
+            "description": {
+              "content": "When `policyAction` is `set`, an asynchronous Databricks job is launched to apply the given `policy` on all columns tagged with `tagName`.<p>When `policyAction` is set to `delete`, `policy` is ignored, and a Databricks job is launched to remove policy configured on tag `tagName`.<p>In either case, the status of the job can be tracked with the `GET` endpoint using the returned `id`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dbx",
+                "tag-policy",
+                "apply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "null",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "601a64d9-6f8a-4a4f-b204-cc50b4a59929",
+              "name": "Asynchronous policy application successfully launched.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentialsId\": 1190,\n  \"policyAction\": \"set\",\n  \"tagName\": \"stoplight\",\n  \"policy\": {\n    \"defaultAction\": \"full_mask\",\n    \"rules\": [\n      {\n        \"roles\": [\n          \"green_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"yellow_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"yellow\"\n        ],\n        \"action\": \"last_four\",\n        \"permissivity\": 50\n      },\n      {\n        \"roles\": [\n          \"red_viewers\"\n        ],\n        \"tagValues\": [\n          \"red\",\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"38ac9f93-748d-480d-812e-e8ee7759c99a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d194535-1c7c-4d4a-84f6-ac4df6a0f545",
+              "name": "Something is wrong with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentialsId\": 1190,\n  \"policyAction\": \"set\",\n  \"tagName\": \"stoplight\",\n  \"policy\": {\n    \"defaultAction\": \"full_mask\",\n    \"rules\": [\n      {\n        \"roles\": [\n          \"green_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"yellow_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"yellow\"\n        ],\n        \"action\": \"last_four\",\n        \"permissivity\": 50\n      },\n      {\n        \"roles\": [\n          \"red_viewers\"\n        ],\n        \"tagValues\": [\n          \"red\",\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1f194481-501f-4915-aba2-cf54823c263d",
+              "name": "Your API key or secret is wrong or revoked.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentialsId\": 1190,\n  \"policyAction\": \"set\",\n  \"tagName\": \"stoplight\",\n  \"policy\": {\n    \"defaultAction\": \"full_mask\",\n    \"rules\": [\n      {\n        \"roles\": [\n          \"green_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"yellow_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"yellow\"\n        ],\n        \"action\": \"last_four\",\n        \"permissivity\": 50\n      },\n      {\n        \"roles\": [\n          \"red_viewers\"\n        ],\n        \"tagValues\": [\n          \"red\",\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6761dc8a-7eb5-4560-a13d-b69aee661868",
+              "name": "Your ALTR organization is not authorized for this feature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentialsId\": 1190,\n  \"policyAction\": \"set\",\n  \"tagName\": \"stoplight\",\n  \"policy\": {\n    \"defaultAction\": \"full_mask\",\n    \"rules\": [\n      {\n        \"roles\": [\n          \"green_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"yellow_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"yellow\"\n        ],\n        \"action\": \"last_four\",\n        \"permissivity\": 50\n      },\n      {\n        \"roles\": [\n          \"red_viewers\"\n        ],\n        \"tagValues\": [\n          \"red\",\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7ebbfff1-d513-4728-aa32-3fe251b5b37d",
+              "name": "Something went wrong server-side. Try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentialsId\": 1190,\n  \"policyAction\": \"set\",\n  \"tagName\": \"stoplight\",\n  \"policy\": {\n    \"defaultAction\": \"full_mask\",\n    \"rules\": [\n      {\n        \"roles\": [\n          \"green_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"yellow_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"green\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      },\n      {\n        \"roles\": [\n          \"orange_viewers\"\n        ],\n        \"tagValues\": [\n          \"yellow\"\n        ],\n        \"action\": \"last_four\",\n        \"permissivity\": 50\n      },\n      {\n        \"roles\": [\n          \"red_viewers\"\n        ],\n        \"tagValues\": [\n          \"red\",\n          \"green\",\n          \"yellow\"\n        ],\n        \"action\": \"allow\",\n        \"permissivity\": 100\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9af3bd52-3f16-4404-858b-9dfbbfa052c0",
+          "name": "Get status and logs of a tag-based policy application",
+          "request": {
+            "name": "Get status and logs of a tag-based policy application",
+            "description": {
+              "content": "Check status of an asynchronous application of a tag-based policy started in the `POST` endpoint.<p>Returns the status and, if available, a presigned S3 URL to the logs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dbx",
+                "tag-policy",
+                "apply",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "39eec5ad-59a6-441c-8911-8cf8ce506d77",
+              "name": "Successfully retrieved status of given tag-based policy asynchronous application, and the application is in a final state, so logs are available.<p>Note the given pre-signed URL is valid for *at most* one hour. If it expires, try this request again, and you will get a new pre-signed URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"applied\",\n  \"statusMsg\": \"Successfully applied tag-based ALTR governance policy!\",\n  \"lastStatusUpdateTime\": \"2024-08-14T21:20:52.262Z\",\n  \"presignedS3HttpMethod\": \"GET\",\n  \"presignedS3Url\": \"https://an-s3-bucket.s3.us-east-1.amazonaws.com/.../...log?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...\",\n  \"presignedS3Headers\": {\n    \"Host\": [\n      \"an-s3-bucket.s3.us-east-1.amazonaws.com\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a821c1aa-23cb-4177-be5f-9ababa52f887",
+              "name": "Successfully retrieved status of given tag-based policy asynchronous application, and that asynchronous operation is not yet done.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"pending\",\n  \"statusMsg\": \"Working...\",\n  \"lastStatusUpdateTime\": \"2024-08-14T21:20:52.262Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37a1d13a-493d-4491-9814-74c74df861ce",
+              "name": "Something is wrong with the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d95fec71-0366-4fe2-a687-c651073963f3",
+              "name": "Your API key or secret is wrong or revoked.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7edc53c0-b7e8-4476-9655-a14592a7c4e9",
+              "name": "Your ALTR organization is not authorized for this feature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6cc86eae-7bd1-4802-9821-41acb74fdbd0",
+              "name": "The provided policy application `id` was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8a96f45d-c13d-4613-9a12-cb6f6dae128c",
+              "name": "Something went wrong server-side. Try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dbx",
+                    "tag-policy",
+                    "apply",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The ID of the tag-based policy application as provided in the `POST` response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://[Hostname provided by ALTR support]/v1/alpha",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d10c6c08-97a9-4807-af41-7e6064a6d86e",
+    "name": "ALTR — Tag-based governance policy on Databricks Databricks Tag Policy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is an alpha API and may be changed or removed entirely in the future.<p>After registering your Databricks service principal and workspace with ALTR using `POST /databases` in the [Management API](https://altrnet.live.altr.com/api/swagger/#/databases/createDatabase), use this API to define tag-based governance on tagged columns in Databricks.<p>Your ALTR organization must be explicitly enable to use this API. Contact ALTR support.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

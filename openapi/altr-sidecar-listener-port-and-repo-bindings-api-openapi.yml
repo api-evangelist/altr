@@ -1,0 +1,348 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Sidecar Listener Port and Repo bindings API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Sidecar Listener Port and Repo bindings
+paths:
+  /repos/{repo_name}/bindings:
+    get:
+      description: List all bindings for a specific repo with optional filtering by ports and sidecar IDs.
+      parameters:
+      - description: The repo name
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      - description: Comma-separated list of ports to filter by
+        in: query
+        name: ports
+        schema:
+          type: string
+      - description: Comma-separated list of sidecar IDs to filter by
+        in: query
+        name: sidecar_ids
+        schema:
+          type: string
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListBindingsOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List repo bindings.
+      tags:
+      - Sidecar Listener Port and Repo bindings
+  /sidecars/{sidecar_id}/bindings:
+    get:
+      description: List all bindings for a specific sidecar with optional filtering by ports and repo names.
+      parameters:
+      - description: The sidecar ID
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: Comma-separated list of ports to filter by
+        in: query
+        name: ports
+        schema:
+          type: string
+      - description: Comma-separated list of repo names to filter by
+        in: query
+        name: repo_names
+        schema:
+          type: string
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListBindingsOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List sidecar bindings.
+      tags:
+      - Sidecar Listener Port and Repo bindings
+  /sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}:
+    delete:
+      description: Delete an existing Repo Sidecar Binding.
+      parameters:
+      - description: The sidecar ID.
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: The repo name.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      - description: The sidecar listener port.
+        in: path
+        name: port
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Delete a Repo Sidecar Binding.
+      tags:
+      - Sidecar Listener Port and Repo bindings
+    get:
+      description: Get the repo sidecar binding for a given sidecar ID, port, and repo name.
+      parameters:
+      - description: ID of sidecar.
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: Port number.
+        in: path
+        name: port
+        required: true
+        schema:
+          type: string
+      - description: Repository name.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.GetRepoBindOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Get a Repo Sidecar Binding.
+      tags:
+      - Sidecar Listener Port and Repo bindings
+    post:
+      description: Create a new Repo Sidecar Binding with the provided details.
+      parameters:
+      - description: The sidecar ID to bind.
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: The repo name to bind.
+        in: path
+        name: repo_name
+        required: true
+        schema:
+          type: string
+      - description: The sidecar listener port to bind.
+        in: path
+        name: port
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Create a new Repo Sidecar Binding.
+      tags:
+      - Sidecar Listener Port and Repo bindings
+components:
+  schemas:
+    management.RepoSidecarBinding:
+      properties:
+        port:
+          type: integer
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '3'
+        sidecar_id:
+          type: string
+          x-order: '2'
+      type: object
+      x-order: '0'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.ListBindingsOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        repo_bindings:
+          items:
+            $ref: '#/components/schemas/management.RepoSidecarBinding'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.GetRepoBindOutput:
+      properties:
+        repo_sidecar_binding:
+          $ref: '#/components/schemas/management.RepoSidecarBinding'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

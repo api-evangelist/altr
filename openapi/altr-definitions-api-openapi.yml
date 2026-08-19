@@ -1,0 +1,517 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Audit Report Definitions API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.audit-report.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Definitions
+paths:
+  /audit-reports/definitions/:
+    get:
+      description: Returns a paginated list of audit report definitions for the authenticated organization.
+      parameters:
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      - description: Show only archived definitions
+        in: query
+        name: archived
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListDefinitionsResponse'
+          description: OK
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List report definitions.
+      tags:
+      - Definitions
+    post:
+      description: Creates a new audit report definition with filters, schedule, and delivery configuration.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.DefinitionInput'
+              summary: definition
+              description: Report definition
+        description: Report definition
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Definition'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition limit reached
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create a report definition.
+      tags:
+      - Definitions
+  /audit-reports/definitions/{definition_id}:
+    delete:
+      description: Soft-deletes an audit report definition by setting archived_at. Archived definitions are hidden from default list view but remain queryable. Must be restored before editing or triggering.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: definition_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Definition'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition already archived
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Archive a report definition.
+      tags:
+      - Definitions
+    get:
+      description: Returns a single audit report definition by ID.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: definition_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Definition'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get a report definition.
+      tags:
+      - Definitions
+    put:
+      description: Replaces the audit report definition with the provided body, preserving immutable fields.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: definition_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.DefinitionInput'
+              summary: definition
+              description: Updated report definition
+        description: Updated report definition
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Definition'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Update a report definition.
+      tags:
+      - Definitions
+  /audit-reports/definitions/{definition_id}/restore:
+    post:
+      description: Removes the archived status from a definition, making it active again.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: definition_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Definition'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition is not archived
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Restore an archived report definition.
+      tags:
+      - Definitions
+  /audit-reports/definitions/{definition_id}/trigger:
+    post:
+      description: Queues a new report instance and starts the Step Function pipeline. Rate-limited to once per 5 minutes per definition.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: definition_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.TriggerNowResponse'
+          description: Report generation initiated
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Definition not found
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Trigger on-demand report generation.
+      tags:
+      - Definitions
+components:
+  schemas:
+    models.FilterGroup:
+      properties:
+        filters:
+          items:
+            $ref: '#/components/schemas/models.Filter'
+          type: array
+          uniqueItems: false
+      type: object
+    models.ReportWindow:
+      properties:
+        lookback_days:
+          description: Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).
+          example: 7
+          type: integer
+        timezone:
+          example: America/New_York
+          type: string
+      type: object
+    models.Filter:
+      properties:
+        field:
+          description: 'OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.'
+          example: database_name
+          type: string
+        mode:
+          enum:
+          - include
+          - exclude
+          example: include
+          type: string
+        patterns:
+          items:
+            $ref: '#/components/schemas/models.FilterPattern'
+          type: array
+          uniqueItems: false
+        range:
+          $ref: '#/components/schemas/models.NumericRange'
+        value:
+          type: boolean
+      type: object
+    models.DefinitionInput:
+      properties:
+        delivery:
+          $ref: '#/components/schemas/models.Delivery'
+        description:
+          example: Tracks schema changes across production databases
+          type: string
+        filters:
+          $ref: '#/components/schemas/models.ReportFilters'
+        integration_type:
+          enum:
+          - oltp
+          - snowflake
+          example: oltp
+          type: string
+        name:
+          example: Weekly DDL Audit
+          type: string
+        report_window:
+          $ref: '#/components/schemas/models.ReportWindow'
+        required_approvals:
+          example: 2
+          type: integer
+        retention_days:
+          example: 90
+          type: integer
+        schedule:
+          $ref: '#/components/schemas/models.Schedule'
+      type: object
+    models.Schedule:
+      properties:
+        cron:
+          example: 0 9 ? * MON
+          type: string
+        enabled:
+          example: true
+          type: boolean
+        timezone:
+          example: America/New_York
+          type: string
+      type: object
+    models.FilterPattern:
+      properties:
+        match_type:
+          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
+          enum:
+          - exact
+          - contains
+          - starts_with
+          - ends_with
+          example: starts_with
+          type: string
+        value:
+          example: PROD_
+          type: string
+      type: object
+    models.DeliveryChannel:
+      properties:
+        enabled:
+          example: true
+          type: boolean
+        recipients:
+          example:
+          - admin@company.com
+          - compliance@company.com
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        type:
+          enum:
+          - email
+          example: email
+          type: string
+      type: object
+    models.ListDefinitionsResponse:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Definition'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.Definition:
+      properties:
+        archived_at:
+          type: string
+        created_at:
+          type: string
+        definition_id:
+          type: string
+        delivery:
+          $ref: '#/components/schemas/models.Delivery'
+        description:
+          example: Tracks schema changes across production databases
+          type: string
+        filters:
+          $ref: '#/components/schemas/models.ReportFilters'
+        integration_type:
+          description: Determines which audit data source and filter fields are available. "oltp" = ALTR sidecar audits, "snowflake" = Snowflake query audits.
+          enum:
+          - oltp
+          - snowflake
+          example: oltp
+          type: string
+        last_triggered_at:
+          type: string
+        name:
+          example: Weekly DDL Audit
+          type: string
+        report_window:
+          $ref: '#/components/schemas/models.ReportWindow'
+        required_approvals:
+          example: 2
+          type: integer
+        retention_days:
+          example: 90
+          type: integer
+        schedule:
+          $ref: '#/components/schemas/models.Schedule'
+        updated_at:
+          type: string
+      type: object
+    models.NumericRange:
+      properties:
+        max:
+          type: integer
+        min:
+          type: integer
+      type: object
+    models.Delivery:
+      properties:
+        channels:
+          items:
+            $ref: '#/components/schemas/models.DeliveryChannel'
+          type: array
+          uniqueItems: false
+      type: object
+    models.ReportFilters:
+      properties:
+        filter_groups:
+          items:
+            $ref: '#/components/schemas/models.FilterGroup'
+          type: array
+          uniqueItems: false
+      type: object
+    models.TriggerNowResponse:
+      properties:
+        instance_id:
+          type: string
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

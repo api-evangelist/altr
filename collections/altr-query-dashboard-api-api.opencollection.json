@@ -1,0 +1,198 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Query Dashboard Query Dashboard API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Query Dashboard API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger query audit search for a count using various filters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/dam/search",
+            "params": [
+              {
+                "name": "integration_type",
+                "value": "",
+                "type": "query",
+                "description": "Integration type. Allowed values: 'snowflake', 'oltp', 'all'."
+              },
+              {
+                "name": "resolution",
+                "value": "",
+                "type": "query",
+                "description": "Resolution of the data. Allowed values: 'hour', 'day', 'month', 'year'."
+              },
+              {
+                "name": "from_date_time",
+                "value": "",
+                "type": "query",
+                "description": "Queries that ended before this time will not be counted. Must be provided as a UTC timestamp in valid RFC3339 format. Required with to_date_time."
+              },
+              {
+                "name": "to_date_time",
+                "value": "",
+                "type": "query",
+                "description": "Queries that ended after this time will not be counted. Must be provided as a UTC timestamp in valid RFC3339 format. Required with from_date_time."
+              },
+              {
+                "name": "consuming_users",
+                "value": "",
+                "type": "query",
+                "description": "OLTP consuming usernames. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "repository_users",
+                "value": "",
+                "type": "query",
+                "description": "OLTP repository usernames. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "consuming_user_emails",
+                "value": "",
+                "type": "query",
+                "description": "OLTP consuming user emails. Excluded with integration_type=snowflake or all. Max 10, each max 1024 chars."
+              },
+              {
+                "name": "repository_types",
+                "value": "",
+                "type": "query",
+                "description": "OLTP repository types. Excluded with integration_type=snowflake or all. Max 10."
+              },
+              {
+                "name": "repository_names",
+                "value": "",
+                "type": "query",
+                "description": "OLTP repository names. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "repository_sources",
+                "value": "",
+                "type": "query",
+                "description": "OLTP repository sources. Excluded with integration_type=snowflake or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "statement_types",
+                "value": "",
+                "type": "query",
+                "description": "Statement types. Excluded with integration_type=snowflake or all. Allowed: SELECT, INSERT, DELETE, UPDATE. Max 10."
+              },
+              {
+                "name": "ip_addresses",
+                "value": "",
+                "type": "query",
+                "description": "IP addresses. Excluded with integration_type=oltp or all. Max 10, each max 45 chars."
+              },
+              {
+                "name": "snowflake_usernames",
+                "value": "",
+                "type": "query",
+                "description": "Snowflake usernames. Excluded with integration_type=oltp or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "snowflake_current_roles",
+                "value": "",
+                "type": "query",
+                "description": "Snowflake current roles. Excluded with integration_type=oltp or all. Max 10, each max 255 chars."
+              },
+              {
+                "name": "query_texts",
+                "value": "",
+                "type": "query",
+                "description": "Query texts. Excluded with integration_type=oltp or all. Max 10, each max 15000 chars."
+              },
+              {
+                "name": "snowflake_query_tag_values",
+                "value": "",
+                "type": "query",
+                "description": "Snowflake query tag values. Excluded with integration_type=oltp or all. Max 10, each max 512 chars."
+              },
+              {
+                "name": "snowflake_query_tag_names",
+                "value": "",
+                "type": "query",
+                "description": "Snowflake query tag names. Excluded with integration_type=oltp or all. Max 10, each max 256 chars."
+              },
+              {
+                "name": "tag_present",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only include queries where a tag is present or absent. Allowed values: TAG_PRESENT, TAG_ABSENT."
+              },
+              {
+                "name": "connection_status",
+                "value": "",
+                "type": "query",
+                "description": "OLTP connection status. Excluded with integration_type=snowflake or all. Allowed: SUCCESS, FAILED, ALL."
+              },
+              {
+                "name": "group_by",
+                "value": "",
+                "type": "query",
+                "description": "Group by. Allowed: repository_name, repository_username, repository_type, repository_source, consuming_user, consuming_user_email, statement_type, query_text, ip_address, snowflake_current_role, snowflake_query_tag_name, snowflake_query_tag_value, snowflake_username."
+              },
+              {
+                "name": "count_by",
+                "value": "",
+                "type": "query",
+                "description": "Count by. Allowed: accessed_rows, query_count, snowflake_username, consuming_user, snowflake_current_role, repository_user."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint triggers a search to return DAM metrics based on the provided parameters.\nThe `search_uuid` that is returned expires after 30 days."
+        },
+        {
+          "info": {
+            "name": "Get the results of a search using the `search_uuid`.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/dam/search/:search_uuid",
+            "params": [
+              {
+                "name": "search_uuid",
+                "value": "3d53c540-edba-42ba-991b-553b59bcf559",
+                "type": "path",
+                "description": "`search_uuid`."
+              },
+              {
+                "name": "limit",
+                "value": "500",
+                "type": "query",
+                "description": "Limit the number of results returned. Default is 500."
+              },
+              {
+                "name": "next_page_token",
+                "value": "AW21AAy4Q...",
+                "type": "query",
+                "description": "Token to retrieve the next page of results."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /audits endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

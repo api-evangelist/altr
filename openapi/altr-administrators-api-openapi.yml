@@ -1,0 +1,481 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Administrators API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: administrators
+  description: Operations about administrators
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/settings#Administration
+paths:
+  /administrators:
+    get:
+      tags:
+      - administrators
+      summary: List administrators in organization.
+      description: Lists all the administrators in the organization, in the order of their last name (by default, can be changed with filters).
+      operationId: administrators|get-all-administrators
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - lastName
+          - email
+          - activityTimestamp
+          - username
+        description: The value you want to sort by.
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+        description: Retrieve administrators by their status.
+      - name: username
+        in: query
+        description: Filter administrators by their username
+        schema:
+          type: string
+          maxLength: 450
+      responses:
+        '200':
+          $ref: '#/components/responses/Administrators'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - administrators
+      summary: Creates a new administrators and invites them to the organization.
+      description: Creates a new administrators that will be added to the organization. This will send them an e-mail invite and the new administrator will be in the 'pending' status until they set their password.
+      operationId: administrators|create-administrator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - firstName
+              - lastName
+              - role
+              - phone
+              - email
+              - countryCode
+              - username
+              properties:
+                email:
+                  type: string
+                  example: George@altr.com
+                firstName:
+                  type: string
+                  example: George
+                lastName:
+                  type: string
+                  example: Washington
+                role:
+                  type: string
+                  enum:
+                  - ADMINISTRATOR
+                  - SUPERADMINISTRATOR
+                  example: SUPERADMINISTRATOR
+                phone:
+                  type: integer
+                  example: 1115555555
+                countryCode:
+                  type: integer
+                  example: 1
+                username:
+                  type: string
+                  example: George3
+      responses:
+        '201':
+          $ref: '#/components/responses/Administrator'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /administrators/{id}:
+    get:
+      tags:
+      - administrators
+      summary: Returns a single administrators by the id given.
+      operationId: administrators|get-administrator
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          $ref: '#/components/responses/Administrator'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - administrators
+      summary: Updates an administrator.
+      description: Updates an administrator. Can be used to update oneself or other administrators. Can also be used to unlock an administrator who's account is locked out and update roles. Roles permissions are take into account when updating administrators.
+      operationId: administrators|update-administrator
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: George
+                lastName:
+                  type: string
+                  example: Washington
+                role:
+                  type: string
+                  enum:
+                  - ADMINISTRATOR
+                  - SUPERADMINISTRATOR
+                  description: Updating this value will change the privileges of the administrator. You cannot change roles of other administrators that have the same role as you.
+                  example: SUPERADMINISTRATOR
+                phone:
+                  type: integer
+                  example: 1115555555
+                countryCode:
+                  type: integer
+                  example: 1
+                userStatus:
+                  type: string
+                  enum:
+                  - pending
+                  - active
+                  - disabled
+                  example: active
+                unlock:
+                  type: boolean
+                  description: Optional value, pass true for this property value to unlock an administrator if they're locked. This property will be ignored if they are not locked.
+                  example: true
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdatedAdministrator'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /administrators/resend-token:
+    post:
+      tags:
+      - administrators
+      summary: For a pending user, resend's them an e-mail with a newly generated token.
+      description: Resend's and generates a new user e-mail to the pending user.
+      operationId: administrators|resend-token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              properties:
+                userId:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          $ref: '#/components/responses/OkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Administrator:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 100
+        firstName:
+          type: string
+          example: George
+        lastName:
+          type: string
+          example: Washington
+        name:
+          type: string
+          description: Combination of `lastName, firstName`
+          example: Washington, George
+        email:
+          type: string
+          example: George@altr.com
+        phone:
+          type: integer
+          example: 1115555555
+        phoneNumber:
+          type: string
+          description: Combination of country code and phone
+          example: '+11115555555'
+        activityTimestamp:
+          type: string
+          format: date-time
+        userStatus:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+          example: active
+        role:
+          type: string
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+          example: SUPERADMINISTRATOR
+        countryCode:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '1732-02-22T20:00:37.000Z'
+        isLocked:
+          type: boolean
+          description: Whether the administrator is locked out of their account or not.
+          example: false
+        username:
+          type: string
+          example: George3
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    UpdatedAdministrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Administrators:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  administrators:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Administrator'
+                  count:
+                    type: integer
+                    example: 1
+              success:
+                type: boolean
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    OkResponse:
+      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              success:
+                type: boolean
+                example: true
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Administrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

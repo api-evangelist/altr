@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Snowflake Tag Value Refresh Refresh Tag Value Job API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Refresh Tag Value Job",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate a job to refresh a tag's allowed values.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.live.altr.com/v1/tag/refresh/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint initiates a tag value refresh job for a specified tag. It checks whether the provided tag exists or not and if the refresh job meets the necessary validation criteria. If all conditions are met, it triggers a refresh job and returns a job reference ID."
+        },
+        {
+          "info": {
+            "name": "Get Tag Value Refresh Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/refresh/status/:job-reference-id",
+            "params": [
+              {
+                "name": "job-reference-id",
+                "value": "",
+                "type": "path",
+                "description": "The tag value refresh job reference ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a tag value refresh job status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

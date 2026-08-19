@@ -1,0 +1,626 @@
+{
+  "item": [
+    {
+      "id": "a33c2655-fb70-4038-96c7-2aca36f81148",
+      "name": "Unsubscribe",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6c49ef85-1d39-41df-b03a-58d7584c513e",
+          "name": "Unsubscribe from DAM alert emails (human click).",
+          "request": {
+            "name": "Unsubscribe from DAM alert emails (human click).",
+            "description": {
+              "content": "Validates the HMAC token embedded in a DAM alert email's unsubscribe link, removes the recipient from each referenced rule's email_recipients, and returns an HTML confirmation page. Unauthenticated — authorized solely by the signed token.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) HMAC-signed unsubscribe token from the email footer link"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ceedc021-6352-4832-b0cc-5982986a1a8f",
+              "name": "HTML confirmation page",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ad1958d5-f2b8-4dc2-b30a-2881f8705b29",
+              "name": "Missing token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3cf74f5e-90e4-4d75-8b97-d1353ec0a3d0",
+              "name": "Invalid or tampered token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f40b20ab-7268-49c9-b10b-7a7b379d5099",
+          "name": "Unsubscribe from DAM alert emails (RFC 8058 one-click).",
+          "request": {
+            "name": "Unsubscribe from DAM alert emails (RFC 8058 one-click).",
+            "description": {
+              "content": "One-click unsubscribe for Gmail/Yahoo. The token is supplied in the query string (the List-Unsubscribe URL already carries it); the `List-Unsubscribe=One-Click` request body is ignored. Unauthenticated — authorized solely by the signed token. Returns 200 with an empty body.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) HMAC-signed unsubscribe token"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "0",
+                  "value": "<"
+                },
+                {
+                  "disabled": false,
+                  "key": "1",
+                  "value": "s"
+                },
+                {
+                  "disabled": false,
+                  "key": "2",
+                  "value": "t"
+                },
+                {
+                  "disabled": false,
+                  "key": "3",
+                  "value": "r"
+                },
+                {
+                  "disabled": false,
+                  "key": "4",
+                  "value": "i"
+                },
+                {
+                  "disabled": false,
+                  "key": "5",
+                  "value": "n"
+                },
+                {
+                  "disabled": false,
+                  "key": "6",
+                  "value": "g"
+                },
+                {
+                  "disabled": false,
+                  "key": "7",
+                  "value": ">"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4a4f6731-e51d-4738-8a5b-e9782fcd8fe4",
+              "name": "Unsubscribed (empty body)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "0",
+                      "value": "<"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "1",
+                      "value": "s"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "2",
+                      "value": "t"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "3",
+                      "value": "r"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "4",
+                      "value": "i"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "5",
+                      "value": "n"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "6",
+                      "value": "g"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "7",
+                      "value": ">"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebb9f5d3-c962-4e31-9813-db2dd2aac1d3",
+              "name": "Missing token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "0",
+                      "value": "<"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "1",
+                      "value": "s"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "2",
+                      "value": "t"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "3",
+                      "value": "r"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "4",
+                      "value": "i"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "5",
+                      "value": "n"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "6",
+                      "value": "g"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "7",
+                      "value": ">"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 9869,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4035\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ce62816-65ee-4d21-8f34-404ab323a828",
+              "name": "Invalid or tampered token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "0",
+                      "value": "<"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "1",
+                      "value": "s"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "2",
+                      "value": "t"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "3",
+                      "value": "r"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "4",
+                      "value": "i"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "5",
+                      "value": "n"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "6",
+                      "value": "g"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "7",
+                      "value": ">"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 9869,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 4035\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.dam-alerting.live.altr.com/v1/dam-alerting",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0b06b7b9-eda6-451a-8042-9b8d600cade0",
+    "name": "ALTR DAM Alerting Unsubscribe API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manages DAM alerting rules and alerts. Supports rule CRUD, alert inbox, and acknowledgment for ALTR's Data Access Monitoring feature.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

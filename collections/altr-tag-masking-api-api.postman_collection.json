@@ -1,0 +1,2445 @@
+{
+  "item": [
+    {
+      "id": "8a1f47cb-815a-4c72-84ba-1679cbfa0484",
+      "name": "Tag Masking API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "084d92b6-b070-45bb-88bc-a3753018dfa4",
+          "name": "List Tag Masking for an organization.",
+          "request": {
+            "name": "List Tag Masking for an organization.",
+            "description": {
+              "content": "List all Tag Masking for an organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50",
+                  "description": "The maximum number of items to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "The number of items to skip."
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "asc",
+                  "description": "The order of returned data for the defined field."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_by",
+                  "value": "friendly_name",
+                  "description": "The field to sort by."
+                },
+                {
+                  "disabled": false,
+                  "key": "friendly_name",
+                  "value": "<string>",
+                  "description": "The tag friendly name to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "database_id",
+                  "value": "<integer>",
+                  "description": "The database id to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "tag_name",
+                  "value": "<string>",
+                  "description": "The tag name to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "protection_type",
+                  "value": "governed",
+                  "description": "The protection type to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "status_include",
+                  "value": "<string>",
+                  "description": "The status(s) that should be included in response. (comma-delimited list) (applied, failed, pending)"
+                },
+                {
+                  "disabled": false,
+                  "key": "status_exclude",
+                  "value": "<string>",
+                  "description": "The status(s) that should not be included in response. (comma-delimited list) (applied, failed, pending)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f8cd24cb-e073-4b68-8a0f-86a24f974007",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "friendly_name"
+                    },
+                    {
+                      "key": "friendly_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "database_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "protection_type",
+                      "value": "governed"
+                    },
+                    {
+                      "key": "status_include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status_exclude",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"has_more\": false,\n  \"items\": [\n    {\n      \"created_at\": \"string\",\n      \"database_id\": 1799,\n      \"database_name\": \"string\",\n      \"database_type_enum\": 5636,\n      \"friendly_name\": \"string\",\n      \"masking_applied\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": true,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"masking_failed\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": false,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"masking_pending\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": true,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"schema_name\": \"string\",\n      \"tag_group_id\": \"string\",\n      \"tag_name\": \"string\",\n      \"updated_at\": \"string\"\n    },\n    {\n      \"created_at\": \"string\",\n      \"database_id\": 4667,\n      \"database_name\": \"string\",\n      \"database_type_enum\": 7154,\n      \"friendly_name\": \"string\",\n      \"masking_applied\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": false,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"masking_failed\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": true,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"masking_pending\": {\n        \"custom_role_provider\": {\n          \"enabled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"fully_qualified_function_udf_name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"encryption_fpe_options\": {\n          \"alphabet\": \"string\",\n          \"is_padded\": false,\n          \"key_name\": \"string\",\n          \"tweak_name\": \"string\"\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"force_delete\": true,\n        \"mask_data_type_list\": [\n          \"string\",\n          \"string\"\n        ],\n        \"protection_type\": \"string\",\n        \"tracking_id\": \"string\"\n      },\n      \"schema_name\": \"string\",\n      \"tag_group_id\": \"string\",\n      \"tag_name\": \"string\",\n      \"updated_at\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ea03b09-7365-4d09-9002-00fda392a539",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "friendly_name"
+                    },
+                    {
+                      "key": "friendly_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "database_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "protection_type",
+                      "value": "governed"
+                    },
+                    {
+                      "key": "status_include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status_exclude",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc430a6b-37af-4adb-8c1f-49cca2ec38a0",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "friendly_name"
+                    },
+                    {
+                      "key": "friendly_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "database_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "protection_type",
+                      "value": "governed"
+                    },
+                    {
+                      "key": "status_include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status_exclude",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e63ed9d-3536-4a94-9be8-753521466ddc",
+          "name": "Create/Update a Tag Masking.",
+          "request": {
+            "name": "Create/Update a Tag Masking.",
+            "description": {
+              "content": "Create/Update a Tag Masking on the specified Tag.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8654c2ea-7991-4d45-9b17-4fa50da38c8f",
+              "name": "The Tag Masking was created and will be applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c91c4b3-235c-40e1-94a4-e8df9be7cb05",
+              "name": "The Tag Masking was updated and will be applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3f781d7b-c99d-4c17-83f6-307b7f1f4524",
+              "name": "Something about your request isn't correct.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d3c4aea2-acac-44e7-9822-55eb4bd6156d",
+              "name": "Another change is currently in progress for this Tag Masking.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4cc1a984-87f0-4adf-8865-ef4dfed15d58",
+              "name": "We ran in to an issue, please try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "339c7477-4f8e-4d2e-9441-090cd2b2310d",
+          "name": "Delete a Tag Masking.",
+          "request": {
+            "name": "Delete a Tag Masking.",
+            "description": {
+              "content": "Deletes an existing Tag Masking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ignore_errors",
+                  "value": "false",
+                  "description": "(Required) During the delete process ignore errors and forget the Tag Masking."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3096f167-71ed-4823-b1d5-d18afb176507",
+              "name": "The Tag Masking was successfully marked for deletion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "99014a93-ad11-43c7-89fb-aa7ef10d16ed",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35241dd1-2810-426e-82ed-a29a6839a016",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bfd1e69-6c08-4128-a06d-64cea207dab8",
+              "name": "Another change is currently in progress for this Tag Masking.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "264eb205-4a54-42e2-aeda-8c1d05087220",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"database_name\": \"<string>\",\n  \"schema_name\": \"<string>\",\n  \"tag_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9972b35f-33df-451e-b1a8-192aee153f34",
+          "name": "Get a Tag Masking.",
+          "request": {
+            "name": "Get a Tag Masking.",
+            "description": {
+              "content": "Get a Tag Masking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "database",
+                ":db-id",
+                "database-name",
+                ":database-name",
+                "tag-name",
+                ":tag-name",
+                "schema-name",
+                ":schema-name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "db-id",
+                  "description": "(Required) The ALTR DatabaseID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "database-name",
+                  "description": "(Required) The tag's database name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "schema-name",
+                  "description": "(Required) The tag's schema name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag-name",
+                  "description": "(Required) The tag's name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "protection-type",
+                  "description": "(Required) The optional protection type (e.g., governed, tokenized-vault)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "94c0656d-47bd-4d79-a829-f49502c740cd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "database",
+                    ":db-id",
+                    "database-name",
+                    ":database-name",
+                    "tag-name",
+                    ":tag-name",
+                    "schema-name",
+                    ":schema-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "db-id",
+                      "description": "(Required) The ALTR DatabaseID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "database-name",
+                      "description": "(Required) The tag's database name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "schema-name",
+                      "description": "(Required) The tag's schema name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-name",
+                      "description": "(Required) The tag's name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "protection-type",
+                      "description": "(Required) The optional protection type (e.g., governed, tokenized-vault)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"item\": {\n    \"created_at\": \"string\",\n    \"database_id\": 1269,\n    \"database_name\": \"string\",\n    \"database_type_enum\": 4768,\n    \"friendly_name\": \"string\",\n    \"masking_applied\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": false,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"masking_failed\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": false,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"masking_pending\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": true,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"schema_name\": \"string\",\n    \"tag_group_id\": \"string\",\n    \"tag_name\": \"string\",\n    \"updated_at\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67c0f04c-ba96-4fb4-9ba1-b1267de18b14",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "database",
+                    ":db-id",
+                    "database-name",
+                    ":database-name",
+                    "tag-name",
+                    ":tag-name",
+                    "schema-name",
+                    ":schema-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "db-id",
+                      "description": "(Required) The ALTR DatabaseID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "database-name",
+                      "description": "(Required) The tag's database name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "schema-name",
+                      "description": "(Required) The tag's schema name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-name",
+                      "description": "(Required) The tag's name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "protection-type",
+                      "description": "(Required) The optional protection type (e.g., governed, tokenized-vault)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90241fba-d32c-4d97-a45c-90cc571dee61",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "database",
+                    ":db-id",
+                    "database-name",
+                    ":database-name",
+                    "tag-name",
+                    ":tag-name",
+                    "schema-name",
+                    ":schema-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "db-id",
+                      "description": "(Required) The ALTR DatabaseID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "database-name",
+                      "description": "(Required) The tag's database name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "schema-name",
+                      "description": "(Required) The tag's schema name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-name",
+                      "description": "(Required) The tag's name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "protection-type",
+                      "description": "(Required) The optional protection type (e.g., governed, tokenized-vault)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a3121f78-cf5f-49e6-bd87-aedd1a70b5f4",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "database",
+                    ":db-id",
+                    "database-name",
+                    ":database-name",
+                    "tag-name",
+                    ":tag-name",
+                    "schema-name",
+                    ":schema-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "db-id",
+                      "description": "(Required) The ALTR DatabaseID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "database-name",
+                      "description": "(Required) The tag's database name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "schema-name",
+                      "description": "(Required) The tag's schema name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-name",
+                      "description": "(Required) The tag's name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "protection-type",
+                      "description": "(Required) The optional protection type (e.g., governed, tokenized-vault)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc0b1278-86da-45cd-b15f-99ee46380b03",
+          "name": "Get a Tag Masking.",
+          "request": {
+            "name": "Get a Tag Masking.",
+            "description": {
+              "content": "Get a Tag Masking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tag",
+                ":tag-group-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag-group-id",
+                  "description": "(Required) The Altr tag group ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4fe87c0d-26d2-409c-87a5-42ae86c33fd6",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"item\": {\n    \"created_at\": \"string\",\n    \"database_id\": 1269,\n    \"database_name\": \"string\",\n    \"database_type_enum\": 4768,\n    \"friendly_name\": \"string\",\n    \"masking_applied\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": false,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"masking_failed\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": false,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"masking_pending\": {\n      \"custom_role_provider\": {\n        \"enabled\": false,\n        \"fully_qualified_function_udf_name\": \"string\"\n      },\n      \"encryption_fpe_options\": {\n        \"alphabet\": \"string\",\n        \"is_padded\": false,\n        \"key_name\": \"string\",\n        \"tweak_name\": \"string\"\n      },\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\"\n      },\n      \"force_delete\": true,\n      \"mask_data_type_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"protection_type\": \"string\",\n      \"tracking_id\": \"string\"\n    },\n    \"schema_name\": \"string\",\n    \"tag_group_id\": \"string\",\n    \"tag_name\": \"string\",\n    \"updated_at\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93ede2da-c4d0-4205-89a8-58c90bc31536",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6d36688-49bf-4f09-afd8-49874341461b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cfedb475-d23c-4a8b-93cd-baa58926264f",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "799471a1-d032-4d21-8c2b-99e6b02c5703",
+          "name": "Creates a Tag Masking.",
+          "request": {
+            "name": "Creates a Tag Masking.",
+            "description": {
+              "content": "Creates a new Tag Masking on the specified Tag.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tag",
+                ":tag-group-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag-group-id",
+                  "description": "(Required) The Altr tag group ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "700a3016-7635-4304-8c8f-3ab112ce745c",
+              "name": "The Tag Masking was created and will be applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0d75b1ee-a329-477d-88fd-9877e7395aec",
+              "name": "The Tag Masking was updated and will be applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "65c19d54-7c35-4477-b61e-2c2917c5d70c",
+              "name": "Something about your request isn't correct.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f7ea6ba-dca6-4418-a65b-62525a3ce237",
+              "name": "Another change is currently in progress for this Tag Masking.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "51269437-c27a-4251-92a3-59fde563400e",
+              "name": "We ran in to an issue, please try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"database_id\": \"<integer>\",\n  \"friendly_name\": \"<string>\",\n  \"masking\": {\n    \"custom_role_provider\": {\n      \"enabled\": false\n    },\n    \"encryption_fpe_options\": {\n      \"alphabet\": \"<string>\",\n      \"is_padded\": false,\n      \"key_name\": \"<string>\",\n      \"tweak_name\": \"<string>\"\n    },\n    \"mask_data_type_list\": [\n      \"VARCHAR\",\n      \"NUMBER\"\n    ],\n    \"protection_type\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "96d50670-e0e9-4946-99d8-f72df602098b",
+          "name": "Delete a Tag Masking.",
+          "request": {
+            "name": "Delete a Tag Masking.",
+            "description": {
+              "content": "Deletes an existing Tag Masking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tag",
+                ":tag-group-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ignore_errors",
+                  "value": "false",
+                  "description": "(Required) During the delete process ignore issues and forget the Tag Masking."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag-group-id",
+                  "description": "(Required) The Altr tag group ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ef50d56d-3df9-4aa4-9ecf-3a8a1c11c07c",
+              "name": "The Tag Masking was successfully marked for deletion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c05c5bfd-28c4-44bf-980c-ea921a3941cc",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32fee908-81d9-4cea-aa41-ac17b744a15e",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aeaf7d7a-b600-44ca-bafb-78d4b08b2e4d",
+              "name": "Another change is currently in progress for this Tag Masking.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "592c24fb-8798-490b-9e87-a30f8257119b",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tag",
+                    ":tag-group-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ignore_errors",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tag-group-id",
+                      "description": "(Required) The Altr tag group ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/tag/masking",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "20a3059e-df3c-41ec-bee8-8466d135931e",
+    "name": "Tag Masking Tag Masking API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This provides the management interface for tag masking.",
+      "type": "text/plain"
+    }
+  }
+}

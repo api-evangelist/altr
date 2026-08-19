@@ -1,0 +1,1237 @@
+openapi: 3.2.0
+info:
+  title: Altr Rules API
+  version: '1.0'
+  description: 'Operations tagged Rules across 2 of this provider''s published API definitions: altr-dam-alerting-openapi.yml, altr-unified-policy-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+  variables:
+    orgID:
+      default: ''
+- url: https://api.live.altr.com/v1/unified-policy/management/
+tags:
+- name: Rules
+paths:
+  /rules:
+    servers:
+    - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+      variables:
+        orgID:
+          default: ''
+    post:
+      description: Creates a new rule with filters, severity, and delivery configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.CreateRuleRequest'
+              summary: rule
+              description: Rule Request
+        description: Rule Request
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Rule'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create a Rule.
+      tags:
+      - Rules
+  /rules/:
+    servers:
+    - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+      variables:
+        orgID:
+          default: ''
+    get:
+      description: Returns a paginated list of DAM alerting rules
+      parameters:
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination token from previous response
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Filter by enabled flag
+        in: query
+        name: enabled
+        schema:
+          type: boolean
+      - description: Filter by severity
+        in: query
+        name: severity
+        schema:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+      - description: Filter by rule type
+        in: query
+        name: rule_type
+        schema:
+          enum:
+          - match
+          - threshold
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListRulesResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid query parameter
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List Rules.
+      tags:
+      - Rules
+  /rules/{rule_id}:
+    servers:
+    - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+      variables:
+        orgID:
+          default: ''
+    delete:
+      description: Permanently deletes a rule and stops further evaluation against it.
+      parameters:
+      - description: Rule ID
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Rule not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Delete a rule.
+      tags:
+      - Rules
+    get:
+      description: Returns a single rule by ID
+      parameters:
+      - description: Rule ID
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Rule'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Rule not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get a Rule.
+      tags:
+      - Rules
+    patch:
+      description: Patches the mutable fields on a rule. Immutable fields (rule_type, filter_tree, data_source_scope, window_type, threshold, timezone) cannot be changed and must be set via delete+recreate.
+      parameters:
+      - description: Rule ID
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.UpdateRuleRequest'
+              summary: rule
+              description: Mutable rule fields
+        description: Mutable rule fields
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Rule'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Rule not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Update a rule.
+      tags:
+      - Rules
+  /policy/{policy_id}/rules/batch:
+    servers:
+    - url: https://api.live.altr.com/v1/unified-policy/management/
+    patch:
+      operationId: updateBatchRules
+      tags:
+      - Rules
+      summary: Creates a new rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                        description: The unique id of the rule if this is a DELETE operation
+                      action:
+                        type: string
+                        enum:
+                        - DELETE
+                        - PUT
+                        description: The action to take on the rule
+                      rule:
+                        type: object
+                        properties:
+                          access_rate_thresholds:
+                            $ref: '#/components/schemas/AccessRateThreshold'
+                          time_window_thresholds:
+                            $ref: '#/components/schemas/TimeWindowThreshold'
+                          masking_policy:
+                            type: integer
+                            enum:
+                            - 10000
+                            - 10001
+                            - 10002
+                            - 10003
+                            - 10004
+                            description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                          role:
+                            type: string
+                            description: The name of the role associated with this rule, if this is a CREATE operation
+                          tag_value:
+                            type: string
+                            description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead. Only valid on CREATE operations.
+                          tag_value_regex:
+                            type: string
+                            enum:
+                            - '*'
+                            description: The REGEX for matching tag values to which this rule applies. If you with to use an exact string match, you may use 'tag_value' instead. Only * is currently supported. Only valid on CREATE operations.
+                policy:
+                  type: object
+                  properties:
+                    active:
+                      type: boolean
+                      description: Whether to policy is applied or not. Defaults to null.
+                      example: true
+                    database_ids:
+                      type: object
+                      example:
+                        '4': add
+                        '5': delete
+                        '6': force-delete
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+      - basicAuth: []
+  /policy/{policy_id}/rules:
+    servers:
+    - url: https://api.live.altr.com/v1/unified-policy/management/
+    post:
+      operationId: createRule
+      tags:
+      - Rules
+      summary: Creates a new rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_rate_thresholds:
+                  $ref: '#/components/schemas/AccessRateThreshold'
+                time_window_thresholds:
+                  $ref: '#/components/schemas/TimeWindowThreshold'
+                masking_policy:
+                  type: integer
+                  enum:
+                  - 10000
+                  - 10001
+                  - 10002
+                  - 10003
+                  - 10004
+                  description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                role:
+                  type: string
+                tag_value:
+                  type: string
+                  description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead.
+                tag_value_regex:
+                  type: string
+                  enum:
+                  - '*'
+                  description: The REGEX for matching tag values to which this rule applies. If you with to use an exact string match, you may use 'tag_value' instead. Only * is currently supported.
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                        description: The unique id of the rule
+                        example: TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+      - basicAuth: []
+    get:
+      operationId: getRules
+      tags:
+      - Rules
+      summary: Get all the rules associated with the given policy_id
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: limit
+        schema:
+          type: integer
+        description: The number of rules to return
+        example: 10
+        in: query
+      - name: exclusive_start_key
+        schema:
+          type: string
+        description: The last evaluated key for pagination. This can be found in the response body under `last_evaluated_key`. If the value is present, it can be used to get the next set of policies.
+        in: query
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: The number of rule groups returned.
+                        example: 1
+                      items:
+                        type: object
+                        additionalProperties:
+                          type: array
+                          description: The rules associated with the policy, the key is the rule_hash.
+                          items:
+                            type: object
+                            properties:
+                              rule_id:
+                                type: string
+                                description: The unique id of the rule.
+                                example: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343#ROLE#0ad4fa3dac4f39ca0d653cfaa47182dafa5b8923dec019a5ecafeca3aa6d55a7#TAG_VALUE#99443317afac8b4204d2c07e8b8ae3cdb1633016e7142b8ba77ad1615cfbb409
+                              rule_hash:
+                                type: string
+                                description: The hash of the rule.
+                                example: 9417c2bc077fda72be5677930613049eCREDIT_CARD
+                              pending_rule_json:
+                                type: object
+                                description: The object we are attempting to update the policy state to.
+                                example: {}
+                              success_rule_json:
+                                type: object
+                                description: The currently applied policy.
+                                properties:
+                                  masking_policy:
+                                    type: string
+                                    example: '10001'
+                              failed_rule_json:
+                                type: object
+                                description: The object representing a failed rule.
+                                example: {}
+                              policy_id:
+                                type: string
+                                description: The unique identifier for the policy.
+                                example: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343
+                              role:
+                                type: string
+                                description: The name of the role associated with this rule.
+                                example: DEVELOPER_ROLE
+                              tag_value:
+                                type: string
+                                description: The tag value associated with the rule.
+                                example: CREDIT_CARD
+                              updated_at:
+                                type: string
+                                format: date-time
+                                description: The last updated timestamp of the rule.
+                                example: '2023-10-01T12:00:00Z'
+                        example:
+                          9417c2bc077fda72be5677930613049eCREDIT_CARD:
+                          - rule_id: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343#ROLE#0ad4fa3dac4f39ca0d653cfaa47182dafa5b8923dec019a5ecafeca3aa6d55a7#TAG_VALUE#99443317afac8b4204d2c07e8b8ae3cdb1633016e7142b8ba77ad1615cfbb409
+                            rule_hash: 9417c2bc077fda72be5677930613049eCREDIT_CARD
+                            pending_rule_json: {}
+                            success_rule_json:
+                              masking_policy: '10001'
+                            failed_rule_json: {}
+                            policy_id: TAG#54a4834928b937b549a367f85b11b30d0e07da0276df98c48bc09680a83c3343
+                            role: DEVELOPER_ROLE
+                            tag_value: CREDIT_CARD
+                            updated_at: '2023-10-01T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+      - basicAuth: []
+  /policy/{policy_id}/rules/{rule_id}:
+    servers:
+    - url: https://api.live.altr.com/v1/unified-policy/management/
+    get:
+      operationId: getRuleById
+      tags:
+      - Rules
+      summary: Get details for a specific rule
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  rule_id:
+                    type: string
+                    description: The unique id of the rule
+                    example: TAG#896c2bbf427ca7fe55e2bb30dfd722c1eb91a09c44e6d14bd5a754754c1ee79e#ROLE#a0192a8d618436d26d78ac6df5bfa2455e1fae549577282669d37d8cfb1ebe1c#TAG_VALUE#7b546b3e08faa6882d4b1f762f9c76492168144d864668776fe9ffb2af018805
+                  pending_rule_json:
+                    type: object
+                    description: The object we are attempting to update the policy state to.
+                    properties:
+                      time_window_thresholds:
+                        $ref: '#/components/schemas/TimeWindowThreshold'
+                      masking_policy:
+                        type: integer
+                        enum:
+                        - 10000
+                        - 10001
+                        - 10002
+                        - 10003
+                        - 10004
+                        description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                      access_rate_thresholds:
+                        $ref: '#/components/schemas/AccessRateThreshold'
+                  success_rule_json:
+                    type: object
+                    description: The currently applied policy.
+                    properties:
+                      time_window_thresholds:
+                        $ref: '#/components/schemas/TimeWindowThreshold'
+                      masking_policy:
+                        type: integer
+                        enum:
+                        - 10000
+                        - 10001
+                        - 10002
+                        - 10003
+                        - 10004
+                        description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+                      access_rate_thresholds:
+                        $ref: '#/components/schemas/AccessRateThreshold'
+                  role:
+                    type: string
+                    description: The name of the role associated with this rule
+                    example: ACCOUNTADMIN
+                  tag_value:
+                    type: string
+                    description: The name of the tag value associated with the rule if present
+                    example: yellow
+                  tag_value_regex:
+                    type: string
+                    description: The name of the tag value regex associated with the rule if present
+                    example: '*'
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: The last updated timestamp of the rule
+                    example: '2023-10-01T12:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+      security:
+      - basicAuth: []
+    delete:
+      operationId: deleteRule
+      tags:
+      - Rules
+      summary: Delete an existing rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+      - basicAuth: []
+    patch:
+      operationId: updateRule
+      tags:
+      - Rules
+      summary: Updates an existing rule
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier for the policy
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                access_rate_thresholds:
+                  $ref: '#/components/schemas/AccessRateThreshold'
+                time_window_thresholds:
+                  $ref: '#/components/schemas/TimeWindowThreshold'
+                masking_policy:
+                  type: integer
+                  enum:
+                  - 10000
+                  - 10001
+                  - 10002
+                  - 10003
+                  - 10004
+                  description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+      responses:
+        '204':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      rule_id:
+                        type: string
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+      - basicAuth: []
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
+    auditfilter.KeyEqValue:
+      description: 'KeyEq is required for: key_eq.'
+      properties:
+        key:
+          maxLength: 256
+          type: string
+        value:
+          maxLength: 256
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    models.UpdateRuleRequest:
+      properties:
+        comment_required:
+          type: boolean
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds sets the per-rule email window. nil = no change;
+
+            non-nil must be 0 (reset to platform default) or in [60, 86400].'
+          maximum: 86400
+          minimum: 0
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+      type: object
+    models.Rule:
+      properties:
+        comment_required:
+          type: boolean
+        created_at:
+          type: string
+        data_source_scope:
+          enum:
+          - snowflake
+          - oltp
+          - all
+          type: string
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds is the per-rule email send-once window in seconds.
+
+            0 = use platform default (300 s). Must be in [60, 86400] when non-zero.'
+          maximum: 86400
+          minimum: 60
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        filter_tree:
+          $ref: '#/components/schemas/auditfilter.FilterNode'
+        name:
+          maxLength: 255
+          type: string
+        rule_id:
+          type: string
+        rule_type:
+          enum:
+          - match
+          - threshold
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        threshold:
+          minimum: 1
+          type: integer
+        timezone:
+          description: IANA timezone (e.g. "America/New_York"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.
+          type: string
+        updated_at:
+          type: string
+        window_type:
+          enum:
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          type: string
+      required:
+      - data_source_scope
+      - filter_tree
+      - name
+      - rule_id
+      - rule_type
+      - severity
+      type: object
+    auditfilter.Dimension:
+      enum:
+      - user
+      - database
+      - schema
+      - table
+      - column
+      - statement_type
+      - statement_text
+      - query_status
+      - event_name
+      - time_of_day
+      - repo_user
+      - client_ip
+      - client_app
+      - client_port
+      - repo_type
+      - repo_host
+      - sidecar_id
+      - connection_authorized
+      - authorization_type
+      - oltp_row_count
+      - bytes_returned
+      - policy_applied
+      - policy_type
+      - user_email
+      - user_group
+      - snowflake_role
+      - snowflake_roles
+      - snowflake_warehouse
+      - snowflake_warehouse_size
+      - snowflake_ip_address
+      - snowflake_client
+      - snowflake_session_id
+      - snowflake_query_tag
+      - snowflake_row_count
+      - snowflake_account
+      - snowflake_account_region
+      - snowflake_masking_policy
+      - snowflake_column_policy
+      - snowflake_execution_duration
+      - snowflake_tag_name
+      - snowflake_tag_value
+      type: string
+      x-enum-varnames:
+      - DimUser
+      - DimDatabase
+      - DimSchema
+      - DimTable
+      - DimColumn
+      - DimStatementType
+      - DimStatementText
+      - DimQueryStatus
+      - DimEventName
+      - DimTimeOfDay
+      - DimRepoUser
+      - DimClientIP
+      - DimClientApp
+      - DimClientPort
+      - DimRepoType
+      - DimRepoHost
+      - DimSidecarID
+      - DimConnectionAuthorized
+      - DimAuthorizationType
+      - DimRowCount
+      - DimBytesReturned
+      - DimPolicyApplied
+      - DimPolicyType
+      - DimUserEmail
+      - DimUserGroup
+      - DimSnowflakeRole
+      - DimSnowflakeRoles
+      - DimSnowflakeWarehouse
+      - DimSnowflakeWarehouseSize
+      - DimSnowflakeIPAddress
+      - DimSnowflakeClient
+      - DimSnowflakeSessionID
+      - DimSnowflakeQueryTag
+      - DimSnowflakeRowCount
+      - DimSnowflakeAccount
+      - DimSnowflakeAccountRegion
+      - DimSnowflakeMaskingPolicy
+      - DimSnowflakeColumnPolicy
+      - DimSnowflakeExecutionDuration
+      - DimSnowflakeTagName
+      - DimSnowflakeTagValue
+    auditfilter.RangeValue:
+      description: 'Range is required for: range.'
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+      required:
+      - max
+      - min
+      type: object
+    auditfilter.Op:
+      enum:
+      - and
+      - or
+      - eq
+      - neq
+      - in
+      - contains
+      - regex
+      - cidr
+      - gt
+      - gte
+      - lt
+      - lte
+      - range
+      - between
+      - exists
+      - key_exists
+      - key_eq
+      type: string
+      x-enum-varnames:
+      - OpAnd
+      - OpOr
+      - OpEq
+      - OpNeq
+      - OpIn
+      - OpContains
+      - OpRegex
+      - OpCIDR
+      - OpGt
+      - OpGte
+      - OpLt
+      - OpLte
+      - OpRange
+      - OpBetween
+      - OpExists
+      - OpKeyExists
+      - OpKeyEq
+    auditfilter.FilterNode:
+      properties:
+        between:
+          $ref: '#/components/schemas/auditfilter.BetweenValue'
+        children:
+          description: 'Children is required for: and, or. Depth is bounded by MaxFilterDepth
+
+            (enforced in validateBounded).'
+          items:
+            $ref: '#/components/schemas/auditfilter.FilterNode'
+          type: array
+          uniqueItems: false
+        dimension:
+          $ref: '#/components/schemas/auditfilter.Dimension'
+        key_eq:
+          $ref: '#/components/schemas/auditfilter.KeyEqValue'
+        list_value:
+          description: 'ListValue is required for: in. Per-entry max=256 caps individual list
+
+            items; the slice-level min=1 enforces non-empty for `in`.'
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: false
+        number_value:
+          description: 'NumberValue is required for: gt, gte, lt, lte.'
+          type: number
+        op:
+          $ref: '#/components/schemas/auditfilter.Op'
+        range:
+          $ref: '#/components/schemas/auditfilter.RangeValue'
+        string_value:
+          description: 'StringValue is required for: eq, neq, contains, regex, cidr, key_exists.
+
+            max=1024 keeps regex/CIDR/eq values bounded — well above any plausible
+
+            real-world value, well below DDB item-size territory.'
+          maxLength: 1024
+          type: string
+      required:
+      - op
+      type: object
+    models.CreateRuleRequest:
+      properties:
+        comment_required:
+          type: boolean
+        data_source_scope:
+          enum:
+          - snowflake
+          - oltp
+          type: string
+        description:
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds sets the per-rule email send-once window. 0 (or
+
+            omitted) = platform default (300 s); non-zero must be in [60, 86400].'
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        filter_tree:
+          $ref: '#/components/schemas/auditfilter.FilterNode'
+        name:
+          type: string
+        rule_type:
+          enum:
+          - match
+          - threshold
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        threshold:
+          type: integer
+        timezone:
+          type: string
+        window_type:
+          enum:
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          type: string
+      type: object
+    AccessRateThreshold:
+      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          access_rate_unit:
+            type: string
+            enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+            description: The time window starting at the first query until the ratebucket is reset
+          access_rate_limit:
+            type: integer
+            description: The max access count in the given time window
+            example: 100
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
+    TimeWindowThreshold:
+      description: Enforces a policy during a provided time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          day:
+            type: array
+            items:
+              type: string
+              enum:
+              - sunday
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+              description: The user may not access data on these days of the week
+          start_time:
+            type: object
+            properties:
+              hour:
+                example: '12'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data after this time and before the end_time.
+          end_time:
+            type: object
+            properties:
+              hour:
+                example: '20'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data before this time and after the start_time.
+          timezone:
+            type: string
+            example: America/New_York
+            description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in. See a list of TZ Identifiers at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.ListRulesResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Rule'
+          type: array
+          uniqueItems: false
+      type: object
+    auditfilter.BetweenValue:
+      description: 'Between is required for: between (time_of_day only).'
+      properties:
+        end:
+          type: string
+        start:
+          type: string
+      required:
+      - end
+      - start
+      type: object
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
+            date: '2022-07-20T18:00:58.723Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Resource is forbidden
+            statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Internal Server Error
+            statusCode: 500
+            date: '2022-07-20T18:00:58.723Z'
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Unified Policy uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>ALTR API keys are created and obtained on the API page in the ALTRnet (Settings > Preferences > API).<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+x-refined-from:
+- altr-dam-alerting-openapi.yml
+- altr-unified-policy-openapi.yml

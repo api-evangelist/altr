@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Service User Service Auth API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Key Pair handles the request to create a keypair for a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/services/:service/users/:userID/auth/keypair",
+            "params": [
+              {
+                "name": "userID",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "set_active",
+                "value": "",
+                "type": "query",
+                "description": "Set as Active Authentication Method"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint generates a new RSA keypair for the specified user and service, encrypts the private key,"
+        },
+        {
+          "info": {
+            "name": "Create Password handles the request to create a password authentication method.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/services/:service/users/:userID/auth/password",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userID",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "set_active",
+                "value": "",
+                "type": "query",
+                "description": "Set as Active Authentication Method"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "This endpoint creates a password authentication method for a user in the specified organization."
+        },
+        {
+          "info": {
+            "name": "Set Active Authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/v1/services/:service/users/:userid/auth/:auth/:authid/set-active",
+            "params": [
+              {
+                "name": "service",
+                "value": "",
+                "type": "path",
+                "description": "Service Type"
+              },
+              {
+                "name": "userid",
+                "value": "\"2w6ALEtk50T5ZWyw9cIuvhTjVGt\"",
+                "type": "path",
+                "description": "User ID"
+              },
+              {
+                "name": "auth",
+                "value": "",
+                "type": "path",
+                "description": "Authentication Type"
+              },
+              {
+                "name": "authid",
+                "value": "",
+                "type": "path",
+                "description": "Authentication ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Set an authentication method as active for a user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

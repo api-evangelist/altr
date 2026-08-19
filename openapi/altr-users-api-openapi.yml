@@ -1,0 +1,381 @@
+openapi: 3.2.0
+info:
+  description: 'Welcome to the Swagger documentation for ALTR''s Service User API. This API allows ALTR customers to manage service users used to connect to third-party applications such as Snowflake.
+
+    API credentials can be obtained under Settings > Preferences > API of ALTR''s portal for Usernames are the ''Key Names'' listed on that page and Passwords are the ''Key Secret'' provided when an API key is created.'
+  title: Service User Service Users API
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  contact:
+    name: Support
+    email: support@altr.com
+  version: '1.0'
+servers:
+- url: /v1
+tags:
+- name: Users
+paths:
+  /services/{service}/users:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a list of service users based on the provided query parameters.
+      tags:
+      - Users
+      summary: Get Service Users handles the request to get service users.
+      parameters:
+      - example: 10
+        description: Limit the number of results returned
+        name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - example: '"user_"'
+        description: Filter results by prefix
+        name: prefix
+        in: query
+        schema:
+          type: string
+      - description: Order by ascending or descending
+        name: order_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - example: '"eyJDb250aW"'
+        description: Contiguous ID for pagination
+        name: contiguous_id
+        in: query
+        schema:
+          type: string
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    post:
+      security:
+      - BasicAuth: []
+      description: This endpoint creates a new service user based on the provided request body.
+      tags:
+      - Users
+      summary: Register Service User handles the request to register a new service user.
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.CreateServiceUserResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dto.CreateServiceUserRequest'
+        description: Create Service User Request
+        required: true
+  /services/{service}/users/{userid}:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a service user based on the provided service type and user ID.
+      tags:
+      - Users
+      summary: Get Service User handles the request to get a service user.
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    delete:
+      security:
+      - BasicAuth: []
+      description: This endpoint deletes a service user based on the provided service type and user ID.
+      tags:
+      - Users
+      summary: Delete Service User handles the request to delete a service user.
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: string
+      responses:
+        '204':
+          description: No Content
+    patch:
+      security:
+      - BasicAuth: []
+      description: This endpoint updates a service user based on the provided service type and user ID.
+      tags:
+      - Users
+      summary: Update Service User handles the request to update a service user.
+      parameters:
+      - description: Service Type
+        name: service
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - snowflake
+      - example: '"2w6ALEtk50T5ZWyw9cIuvhTjVGt"'
+        description: User ID
+        name: userid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dto.UpdateServiceUserBody'
+        description: Update Service User Request
+        required: true
+  /users:
+    get:
+      security:
+      - BasicAuth: []
+      description: This endpoint retrieves a list of users based on the provided query parameters.
+      tags:
+      - Users
+      summary: Get Users handles the request to get users.
+      parameters:
+      - example: 10
+        description: Limit the number of results returned
+        name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - example: '"user_"'
+        description: Filter results by prefix
+        name: prefix
+        in: query
+        schema:
+          type: string
+      - description: Order by ascending or descending
+        name: order_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+      - example: '"eyJDb250aW"'
+        description: Contiguous ID for pagination
+        name: contiguous_id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dto.ServiceUserQueryResponse'
+components:
+  schemas:
+    dto.CompositeServiceUser:
+      type: object
+      properties:
+        auth_type:
+          description: AuthType specifies the authentication method associated with the user.
+          allOf:
+          - $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          description: CreatedAt is an optional timestamp when the service user was created.
+          type: string
+        deactivated_at:
+          description: DeactivatedAt is an optional timestamp indicating when the user was deactivated.
+          type: string
+        display_name:
+          description: DisplayName is the user-friendly name for the service user.
+          type: string
+        hostname:
+          type: string
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+        service_type:
+          description: ServiceType indicates the type or category of service associated with the user.
+          allOf:
+          - $ref: '#/components/schemas/types.ServiceType'
+        updated_at:
+          description: UpdatedAt is an optional timestamp when the user's record was last updated.
+          type: string
+        user_id:
+          description: UserID is the unique identifier of the service user.
+          type: string
+        username:
+          description: Username is the username assigned to the service user.
+          type: string
+    dto.UpdateServiceUserBody:
+      description: UpdateServiceUserBody is used to update the details of an existing service user.
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
+    dto.ServiceUserQueryResponse:
+      type: object
+      properties:
+        contiguous_id:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    dto.GetServiceUserPublicResponse:
+      description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
+      type: object
+      properties:
+        auth:
+          description: Auth optionally provides a public view of authentication details, if available.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeAuthResponse'
+        user:
+          description: User is the composite service user object containing public attributes.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeServiceUser'
+    dto.CreateServiceUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dto.CompositeServiceUser'
+    types.ServiceType:
+      type: string
+      enum:
+      - SNOWFLAKE
+      - UNSUPPORTED
+      x-enum-varnames:
+      - SnowflakeServiceUser
+      - UnsupportedServiceUser
+    dto.CompositeAuthResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
+    dto.CreateServiceUserRequest:
+      type: object
+      required:
+      - display_name
+      - username
+      properties:
+        display_name:
+          description: DisplayName provides a human-friendly name
+          type: string
+          maxLength: 255
+        hostname:
+          type: string
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+        username:
+          description: Username is the primary identifier for the service user and is used for authentication and display.
+          type: string
+          maxLength: 255
+    types.AuthType:
+      type: string
+      enum:
+      - UNSUPPORTED
+      - NONE
+      - PASSWORD
+      - KEYPAIR
+      x-enum-varnames:
+      - AuthTypeUnsupported
+      - AuthTypeNone
+      - AuthTypePassword
+      - AuthTypeKeypair
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR — Tag-based governance policy on Databricks Databricks Tag Policy API",
+    "version": "alpha"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Databricks Tag Policy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start application of a tag-based policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://[Hostname provided by ALTR support]/v1/alpha/dbx/tag-policy/apply",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "When `policyAction` is `set`, an asynchronous Databricks job is launched to apply the given `policy` on all columns tagged with `tagName`.<p>When `policyAction` is set to `delete`, `policy` is ignored, and a Databricks job is launched to remove policy configured on tag `tagName`.<p>In either case, the status of the job can be tracked with the `GET` endpoint using the returned `id`."
+        },
+        {
+          "info": {
+            "name": "Get status and logs of a tag-based policy application",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://[Hostname provided by ALTR support]/v1/alpha/dbx/tag-policy/apply/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the tag-based policy application as provided in the `POST` response"
+              }
+            ]
+          },
+          "docs": "Check status of an asynchronous application of a tag-based policy started in the `POST` endpoint.<p>Returns the status and, if available, a presigned S3 URL to the logs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

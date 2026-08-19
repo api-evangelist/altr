@@ -1,0 +1,804 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Me API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: me
+  description: Operations related to the currently logged in administrator
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/settings#Preferences
+paths:
+  /me:
+    get:
+      tags:
+      - me
+      summary: Get information about the currently logged-in user and the organizations that user has access to.
+      operationId: getMe
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      organizations:
+                        description: A map of objects that represent the organizations that a admin has access to
+                        $ref: '#/components/schemas/Me'
+                      user:
+                        description: An object containing data about the currently logged-in user
+                        type: object
+                        properties:
+                          firstName:
+                            type: string
+                            example: George
+                          lastName:
+                            type: string
+                            example: Washington
+                          email:
+                            type: string
+                            example: washington@usa.com
+                          countryCode:
+                            type: integer
+                            example: 1
+                          phone:
+                            type: integer
+                            example: '2024561111'
+                          twoFactor:
+                            type: string
+                            example: TOTP
+                          role:
+                            type: string
+                            example: SUPERADMINISTRATOR
+                          username:
+                            type: string
+                            example: gwashington
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/logout:
+    post:
+      tags:
+      - me
+      summary: logout the user, if hit using an api key return 204
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences:
+    patch:
+      tags:
+      - me
+      summary: Updates preferences of the currently logged in administrator.
+      operationId: updateMyPreferences
+      requestBody:
+        description: When setting a new password, oldPassword, newPassword, and confirmNewPassword are required.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+                confirmNewPassword:
+                  type: string
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Administrator'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/twofactor/verify:
+    post:
+      tags:
+      - me
+      summary: Send a verification code to update your two factor settings.
+      operationId: verifyTwoFactorUpdate
+      requestBody:
+        description: Send a verification code to update your two factor settings.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                twoFactorAuthType:
+                  type: string
+                  example: TOTP
+                  enum:
+                  - SMS
+                  - EMAIL
+                  - TOTP
+                  - WEBAUTHN
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    required:
+                    - ok
+                    properties:
+                      ok:
+                        type: boolean
+                        example: true
+                      otpUri:
+                        type: string
+                        example: otpauth://totp/ALTR%20-%20182fc113-ae0d-ad5d-ccf0-af876076894a:alice%40google.com?issuer=ALTR%20-%20182fc113-ae0d-ad5d-ccf0-af876076894a&secret=SMLN64FTEHUR7TO3&algorithm=SHA1&digits=6&period=30
+                        description: Included only if the request's `twoFactorAuthType` was TOTP. This field is the TOTP URI formatted according to [these docs](https://github.com/google/google-authenticator/wiki/Key-Uri-Format)
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/twofactor:
+    patch:
+      tags:
+      - me
+      summary: Update your two factor code after providing the two factor code and password.
+      operationId: updateTwoFactorType
+      requestBody:
+        description: Update your two factor code after providing the two factor code from /verify and the users valid password.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - twoFactorAuthCode
+              - password
+              - twoFactorAuthType
+              properties:
+                twoFactorAuthCode:
+                  type: string
+                  example: '345123'
+                password:
+                  type: string
+                  example: My super strong password
+                twoFactorAuthType:
+                  type: string
+                  example: TOTP
+                  enum:
+                  - SMS
+                  - EMAIL
+                  - TOTP
+                  - WEBAUTHN
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/webauthn/credentials:
+    get:
+      tags:
+      - me
+      summary: List the current user's WebAuthn credentials.
+      description: Returns all registered WebAuthn (passkey) credentials for the currently logged-in user. This endpoint requires a browser session and cannot be accessed via an API key.
+      operationId: me|get-webauthn-credentials
+      security: []
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WebAuthnCredential'
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/webauthn/credentials/{id}:
+    delete:
+      tags:
+      - me
+      summary: Delete a WebAuthn credential.
+      description: Removes a registered WebAuthn (passkey) credential by its ID. This endpoint requires a browser session and cannot be accessed via an API key.
+      operationId: me|delete-webauthn-credential
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/webauthnCredentialId'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                        example: true
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - me
+      summary: Rename a WebAuthn credential.
+      description: Updates the display name of a registered WebAuthn (passkey) credential. This endpoint requires a browser session and cannot be accessed via an API key.
+      operationId: me|rename-webauthn-credential
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/webauthnCredentialId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - device_name
+              properties:
+                device_name:
+                  type: string
+                  description: The new display name for the credential.
+                  example: My YubiKey
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebAuthnCredential'
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/validate-password:
+    post:
+      tags:
+      - me
+      summary: Validate the authenticated administrator's password.
+      description: 'Used by the Portal before first-time WebAuthn credential registration to gate the zero-credentials path. Returns `{ success: true }` if the password is valid; otherwise responds with `400 Invalid Credentials`. Cannot be accessed via Basic Auth.'
+      operationId: me|validate-password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - password
+              properties:
+                password:
+                  type: string
+                  minLength: 8
+                  description: The authenticated administrator's password.
+                  example: My super strong password
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                        example: true
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/webauthn/register/options:
+    post:
+      tags:
+      - me
+      summary: Start a WebAuthn registration ceremony.
+      description: Generates the challenge and options required to begin registering a new WebAuthn (passkey) credential. The returned options should be passed to the browser's `navigator.credentials.create()` call. This endpoint requires a browser session and cannot be accessed via an API key.
+      operationId: me|webauthn-register-options
+      security: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: WebAuthn `PublicKeyCredentialCreationOptions` as returned by the server.
+                    properties:
+                      challenge:
+                        type: string
+                        description: Base64url-encoded challenge that must be signed by the authenticator.
+                        example: dGhpcyBpcyBhIGNoYWxsZW5nZQ
+                      rp:
+                        type: object
+                        description: Relying party information.
+                        properties:
+                          id:
+                            type: string
+                            example: altr.com
+                          name:
+                            type: string
+                            example: ALTR
+                      user:
+                        type: object
+                        description: User account information.
+                        properties:
+                          id:
+                            type: string
+                            example: dXNlcklk
+                          name:
+                            type: string
+                            example: alice@example.com
+                          displayName:
+                            type: string
+                            example: Alice
+                      pubKeyCredParams:
+                        type: array
+                        items:
+                          type: object
+                      timeout:
+                        type: integer
+                        example: 60000
+                      excludeCredentials:
+                        type: array
+                        items:
+                          type: object
+                      authenticatorSelection:
+                        type: object
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/preferences/webauthn/register/verify:
+    post:
+      tags:
+      - me
+      summary: Complete a WebAuthn registration ceremony.
+      description: Verifies the authenticator's response and saves the new WebAuthn credential. The `response` field should be the JSON-serialised `AuthenticatorAttestationResponse` returned by `navigator.credentials.create()`. This endpoint requires a browser session and cannot be accessed via an API key.
+      operationId: me|webauthn-register-verify
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - device_name
+              - response
+              properties:
+                device_name:
+                  type: string
+                  description: The human-readable label for the credential being registered.
+                  example: TouchID on MacBook Pro
+                response:
+                  type: object
+                  description: The `AuthenticatorAttestationResponse` object returned by `navigator.credentials.create()`.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WebAuthnCredential'
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /me/help:
+    put:
+      tags:
+      - me
+      summary: Emails support@altr.com with a generic request for support.
+      description: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_page:
+                  type: string
+                  description: Current page the user is on in the frontend
+                comment:
+                  type: string
+                  description: Comment to send to ALTR support representative.
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      endpoint:
+                        type: string
+                        description: Endpoint that errored.
+                      statusCode:
+                        type: integer
+                        description: Error status code.
+                      message:
+                        type: string
+                        description: Error message.
+                      context:
+                        type: object
+                        properties:
+                          code:
+                            type: null
+                            description: CDM error code if present.
+                          title:
+                            type: string
+                            description: CDM error message if present.
+                      date:
+                        type: string
+                        description: time error occured.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    WebAuthnCredential:
+      type: object
+      description: A registered WebAuthn (passkey) credential.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Internal numeric ID of the registered WebAuthn credential.
+          example: 1
+        name:
+          type: string
+          description: Human-readable display name for the credential.
+          example: TouchID on MacBook Pro
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the credential was registered.
+          example: '2024-06-01T12:00:00.000Z'
+        last_used_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp of the most recent successful authentication with this credential. Null if the credential has never been used for authentication.
+          example: '2024-06-10T08:30:00.000Z'
+    Me:
+      type: object
+      properties:
+        $orgId:
+          type: object
+          description: The organization id as a UUID, the key name is dynamic
+          properties:
+            alias:
+              type: string
+              description: Not currently being used.
+              default: N/A
+            id:
+              type: string
+              description: The organization id as a UUID
+              example: 969276ae-9118-11ed-a1eb-0242ac120002
+            name:
+              type: string
+              description: The name of the organization
+              example: Organization Name
+            role:
+              type: string
+              description: The users role for this organization
+              example: SUPERADMINISTRATOR
+            ssoEnabled:
+              type: boolean
+              description: Indicator for whether or not this organization has SSO enabled
+            isDefault:
+              type: boolean
+              description: Indicator for whether or not this organization is the default that should be automatically set as current when logging in
+            capabilities:
+              type: object
+              description: The capabilities that this organization has access to.
+              properties:
+                chainAPI:
+                  type: integer
+                govern:
+                  type: integer
+                  example: 1
+                monitor:
+                  type: integer
+                protect:
+                  type: integer
+    Administrator:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 100
+        firstName:
+          type: string
+          example: George
+        lastName:
+          type: string
+          example: Washington
+        name:
+          type: string
+          description: Combination of `lastName, firstName`
+          example: Washington, George
+        email:
+          type: string
+          example: George@altr.com
+        phone:
+          type: integer
+          example: 1115555555
+        phoneNumber:
+          type: string
+          description: Combination of country code and phone
+          example: '+11115555555'
+        activityTimestamp:
+          type: string
+          format: date-time
+        userStatus:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+          example: active
+        role:
+          type: string
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+          example: SUPERADMINISTRATOR
+        countryCode:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '1732-02-22T20:00:37.000Z'
+        isLocked:
+          type: boolean
+          description: Whether the administrator is locked out of their account or not.
+          example: false
+        username:
+          type: string
+          example: George3
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  parameters:
+    webauthnCredentialId:
+      name: id
+      in: path
+      required: true
+      description: Internal numeric ID of the registered WebAuthn credential.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        example: 1
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

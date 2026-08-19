@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Audit Report Instances API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Instances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List report instances.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor from previous response"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a paginated list of generated report instances for a definition."
+        },
+        {
+          "info": {
+            "name": "Get a report instance.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single generated report instance by ID."
+        },
+        {
+          "info": {
+            "name": "Download a report instance.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.audit-report.live.altr.com/v1/audit-reports/definitions/:def_id/instances/:inst_id/download",
+            "params": [
+              {
+                "name": "def_id",
+                "value": "",
+                "type": "path",
+                "description": "Definition ID"
+              },
+              {
+                "name": "inst_id",
+                "value": "",
+                "type": "path",
+                "description": "Instance ID"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Download format"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a pre-signed S3 URL for downloading the report in PDF or CSV format."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

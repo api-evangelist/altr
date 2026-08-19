@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Organization API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "organization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update organization information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/organization",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update organization information"
+        },
+        {
+          "info": {
+            "name": "Returns the users organization preferences.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/organization/preferences"
+          },
+          "docs": "Returns the users organization preferences."
+        },
+        {
+          "info": {
+            "name": "Updates organization two-factor authentication preferences.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/organization/preferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates organization two-factor authentication preferences."
+        },
+        {
+          "info": {
+            "name": "Updates organization S3 preferences.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/organization/s3",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Both `bucketName` and `arn` are required only if one or the other properties are present."
+        },
+        {
+          "info": {
+            "name": "Tests organization S3 preferences, does not save the preferences.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/organization/s3/test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Tests organization S3 preferences, does not save the preferences."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

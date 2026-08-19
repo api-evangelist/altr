@@ -1,0 +1,228 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: API for managing audit report definitions, generating reports, attestation workflows, and compliance reporting.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Audit Report Sign Off API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.audit-report.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Sign-Off
+paths:
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_off:
+    get:
+      description: Returns the authenticated user's own sign-off record for a report instance, or null if not yet signed off. Uses the caller's identity to look up a single record — use GET .../sign_offs (plural) to list all sign-offs by all users.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.GetSignOffResponse'
+          description: OK
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get current user's sign-off status.
+      tags:
+      - Sign-Off
+    post:
+      description: Records an approval for a report instance.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.CreateSignOffInput'
+              summary: request
+              description: Sign-off payload
+        description: Sign-off payload
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.SignOff'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Instance not found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Already signed off or instance not in generated status
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create a sign-off.
+      tags:
+      - Sign-Off
+  /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_offs:
+    get:
+      description: Returns a paginated list of all sign-off records from all users for a report instance. Use GET .../sign_off (singular) to check only the current user's sign-off status.
+      parameters:
+      - description: Definition ID
+        in: path
+        name: def_id
+        required: true
+        schema:
+          type: string
+      - description: Instance ID
+        in: path
+        name: inst_id
+        required: true
+        schema:
+          type: string
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination cursor from previous response
+        in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListSignOffsResponse'
+          description: OK
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List all sign-offs for an instance.
+      tags:
+      - Sign-Off
+components:
+  schemas:
+    models.CreateSignOffInput:
+      properties:
+        action:
+          enum:
+          - approve
+          type: string
+        attestation:
+          type: boolean
+        comments:
+          type: string
+      type: object
+    models.ListSignOffsResponse:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.SignOff'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.SignOff:
+      properties:
+        action:
+          enum:
+          - approve
+          type: string
+        attestation:
+          type: boolean
+        comments:
+          type: string
+        definition_id:
+          type: string
+        instance_id:
+          type: string
+        signed_off_at:
+          type: string
+        user_id:
+          type: string
+        user_name:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    models.GetSignOffResponse:
+      properties:
+        sign_off:
+          $ref: '#/components/schemas/models.SignOff'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

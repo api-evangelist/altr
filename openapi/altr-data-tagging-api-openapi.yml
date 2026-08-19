@@ -1,0 +1,665 @@
+openapi: 3.2.0
+info:
+  title: ALTR Datastore Information Service Data Tagging API
+  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
+
+
+    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
+
+
+    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+  version: 3.4.3
+servers:
+- url: '/v1/dis '
+security:
+- bearerAuth: []
+  basicAuth: []
+tags:
+- name: Data Tagging
+  description: Information around tagged columns
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/locks#object%20tags
+paths:
+  /tags/v2/tags/list:
+    get:
+      tags:
+      - Data Tagging
+      summary: Retrieve list of ALTR Tags.
+      description: Retrieves a list of all tags found for a client to empower locks/thresholds decisions.
+      operationId: retrieveTags
+      parameters:
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: filter
+        in: query
+        description: Filters search string on tag source, tag name or tag value, default no filter.
+        type: string
+        required: false
+        explode: true
+        schema: {}
+      - name: dataTagGroupID
+        in: query
+        description: Filters search string on the data tags group ID, default no filter.
+        type: string
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved tags list for client organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No client tags found for org.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Organization id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5xx:
+          description: Failure servicing this request
+  /tags/v1/tags/groups/list:
+    get:
+      tags:
+      - Data Tagging
+      summary: Retrieve list of ALTR Group Tags.
+      description: Retrieves a list of all tag groupings found for a client to empower locks/thresholds decisions. If a tag has many values, this will return the higher level tag names de-duped.
+      operationId: retrieveTagsList
+      parameters:
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: filter
+        in: query
+        description: Filters search string on tag name property, default no filter.
+        type: string
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved tags groups list for client organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagGroupsList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No client tag groups found for org.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: Organization id not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5xx:
+          description: Failure servicing this request
+  /tags/v2/tags/details/{tagId}:
+    get:
+      tags:
+      - Data Tagging
+      summary: Retrieve tagged column information for a tag-id.
+      description: Retrieves if a tag-id is valid, and gets a list of relevant details
+      operationId: retrieveTagDetails
+      parameters:
+      - name: tagId
+        in: path
+        description: Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details on specific tags.
+        required: true
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved tag detailed info.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TagDetail'
+                - $ref: '#/components/schemas/TagDetailGDLP'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No tag id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /tags/v1/tags/{tagId}:
+    delete:
+      tags:
+      - Data Tagging
+      summary: Delete tag information for a tag-id.
+      description: Deletes a tag-id if it is valid
+      operationId: deleteTagValue
+      parameters:
+      - name: tagId
+        in: path
+        description: Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details on specific tags.
+        required: true
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully deleted tag detailed info.
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No tag id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '500':
+          description: Failure servicing this request
+  /tags/v1/tags/groups/details/{tagGroupID}:
+    get:
+      tags:
+      - Data Tagging
+      summary: Retrieve details about tag-group.
+      description: Retrieves if a tag-group-id is valid, and gets a list of relevant details
+      operationId: retrieveTagGroupDetails
+      parameters:
+      - name: tagGroupID
+        in: path
+        description: Comes from the tag-group-id returned from the tags/v1/tags/groups/list endpoint to get more details on specific tag groupings.
+        required: true
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved tag group detailed info.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TagGroupDetail'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No tag group id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+  /tags/v1/tags/groups/{tagGroupID}:
+    delete:
+      tags:
+      - Data Tagging
+      summary: Delete a tag group and tags within the group
+      description: Delete tag group information for a tag-id, as well as all corresponding tag values within the group.
+      operationId: deleteTagGroup
+      parameters:
+      - name: tagGroupID
+        in: path
+        description: Comes from the tag-group-id returned from the tags/v1/tags/groups/list endpoint to get more details on specific tags.
+        required: true
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully deleted tag detailed info.
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagGroupDeleted'
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No tag id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: string
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '500':
+          description: Failure servicing this request
+  /tags/v2/tags/columns/list/{tagId}:
+    get:
+      tags:
+      - Data Tagging
+      summary: Retrieves list of columns associated to tags.
+      description: Returns list of columns associated to tags.
+      operationId: retrieveTaggedColumns
+      parameters:
+      - name: tagId
+        in: path
+        description: Comes from the tag-id returned from the tags/v1/tags/list endpoint to get more details columns associated with the tag.
+        required: true
+        explode: true
+        schema: {}
+      - name: offset
+        in: query
+        description: List return offset. Minimum 0.
+        type: int
+        default: 0
+        required: false
+        explode: true
+        schema: {}
+      - name: limit
+        in: query
+        description: List return limit. Minimum 1, Maximum 100.
+        type: int
+        default: 10
+        required: false
+        explode: true
+        schema: {}
+      - name: isActive
+        in: query
+        description: True returns only actively tagged columns, false returns historical list of columns that have ever been associated to the tag.
+        type: boolean
+        default: true
+        required: false
+        explode: true
+        schema: {}
+      responses:
+        '200':
+          description: Successfully retrieved column list for tagID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaggedColumnList'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '204':
+          description: No columns found associated with with tag.
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '401':
+          description: Invalid credentials provided
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        '404':
+          description: No tag id exists of this value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          headers:
+            trackingID:
+              schema:
+                type: String
+                description: Returns a tracking identification UUID for the request.
+                example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        5xx:
+          description: Failure servicing this request
+components:
+  schemas:
+    TagDetailGDLP:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagGroup:
+          type: string
+          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
+        tagKey:
+          type: string
+          example: ALTR_Classification
+        tagValue:
+          type: string
+          example: PERSON_NAME
+        tagName:
+          type: string
+          example: SEMANTIC_CATEGORY
+        tagCreationTimeStamp:
+          type: string
+          example: 01/02/2022 1:1:1
+        columnCount:
+          type: integer
+          example: 10
+    Tag:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagKey:
+          type: string
+          example: ALTR_Classification
+        tagValue:
+          type: string
+          example: PERSON_NAME
+        tagCreationTimeStamp:
+          type: string
+          example: 01/02/2022 1:1:1
+    TagGroup:
+      type: object
+      properties:
+        tagGroupID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagAccount:
+          type: string
+          example: COMPANY_X
+        tagRegion:
+          type: string
+          example: AWS_US_WEST_2
+        tagDatabase:
+          type: string
+          example: DATABASE_X
+        tagSchema:
+          type: string
+          example: SCHEMA_X
+        tagName:
+          type: string
+          example: GREEN_LIGHT
+        tagSource:
+          type: string
+          example: Snowflake Tag
+    TaggedColumnList:
+      type: object
+      properties:
+        Columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaggedColumn'
+        Totals:
+          type: object
+          properties:
+            column_count:
+              type: integer
+              example: 100
+    TagDetail:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagGroup:
+          type: string
+          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
+        tagKey:
+          type: string
+          example: ALTR_Classification
+        tagValue:
+          type: string
+          example: PERSON_NAME
+        tagName:
+          type: string
+          example: SEMANTIC_CATEGORY
+        snowflakeTagDatabase:
+          type: string
+          example: DATABASE_NAME
+        snowflakeTagSchema:
+          type: string
+          example: SCHEMA_NAME
+        snowflakeTagGroup:
+          type: string
+          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
+        snowflakeTagKey:
+          type: string
+          example: SNOWFLAKE_KEY
+        tagCreationTimeStamp:
+          type: string
+          example: 01/02/2022 1:1:1
+        columnCount:
+          type: integer
+          example: 10
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    TaggedColumn:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        dataTagColumnID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        databaseType:
+          type: integer
+          example: 9
+        dataTagHostname:
+          type: string
+          example: company.snowflake.com
+        dataTagDatabase:
+          type: string
+          example: DATABASE_ONE
+        dataTagSchema:
+          type: string
+          example: SCHEMA_ONE
+        dataTagTable:
+          type: string
+          example: TABLE_ONE
+        dataTagColumn:
+          type: string
+          example: COLUMN_NAME
+    TagGroupDetail:
+      type: object
+      properties:
+        tagName:
+          type: string
+          example: GREEN_LIGHT
+        tagDatabase:
+          type: string
+          example: DATABASE_NAME
+        tagSchema:
+          type: string
+          example: SCHEMA_NAME
+        tagAccount:
+          type: string
+          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
+        tagRegion:
+          type: string
+          example: SNOWFLAKE_KEY
+    TagGroupsList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagGroup'
+        totals:
+          type: object
+          properties:
+            tagGroupCount:
+              type: integer
+              example: 200
+    TagList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        totals:
+          type: object
+          properties:
+            tagCount:
+              type: integer
+              example: 200
+    TagGroupDeleted:
+      type: object
+      properties:
+        removed_tag_value_count:
+          type: integer
+          format: int64
+          example: 5
+        message:
+          type: string
+          example: Tag group and associated data tags marked as removed successfully.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: DIS uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>DIS/MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: JWT Info here
+externalDocs:
+  description: Find out more about ALTR
+  url: https://docs.altr.com

@@ -1,0 +1,305 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Systemaudits/query API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: systemaudits/query
+  description: Operations related to asynchronously querying system audits
+paths:
+  /systemaudits/query/start:
+    post:
+      operationId: postQuerySystemaudits
+      tags:
+      - systemaudits/query
+      summary: Start a potentially long-running query against query audits.
+      parameters:
+      - name: category
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - API Keys
+          - Locks
+          - Data
+          - Administrators
+          - Thresholds
+          - Anomalies
+          - Applications
+          - User Groups
+          - Data Sources
+          - Row Access Policy
+          - Unified Access Policy
+          - Access Requests
+          - Access Management Policy
+          - Impersonation Policy
+          - Access Tokens
+          - Repo Config
+          - Agent Config
+          - Audit Report
+          - DAM Alerting
+          - Notification Integration
+      - name: limit
+        in: query
+        required: false
+        description: The maximum number of audits to return. Must be in range [1, 100].
+        default: 50
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: offset
+        in: query
+        required: false
+        description: The number of audits to skip while searching all audits in the time range before returning at most `limit` audits. Must be in range [0, 9007199254740991 (aka `Number.MAX_SAFE_INTEGER`)].
+        default: 0
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+      - name: wait
+        in: query
+        required: false
+        description: The number of milliseconds to wait for result before returning. Set this to a negative integer to just return immedately with a `202` and the token. Must be in range [-1, 1000].
+        default: 100
+        schema:
+          type: integer
+          minimum: -1
+          maximum: 1000
+      - name: from
+        in: query
+        required: false
+        description: Audits before this timestamp will not be returned. Must be provided as a UTC timestamp in ISO 8601 format `YYYY-MM-DDTHH:mm:ss.sssZ`. Defaults to 48 hours before the server received the request. The difference between `from` and `to` may be at most one week.
+        example: '2022-07-19T18:00:58.723Z'
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        description: Audits after this timestamp will not be returned. Must be provided as a UTC timestamp in ISO 8601 format `YYYY-MM-DDTHH:mm:ss.sssZ`. Defaults to when the server received the request. The difference between `from` and `to` may be at most one week.
+        example: '2022-07-20T18:00:58.723Z'
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          $ref: '#/components/schemas/ResultSet'
+        '202':
+          $ref: '#/components/schemas/Pending'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /systemaudits/query/result/{token}:
+    get:
+      operationId: getQuerySystemaudits
+      tags:
+      - systemaudits/query
+      summary: Get the results of a potentially long-running query against query audits
+      parameters:
+      - name: token
+        in: path
+        description: The `token` provided in the `POST` response body. This may be a long string consisting of several thousand characters.
+        required: true
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/schemas/ResultSet'
+        '202':
+          $ref: '#/components/schemas/Pending'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Pending:
+      description: Results pending. Try again later with the same token to retrieve the results.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: A token used to retrieve results for this query. This may be a long string consisting of several thousand characters.
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+              success:
+                type: boolean
+                description: Whether the request succeeded
+    ResultSet:
+      description: Results are ready and are included in the response body.
+      content:
+        application/json:
+          schema:
+            properties:
+              data:
+                type: object
+                properties:
+                  moreData:
+                    type: boolean
+                    description: If this is `true`, you are likely to receive more results by issuing the same request again, but with incremented pagination parameters.
+                  token:
+                    type: string
+                    description: A token used to retrieve results for this query. This may be a long string consisting of several thousand characters.
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      description: Array of audits
+                      properties:
+                        event:
+                          type: string
+                          description: A human-readable description of the event.
+                        timestamp:
+                          type: integer
+                          description: Number of ellapsed milliseconds since Epoch when the event occurred.
+                        userId:
+                          type: integer
+                          description: The ID of the ALTRnet user who caused this event to occur.
+                        apiKey:
+                          type: string
+                          description: If the ALTR API was used, this API key was used to perform the action which caused this event,
+                        detail:
+                          type: object
+                          description: Audit data formatted specific to the audit category.
+              success:
+                type: boolean
+                description: Whether the request succeeded
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    TooManyRequests:
+      description: Wait and try your request again in the future.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Too Many Requests
+              statusCode: 429
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

@@ -1,0 +1,450 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Auto Tagging Auto Tagging API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auto Tagging API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Auto Tagging configurations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to skip."
+              },
+              {
+                "name": "databaseType",
+                "value": "",
+                "type": "query",
+                "description": "The database type."
+              },
+              {
+                "name": "classification_report_id",
+                "value": "",
+                "type": "query",
+                "description": "The classification report ID."
+              },
+              {
+                "name": "mapping_storage_id",
+                "value": "",
+                "type": "query",
+                "description": "The Tag Mapping Storage ID."
+              },
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "query",
+                "description": "The ALTR Database ID."
+              },
+              {
+                "name": "database_name",
+                "value": "",
+                "type": "query",
+                "description": "The Database name."
+              },
+              {
+                "name": "schema_name",
+                "value": "",
+                "type": "query",
+                "description": "The Schema name."
+              },
+              {
+                "name": "table_name",
+                "value": "",
+                "type": "query",
+                "description": "The Table name."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The Auto Tagging configuration status."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "The field to sort by."
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query",
+                "description": "The order of returned data for the defined field."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List Auto Tagging configurations."
+        },
+        {
+          "info": {
+            "name": "Create/Update an Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create/Update an Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Delete an Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/",
+            "params": [
+              {
+                "name": "unset_tags",
+                "value": "",
+                "type": "query",
+                "description": "During the delete process unset the previously set tags from this configuration."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete an Auto Tagging configuration. If unset_tags is set to true, then previously set tags from this configuration will be unset."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/databricks/database-id/:databaseId",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/databricks/database-id/:databaseId/catalog-name/:catalogName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/databricks/database-id/:databaseId/catalog-name/:catalogName/schema-name/:schemaName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/databricks/database-id/:databaseId/catalog-name/:catalogName/schema-name/:schemaName/table-name/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "catalogName",
+                "value": "",
+                "type": "path",
+                "description": "The catalog name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get an Auto Tagging Mapping.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/mapping-id/:mappingID",
+            "params": [
+              {
+                "name": "mappingID",
+                "value": "",
+                "type": "path",
+                "description": "Get the mapping for this mapping ID."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the tag mapping for a given mapping ID."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging Report URL.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/report-url/:reportID",
+            "params": [
+              {
+                "name": "reportID",
+                "value": "",
+                "type": "path",
+                "description": "Generate a URL to get this report ID."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the report."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a report URL for a given report ID. This URL will only be valid for a short duration of time."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/snowflake/database-id/:databaseId/database-name/:databaseName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The database name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/snowflake/database-id/:databaseId/database-name/:databaseName/schema-name/:schemaName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        },
+        {
+          "info": {
+            "name": "Get Auto Tagging configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.live.altr.com/v1/tag/auto-tagging/snowflake/database-id/:databaseId/database-name/:databaseName/schema-name/:schemaName/table-name/:tableName",
+            "params": [
+              {
+                "name": "databaseId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a connected database."
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "path",
+                "description": "The database name."
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "path",
+                "description": "The schema name."
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path",
+                "description": "The table name."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Gets all details of specified Auto Tagging configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

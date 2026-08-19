@@ -1,0 +1,498 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: Manages delivery integrations and event subscriptions for the ALTR integration platform. Configure integrations as delivery targets (Slack, ServiceNow, PagerDuty, custom webhook, etc.), then create subscriptions that filter events by criteria and deliver matching events to those targets.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Notification Integration Subscriptions API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.notifications.live.altr.com/v1/notification-integration
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Subscriptions
+paths:
+  /integrations/{integration_id}/subscriptions:
+    get:
+      description: Returns subscriptions owned by the integration named in the path, paginated.
+      parameters:
+      - description: Integration ID
+        in: path
+        name: integration_id
+        required: true
+        schema:
+          type: string
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination token from previous response
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Filter by event_type
+        in: query
+        name: event_type
+        schema:
+          enum:
+          - dam.alert.fired
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListSubscriptionsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid query parameter
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: List Subscriptions for an Integration.
+      tags:
+      - Subscriptions
+    post:
+      description: Creates a subscription under the integration named in the path. The server assigns and returns the subscription_id. `integration_id` in the body is ignored — the path is authoritative.
+      parameters:
+      - description: Integration ID
+        in: path
+        name: integration_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.CreateSubscriptionRequest'
+              summary: subscription
+              description: Subscription Request
+        description: Subscription Request
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Subscription'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Integration not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Create a Subscription.
+      tags:
+      - Subscriptions
+  /integrations/{integration_id}/subscriptions/{subscription_id}:
+    delete:
+      description: Removes a subscription.
+      parameters:
+      - description: Integration ID
+        in: path
+        name: integration_id
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Subscription not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Delete a Subscription.
+      tags:
+      - Subscriptions
+    get:
+      description: Returns a single subscription by id under the named integration.
+      parameters:
+      - description: Integration ID
+        in: path
+        name: integration_id
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Subscription'
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Subscription not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Get a Subscription.
+      tags:
+      - Subscriptions
+    patch:
+      description: Patches the mutable fields on a subscription. Only `criteria` and `enabled` are mutable; `event_type` is immutable (re-target by creating a new subscription).
+      parameters:
+      - description: Integration ID
+        in: path
+        name: integration_id
+        required: true
+        schema:
+          type: string
+      - description: Subscription ID
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.UpdateSubscriptionRequest'
+              summary: subscription
+              description: Mutable subscription fields
+        description: Mutable subscription fields
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.Subscription'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid request or validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Subscription not found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Update a Subscription.
+      tags:
+      - Subscriptions
+  /subscriptions:
+    get:
+      description: Returns subscriptions across all integrations in the caller's org. To create or modify a subscription, use the nested `/integrations/:integration_id/subscriptions/:id` path.
+      parameters:
+      - description: 'Maximum number of results (default: 25, max: 100)'
+        example: 25
+        in: query
+        name: limit
+        schema:
+          type: integer
+      - description: Pagination token from previous response
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Filter by event_type
+        in: query
+        name: event_type
+        schema:
+          enum:
+          - dam.alert.fired
+          type: string
+      - description: Filter by enabled flag
+        in: query
+        name: enabled
+        schema:
+          type: boolean
+      - description: Criteria field path to filter on (e.g. payload.rule_id); requires criteria_value
+        in: query
+        name: criteria_field
+        schema:
+          type: string
+      - description: Value the criteria_field must target via in/eq (e.g. a rule_id); requires criteria_field
+        in: query
+        name: criteria_value
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ListSubscriptionsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Invalid query parameter
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Missing or invalid credentials
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Forbidden
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Internal server error
+      security:
+      - BasicAuth: []
+      summary: Search Subscriptions across all Integrations.
+      tags:
+      - Subscriptions
+components:
+  schemas:
+    models.CriteriaOperators:
+      properties:
+        eq:
+          x-order: '0'
+        exists:
+          type: boolean
+          x-order: '4'
+        gte:
+          x-order: '2'
+        in:
+          items: {}
+          maxItems: 500
+          type: array
+          uniqueItems: false
+          x-order: '1'
+        lte:
+          x-order: '3'
+      type: object
+    models.CreateSubscriptionRequest:
+      properties:
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
+
+            operator block. All entries must match for the event to be delivered (AND across
+
+            fields). Empty/omitted matches every event of the registered type.'
+          type: object
+        enabled:
+          type: boolean
+        event_type:
+          enum:
+          - dam.alert.fired
+          maxLength: 255
+          type: string
+      required:
+      - event_type
+      type: object
+    models.Subscription:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
+
+            operator block. All entries must match for the event to be delivered (AND across
+
+            fields). Empty/omitted matches every event of the registered type.'
+          type: object
+        enabled:
+          type: boolean
+        event_type:
+          enum:
+          - dam.alert.fired
+          maxLength: 255
+          type: string
+        integration_id:
+          type: string
+        subscription_id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - event_type
+      - integration_id
+      - subscription_id
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.ListSubscriptionsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Subscription'
+          type: array
+          uniqueItems: false
+      type: object
+    models.UpdateSubscriptionRequest:
+      properties:
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
+
+            entries must match for the event to be delivered (AND across fields).'
+          type: object
+        enabled:
+          type: boolean
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

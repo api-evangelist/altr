@@ -1,0 +1,1038 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Data API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: data
+  description: Protected, Governed, Tokenized, and FPE Columns Endpoints
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/classification
+paths:
+  /data:
+    get:
+      tags:
+      - data
+      summary: Returns data
+      operationId: get-data
+      description: Returns an array of data objects
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        description: Sorts the data
+        schema:
+          type: string
+          default: nickname
+          enum:
+          - nickname
+          - scatterStatus
+          - tableName
+          - columnNameresult set by the provided parameter name
+      - name: autoComplete
+        schema:
+          type: string
+        in: query
+        description: Used to search protected data by nickname.
+      - name: nickname
+        schema:
+          type: string
+        in: query
+        description: Used to search protected data by nickname.
+      - name: columnName
+        schema:
+          type: string
+        in: query
+        description: Used to search protected data by columnName.
+      - name: queryType
+        schema:
+          type: string
+        in: query
+        default: OR
+        enum:
+        - OR
+        description: What type of operation to perform against this data set, defaults to an "OR" query and can only be "OR".
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fields:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/BaseDataModel'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - data
+      summary: Create a new governed, protected, tokenized, or fpe column
+      operationId: post-data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                databaseId:
+                  type: integer
+                  description: The database ID that correlates to the data being govern, protected, tokenized, or fpe belongs to.
+                tableName:
+                  type: string
+                  description: The name of the table the data being govern, protected, tokenized, or fpe belongs to.
+                schemaName:
+                  type: string
+                  description: The name of the schema the data being govern, tokenized, or fpe for when you are governing, tokenized, or fpe a view
+                viewName:
+                  type: string
+                  description: The name of the view for views.
+                columnName:
+                  type: string
+                  description: The name of the column the data being govern, protected, tokenized, or fpe belongs to.
+                nickname:
+                  type: string
+                protectMode:
+                  type: string
+                  enum:
+                  - govern
+                  - protect
+                  - tokenized
+                  - fpe
+                  description: The mode in which the data should be created. Govern, Protect, Tokenized, or FPE.
+                alphabet:
+                  type: string
+                  enum:
+                  - alphabetic
+                  - numeric
+                  - alphanumeric
+                  - fpe
+                  description: The name of the set of characters that will be decrypted in the ciphertext (e.g. alphabetic, numeric, alphanumeric). When protectMode is fpe, this field is required.
+                keyName:
+                  type: string
+                  description: The name of the key that will be used to decrypt the data. When protectMode is fpe, this field is required.
+                tweakName:
+                  type: string
+                  description: The name of the tweak that will be used to decrypt the data. When protectMode is fpe, this field is required.
+                isPadded:
+                  type: boolean
+                  description: Whether or not padding was applied on encryption of the data.
+                profiles:
+                  type: array
+                  description: Array of LockIDs to assign to the data at creation time
+                  items:
+                    type: integer
+              required:
+              - databaseId
+              - columnName
+              - nickname
+              - protectMode
+            examples:
+              Govern Column in Table Example:
+                value:
+                  databaseId: 1
+                  tableName: email
+                  columnName: employees
+                  nickname: employees_email_column
+                  protectMode: govern
+              Protect Column in Table Example:
+                value:
+                  databaseId: 1
+                  tableName: email
+                  columnName: employees
+                  nickname: employees_email_column
+                  protectMode: protect
+              Govern Column in View Example:
+                value:
+                  databaseId: 1
+                  schemaName: PUBLIC
+                  viewName: MY_VIEW
+                  columnName: EMPLOYEES
+                  nickname: employees_email_column
+                  protectMode: govern
+              Tokenized Column in Table Example:
+                value:
+                  databaseId: 1
+                  tableName: email
+                  columnName: employees
+                  nickname: employees_email_column
+                  protectMode: tokenized
+              Tokenized Column in View Example:
+                value:
+                  databaseId: 1
+                  schemaName: PUBLIC
+                  viewName: MY_VIEW
+                  columnName: EMPLOYEES
+                  nickname: employees_email_column
+                  protectMode: tokenized
+              FPE Column in Table Example:
+                value:
+                  databaseId: 1
+                  tableName: email
+                  columnName: employees
+                  nickname: employees_email_column
+                  protectMode: fpe
+                  alphabet: numeric
+                  keyName: ssn_key
+                  tweakName: ssn_tweak
+                  isPadded: false
+              FPE Column in View Example:
+                value:
+                  databaseId: 1
+                  schemaName: PUBLIC
+                  viewName: MY_VIEW
+                  columnName: EMPLOYEES
+                  nickname: employees_email_column
+                  protectMode: fpe
+                  alphabet: numeric
+                  keyName: ssn_key
+                  tweakName: ssn_tweak
+                  isPadded: false
+        description: ''
+      description: This endpoint can be used to govern or detokenize a column in a view or table, or to protect, govern or detokenize a column in a table. Protect is only available for non-SFCI Databases. Tokenized is only available for SFCI Databases.
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                    - $ref: '#/components/schemas/DataModel'
+                    - type: object
+                      properties:
+                        CDMServiceEnabled:
+                          type: boolean
+                        implementation:
+                          type: integer
+                          example: 1
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/Unprocessed'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}:
+    parameters:
+    - $ref: '#/components/parameters/fieldId'
+    get:
+      tags:
+      - data
+      summary: Get data with given id
+      operationId: get-data-dataId
+      description: Fetches a govern, protected, tokenized, or fpe data field by its corresponding ID.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DataModel'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      summary: Delete data with given id
+      operationId: delete-data-fieldId
+      parameters:
+      - name: ignoreErrors
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to ignore the errors when deleting a column.
+      tags:
+      - data
+      description: "Deletes a govern, protected, tokenized, or fpe data field by its corresponding ID.\n\nIf the field provided is currently in a scattered state a job will be queued and the field will be set to a removal_pending state and eventually from the database. \n\nIf the field provided is in a governed-only state then the field will be removed immediately."
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - data
+      summary: Updates data with given id
+      operationId: patch-data-fieldId
+      description: 'Converts a governed column to protect, tokenized, or fpe. A tokenized column to govern, protect, or fpe. A fpe column to govern, protect, or tokenized.
+
+        Can also be used to update a field''s friendlyName if desired. Can also update alphabet, keyName, or tweakName if column is fpe.
+
+
+        Set ''reinvoke'' to true to retry a failed column connection.
+
+        '
+      requestBody:
+        required: true
+        description: At least one field is required. Both fields can be sent together.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                  example: Column Nickname Updated via Swagger
+                protectMode:
+                  type: string
+                  example: govern
+                  enum:
+                  - protect
+                  - govern
+                  - tokenized
+                  - fpe
+                alphabet:
+                  type: string
+                  enum:
+                  - alphabetic
+                  - numeric
+                  - alphanumeric
+                  - fpe
+                  description: The name of the set of characters that will be decrypted in the ciphertext (e.g. alphabetic, numeric, alphanumeric). When protectMode is fpe, this field is required.
+                keyName:
+                  type: string
+                  description: The name of the key that will be used to decrypt the data. When protectMode is fpe, this field is required.
+                tweakName:
+                  type: string
+                  description: The name of the tweak that will be used to decrypt the data. When protectMode is fpe, this field is required.
+                isPadded:
+                  type: boolean
+                  description: Whether or not padding was applied on encryption of the data.
+                reinvoke:
+                  type: boolean
+                  default: false
+                  description: 'For Snowflake CI only. When set to true, triggers the CDM service to re-apply governance on this column.
+
+                    This will refresh the masking policy and related ALTR-managed objects in Snowflake.
+
+                    Use this when column governance needs to be re-established, such as after infrastructure changes or to resolve issues.
+
+                    '
+                  example: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DataModel'
+                  success:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}/status:
+    get:
+      summary: Returns the scatter status and percent completion for given id
+      parameters:
+      - $ref: '#/components/parameters/fieldId'
+      tags:
+      - data
+      operationId: get-data-fieldId-status
+      description: Returns the scatter status and percent completion for a given fieldId.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      scatterStatus:
+                        type: string
+                        enum:
+                        - unscattered
+                        - unscatter_pending
+                        - unscatter_error
+                        - tokenized
+                        - tokenize_pending
+                        - tokenize_error
+                        - fpe
+                        - fpe_pending
+                        - fpe_error
+                        - scattered
+                        - scatter_pending
+                        - scatter_error
+                        - remove_pending
+                        - remove_error
+                        example: unscattered
+                      pct:
+                        type: integer
+                        example: 100
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}/metadata:
+    get:
+      deprecated: true
+      summary: DEPRECATED - Returns all metadata for a given specified fieldId.
+      tags:
+      - data
+      operationId: get-data-fieldId-metadata
+      parameters:
+      - $ref: '#/components/parameters/fieldId'
+      description: Returns all metadata for a given specified fieldId.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DataMetadata'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}/locks:
+    delete:
+      tags:
+      - data
+      summary: Deletes all relationships between a field and all of the fields corresponding locks.
+      operationId: delete-data-fieldId-locks
+      parameters:
+      - $ref: '#/components/parameters/fieldId'
+      description: Deletes all relationships between a field and all of the fields corresponding locks.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}/foreign-keys:
+    get:
+      summary: Returns all of the foreign keys associated with a given fieldId
+      tags:
+      - data
+      parameters:
+      - $ref: '#/components/parameters/fieldId'
+      operationId: get-data-fieldId-foreign-keys
+      description: Returns all of the foreign keys associated with a given fieldId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      foreignKeys:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/BaseDataModel'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /data/{fieldId}/maskingpolicies:
+    get:
+      tags:
+      - data
+      summary: Returns a list of the available masking policies for the given field id, with pagination support.
+      description: 'If the `fieldId`` passed is a valid Snowflake CI Column, you will get a result of all the available masking policies that can applied for this column.
+
+
+        If the `fieldId`` passed is not a Snowflake CI Column, you will always get the default masking policy type of 0, No Mask.
+
+        '
+      operationId: getAvailableMaskingPolicies
+      parameters:
+      - $ref: '#/components/parameters/fieldId'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          default: maskType
+          enum:
+          - maskType
+          - name
+        description: The property on which to sort masking policies by.
+      - name: name
+        in: query
+        schema:
+          type: string
+        description: Filter by the masking policies name.
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      maskingpolicies:
+                        description: An array of objects that represent the masking polices that the requested column can use.
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MaskingPolicy'
+                      count:
+                        type: integer
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    DataLinkedColumns:
+      type: object
+      properties:
+        linkedColumns:
+          type: array
+          items:
+            type: object
+            properties:
+              size:
+                type: integer
+                example: 0
+                description: Column length
+              canMonitor:
+                type: boolean
+              canTokenized:
+                type: boolean
+              canScatter:
+                type: boolean
+              nullableType:
+                type: integer
+                description: 0 if non null, 1 if null
+                enum:
+                - 0
+                - 1
+                example: 1
+              name:
+                type: string
+                example: EMAIL
+              isAltred:
+                type: boolean
+                example: false
+              isMonitored:
+                type: boolean
+              isTokenized:
+                type: boolean
+              type:
+                type: string
+                example: DATE
+              tableName:
+                type: string
+                example: EMPLOYEES
+          example: []
+          description: This is continue to return any DataLinkedColumns linked columns until there aren't anymore.
+        size:
+          type: integer
+          example: 0
+          description: Column length
+        canMonitor:
+          type: boolean
+        canTokenize:
+          type: boolean
+        canScatter:
+          type: boolean
+        nullableType:
+          type: integer
+          description: 0 if non null, 1 if null
+          enum:
+          - 0
+          - 1
+          example: 1
+        name:
+          type: string
+          example: EMAIL
+        isAltred:
+          type: boolean
+          example: false
+        isMonitored:
+          type: boolean
+        isTokenized:
+          type: boolean
+        type:
+          type: string
+          example: DATE
+        tableName:
+          type: string
+          example: EMPLOYEES
+    DataMetadata:
+      type: object
+      properties:
+        linkedColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLinkedColumns'
+        isAltred:
+          type: boolean
+        isView:
+          type: boolean
+          example: false
+        type:
+          type: string
+          example: DATE
+        uuid:
+          type: string
+          example: bb4dc5c9-4305-523d-8b28-4e6fa8e4cb6a
+        tableName:
+          type: string
+          example: EMPLOYEE
+        schemaName:
+          type: string
+          example: PUBLIC
+          description: Only available if the column is in a view
+        viewName:
+          type: string
+          example: MY_VIEW
+          description: Only available if the column is in a view
+        size:
+          type: integer
+          example: 0
+        canMonitor:
+          type: boolean
+        canTokenize:
+          type: boolean
+        canScatter:
+          type: boolean
+        nullableType:
+          type: integer
+          description: 0 if non null, 1 if null
+          enum:
+          - 0
+          - 1
+          example: 1
+        name:
+          type: string
+          example: EMAIL
+        isMonitored:
+          type: boolean
+        isTokenized:
+          type: boolean
+        metrics_emit_total:
+          type: integer
+          example: 111
+        metrics_emit_received_at:
+          type: integer
+          example: 1673294738721
+        metrics_emit_queued:
+          type: integer
+          example: 0
+        metrics_emit_processed:
+          type: integer
+          example: 111
+    MaskingPolicy:
+      type: object
+      description: An individual masking policy information.
+      properties:
+        id:
+          type: integer
+          description: The unique id of this masking policy
+          example: 10000
+        name:
+          type: string
+          description: The name of this masking policy
+          example: Constant Mask
+        details:
+          type: object
+          description: Contains additional details about this policy.
+          properties:
+            tooltip:
+              type: string
+              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
+              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
+            example:
+              type: string
+              description: An example of how this masking policy will be applied.
+              example: '****-**-1234'
+        description:
+          type: string
+          description: The description of the masking policy
+          example: For all your constant masking needs.
+        parameters:
+          type:
+          - object
+          - 'null'
+          description: A custom object that can be NULL, defines the options for custom masking policies.
+        maskType:
+          type: integer
+          enum:
+          - 0
+          - 2
+          - 3
+          - 4
+          - 5
+          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
+
+            '
+          example: 1
+        isEditable:
+          type: boolean
+          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
+          example: false
+        clientId:
+          type: string
+          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
+          example: '0'
+    DataModel:
+      allOf:
+      - $ref: '#/components/schemas/BaseDataModel'
+      - type: object
+        properties:
+          implementation:
+            type:
+            - integer
+            - 'null'
+            enum:
+            - 1
+            - 2
+            - 3
+            description: 'An optional field indicating the way governance on the column was implemented. This only applies to Snowflake CI; this value can also be `null`:
+
+              * `1` - masking policy was created
+
+              * `2` - database does not support masking policies
+
+              * `3` - the column already has a masking policy applied to it.
+
+              '
+          CDMServiceEnabled:
+            type: boolean
+          databaseName:
+            type: string
+            description: The resolvable name of the connected database.
+            example: MainStore
+    BaseDataModel:
+      type: object
+      description: Base Data Model Representation
+      properties:
+        fieldId:
+          type: number
+          example: 1
+        nickname:
+          type: string
+          example: column_nickname
+        pct:
+          type: integer
+          example: 100
+        databaseId:
+          type: string
+          example: 1
+        groupId:
+          type:
+          - string
+          - 'null'
+          example: null
+        databaseHelperId:
+          type: string
+        databaseType:
+          type: string
+          enum:
+          - sqlserver
+          - mysql
+          - redshift
+          - snowflake_external_functions
+          description: The type of database this column belongs too
+        jobId:
+          type:
+          - string
+          - 'null'
+          example: null
+        columnName:
+          type: string
+          example: email
+        friendlyDatabaseName:
+          type: string
+          example: Washington's Database 1
+        tableName:
+          type: string
+          example: employees
+        tableId:
+          type: integer
+          example: 1
+        scatterStatus:
+          type: string
+          enum:
+          - unscattered
+          - unscatter_pending
+          - unscatter_error
+          - tokenized
+          - tokenize_pending
+          - tokenize_error
+          - fpe
+          - fpe_pending
+          - fpe_error
+          - scattered
+          - scatter_pending
+          - scatter_error
+          - remove_pending
+          - remove_error
+          example: unscattered
+        isParent:
+          type: boolean
+        isView:
+          type: boolean
+          description: whether or not this column is a view or not.
+        alphabet:
+          type: string
+          enum:
+          - alphabetic
+          - numeric
+          - alphanumeric
+          - fpe
+          description: The name of the set of characters that will be decrypted in the ciphertext (e.g. alphabetic, numeric, alphanumeric). When scatterStatus is fpe, this field is present.
+        keyName:
+          type: string
+          description: The name of the key that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
+        tweakName:
+          type: string
+          description: The name of the tweak that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
+        isPadded:
+          type: boolean
+          description: Whether or not padding was applied on encryption of the data.
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    fieldId:
+      name: fieldId
+      required: true
+      in: path
+      schema:
+        type: integer
+        minimum: 1
+      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unprocessable Entity
+              statusCode: 422
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

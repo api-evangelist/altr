@@ -1,0 +1,404 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Apikeys API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: apikeys
+  description: Operations about ApiKeys
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/settings#Preferences
+paths:
+  /apikeys:
+    get:
+      tags:
+      - apikeys
+      summary: Returns all ApiKeys based on the current organization along with query filter capabilities support.
+      operationId: getApiKeys
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - enabled
+          - disabled
+          default: enabled
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - description
+          - status
+          default: description
+        description: The value to sort by.
+      - name: description
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiKeys'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - apikeys
+      summary: Creates a new ApiKey given the appropriate body. Assigns it to the currentOrganization that the user is in.
+      description: 'The API Key `secret` is only returned after a successful creation. So be sure to save the secret after creation. Note: This endpoint is only accessible via ALTR''s UI; it cannot be accessed from an API key'
+      operationId: createApiKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - description
+              properties:
+                description:
+                  type: string
+                  example: George Washington's Description
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ApiKeyWithSecret'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /apikeys/{id}:
+    get:
+      tags:
+      - apikeys
+      summary: Returns individual ApiKey by the given id.
+      operationId: getApiKey
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ApiKeyWithUser'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - apikeys
+      summary: Updates individual ApiKey by the given id.
+      description: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key
+      operationId: patchApiKey
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: George Washington's Description
+                status:
+                  type: string
+                  enum:
+                  - ENABLED
+                  - DISABLED
+                  example: ENABLED
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ApiKeyWithUser'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    ApiKeyWithUser:
+      allOf:
+      - $ref: '#/components/schemas/ApiKey'
+      - type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/Administrator'
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        orgId:
+          type: string
+          example: 969276ae-9118-11ed-a1eb-0242ac120002
+        apiKey:
+          type: string
+          example: ALTR-C41A886326C405A5C6F14C225B3B7A8D49E6BDA1
+        description:
+          type: string
+          example: George Washington's API Key
+        userId:
+          type: integer
+          example: 1
+        status:
+          type: string
+          enum:
+          - ENABLED
+          - DISABLED
+          example: ENABLED
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ApiKeyWithSecret:
+      allOf:
+      - $ref: '#/components/schemas/ApiKeyWithUser'
+      - type: object
+        properties:
+          secret:
+            type: string
+            example: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+    Administrator:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 100
+        firstName:
+          type: string
+          example: George
+        lastName:
+          type: string
+          example: Washington
+        name:
+          type: string
+          description: Combination of `lastName, firstName`
+          example: Washington, George
+        email:
+          type: string
+          example: George@altr.com
+        phone:
+          type: integer
+          example: 1115555555
+        phoneNumber:
+          type: string
+          description: Combination of country code and phone
+          example: '+11115555555'
+        activityTimestamp:
+          type: string
+          format: date-time
+        userStatus:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+          example: active
+        role:
+          type: string
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+          example: SUPERADMINISTRATOR
+        countryCode:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '1732-02-22T20:00:37.000Z'
+        isLocked:
+          type: boolean
+          description: Whether the administrator is locked out of their account or not.
+          example: false
+        username:
+          type: string
+          example: George3
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    ApiKeys:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApiKey'
+                  count:
+                    type: integer
+                    example: 1
+              success:
+                type: boolean
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

@@ -1,0 +1,361 @@
+{
+  "item": [
+    {
+      "id": "e0097e4f-50e0-4127-bd5f-2dc527cce62a",
+      "name": "maskingpolicies",
+      "description": {
+        "content": "Operations related to masking policies",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "88a047d2-29c4-4c32-bba3-20ba168062aa",
+          "name": "Returns a list of masking policies with pagination support",
+          "request": {
+            "name": "Returns a list of masking policies with pagination support",
+            "description": {},
+            "url": {
+              "path": [
+                "maskingpolicies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "asc"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "maskType",
+                  "description": "The property on which to sort masking policies by."
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by the name of the masking policy."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0201e213-bf96-488e-bbbc-665b071b6930",
+              "name": "Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maskingpolicies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "maskType"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"maskingpolicies\": [\n      {\n        \"id\": 10000,\n        \"name\": \"Constant Mask\",\n        \"details\": {\n          \"type\": \"string\",\n          \"description\": \"An example of how this masking policy will be applied.\",\n          \"example\": \"****-**-1234\"\n        },\n        \"description\": \"For all your constant masking needs.\",\n        \"parameters\": {},\n        \"maskType\": 2,\n        \"isEditable\": false,\n        \"clientId\": \"0\"\n      },\n      {\n        \"id\": 10000,\n        \"name\": \"Constant Mask\",\n        \"details\": {\n          \"type\": \"string\",\n          \"description\": \"An example of how this masking policy will be applied.\",\n          \"example\": \"****-**-1234\"\n        },\n        \"description\": \"For all your constant masking needs.\",\n        \"parameters\": {},\n        \"maskType\": 4,\n        \"isEditable\": false,\n        \"clientId\": \"0\"\n      }\n    ],\n    \"count\": 4998\n  },\n  \"success\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a49e79c0-2b78-4467-8f1f-35a52d7f0bd3",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maskingpolicies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "maskType"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"message\": \"'id' must be present\",\n    \"statusCode\": 400,\n    \"date\": \"2022-07-20T18:00:58.723Z\"\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7846f2e4-916e-44c7-9c6a-e8f99913a6df",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maskingpolicies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "maskType"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401,\n    \"date\": \"2022-07-20T18:00:58.723Z\"\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ec53c3d-a456-48ed-abac-29f1c92a1b3d",
+              "name": "Internal Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "maskingpolicies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "maskType"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"message\": \"Internal Server Error\",\n    \"statusCode\": 500,\n    \"date\": \"2022-07-20T18:00:58.723Z\"\n  },\n  \"success\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://altrnet.live.altr.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c98621f6-13fd-4696-976e-f8c434d4d674",
+    "name": "ALTR Management Maskingpolicies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Welcome to the Swagger documentation for ALTR's Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR's own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.\n\nMAPI does not include the endpoints for ALTR's tokenization API; documentation on ALTR's tokenization API can be found [here](https://docs.altr.com/reference).\n\nMAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise + customers. Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.\n\nContact Support:\n Name: Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,2817 @@
+{
+  "item": [
+    {
+      "id": "bdea47c0-0259-4338-9c7a-95d5dc0ffc55",
+      "name": "Classifiers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "67a3d6f1-fe00-4ea2-a0d2-4fb5afb6f726",
+          "name": "List classifiers",
+          "request": {
+            "name": "List classifiers",
+            "description": {
+              "content": "Retrieves a list of all classifiers with optional pagination, prefix filtering, and sorting. Use exclude_collection to filter out classifiers already assigned to a specific collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Number of items to return (default: 100, max: 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Continuation token for pagination (returned in previous response)"
+                },
+                {
+                  "disabled": false,
+                  "key": "prefix",
+                  "value": "<string>",
+                  "description": "Prefix to filter classifier names (e.g., 'email' matches 'email_address', 'email_domain')"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>",
+                  "description": "Field to order by: 'name' (alphabetical) or 'collection_count' (number of collections using this classifier)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_order",
+                  "value": "<string>",
+                  "description": "Sort order: 'asc' (ascending) or 'desc' (descending)"
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude_collection",
+                  "value": "<string>",
+                  "description": "Exclude classifiers that belong to this collection (useful when adding classifiers to a collection)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "08958db2-aada-434e-bd56-5978e06522fd",
+              "name": "List of classifiers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "email"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "exclude_collection",
+                      "value": "pii_data"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifiers\": [\n    {\n      \"attributes\": {\n        \"tags\": [\n          \"type:ssn\"\n        ]\n      },\n      \"classifier_name\": \"string\",\n      \"collection_count\": 6428,\n      \"collection_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"compound_ruleset\": {\n        \"conditions\": [\n          {\n            \"comparator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"conditions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"content_format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"content_formats\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"dominance_threshold\": 2695.5138761839894,\n            \"entity_type\": \"EMAIL\",\n            \"info_type\": \"string\",\n            \"length\": 100,\n            \"location\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"minimum_confidence\": \"HIGH\",\n            \"minimum_coverage\": 0.7,\n            \"minimum_likelihood\": \"string\",\n            \"minimum_score\": 0.5,\n            \"minimum_threshold\": 3236.8273643542034,\n            \"negated\": false,\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"pattern\": \"(?i)ssn|social_security|ss_num\",\n            \"privacy_category\": \"IDENTIFIER\",\n            \"semantic_category\": \"EMAIL\",\n            \"size\": 100,\n            \"tags\": [\n              \"type:ssn\"\n            ],\n            \"target\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"trim\": true\n          },\n          {\n            \"comparator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"conditions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"content_format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"content_formats\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"dominance_threshold\": 7152.355192682629,\n            \"entity_type\": \"EMAIL\",\n            \"info_type\": \"string\",\n            \"length\": 100,\n            \"location\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"minimum_confidence\": \"HIGH\",\n            \"minimum_coverage\": 0.7,\n            \"minimum_likelihood\": \"string\",\n            \"minimum_score\": 0.5,\n            \"minimum_threshold\": 6075.092520566688,\n            \"negated\": true,\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"pattern\": \"(?i)ssn|social_security|ss_num\",\n            \"privacy_category\": \"IDENTIFIER\",\n            \"semantic_category\": \"EMAIL\",\n            \"size\": 100,\n            \"tags\": [\n              \"type:ssn\"\n            ],\n            \"target\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"trim\": true\n          }\n        ],\n        \"operator\": \"OR\"\n      },\n      \"deleted_at\": \"string\",\n      \"description\": \"string\",\n      \"minimum_threshold\": 3879,\n      \"org_id\": \"string\",\n      \"pattern\": \"string\",\n      \"sample_size\": 6066,\n      \"sample_type\": \"PERCENT\"\n    },\n    {\n      \"attributes\": {\n        \"tags\": [\n          \"type:ssn\"\n        ]\n      },\n      \"classifier_name\": \"string\",\n      \"collection_count\": 7848,\n      \"collection_names\": [\n        \"string\",\n        \"string\"\n      ],\n      \"compound_ruleset\": {\n        \"conditions\": [\n          {\n            \"comparator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"conditions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"content_format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"content_formats\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"dominance_threshold\": 1136.9911984515068,\n            \"entity_type\": \"EMAIL\",\n            \"info_type\": \"string\",\n            \"length\": 100,\n            \"location\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"minimum_confidence\": \"HIGH\",\n            \"minimum_coverage\": 0.7,\n            \"minimum_likelihood\": \"string\",\n            \"minimum_score\": 0.5,\n            \"minimum_threshold\": 7403.452828656081,\n            \"negated\": true,\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"pattern\": \"(?i)ssn|social_security|ss_num\",\n            \"privacy_category\": \"IDENTIFIER\",\n            \"semantic_category\": \"EMAIL\",\n            \"size\": 100,\n            \"tags\": [\n              \"type:ssn\"\n            ],\n            \"target\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"trim\": true\n          },\n          {\n            \"comparator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"conditions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"content_format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"content_formats\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"dominance_threshold\": 7412.555858830626,\n            \"entity_type\": \"EMAIL\",\n            \"info_type\": \"string\",\n            \"length\": 100,\n            \"location\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"minimum_confidence\": \"HIGH\",\n            \"minimum_coverage\": 0.7,\n            \"minimum_likelihood\": \"string\",\n            \"minimum_score\": 0.5,\n            \"minimum_threshold\": 3427.329926388989,\n            \"negated\": false,\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"pattern\": \"(?i)ssn|social_security|ss_num\",\n            \"privacy_category\": \"IDENTIFIER\",\n            \"semantic_category\": \"EMAIL\",\n            \"size\": 100,\n            \"tags\": [\n              \"type:ssn\"\n            ],\n            \"target\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"trim\": true\n          }\n        ],\n        \"operator\": \"OR\"\n      },\n      \"deleted_at\": \"string\",\n      \"description\": \"string\",\n      \"minimum_threshold\": 6694,\n      \"org_id\": \"string\",\n      \"pattern\": \"string\",\n      \"sample_size\": 3346,\n      \"sample_type\": \"PERCENT\"\n    }\n  ],\n  \"contiguous_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "329825a6-3055-47eb-81bc-4b0b07df0c80",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "email"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "exclude_collection",
+                      "value": "pii_data"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c551fa5d-4269-4908-8744-a740612d88aa",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJQSyI6eyJTIjoiT1JHSUQjMTIzNDU2Nzg5MCJ9fQ"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "email"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "asc"
+                    },
+                    {
+                      "key": "exclude_collection",
+                      "value": "pii_data"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d737409-2c6c-4d14-9041-8d241c74fdaa",
+          "name": "Create classifier",
+          "request": {
+            "name": "Create classifier",
+            "description": {
+              "content": "Creates a new classifier. Pattern uses RE2 regex syntax. Classifier names starting with 'ALTR' are reserved. Sampling (sample_size, sample_type) is configured on the job, not the classifier.\n\nThree modes are supported:\n\n**Legacy (regex only)** — Provide a top-level `pattern` and `minimum_threshold`. No compound_ruleset needed.\n\n**Regex + metadata filter** — Same top-level pattern fields, plus a `compound_ruleset` with METADATA or COLUMN_LOCATION conditions to narrow matches.\n\n**Compound ruleset (advanced)** — All logic inside `compound_ruleset`. Each leaf condition specifies its own `target` (ROW_DATA, METADATA, or COLUMN_LOCATION), pattern, and optional per-condition minimum_threshold. No top-level pattern needed.\n\nEach condition supports a `negated` boolean (default false) to invert the match. Conditions can be nested groups with their own `operator` + `conditions` array.\n\n**METADATA vs COLUMN_LOCATION** — A METADATA condition matches on the column NAME (e.g. `{\"target\":\"METADATA\",\"comparator\":\"contains\",\"pattern\":\"ssn\"}`). A COLUMN_LOCATION condition matches on WHERE the column lives and accepts only `database`, `schema`, and/or `table` (e.g. `{\"target\":\"COLUMN_LOCATION\",\"location\":{\"database\":\"prod_db\",\"schema\":\"pii\",\"table\":\"customers\"}}`); `\"*\"` or an omitted field means any. A `column` field on COLUMN_LOCATION is rejected with 400 — use a METADATA condition for column-name matching.\n\nSee the request body examples dropdown for complete payloads.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributes\": {\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"classifier_name\": \"<string>\",\n  \"compound_ruleset\": {\n    \"conditions\": [\n      {\n        \"comparator\": \"<string>\",\n        \"conditions\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          }\n        ],\n        \"content_format\": \"<string>\",\n        \"content_formats\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dominance_threshold\": \"<number>\",\n        \"entity_type\": \"<string>\",\n        \"info_type\": \"<string>\",\n        \"length\": \"<integer>\",\n        \"location\": {\n          \"database\": \"<string>\",\n          \"schema\": \"<string>\",\n          \"table\": \"<string>\"\n        },\n        \"minimum_confidence\": \"<string>\",\n        \"minimum_coverage\": \"<number>\",\n        \"minimum_likelihood\": \"<string>\",\n        \"minimum_score\": \"<number>\",\n        \"minimum_threshold\": \"<number>\",\n        \"negated\": \"<boolean>\",\n        \"operator\": \"<string>\",\n        \"pattern\": \"<string>\",\n        \"privacy_category\": \"<string>\",\n        \"semantic_category\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"target\": \"<string>\",\n        \"trim\": \"<boolean>\"\n      },\n      {\n        \"comparator\": \"<string>\",\n        \"conditions\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          }\n        ],\n        \"content_format\": \"<string>\",\n        \"content_formats\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dominance_threshold\": \"<number>\",\n        \"entity_type\": \"<string>\",\n        \"info_type\": \"<string>\",\n        \"length\": \"<integer>\",\n        \"location\": {\n          \"database\": \"<string>\",\n          \"schema\": \"<string>\",\n          \"table\": \"<string>\"\n        },\n        \"minimum_confidence\": \"<string>\",\n        \"minimum_coverage\": \"<number>\",\n        \"minimum_likelihood\": \"<string>\",\n        \"minimum_score\": \"<number>\",\n        \"minimum_threshold\": \"<number>\",\n        \"negated\": \"<boolean>\",\n        \"operator\": \"<string>\",\n        \"pattern\": \"<string>\",\n        \"privacy_category\": \"<string>\",\n        \"semantic_category\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"target\": \"<string>\",\n        \"trim\": \"<boolean>\"\n      }\n    ],\n    \"operator\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"minimum_threshold\": \"<integer>\",\n  \"pattern\": \"<string>\",\n  \"sample_size\": \"<integer>\",\n  \"sample_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ca1accff-5c71-4430-ba4f-7e2f73c52850",
+              "name": "Classifier created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"classifier_name\": \"ssn_regex\",\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 70\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifier\": {\n    \"attributes\": {\n      \"tags\": [\n        \"type:ssn\"\n      ]\n    },\n    \"classifier_name\": \"string\",\n    \"collection_count\": 4950,\n    \"collection_names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"compound_ruleset\": {\n      \"conditions\": [\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        },\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        }\n      ],\n      \"operator\": \"OR\"\n    },\n    \"deleted_at\": \"string\",\n    \"description\": \"string\",\n    \"minimum_threshold\": 4231,\n    \"org_id\": \"string\",\n    \"pattern\": \"string\",\n    \"sample_size\": 2275,\n    \"sample_type\": \"PERCENT\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dffbd4b2-f8b7-4c39-86ed-c43e78a714b6",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"classifier_name\": \"ssn_regex\",\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 70\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "349997d6-1cda-48f2-95ff-ae0c4edc9852",
+              "name": "Classifier already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"classifier_name\": \"ssn_regex\",\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 70\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08a38eae-7fac-4376-a3d5-d78bbac54e66",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"classifier_name\": \"ssn_regex\",\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 70\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48fb0713-6781-405f-9f17-a7ac150aa0ba",
+          "name": "Delete classifier",
+          "request": {
+            "name": "Delete classifier",
+            "description": {
+              "content": "Soft deletes a classifier by its name. This will remove it from all collections and mark it as deleted. ALTR managed classifiers cannot be deleted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers",
+                ":classifier_name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "classifier_name",
+                  "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1771f62f-4110-4c67-9f02-969da417f878",
+              "name": "Classifier deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "76a4fd0a-52dd-49e2-84fb-9e63133e21c0",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a28cf4c1-272d-493f-a67f-06a5e7b49239",
+              "name": "Classifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7027eeba-98f5-4be8-9959-30328c3f9753",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ddd1e49-bd53-4289-be61-16e2bf063578",
+          "name": "Get classifier by name",
+          "request": {
+            "name": "Get classifier by name",
+            "description": {
+              "content": "Retrieves a specific classifier by its name, including its pattern, thresholds, and associated collections.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers",
+                ":classifier_name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "classifier_name",
+                  "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "37f7ae12-7728-473d-8015-5cf13788edc2",
+              "name": "Classifier retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifier\": {\n    \"attributes\": {\n      \"tags\": [\n        \"type:ssn\"\n      ]\n    },\n    \"classifier_name\": \"string\",\n    \"collection_count\": 4950,\n    \"collection_names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"compound_ruleset\": {\n      \"conditions\": [\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        },\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        }\n      ],\n      \"operator\": \"OR\"\n    },\n    \"deleted_at\": \"string\",\n    \"description\": \"string\",\n    \"minimum_threshold\": 4231,\n    \"org_id\": \"string\",\n    \"pattern\": \"string\",\n    \"sample_size\": 2275,\n    \"sample_type\": \"PERCENT\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01fb7814-384b-43f6-aba4-7f77954bd87f",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86dcc231-0a39-4089-af6f-0e8b4cb31783",
+              "name": "Classifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42266eee-c631-495e-a91a-198b42f4dadd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a24c017-6d40-4308-9d01-daf3464cb79e",
+          "name": "Update classifier",
+          "request": {
+            "name": "Update classifier",
+            "description": {
+              "content": "Updates a classifier's properties using RESTful PATCH semantics.\n\n**PATCH semantics**: Omitted fields are **preserved** (not modified). Only fields explicitly\nincluded in the request body are updated. This allows partial updates without affecting other fields.\n\n**Clearing fields**: To explicitly clear a field, send it with an empty/null/zero value:\n- Clear `pattern`: send `\"pattern\": \"\"` or `\"pattern\": null`\n- Clear `compound_ruleset`: send `\"compound_ruleset\": {}` or `\"compound_ruleset\": null`\n- Clear `minimum_threshold`: send `\"minimum_threshold\": 0` or `\"minimum_threshold\": null`\n- Clear `description`: send `\"description\": \"\"`\n\n**Validation**: A request that explicitly clears both `pattern` and `compound_ruleset` in the\nsame request returns a 400 error.\n\nSupports the same three modes as POST /classifiers (legacy, regex + metadata filter, compound ruleset). See the POST endpoint and request body examples for details.\n\nEach condition supports a `negated` boolean (default false) to invert the match (NOT logic). Conditions can also be nested groups with their own `operator` + `conditions` array.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers",
+                ":classifier_name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "classifier_name",
+                  "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributes\": {\n    \"tags\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"compound_ruleset\": {\n    \"conditions\": [\n      {\n        \"comparator\": \"<string>\",\n        \"conditions\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          }\n        ],\n        \"content_format\": \"<string>\",\n        \"content_formats\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dominance_threshold\": \"<number>\",\n        \"entity_type\": \"<string>\",\n        \"info_type\": \"<string>\",\n        \"length\": \"<integer>\",\n        \"location\": {\n          \"database\": \"<string>\",\n          \"schema\": \"<string>\",\n          \"table\": \"<string>\"\n        },\n        \"minimum_confidence\": \"<string>\",\n        \"minimum_coverage\": \"<number>\",\n        \"minimum_likelihood\": \"<string>\",\n        \"minimum_score\": \"<number>\",\n        \"minimum_threshold\": \"<number>\",\n        \"negated\": \"<boolean>\",\n        \"operator\": \"<string>\",\n        \"pattern\": \"<string>\",\n        \"privacy_category\": \"<string>\",\n        \"semantic_category\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"target\": \"<string>\",\n        \"trim\": \"<boolean>\"\n      },\n      {\n        \"comparator\": \"<string>\",\n        \"conditions\": [\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          },\n          {\n            \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n          }\n        ],\n        \"content_format\": \"<string>\",\n        \"content_formats\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dominance_threshold\": \"<number>\",\n        \"entity_type\": \"<string>\",\n        \"info_type\": \"<string>\",\n        \"length\": \"<integer>\",\n        \"location\": {\n          \"database\": \"<string>\",\n          \"schema\": \"<string>\",\n          \"table\": \"<string>\"\n        },\n        \"minimum_confidence\": \"<string>\",\n        \"minimum_coverage\": \"<number>\",\n        \"minimum_likelihood\": \"<string>\",\n        \"minimum_score\": \"<number>\",\n        \"minimum_threshold\": \"<number>\",\n        \"negated\": \"<boolean>\",\n        \"operator\": \"<string>\",\n        \"pattern\": \"<string>\",\n        \"privacy_category\": \"<string>\",\n        \"semantic_category\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"tags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"target\": \"<string>\",\n        \"trim\": \"<boolean>\"\n      }\n    ],\n    \"operator\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"minimum_threshold\": \"<integer>\",\n  \"pattern\": \"<string>\",\n  \"sample_size\": \"<integer>\",\n  \"sample_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "be7e478e-900d-4b69-a590-ff6e70370752",
+              "name": "Classifier updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 80\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifier\": {\n    \"attributes\": {\n      \"tags\": [\n        \"type:ssn\"\n      ]\n    },\n    \"classifier_name\": \"string\",\n    \"collection_count\": 4950,\n    \"collection_names\": [\n      \"string\",\n      \"string\"\n    ],\n    \"compound_ruleset\": {\n      \"conditions\": [\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        },\n        {\n          \"comparator\": \"matches\",\n          \"conditions\": [\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            },\n            {\n              \"value\": \"<Circular reference to #/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition detected>\"\n            }\n          ],\n          \"content_format\": \"<string>\",\n          \"content_formats\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ],\n          \"dominance_threshold\": \"<number>\",\n          \"entity_type\": \"EMAIL\",\n          \"info_type\": \"<string>\",\n          \"length\": 100,\n          \"location\": {\n            \"database\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"schema\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"table\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"minimum_confidence\": \"HIGH\",\n          \"minimum_coverage\": 0.7,\n          \"minimum_likelihood\": \"<string>\",\n          \"minimum_score\": 0.5,\n          \"minimum_threshold\": \"<number>\",\n          \"negated\": \"<boolean>\",\n          \"operator\": \"OR\",\n          \"pattern\": \"(?i)ssn|social_security|ss_num\",\n          \"privacy_category\": \"IDENTIFIER\",\n          \"semantic_category\": \"EMAIL\",\n          \"size\": 100,\n          \"tags\": [\n            \"type:ssn\"\n          ],\n          \"target\": \"ROW_DATA\",\n          \"trim\": true\n        }\n      ],\n      \"operator\": \"OR\"\n    },\n    \"deleted_at\": \"string\",\n    \"description\": \"string\",\n    \"minimum_threshold\": 4231,\n    \"org_id\": \"string\",\n    \"pattern\": \"string\",\n    \"sample_size\": 2275,\n    \"sample_type\": \"PERCENT\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a4e72d6-e662-4e08-ae27-4e616adb76c6",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 80\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c57e9d8c-1738-44c7-a887-71575b26898b",
+              "name": "Classifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 80\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94d27f2e-e45f-4927-8f1c-8567ecab4118",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pattern\": \"\\\\d{3}-\\\\d{2}-\\\\d{4}\",\n  \"minimum_threshold\": 80\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5f5c0bba-3432-4540-884c-5872643fdac5",
+          "name": "Append collections to classifier",
+          "request": {
+            "name": "Append collections to classifier",
+            "description": {
+              "content": "Adds multiple collections to an existing classifier in a single atomic transaction. All collections must exist and not already be associated with this classifier. ALTR managed collections cannot be appended to classifiers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers",
+                ":classifier_name",
+                "collections",
+                "append"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "classifier_name",
+                  "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de0bfef8-55db-453e-9851-2a9555f9ad2f",
+              "name": "Collections appended successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "append"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d3db5add-dcee-4cb1-87fb-ddc6f8a79c2f",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "append"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a419766e-ff0a-492c-8b82-a5f158dcef86",
+              "name": "Classifier or collection not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "append"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5f033a8-9981-4bbf-8372-ffd5476585f6",
+              "name": "Relationship already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "append"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e23c0a0e-a548-4ed6-bc14-a94e98c2d37d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "append"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ca06cc44-08d9-4c3c-ab6a-b2e1d047fae4",
+          "name": "Remove collections from classifier",
+          "request": {
+            "name": "Remove collections from classifier",
+            "description": {
+              "content": "Removes multiple collections from an existing classifier in a single atomic transaction. All collections must be currently associated with this classifier. Collections with names starting with \"ALTR\" (such as the ALTR Managed collection) cannot be removed from any classifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classifiers",
+                ":classifier_name",
+                "collections",
+                "remove"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "classifier_name",
+                  "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "469998dd-d2dd-43f8-9619-3aaac888b7d8",
+              "name": "Collections removed successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "319ee417-2c30-4a41-aff4-f2fe9ff82674",
+              "name": "Invalid request or validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04b82526-abef-4713-b6d8-90ef9e08eeb4",
+              "name": "Classifier not found or collection not in classifier",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1fc3e143-718b-4aa8-920e-43abed9c6d72",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers",
+                    ":classifier_name",
+                    "collections",
+                    "remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "classifier_name",
+                      "description": "(Required) Classifier name (URL-encoded if contains special characters)"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"collection_names\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1c1c3c15-a955-4aed-92c5-30ef0502fea4",
+          "name": "List the org's tag vocabulary",
+          "request": {
+            "name": "List the org's tag vocabulary",
+            "description": {
+              "content": "Returns every distinct key:value tag currently in use across the org's classifiers — both condition tags (compound-ruleset nodes) and classifier attribute tags — so tag editors can offer pick-from-existing suggestions. Each entry carries the parsed key/value, the number of classifiers using the tag, and where it appears (condition, attributes, or both). Deleted classifiers are excluded; imported ALTR-managed classifiers are included.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "Exact-match filter on the tag key (the part before ':')"
+                },
+                {
+                  "disabled": false,
+                  "key": "prefix",
+                  "value": "<string>",
+                  "description": "Prefix filter on the full key:value tag string (typeahead)"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Page size (default 100, max 500)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contiguous_id",
+                  "value": "<string>",
+                  "description": "Continuation token from the previous response (infinite-scroll pagination)"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{orgID}}",
+                  "key": "orgID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7aa31b2a-2c0e-4f59-8440-45d06094d11f",
+              "name": "Distinct tags in use, sorted by tag, with the distinct key list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "type"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "type:s"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"contiguous_id\": \"string\",\n  \"keys\": [\n    \"string\",\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"classifier_count\": 3,\n      \"key\": \"type\",\n      \"sources\": [\n        \"condition\"\n      ],\n      \"tag\": \"type:ssn\",\n      \"value\": \"ssn\"\n    },\n    {\n      \"classifier_count\": 3,\n      \"key\": \"type\",\n      \"sources\": [\n        \"condition\"\n      ],\n      \"tag\": \"type:ssn\",\n      \"value\": \"ssn\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05f6e683-419d-4b3b-bb92-c14120624cb7",
+              "name": "Invalid key filter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "type"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "type:s"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8439236-d190-42d6-b49e-62ac05705a75",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "type"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "type:s"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16be786e-1c00-430c-92de-983bddf232e9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "type"
+                    },
+                    {
+                      "key": "prefix",
+                      "value": "type:s"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "contiguous_id",
+                      "value": "eyJsYXN0X3RhZyI6InR5cGU6c3NuIn0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{orgID}}",
+                      "key": "orgID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": {\n    \"error_code\": 3044,\n    \"message\": \"string\"\n  },\n  \"statusCode\": 2810\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "",
+      "key": "orgID"
+    },
+    {
+      "type": "string",
+      "value": "https://{{orgID}}.classification.live.altr.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "11d6411c-8da3-49bd-bfb9-be7e31f7f936",
+    "name": "ALTR Classification Engine Classifiers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API manages classifiers, collections, and classification reports for ALTR's classification engine.\n\nContact Support:\n Name: API Support\n Email: support@altr.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,360 @@
+openapi: 3.2.0
+info:
+  title: ALTR Management Usergroups API
+  version: 12.25.1
+  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
+
+
+    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
+
+
+    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
+  contact:
+    name: Support
+    email: support@altr.com
+servers:
+- url: https://altrnet.live.altr.com/api
+  description: ALTR Management API
+security:
+- basicAuth: []
+tags:
+- name: usergroups
+  description: Operations related to user groups
+  externalDocs:
+    description: Find out more
+    url: https://docs.altr.com/explore-altr-features/user-groups
+paths:
+  /usergroups:
+    get:
+      tags:
+      - usergroups
+      summary: Returns user groups with filtering capabilities.
+      operationId: getUserGroups
+      parameters:
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/orderBy'
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - userGroupName
+          - description
+          - usersInGroup
+          - userGroupId
+          - groupTag
+          default: userGroupName
+        description: The value you want to sort by
+      - name: description
+        in: query
+        schema:
+          type: string
+        description: Filter by the description of the user group
+      - name: userGroupName
+        in: query
+        schema:
+          type: string
+        description: Filter by the name of the user group
+      - name: groupTag
+        in: query
+        schema:
+          type: string
+        description: Filter by the groupTag of the user group
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      userGroups:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserGroup'
+                      count:
+                        type: number
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      tags:
+      - usergroups
+      summary: Creates a new user group.
+      operationId: createUserGroup
+      requestBody:
+        description: The user group create body
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userGroupName
+              - groupTag
+              properties:
+                userGroupName:
+                  type: string
+                  example: User Group from Swagger
+                description:
+                  type: string
+                  example: User Group Description from Swagger
+                groupTag:
+                  type: string
+                  example: UGS
+      responses:
+        '201':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                    - $ref: '#/components/schemas/UserGroup'
+                    - type: object
+                      properties:
+                        clientId:
+                          type: string
+                          example: 969276ae-9118-11ed-a1eb-0242ac120002
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /usergroups/{id}:
+    get:
+      tags:
+      - usergroups
+      summary: Returns a single user group by the id given.
+      operationId: getUserGroup
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserGroup'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+      - usergroups
+      summary: Updates a user group given the id.
+      operationId: updateUserGroup
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      requestBody:
+        description: The user group update body
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userGroupName:
+                  type: string
+                  example: User Group Updated
+                description:
+                  type: string
+                  example: User Group Description Updated
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserGroup'
+                  success:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+      - usergroups
+      summary: Deletes a user group given the id.
+      description: 'Note: Along with deleting the user groups, it will also delete other objects that are related to user groups'
+      operationId: deleteUserGroup
+      parameters:
+      - $ref: '#/components/parameters/idPath'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    UserGroup:
+      type: object
+      properties:
+        userGroupId:
+          type: integer
+          description: The unique identifier for this user group
+          example: 1
+        userGroupName:
+          type: string
+          description: The name for this user group
+          example: ALTR_USER
+        userGroupType:
+          type: string
+          default: User Group
+          description: The user group type shall always have this default value.
+        description:
+          type: string
+          description: The description for this user group
+          example: This is a description for ALTR_USER
+        groupTag:
+          type: string
+          description: The group tag for this user group
+          example: ALTR_USER
+        usersInGroup:
+          type: integer
+          description: The number of users that belong to this group.
+          example: 0
+  parameters:
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR's portal for Enterprise and Enterprise+ customers.<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/

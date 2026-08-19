@@ -1,0 +1,236 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing sidecar and agent telemetry data.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Telemetry Task API
+  version: 1.7.0
+servers:
+- url: https://{org_id}.sc-control.live.altr.com/v1
+  variables:
+    org_id:
+      default: ''
+tags:
+- name: Task
+paths:
+  /agents/{agent_id}/task-telemetry:
+    get:
+      description: Get task telemetry for a specific agent.
+      parameters:
+      - description: Agent ID
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          type: string
+      - description: If provided, will return the next set of items after this ID.
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      - description: Maximum number of items to return, must be between 1 and 1000
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/types.TaskTelemetryItemsResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Internal Server Error
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Service Unavailable
+      security:
+      - basic: []
+      summary: Get Task Telemetry List by Agent
+      tags:
+      - Task
+  /tasks/{task_id}/task-telemetry:
+    delete:
+      description: Delete a specific task telemetry item by task ID.
+      parameters:
+      - description: Task ID
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Internal Server Error
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Service Unavailable
+      security:
+      - basic: []
+      summary: Delete Task Telemetry by Task ID
+      tags:
+      - Task
+    get:
+      description: Get a specific task telemetry item by task ID.
+      parameters:
+      - description: Task ID
+        in: path
+        name: task_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Internal Server Error
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/main.APIErrorResponse'
+          description: Service Unavailable
+      security:
+      - basic: []
+      summary: Get Task Telemetry by Task ID
+      tags:
+      - Task
+components:
+  schemas:
+    types.TaskMessage:
+      properties:
+        message:
+          description: Human-readable message
+          maxLength: 1024
+          type: string
+        severity:
+          description: Severity level of the message
+          enum:
+          - Error
+          - Warning
+          - Suggestion
+          type: string
+      required:
+      - message
+      - severity
+      type: object
+    main.APIErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+      type: object
+    types.TaskTelemetryItemsResponse:
+      properties:
+        contiguous_id:
+          description: Base64 encoded pagination key
+          type: string
+        items:
+          description: List of task telemetry items
+          items:
+            $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    types.TaskTelemetryItemResponse:
+      properties:
+        agent_id:
+          description: UUID of the agent
+          type: string
+        agent_time:
+          description: Unix timestamp in milliseconds
+          type: integer
+        checkin_time:
+          description: Unix timestamp in milliseconds
+          type: integer
+        messages:
+          description: Messages associated with the task
+          items:
+            $ref: '#/components/schemas/types.TaskMessage'
+          type: array
+          uniqueItems: false
+        repository:
+          description: Repository name
+          type: string
+        service_user:
+          description: Service user
+          type: string
+        status:
+          description: Task status
+          type: string
+        tags:
+          additionalProperties:
+            type: string
+          description: Tags
+          type: object
+        task_id:
+          description: UUID of the task
+          type: string
+        task_type:
+          description: Type of task
+          type: string
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en

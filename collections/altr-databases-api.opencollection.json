@@ -1,0 +1,264 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Databases API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns an array of databases that have been connected through the ALTR platform",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/databases",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sets which property name to sort the result set by"
+              },
+              {
+                "name": "friendlyDatabaseName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the friendly database name."
+              },
+              {
+                "name": "userid",
+                "value": "",
+                "type": "query",
+                "description": "Filter by all databases associated with the particular service-user"
+              },
+              {
+                "name": "databaseType",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the database type"
+              },
+              {
+                "name": "dataUsageHistory",
+                "value": "",
+                "type": "query",
+                "description": "Filter the data source by whether it has data usage history enabled or not."
+              }
+            ]
+          },
+          "docs": "Returns an array of databases that have been connected through the ALTR platform"
+        },
+        {
+          "info": {
+            "name": "Connects a new data source to the ALTR platform.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/databases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Fields databasePort, databaseName, databaseUsername, databasePassword, and hostname must appear together.\nField connectionString may not appear with ANY of the above.\nOnly one of the above configurations is allowed in a request.\nSee the different type of examples below.\n"
+        },
+        {
+          "info": {
+            "name": "Fetch a single database by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/databases/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns a single database with the provided ID."
+        },
+        {
+          "info": {
+            "name": "Update a database by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/databases/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a database with the provided database id."
+        },
+        {
+          "info": {
+            "name": "Disconnects and removes a single database by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://altrnet.live.altr.com/api/databases/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ignoreErrors",
+                "value": "",
+                "type": "query",
+                "description": "Whether to ignore the errors when deleting a data source."
+              }
+            ]
+          },
+          "docs": "Deletes and disconnects single database given the ID of the database, returns no content."
+        },
+        {
+          "info": {
+            "name": "Fetches the connectivity status of a database by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/databases/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves the connectivity status of a database from the CDM by the provided ID."
+        },
+        {
+          "info": {
+            "name": "Trigger database status sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/databases/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Triggers a request to update the databases status. This will set the database to in progress until the status job is completed."
+        },
+        {
+          "info": {
+            "name": "Fetch the users snowflake accounts information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/databases/snowflake/accounts"
+          },
+          "docs": "Fetch the users snowflake accounts information"
+        },
+        {
+          "info": {
+            "name": "Update snowflake account information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://altrnet.live.altr.com/api/databases/snowflake/accounts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update snowflake account information"
+        },
+        {
+          "info": {
+            "name": "Fetch the available databases that belongs to the users snowflake account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/databases/snowflake/accounts/:id/databases",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch the available databases that belongs to the users snowflake account."
+        },
+        {
+          "info": {
+            "name": "Connects a snowflake database given the id of the account and the database name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/databases/snowflake/connect",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Connects a snowflake database given the id of the account and the database name."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

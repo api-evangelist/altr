@@ -1,0 +1,236 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Notification Integration Subscriptions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Subscriptions for an Integration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/subscriptions",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              },
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "event_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by event_type"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns subscriptions owned by the integration named in the path, paginated."
+        },
+        {
+          "info": {
+            "name": "Create a Subscription.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/subscriptions",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a subscription under the integration named in the path. The server assigns and returns the subscription_id. `integration_id` in the body is ignored — the path is authoritative."
+        },
+        {
+          "info": {
+            "name": "Get a Subscription.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/subscriptions/:subscription_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single subscription by id under the named integration."
+        },
+        {
+          "info": {
+            "name": "Update a Subscription.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/subscriptions/:subscription_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Patches the mutable fields on a subscription. Only `criteria` and `enabled` are mutable; `event_type` is immutable (re-target by creating a new subscription)."
+        },
+        {
+          "info": {
+            "name": "Delete a Subscription.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/integrations/:integration_id/subscriptions/:subscription_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path",
+                "description": "Integration ID"
+              },
+              {
+                "name": "subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Removes a subscription."
+        },
+        {
+          "info": {
+            "name": "Search Subscriptions across all Integrations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{orgID}.notifications.live.altr.com/v1/notification-integration/subscriptions",
+            "params": [
+              {
+                "name": "limit",
+                "value": "25",
+                "type": "query",
+                "description": "Maximum number of results (default: 25, max: 100)"
+              },
+              {
+                "name": "contiguous_id",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token from previous response"
+              },
+              {
+                "name": "event_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by event_type"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter by enabled flag"
+              },
+              {
+                "name": "criteria_field",
+                "value": "",
+                "type": "query",
+                "description": "Criteria field path to filter on (e.g. payload.rule_id); requires criteria_value"
+              },
+              {
+                "name": "criteria_value",
+                "value": "",
+                "type": "query",
+                "description": "Value the criteria_field must target via in/eq (e.g. a rule_id); requires criteria_field"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns subscriptions across all integrations in the caller's org. To create or modify a subscription, use the nested `/integrations/:integration_id/subscriptions/:id` path."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

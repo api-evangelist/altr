@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ALTR Management Setup Guide API",
+    "version": "12.25.1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "setup-guide",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the current step of the setup guide",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/setup-guide/step"
+          },
+          "docs": "Get the current step of the setup guide"
+        },
+        {
+          "info": {
+            "name": "Get next step for setupGuide",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/setup-guide/step/forward",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get next step for setupGuide"
+        },
+        {
+          "info": {
+            "name": "Get next step for setupGuide",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://altrnet.live.altr.com/api/setup-guide/step/backward",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get next step for setupGuide"
+        },
+        {
+          "info": {
+            "name": "Send email requesting help",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://altrnet.live.altr.com/api/setup-guide/help",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send email requesting help"
+        },
+        {
+          "info": {
+            "name": "Gets current status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://altrnet.live.altr.com/api/setup-guide/tracker/status"
+          },
+          "docs": "Gets current status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

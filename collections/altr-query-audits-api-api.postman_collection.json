@@ -1,0 +1,893 @@
+{
+  "item": [
+    {
+      "id": "a225b6b9-634c-47d4-9558-8d0645991611",
+      "name": "Query Audits API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5c7431dc-4bb4-4e1f-abba-0c9d6a95a9f9",
+          "name": "Get the results of a search using the `search_uuid`.",
+          "request": {
+            "name": "Get the results of a search using the `search_uuid`.",
+            "description": {
+              "content": "This endpoint retrieves the results of a search using the `search_uuid` provided by the /search endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "results",
+                ":search_uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "next_page_token",
+                  "value": "<string>",
+                  "description": "The token to retrieve the next page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "250",
+                  "description": "Limit the number of results returned."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "search_uuid",
+                  "description": "(Required) `search_uuid` received by /search endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "43d77ea1-421b-4387-a3d8-56a33186db24",
+              "name": "Search complete. Results are ready.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "results",
+                    ":search_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "next_page_token",
+                      "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew=="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "250"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "search_uuid",
+                      "description": "(Required) `search_uuid` received by /search endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"next_page_token\": \"string\",\n  \"query_audits\": [\n    {\n      \"event_id\": \"string\",\n      \"client_id\": \"string\",\n      \"event_version\": \"string\",\n      \"event_name\": \"string\",\n      \"event_source\": \"string\",\n      \"event_time\": 2268,\n      \"user_identity\": {\n        \"type\": \"string\",\n        \"database_id\": \"string\"\n      },\n      \"event_details\": {\n        \"actor\": {\n          \"username\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"current_role\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roles\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"client\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ip_address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"account\": {\n          \"region\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"query\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse_size\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"session_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"result\": {\n          \"row_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tag_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"column_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"event_id\": \"string\",\n      \"client_id\": \"string\",\n      \"event_version\": \"string\",\n      \"event_name\": \"string\",\n      \"event_source\": \"string\",\n      \"event_time\": 9972,\n      \"user_identity\": {\n        \"type\": \"string\",\n        \"database_id\": \"string\"\n      },\n      \"event_details\": {\n        \"actor\": {\n          \"username\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"current_role\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roles\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"client\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ip_address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"account\": {\n          \"region\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"query\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse_size\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"session_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"result\": {\n          \"row_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tag_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"column_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8728f42-2c06-4c9a-be2c-eeb19cc99501",
+              "name": "Search not complete. Results are not ready.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "results",
+                    ":search_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "next_page_token",
+                      "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew=="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "250"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "search_uuid",
+                      "description": "(Required) `search_uuid` received by /search endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"next_page_token\": \"string\",\n  \"query_audits\": [\n    {\n      \"event_id\": \"string\",\n      \"client_id\": \"string\",\n      \"event_version\": \"string\",\n      \"event_name\": \"string\",\n      \"event_source\": \"string\",\n      \"event_time\": 2795,\n      \"user_identity\": {\n        \"type\": \"string\",\n        \"database_id\": \"string\"\n      },\n      \"event_details\": {\n        \"actor\": {\n          \"username\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"current_role\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roles\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"client\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ip_address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"account\": {\n          \"region\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"query\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse_size\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"session_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"result\": {\n          \"row_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tag_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"column_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"event_id\": \"string\",\n      \"client_id\": \"string\",\n      \"event_version\": \"string\",\n      \"event_name\": \"string\",\n      \"event_source\": \"string\",\n      \"event_time\": 2273,\n      \"user_identity\": {\n        \"type\": \"string\",\n        \"database_id\": \"string\"\n      },\n      \"event_details\": {\n        \"actor\": {\n          \"username\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"current_role\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"roles\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"client\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"ip_address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"account\": {\n          \"region\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"query\": {\n          \"id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"start_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed_time_epoch\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"text\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"warehouse_size\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"session_id\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"result\": {\n          \"row_count\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tag_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"column_policy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1a50376-e108-4029-841b-f820fab2156a",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "results",
+                    ":search_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "next_page_token",
+                      "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew=="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "250"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "search_uuid",
+                      "description": "(Required) `search_uuid` received by /search endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f1910eb-16f4-4cec-a50a-f1ad69ea36cb",
+              "name": "Search UUID not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "results",
+                    ":search_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "next_page_token",
+                      "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew=="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "250"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "search_uuid",
+                      "description": "(Required) `search_uuid` received by /search endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31713942-4856-47ef-b391-73c2d97d26b2",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "results",
+                    ":search_uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "next_page_token",
+                      "value": "ARpLpuKth8RwkdlQA2ktpaV/uJoOyM1EKldHyjKTLbagIrIWP1PLXiO67UyWew=="
+                    },
+                    {
+                      "key": "limit",
+                      "value": "250"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "search_uuid",
+                      "description": "(Required) `search_uuid` received by /search endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2c686d5-de60-4bd3-9575-a584fe964fe9",
+          "name": "Trigger search using various filters.",
+          "request": {
+            "name": "Trigger search using various filters.",
+            "description": {
+              "content": "This endpoint triggers a search for query audits. Chaining query parameter filters as `AND` operations.\nThe `search_uuid` that is returned expires after 30 days.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10000",
+                  "description": "The maximum number of items to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "The number of items to skip."
+                },
+                {
+                  "disabled": false,
+                  "key": "from_date_time",
+                  "value": "<string>",
+                  "description": "Queries that ended before this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is 24 hours ago."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date_time",
+                  "value": "<string>",
+                  "description": "Queries that ended after this time will not be returned. Must be provided as a UTC timestamp in valid RFC3339 format. Default is now."
+                },
+                {
+                  "disabled": false,
+                  "key": "executing_role",
+                  "value": "<string>",
+                  "description": "The role that executed the query. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "executing_user",
+                  "value": "<string>",
+                  "description": "The user that executed the query. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "query_id",
+                  "value": "<string>",
+                  "description": "The ID of the query. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_tag_name",
+                  "value": "<string>",
+                  "description": "The policy tag name to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_tag_value",
+                  "value": "<string>",
+                  "description": "The policy tag value to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_column_database_name",
+                  "value": "<string>",
+                  "description": "The policy column database name to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_column_schema_name",
+                  "value": "<string>",
+                  "description": "The policy column schema name to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_column_table_name",
+                  "value": "<string>",
+                  "description": "The policy column table name to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "policy_column_name",
+                  "value": "<string>",
+                  "description": "The policy column name to filter by. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "desc",
+                  "description": "The order by clause for the query. Case-insensitive."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_by",
+                  "value": "event_time",
+                  "description": "The column to sort by. Case-insensitive."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"key_0\": {}\n      },\n      {\n        \"key_0\": {}\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"timezone\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "40bc93a5-f103-4cf8-8cc2-14f076e2a86b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10000"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "from_date_time",
+                      "value": "2024-11-23T17:51:35.000Z"
+                    },
+                    {
+                      "key": "to_date_time",
+                      "value": "2024-11-24T17:51:35.000Z"
+                    },
+                    {
+                      "key": "executing_role",
+                      "value": "BI_SERVICE_ROLE"
+                    },
+                    {
+                      "key": "executing_user",
+                      "value": "BI_SERVICE_USER"
+                    },
+                    {
+                      "key": "query_id",
+                      "value": "01d89caa-080e-3b34-0000-se59220b6656"
+                    },
+                    {
+                      "key": "policy_tag_name",
+                      "value": "PII_TAG"
+                    },
+                    {
+                      "key": "policy_tag_value",
+                      "value": "EMAIL"
+                    },
+                    {
+                      "key": "policy_column_database_name",
+                      "value": "EXAMPLE_DB"
+                    },
+                    {
+                      "key": "policy_column_schema_name",
+                      "value": "EXAMPLE_SCHEMA"
+                    },
+                    {
+                      "key": "policy_column_table_name",
+                      "value": "EXAMPLE_TABLE"
+                    },
+                    {
+                      "key": "policy_column_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "event_time"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {},\n        \"key_4\": {}\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"timezone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_uuid\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5dbc9dce-fb83-4ff0-a46f-b1cc061ed1e7",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10000"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "from_date_time",
+                      "value": "2024-11-23T17:51:35.000Z"
+                    },
+                    {
+                      "key": "to_date_time",
+                      "value": "2024-11-24T17:51:35.000Z"
+                    },
+                    {
+                      "key": "executing_role",
+                      "value": "BI_SERVICE_ROLE"
+                    },
+                    {
+                      "key": "executing_user",
+                      "value": "BI_SERVICE_USER"
+                    },
+                    {
+                      "key": "query_id",
+                      "value": "01d89caa-080e-3b34-0000-se59220b6656"
+                    },
+                    {
+                      "key": "policy_tag_name",
+                      "value": "PII_TAG"
+                    },
+                    {
+                      "key": "policy_tag_value",
+                      "value": "EMAIL"
+                    },
+                    {
+                      "key": "policy_column_database_name",
+                      "value": "EXAMPLE_DB"
+                    },
+                    {
+                      "key": "policy_column_schema_name",
+                      "value": "EXAMPLE_SCHEMA"
+                    },
+                    {
+                      "key": "policy_column_table_name",
+                      "value": "EXAMPLE_TABLE"
+                    },
+                    {
+                      "key": "policy_column_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "event_time"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {},\n        \"key_4\": {}\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"timezone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed6a0b53-74d4-46ce-8baa-564739eabc11",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10000"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "from_date_time",
+                      "value": "2024-11-23T17:51:35.000Z"
+                    },
+                    {
+                      "key": "to_date_time",
+                      "value": "2024-11-24T17:51:35.000Z"
+                    },
+                    {
+                      "key": "executing_role",
+                      "value": "BI_SERVICE_ROLE"
+                    },
+                    {
+                      "key": "executing_user",
+                      "value": "BI_SERVICE_USER"
+                    },
+                    {
+                      "key": "query_id",
+                      "value": "01d89caa-080e-3b34-0000-se59220b6656"
+                    },
+                    {
+                      "key": "policy_tag_name",
+                      "value": "PII_TAG"
+                    },
+                    {
+                      "key": "policy_tag_value",
+                      "value": "EMAIL"
+                    },
+                    {
+                      "key": "policy_column_database_name",
+                      "value": "EXAMPLE_DB"
+                    },
+                    {
+                      "key": "policy_column_schema_name",
+                      "value": "EXAMPLE_SCHEMA"
+                    },
+                    {
+                      "key": "policy_column_table_name",
+                      "value": "EXAMPLE_TABLE"
+                    },
+                    {
+                      "key": "policy_column_name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "event_time"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter\": {\n    \"op\": \"<string>\",\n    \"between\": {\n      \"end\": \"<string>\",\n      \"start\": \"<string>\"\n    },\n    \"children\": [\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {}\n      },\n      {\n        \"key_0\": {},\n        \"key_1\": {},\n        \"key_2\": {},\n        \"key_3\": {},\n        \"key_4\": {}\n      }\n    ],\n    \"dimension\": \"<string>\",\n    \"key_eq\": {\n      \"key\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    \"list_value\": [\n      \"<string>\"\n    ],\n    \"number_value\": \"<number>\",\n    \"range\": {\n      \"max\": \"<number>\",\n      \"min\": \"<number>\"\n    },\n    \"string_value\": \"<string>\"\n  },\n  \"timezone\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.live.altr.com/v1/query-audits",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1a99cefa-050b-400a-8530-37d6c9ef8007",
+    "name": "Query Audits Query Audits API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Query Audits API is used to get query audits generated by ALTR.\nALTR generates a query audit when a query that accesses governed data is executed.",
+      "type": "text/plain"
+    }
+  }
+}

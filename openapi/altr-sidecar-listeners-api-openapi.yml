@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@altr.com
+    name: API Support
+  description: This is the API for managing Sidecars, Agents and their configurations.
+  termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
+  title: ALTR Sidecar/Agent Configuration Sidecar Listeners API
+  version: 1.0.0
+servers:
+- url: https://{orgID}.sc-control.live.altr.com/v1
+  variables:
+    orgID:
+      default: ''
+tags:
+- name: Sidecar Listeners
+paths:
+  /sidecars/{sidecar_id}/ports:
+    get:
+      description: List all sidecar listeners for a given sidecar.
+      parameters:
+      - description: ID of the sidecar
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: The maximum number of items to return.
+        in: query
+        name: limit
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: The Contiguous ID for pagination
+        in: query
+        name: contiguous_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/management.ListSidecarListenersOutput'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: List all listener ports for given sidecarID.
+      tags:
+      - Sidecar Listeners
+    post:
+      description: Register a new sidecar listener port with the provided details.
+      parameters:
+      - description: ID of the sidecar
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sidecarlisteners.RegisterSidecarListenerInput'
+        description: Sidecar Listener Port details
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Register a new sidecar listener port.
+      tags:
+      - Sidecar Listeners
+  /sidecars/{sidecar_id}/ports/{port}:
+    delete:
+      description: Deregister a Sidecar Listener.
+      parameters:
+      - description: ID of the sidecar
+        in: path
+        name: sidecar_id
+        required: true
+        schema:
+          type: string
+      - description: Port of the Sidecar Listener
+        in: path
+        name: port
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fiber.APIError'
+          description: Bad Request
+      security:
+      - basic: []
+      summary: Deregister a Sidecar Listener.
+      tags:
+      - Sidecar Listeners
+components:
+  schemas:
+    sidecarlisteners.RegisterSidecarListenerInput:
+      properties:
+        advertised_version:
+          type: string
+          x-order: '2'
+        database_type:
+          type: string
+          x-order: '1'
+        port:
+          type: integer
+          x-order: '0'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.ListSidecarListenersOutput:
+      properties:
+        contiguous_id:
+          type: string
+        sidecar_listeners:
+          items:
+            $ref: '#/components/schemas/management.ListenerPort'
+          type: array
+          uniqueItems: false
+      type: object
+    management.ListenerPort:
+      properties:
+        advertised_version:
+          type: string
+          x-order: '2'
+        database_type:
+          type: string
+          x-order: '1'
+        port:
+          type: integer
+          x-order: '0'
+      type: object
+  securitySchemes:
+    basic:
+      scheme: basic
+      type: http
+externalDocs:
+  description: ALTR Documentation
+  url: https://docs.altr.com/?lang=en
