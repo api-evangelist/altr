@@ -1,0 +1,162 @@
+slug: altr
+provider: ALTR
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 14
+edges:
+- tag: RBAC API
+  spec_file: altr-rbac-api-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: '"The RBAC Management API. This is used to create and revoke grants on roles inside a database.";
+    "Delete/revoke an ALTR managed table privilege which is granted to a specified principal"'
+  reason: Explicit grant and privilege administration for principals and roles across Snowflake and Databricks
+    securables — unambiguously identity and access management.
+- tag: access_request
+  spec_file: altr-access-request-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: PUT /accessRequest/{id}/approve approveAccessRequest Approve an access request; SnowflakeAccessManagementRule
+  reason: Operations implement an access-request approval/denial workflow over data-source access, i.e.
+    access administration within identity & access management.
+- tag: Alerts
+  spec_file: altr-alerts-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: Manages DAM alerting rules and alerts ... for ALTR's Data Access Monitoring feature; "Acknowledge
+    an active alert"
+  reason: Data access monitoring alerts with acknowledgment/comments is security threat detection & response
+    tooling, not financial-crime alerting. Sub-capability threat detection & response fits the alert inbox/triage
+    surface.
+- tag: anomalies
+  spec_file: altr-anomalies-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: PATCH /anomalies/{id}/archive archiveAnomaly Archives an anomaly and applies an AccessStatus
+    to the actor
+  reason: Anomalies here are detected suspicious data-access events on monitored databases, triaged with
+    notes and access blocking — threat detection and response, not general observability.
+- tag: Auth
+  spec_file: altr-auth-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: manage service users used to connect to third-party applications such as Snowflake; "Create
+    Key Pair ... for a user", "Create Password ... authentication method"
+  reason: Operations create and activate credentials/authentication methods for service users — identity
+    & access management. Could arguably be developer credential management but these are data-platform
+    service accounts, not external developer OAuth clients.
+- tag: Auto Tagging API
+  spec_file: altr-auto-tagging-api-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: This is the management API for Auto Tagging. Use this API to set tags based on an ALTR classification
+    report.
+  reason: Applying classification tags to database/schema/table objects is data governance (data classification
+    and stewardship policy), realised via configuration on Snowflake/Databricks assets.
+- tag: Classification Jobs
+  spec_file: altr-classification-jobs-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: '"Create Snowflake classification job", "List classification decisions for a job", "Revoke
+    a classification decision"'
+  reason: Running sensitive-data classification jobs and adjudicating classification decisions is data
+    governance/classification tooling. Job orchestration is the mechanism, the outcome is governed data
+    classification.
+- tag: Classifiers
+  spec_file: altr-classifiers-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: '"Create classifier", "List the org''s tag vocabulary", management.TagVocabularyEntry'
+  reason: Defining classifiers and the organisation's tag vocabulary is data governance standards/taxonomy
+    for data classification.
+- tag: Data Discovery
+  spec_file: altr-data-discovery-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: '"Start a Classification/Tagging Job.", "Retrieves summary of successful classifications.",
+    "Retrieves database level column list associated with classification types."'
+  reason: Discovery and classification of sensitive data columns across connected databases is data governance/classification,
+    exposed programmatically.
+- tag: Data Tagging
+  spec_file: altr-data-tagging-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: '"Retrieve list of ALTR Tags.", "Retrieve tagged column information for a tag-id.", "Delete
+    a tag group and tags within the group"'
+  reason: Managing tags and tag groups mapped to database columns is metadata/classification stewardship
+    — data governance.
+- tag: Query Audits API
+  spec_file: altr-query-audits-api-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: '"ALTR generates a query audit when a query that accesses governed data is executed"; schemas
+    management.QueryAudit, management.UserIdentity, management.AppliedPolicy'
+  reason: 'Database activity monitoring: searching audit records of queries against governed data, including
+    the policy decision applied and the acting user identity. That is security monitoring of data access.
+    Kept at L1 because the surface straddles access-decision auditing (IAM) and monitoring/detection,
+    so no single L2 is clearly named.'
+- tag: Subscriptions
+  spec_file: altr-subscriptions-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.7
+  evidence: '"Configure integrations as delivery targets (Slack, ServiceNow, PagerDuty, custom webhook,
+    etc.), then create subscriptions that filter events by criteria and deliver matching events to those
+    targets."'
+  reason: Despite the business-sounding tag 'Subscriptions', these are outbound event/webhook delivery
+    subscriptions, not commercial SaaS subscriptions — matching the webhook and event subscription management
+    capability.
+- tag: Users
+  spec_file: altr-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"This API allows ALTR customers to manage service users used to connect to third-party applications
+    such as Snowflake." / "Register Service User handles the request to register a new service user."
+    with types.AuthType'
+  reason: Lifecycle management of service (machine) identities and their authentication methods is identity
+    and access management, not HR employee records despite the 'Users' tag.
+- tag: usergroups
+  spec_file: altr-usergroups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"getUserGroups  Returns user groups with filtering capabilities."; "createUserGroup  Creates
+    a new user group."'
+  reason: CRUD over user groups within a data security platform used to assign role-based access to sensitive
+    data; maps to Identity & Access Management. Evidence is thin (generic group CRUD), hence moderate
+    confidence.
