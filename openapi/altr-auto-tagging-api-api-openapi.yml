@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   description: This is the management API for Auto Tagging. Use this API to set tags based on an ALTR classification report.
-  title: Auto Tagging Auto Tagging API API
+  title: Auto Tagging API
   contact: {}
   version: 1.0.0
 servers:
@@ -16,7 +16,7 @@ paths:
       description: List Auto Tagging configurations.
       tags:
       - Auto Tagging API
-      summary: List Auto Tagging configurations.
+      summary: List Auto Tagging configurations
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -115,13 +115,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getRoot
+      x-operation-id-source: derived
     put:
       security:
       - BasicAuth: []
       description: Create/Update an Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Create/Update an Auto Tagging configuration.
+      summary: Create/Update an Auto Tagging configuration
       responses:
         '201':
           description: The Auto Tagging was created and will be applied.
@@ -158,13 +160,15 @@ paths:
               $ref: '#/components/schemas/main.PutAutoTaggingInput'
         description: The Auto Tagging configuration.
         required: true
+      operationId: putRoot
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete an Auto Tagging configuration. If unset_tags is set to true, then previously set tags from this configuration will be unset.
       tags:
       - Auto Tagging API
-      summary: Delete an Auto Tagging configuration.
+      summary: Delete an Auto Tagging configuration
       parameters:
       - description: During the delete process unset the previously set tags from this configuration.
         name: unset_tags
@@ -200,6 +204,8 @@ paths:
               $ref: '#/components/schemas/main.DeleteAutoTaggingInput'
         description: the Auto Tagging configuration
         required: true
+      operationId: deleteRoot
+      x-operation-id-source: derived
   /databricks/database-id/{databaseId}:
     get:
       security:
@@ -207,7 +213,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -240,6 +246,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseId
+      x-operation-id-source: derived
   /databricks/database-id/{databaseId}/catalog-name/{catalogName}:
     get:
       security:
@@ -247,7 +255,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -286,6 +294,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdCatalogNameByCatalogName
+      x-operation-id-source: derived
   /databricks/database-id/{databaseId}/catalog-name/{catalogName}/schema-name/{schemaName}:
     get:
       security:
@@ -293,7 +303,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -338,6 +348,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdCatalogNameByCatalogNameSchemaNameBySchemaName
+      x-operation-id-source: derived
   /databricks/database-id/{databaseId}/catalog-name/{catalogName}/schema-name/{schemaName}/table-name/{tableName}:
     get:
       security:
@@ -345,7 +357,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -396,6 +408,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdCatalogNameByCatalogNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
   /mapping-id/{mappingID}:
     get:
       security:
@@ -403,7 +417,7 @@ paths:
       description: Get the tag mapping for a given mapping ID.
       tags:
       - Auto Tagging API
-      summary: Get an Auto Tagging Mapping.
+      summary: Get an Auto Tagging Mapping
       parameters:
       - description: Get the mapping for this mapping ID.
         name: mappingID
@@ -436,6 +450,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getMappingIdByMappingID
+      x-operation-id-source: derived
   /report-url/{reportID}:
     get:
       security:
@@ -443,7 +459,7 @@ paths:
       description: Get a report URL for a given report ID. This URL will only be valid for a short duration of time.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging Report URL.
+      summary: Get Auto Tagging Report URL
       parameters:
       - description: Generate a URL to get this report ID.
         name: reportID
@@ -484,6 +500,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getReportUrlByReportID
+      x-operation-id-source: derived
   /snowflake/database-id/{databaseId}/database-name/{databaseName}:
     get:
       security:
@@ -491,7 +509,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -530,6 +548,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdDatabaseNameByDatabaseName
+      x-operation-id-source: derived
   /snowflake/database-id/{databaseId}/database-name/{databaseName}/schema-name/{schemaName}:
     get:
       security:
@@ -537,7 +557,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -582,6 +602,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdDatabaseNameByDatabaseNameSchemaNameBySchemaName
+      x-operation-id-source: derived
   /snowflake/database-id/{databaseId}/database-name/{databaseName}/schema-name/{schemaName}/table-name/{tableName}:
     get:
       security:
@@ -589,7 +611,7 @@ paths:
       description: Gets all details of specified Auto Tagging configuration.
       tags:
       - Auto Tagging API
-      summary: Get Auto Tagging configuration.
+      summary: Get Auto Tagging configuration
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -640,19 +662,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdDatabaseNameByDatabaseNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
 components:
   schemas:
-    ErrorResponse:
+    management.DeleteOptions:
       type: object
       properties:
-        error:
+        ignore_errors:
+          description: 'When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
+
+            This could result in orphaned ALTR configuration inside the snowflake host.
+
+            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
+          type: boolean
+        unset_tags:
+          description: When set to true, ALTR will unset tags set by the applied auto tagging configuration.
+          type: boolean
+    autotagging.TagMapping:
+      type: object
+      required:
+      - classifiers
+      - priority
+      - tag_name
+      - tag_value
+      properties:
+        classifiers:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+        tag_database:
           type: string
-    reportstorage.GetReportURLOutput:
+        tag_name:
+          type: string
+        tag_schema:
+          type: string
+        tag_value:
+          type: string
+    main.SnowflakeInput:
       type: object
       properties:
-        expiration:
+        database_name:
           type: string
-        report_url:
+        schema_name:
+          type: string
+        table_name:
+          type: string
+    management.ListAutoTaggingConfigurationOutput:
+      type: object
+      properties:
+        has_more:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.AutoTaggingItem'
+    mappingstorage.GetMappingOutput:
+      type: object
+      properties:
+        tag_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/autotagging.TagMapping'
+    management.Databricks:
+      type: object
+      required:
+      - database_id
+      properties:
+        catalog_name:
+          type: string
+        database_id:
+          type: integer
+        schema_name:
+          type: string
+        table_name:
           type: string
     main.DeleteAutoTaggingInput:
       type: object
@@ -680,24 +765,13 @@ components:
             Mutually exclusive with other objects.'
           allOf:
           - $ref: '#/components/schemas/main.SnowflakeInput'
-    management.DeleteOptions:
+    reportstorage.GetReportURLOutput:
       type: object
       properties:
-        ignore_errors:
-          description: 'When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
-
-            This could result in orphaned ALTR configuration inside the snowflake host.
-
-            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
-          type: boolean
-        unset_tags:
-          description: When set to true, ALTR will unset tags set by the applied auto tagging configuration.
-          type: boolean
-    management.GetAutoTaggingConfigurationOutput:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/management.AutoTaggingItem'
+        expiration:
+          type: string
+        report_url:
+          type: string
     management.Configuration:
       type: object
       properties:
@@ -754,84 +828,19 @@ components:
             This won''t be defined if the configuration is in auto_tagging_failed or auto_tagging_pending.'
           allOf:
           - $ref: '#/components/schemas/management.ReportStorageInformation'
-    management.Snowflake:
-      type: object
-      required:
-      - account_id
-      - database_name
-      - region
-      properties:
-        account_id:
-          type: string
-        database_name:
-          type: string
-        region:
-          type: string
-        schema_name:
-          type: string
-        table_name:
-          type: string
-    management.ReportStorageInformation:
+    management.Progress:
       type: object
       properties:
-        id:
-          description: ALTR Tag Mapping report ID.
-          type: string
-    autotagging.TagMapping:
-      type: object
-      required:
-      - classifiers
-      - priority
-      - tag_name
-      - tag_value
-      properties:
-        classifiers:
-          type: array
-          items:
-            type: string
-        priority:
+        objects_tagged:
+          description: 'The number of objects we have attempted to tag.
+
+            This is the count of success/failed tagged objects.'
           type: integer
-        tag_database:
-          type: string
-        tag_name:
-          type: string
-        tag_schema:
-          type: string
-        tag_value:
-          type: string
-    mappingstorage.GetMappingOutput:
-      type: object
-      properties:
-        tag_mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/autotagging.TagMapping'
-    management.ListAutoTaggingConfigurationOutput:
-      type: object
-      properties:
-        has_more:
-          type: boolean
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.AutoTaggingItem'
-    main.SnowflakeInput:
-      type: object
-      properties:
-        database_name:
-          type: string
-        schema_name:
-          type: string
-        table_name:
-          type: string
-    main.DatabricksInput:
-      type: object
-      properties:
-        catalog_name:
-          type: string
-        schema_name:
-          type: string
-        table_name:
+        objects_to_tag:
+          description: The number of objects that need to be tagged.
+          type: integer
+        step:
+          description: The current step of the auto tagging job.
           type: string
     management.Failure:
       type: object
@@ -839,6 +848,22 @@ components:
         code:
           type: integer
         message:
+          type: string
+    management.GetAutoTaggingConfigurationOutput:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/management.AutoTaggingItem'
+    management.MappingStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping storage ID.
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
           type: string
     management.AutoTaggingItem:
       type: object
@@ -888,38 +913,22 @@ components:
             This object and it''s children are impacted by this configuration.'
           allOf:
           - $ref: '#/components/schemas/management.Snowflake'
-    management.MappingStorageInformation:
-      type: object
-      properties:
-        id:
-          description: ALTR Tag Mapping storage ID.
-          type: string
-    management.Databricks:
+    management.Snowflake:
       type: object
       required:
-      - database_id
+      - account_id
+      - database_name
+      - region
       properties:
-        catalog_name:
+        account_id:
           type: string
-        database_id:
-          type: integer
+        database_name:
+          type: string
+        region:
+          type: string
         schema_name:
           type: string
         table_name:
-          type: string
-    management.Progress:
-      type: object
-      properties:
-        objects_tagged:
-          description: 'The number of objects we have attempted to tag.
-
-            This is the count of success/failed tagged objects.'
-          type: integer
-        objects_to_tag:
-          description: The number of objects that need to be tagged.
-          type: integer
-        step:
-          description: The current step of the auto tagging job.
           type: string
     main.PutAutoTaggingInput:
       type: object
@@ -974,6 +983,21 @@ components:
           description: 'The ID for an existing the Tag Mapping.
 
             Use this to reuse an existing Tag Mapping.'
+          type: string
+    management.ReportStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping report ID.
+          type: string
+    main.DatabricksInput:
+      type: object
+      properties:
+        catalog_name:
+          type: string
+        schema_name:
+          type: string
+        table_name:
           type: string
   securitySchemes:
     BasicAuth:

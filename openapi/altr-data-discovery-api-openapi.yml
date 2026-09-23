@@ -1,13 +1,7 @@
 openapi: 3.2.0
 info:
   title: ALTR Datastore Information Service Data Discovery API
-  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
-
-
-    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
-
-
-    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Datastore Information Service (DIS).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -29,7 +23,7 @@ paths:
     put:
       tags:
       - Data Discovery
-      summary: Start a Classification/Tagging Job.
+      summary: Start a Classification/Tagging Job
       description: Starts a classification job for the request client database.
       operationId: startClassification
       parameters:
@@ -98,7 +92,7 @@ paths:
     put:
       tags:
       - Data Discovery
-      summary: Start a Classification Job.
+      summary: Start a Classification Job
       description: Starts a classification job for the request client metastore.
       operationId: startClassificationMetastore
       parameters:
@@ -154,7 +148,7 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieve list of connected client databases.
+      summary: Retrieve list of connected client databases
       description: Gets a list of databases for consumption, includes if a classification has ever been run before.
       operationId: listDBs
       parameters:
@@ -237,8 +231,8 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieve classification job(s) status(es).
-      description: 'Returns an array of all classification jobs by the latest run of each distinct classification type for a database specific request. You can specify a classification type to only return the status for a specific type '
+      summary: Retrieve classification job(s) status(es)
+      description: Returns an array of all classification jobs by the latest run of each distinct classification type for a database specific request. You can specify a classification type to only return the status for a specific type
       operationId: retrieveJobStatusDB
       parameters:
       - name: databaseId
@@ -333,8 +327,8 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieve classification job(s) status(es).
-      description: 'Returns an array of all classification jobs by the latest run of each distinct classification type for an org level request. You can specify a classification type to only return the status for a specific type '
+      summary: Retrieve classification job(s) status(es)
+      description: Returns an array of all classification jobs by the latest run of each distinct classification type for an org level request. You can specify a classification type to only return the status for a specific type
       operationId: retrieveJobStatusOrg
       parameters:
       - name: dataDiscoveryJobType
@@ -423,8 +417,8 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieves summary of successful classifications.
-      description: 'Returns list of found classification types for a client database. '
+      summary: Retrieves summary of successful classifications
+      description: Returns list of found classification types for a client database.
       operationId: retrieveJobSummaryDB
       parameters:
       - name: databaseId
@@ -488,8 +482,8 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieves database level column list associated with classification types.
-      description: 'Returns database level list of columns with classification types.  '
+      summary: Retrieves database level column list associated with classification types
+      description: Returns database level list of columns with classification types.
       operationId: retrieveColumnClassificationsDB
       parameters:
       - name: type
@@ -580,8 +574,8 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieves org level column list associated with classification types.
-      description: 'Returns list of columns with classification types.  '
+      summary: Retrieves org level column list associated with classification types
+      description: Returns list of columns with classification types.
       operationId: retrieveColumnClassificationsOrg
       parameters:
       - name: type
@@ -658,7 +652,7 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieves list of table failures.
+      summary: Retrieves list of table failures
       description: Returns of table failures with corresponding information for a job.
       operationId: retrieveTableFailuresList
       parameters:
@@ -736,7 +730,7 @@ paths:
     get:
       tags:
       - Data Discovery
-      summary: Retrieves list of completed table info.
+      summary: Retrieves list of completed table info
       description: Returns of tables with corresponding information for a job.
       operationId: retrieveTableList
       parameters:
@@ -812,10 +806,60 @@ paths:
           description: Failure servicing this request
 components:
   schemas:
-    DataDiscoveryTableFailureList:
+    ClassificationSummaryItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: SSN
+        percent:
+          type: float
+          example: 20
+        amount:
+          type: string
+          example: Requested ID did not exist.
+    ClassificationSummary:
+      type: object
+      properties:
+        classifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationSummaryItem'
+        totals:
+          type: object
+          properties:
+            classifiedColumns:
+              type: integer
+              example: 200
+            totalColumns:
+              type: integer
+              example: 500
+            percentSuccessfullyClassified:
+              type: float
+              example: 22.5
+    Database:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        databaseName:
+          type: string
+          example: TEST_DATABASE
+        databaseFriendlyName:
+          type: string
+          example: Test Database
+        dataDiscoveryJobRan:
+          type: boolean
+          example: true
+    DataDiscoveryTableList:
       type: array
       items:
-        $ref: '#/components/schemas/DataDiscoveryTableFailure'
+        $ref: '#/components/schemas/DataDiscoveryTable'
+    DataDiscoveryJobList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryJob'
     DataDiscoveryTableFailure:
       type: object
       properties:
@@ -852,102 +896,10 @@ components:
         tableFailureTimestamp:
           type: string
           example: 8/8/22 15:15:15
-    ClassificationSummaryItem:
-      type: object
-      properties:
-        type:
-          type: string
-          example: SSN
-        percent:
-          type: float
-          example: 20
-        amount:
-          type: string
-          example: Requested ID did not exist.
-    Database:
-      type: object
-      properties:
-        databaseID:
-          type: integer
-          example: 1
-        databaseName:
-          type: string
-          example: TEST_DATABASE
-        databaseFriendlyName:
-          type: string
-          example: Test Database
-        dataDiscoveryJobRan:
-          type: boolean
-          example: true
-    DataDiscoveryJob:
-      type: object
-      properties:
-        databaseID:
-          type: integer
-          example: 1
-        jobUUID:
-          type: string
-          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
-        databaseName:
-          type: string
-          example: DatabaseOne
-        startTimeStamp:
-          type: string
-          example: '2006-01-02T15:04:05Z'
-        startTimeSinceEpoch:
-          type: long
-          example: 1656255468000
-        completeTimeStamp:
-          type: string
-          example: '2006-01-02T15:04:05Z'
-        completeTimeSinceEpoch:
-          type: long
-          example: 1656255468000
-        dataDiscoveryTypeString:
-          type: string
-          example: Google DLP
-        dataDiscoveryType:
-          type: integer
-          example: 1
-        status:
-          type: string
-          example: IN_PROGRESS
-        totalColumns:
-          type: integer
-          example: 10000
-        totalTables:
-          type: integer
-          example: 1000
-        completedColumns:
-          type: integer
-          example: 5000
-        completedTables:
-          type: integer
-          example: 500
-        columnsCompletePercentage:
-          type: float
-          example: 50.0
-        tablesCompletePercentage:
-          type: float
-          example: 50.0
-    Error:
-      type: object
-      properties:
-        errorCode:
-          type: integer
-          format: int64
-          example: 404
-        message:
-          type: string
-          example: Requested ID did not exist.
     DatabaseList:
       type: array
       items:
         $ref: '#/components/schemas/Database'
-    DataDiscoveryTableList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTable'
     DataDiscoveryTable:
       type: object
       properties:
@@ -975,6 +927,20 @@ components:
         tableFailureTimestamp:
           type: string
           example: 8/8/22 15:15:15
+    DataDiscoveryTableFailureList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTableFailure'
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
     ClassificationColumnTypeRequestItem:
       type: object
       properties:
@@ -1042,29 +1008,57 @@ components:
             column_count:
               type: integer
               example: 100
-    ClassificationSummary:
+    DataDiscoveryJob:
       type: object
       properties:
-        classifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClassificationSummaryItem'
-        totals:
-          type: object
-          properties:
-            classifiedColumns:
-              type: integer
-              example: 200
-            totalColumns:
-              type: integer
-              example: 500
-            percentSuccessfullyClassified:
-              type: float
-              example: 22.5
-    DataDiscoveryJobList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryJob'
+        databaseID:
+          type: integer
+          example: 1
+        jobUUID:
+          type: string
+          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
+        databaseName:
+          type: string
+          example: DatabaseOne
+        startTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        startTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        completeTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        completeTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        dataDiscoveryTypeString:
+          type: string
+          example: Google DLP
+        dataDiscoveryType:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: IN_PROGRESS
+        totalColumns:
+          type: integer
+          example: 10000
+        totalTables:
+          type: integer
+          example: 1000
+        completedColumns:
+          type: integer
+          example: 5000
+        completedTables:
+          type: integer
+          example: 500
+        columnsCompletePercentage:
+          type: float
+          example: 50.0
+        tablesCompletePercentage:
+          type: float
+          example: 50.0
   securitySchemes:
     basicAuth:
       type: http

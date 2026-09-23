@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Classification API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,7 +13,7 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: classification
+- name: Classification
   description: Operations about data classification
   externalDocs:
     description: Find out more
@@ -28,8 +22,8 @@ paths:
   /classification/{id}:
     put:
       tags:
-      - classification
-      summary: Starts a data classification job for a database with the provided database ID, currently only for Snowflake CI.
+      - Classification
+      summary: Starts a data classification job for a database with the provided database ID…
       description: This endpoint is deprecated and will be removed in the next major version.
       operationId: startClassification
       deprecated: true
@@ -66,8 +60,8 @@ paths:
   /classification/databases:
     get:
       tags:
-      - classification
-      summary: Gets a list of databases with classifier information attached. Can be filtered using params.
+      - Classification
+      summary: Gets a list of databases with classifier information attached.
       operationId: getClassificationList
       parameters:
       - $ref: '#/components/parameters/offset'
@@ -118,8 +112,8 @@ paths:
   /classification/status/{id}:
     get:
       tags:
-      - classification
-      summary: Gets the classification status of a database. May be running, complete, or 204 no data.
+      - Classification
+      summary: Gets the classification status of a database.
       operationId: classificationStatus
       parameters:
       - $ref: '#/components/parameters/idPath'
@@ -157,8 +151,8 @@ paths:
   /classification/classifiers/{id}:
     get:
       tags:
-      - classification
-      summary: Gets a list of classifier types (and total number of columns classified as that type) for one database
+      - Classification
+      summary: Gets a list of classifier types (and total number of columns classified as that…
       operationId: getClassifierTypes
       parameters:
       - $ref: '#/components/parameters/idPath'
@@ -215,8 +209,8 @@ paths:
   /classification/columns/{type}:
     get:
       tags:
-      - classification
-      summary: Gets list of columns for all databases that have been classified as the provided type
+      - Classification
+      summary: Gets list of columns for all databases that have been classified as the…
       operationId: getClassifiedColumnsForAllDatabases
       parameters:
       - name: type
@@ -319,8 +313,8 @@ paths:
   /classification/columns/{type}/{id}:
     get:
       tags:
-      - classification
-      summary: Gets list of columns for a database that have been classified as the provided type
+      - Classification
+      summary: Gets list of columns for a database that have been classified as the provided…
       operationId: getClassifiedColumnsForSingleDatabase
       parameters:
       - name: type
@@ -422,52 +416,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
-  parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
   responses:
     BadRequest:
       description: Bad Request
@@ -493,18 +441,6 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     NotFound:
       description: Not Found
       content:
@@ -517,6 +453,64 @@ components:
               statusCode: 404
               date: '2022-07-20T18:00:58.723Z'
             success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
   securitySchemes:
     basicAuth:
       type: http

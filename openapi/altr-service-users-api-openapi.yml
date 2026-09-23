@@ -69,9 +69,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List all Service Users in given Repo.
+      summary: List all Service Users in given Repo
       tags:
       - Service Users
+      operationId: getReposByRepoNameServiceusers
+      x-operation-id-source: derived
     post:
       description: 'Create a new Service User with the provided details. Exactly one credential provider must be specified:
 
@@ -130,9 +132,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Service User.
+      summary: Create a new Service User
       tags:
       - Service Users
+      operationId: postReposByRepoNameServiceusers
+      x-operation-id-source: derived
   /repos/{repo_name}/serviceusers/{username}:
     delete:
       description: Delete a Service User from a Repo.
@@ -178,9 +182,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete a Service User.
+      summary: Delete a Service User
       tags:
       - Service Users
+      operationId: deleteReposByRepoNameServiceusersByUsername
+      x-operation-id-source: derived
     get:
       description: Get the Service User for a given Service User ID.
       parameters:
@@ -229,9 +235,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get a Service User.
+      summary: Get a Service User
       tags:
       - Service Users
+      operationId: getReposByRepoNameServiceusersByUsername
+      x-operation-id-source: derived
     patch:
       description: 'Update a Service User. When changing the credential provider, supply exactly one of:
 
@@ -296,9 +304,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Update a Service User.
+      summary: Update a Service User
       tags:
       - Service Users
+      operationId: patchReposByRepoNameServiceusersByUsername
+      x-operation-id-source: derived
   /serviceusers:
     get:
       parameters:
@@ -342,11 +352,40 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List all Service Users for your organization.
+      summary: List all Service Users for your organization
       tags:
       - Service Users
+      operationId: getServiceusers
+      x-operation-id-source: derived
 components:
   schemas:
+    management.AWSSecretsManager:
+      properties:
+        iam_role:
+          description: validate that this is an arn
+          type: string
+          x-order: '0'
+        secrets_path:
+          description: could change to id and name
+          type: string
+          x-order: '1'
+      required:
+      - secrets_path
+      type: object
+      x-order: '1'
+    management.AzureKeyVault:
+      properties:
+        key_vault_uri:
+          type: string
+          x-order: '0'
+        secret_name:
+          type: string
+          x-order: '1'
+      required:
+      - key_vault_uri
+      - secret_name
+      type: object
+      x-order: '2'
     serviceusers.UpdateServiceUserInput:
       properties:
         aws_secrets_manager:
@@ -361,19 +400,93 @@ components:
         secret_file:
           $ref: '#/components/schemas/management.SecretFile'
       type: object
-    management.AzureKeyVault:
+    management.SecretFile:
       properties:
-        key_vault_uri:
+        path:
+          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
+
+            Example: "db_password" → /altr/secrets/db_password'
           type: string
           x-order: '0'
-        secret_name:
+      required:
+      - path
+      type: object
+      x-order: '4'
+    management.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+          x-order: '0'
+      required:
+      - variable_name
+      type: object
+      x-order: '3'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.ListServiceUsersOutput:
+      properties:
+        contiguous_id:
           type: string
           x-order: '1'
-      required:
-      - key_vault_uri
-      - secret_name
+        service_users:
+          items:
+            $ref: '#/components/schemas/management.ServiceUser'
+          type: array
+          uniqueItems: false
+          x-order: '0'
       type: object
-      x-order: '2'
+    serviceusers.CreateServiceUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        resource:
+          type: string
+          x-order: '1'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        username:
+          type: string
+          x-order: '0'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.RepoUser:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        created_at:
+          type: string
+          x-order: '6'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        repo_name:
+          type: string
+          x-order: '1'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        updated_at:
+          type: string
+          x-order: '7'
+        username:
+          type: string
+          x-order: '0'
+      type: object
     management.ServiceUser:
       properties:
         aws_secrets_manager:
@@ -402,107 +515,6 @@ components:
         username:
           type: string
           x-order: '1'
-      type: object
-    management.EnvironmentVariable:
-      properties:
-        variable_name:
-          type: string
-          x-order: '0'
-      required:
-      - variable_name
-      type: object
-      x-order: '3'
-    management.AWSSecretsManager:
-      properties:
-        iam_role:
-          description: validate that this is an arn
-          type: string
-          x-order: '0'
-        secrets_path:
-          description: could change to id and name
-          type: string
-          x-order: '1'
-      required:
-      - secrets_path
-      type: object
-      x-order: '1'
-    management.SecretFile:
-      properties:
-        path:
-          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
-
-            Example: "db_password" → /altr/secrets/db_password'
-          type: string
-          x-order: '0'
-      required:
-      - path
-      type: object
-      x-order: '4'
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    serviceusers.CreateServiceUserInput:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        resource:
-          type: string
-          x-order: '1'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-        username:
-          type: string
-          x-order: '0'
-      type: object
-    management.ListServiceUsersOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        service_users:
-          items:
-            $ref: '#/components/schemas/management.ServiceUser'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    management.RepoUser:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        created_at:
-          type: string
-          x-order: '6'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        repo_name:
-          type: string
-          x-order: '1'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-        updated_at:
-          type: string
-          x-order: '7'
-        username:
-          type: string
-          x-order: '0'
       type: object
   securitySchemes:
     basic:

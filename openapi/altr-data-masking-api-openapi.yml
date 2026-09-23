@@ -1,13 +1,7 @@
 openapi: 3.2.0
 info:
   title: ALTR Datastore Information Service Data Masking API
-  description: 'Welcome to the Swagger documentation for ALTR''s Datastore Information Service (DIS). DIS provides ALTR customers ways to programmatically access ALTR Classification, Tags, and Masking information via restful API.
-
-
-    DIS does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found here.
-
-
-    DIS uses HTTP Basic Authentication. DIS uses the same credentials that MAPI uses. MAPI/DIS credentials can be obtained on the API page (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Datastore Information Service (DIS).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -29,8 +23,29 @@ paths:
     get:
       tags:
       - Data Masking
-      summary: Checks column masking types.
-      description: 'Checks to see if the column can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>'
+      summary: Checks column masking types
+      description: 'Checks to see if the column can be masked with given mask for a client.
+
+
+        Normalized data types: [ STRING,
+
+        NUMBER,
+
+        DATETIME ] ReplacementStrategies:
+
+        [ REPLACEMENT_STRATEGY_NOOP = 0;
+
+        ALL = 1; // Replace the entire original string with Replacement.value
+
+        CHAR = 2; // Replace every character with Replacement.value
+
+        EMAIL = 3; // Replace every character in local part of email with Replacement.value
+
+        LAST_FOUR = 4; // Replace every character except for the final four and certain delimiters with Replacement.value
+
+        CONSTANT_REPLACE = 5; // Replace entire original value with constant
+
+        ]'
       operationId: columnMaskTypes
       parameters:
       - name: fieldId
@@ -78,8 +93,29 @@ paths:
     get:
       tags:
       - Data Masking
-      summary: Checks column masking types for input array.
-      description: 'Checks to see if the columns in the input array can be masked with given mask for a client. <br/><br/>  Normalized data types: <blockquote><b> [ <blockquote> STRING,<br/> NUMBER,<br/> DATETIME </blockquote>]</b></blockquote> ReplacementStrategies: <br/><blockquote><b>[<blockquote> REPLACEMENT_STRATEGY_NOOP = 0;<br/> ALL = 1;              // Replace the entire original string with Replacement.value<br/> CHAR = 2;             // Replace every character with Replacement.value<br/>EMAIL = 3;            // Replace every character in local part of email with Replacement.value<br/>LAST_FOUR = 4;        // Replace every character except for the final four and certain delimiters with Replacement.value<br/>CONSTANT_REPLACE = 5; // Replace entire original value with constant <br/></blockquote> ]</b></blockquote>'
+      summary: Checks column masking types for input array
+      description: 'Checks to see if the columns in the input array can be masked with given mask for a client.
+
+
+        Normalized data types: [ STRING,
+
+        NUMBER,
+
+        DATETIME ] ReplacementStrategies:
+
+        [ REPLACEMENT_STRATEGY_NOOP = 0;
+
+        ALL = 1; // Replace the entire original string with Replacement.value
+
+        CHAR = 2; // Replace every character with Replacement.value
+
+        EMAIL = 3; // Replace every character in local part of email with Replacement.value
+
+        LAST_FOUR = 4; // Replace every character except for the final four and certain delimiters with Replacement.value
+
+        CONSTANT_REPLACE = 5; // Replace entire original value with constant
+
+        ]'
       operationId: columnMaskTypesArray
       consumes: application/json
       parameters:
@@ -135,6 +171,10 @@ components:
         message:
           type: string
           example: Requested ID did not exist.
+    ArrayNoMaskingType:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleNoMaskingType'
     SingleNoMaskingType:
       type: object
       properties:
@@ -154,10 +194,6 @@ components:
         columnType:
           type: string
           example: String
-    ArrayNoMaskingType:
-      type: array
-      items:
-        $ref: '#/components/schemas/SingleNoMaskingType'
   securitySchemes:
     basicAuth:
       type: http

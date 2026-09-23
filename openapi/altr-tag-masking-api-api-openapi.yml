@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   description: This provides the management interface for tag masking.
-  title: Tag Masking Tag Masking API API
+  title: Tag Masking API
   contact: {}
   version: 0.1.0
 servers:
@@ -16,7 +16,7 @@ paths:
       description: List all Tag Masking for an organization.
       tags:
       - Tag Masking API
-      summary: List Tag Masking for an organization.
+      summary: List Tag Masking for an organization
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -104,13 +104,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getRoot
+      x-operation-id-source: derived
     put:
       security:
       - BasicAuth: []
       description: Create/Update a Tag Masking on the specified Tag.
       tags:
       - Tag Masking API
-      summary: Create/Update a Tag Masking.
+      summary: Create/Update a Tag Masking
       responses:
         '201':
           description: The Tag Masking was created and will be applied.
@@ -141,13 +143,15 @@ paths:
               $ref: '#/components/schemas/main.PutTagMaskingInput'
         description: the Tag Masking details to store
         required: true
+      operationId: putRoot
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Deletes an existing Tag Masking.
       tags:
       - Tag Masking API
-      summary: Delete a Tag Masking.
+      summary: Delete a Tag Masking
       parameters:
       - description: During the delete process ignore errors and forget the Tag Masking.
         name: ignore_errors
@@ -190,6 +194,8 @@ paths:
               $ref: '#/components/schemas/main.DeleteTagMaskingInput'
         description: information used to find the Tag Masking to delete.
         required: true
+      operationId: deleteRoot
+      x-operation-id-source: derived
   /database/{db-id}/database-name/{database-name}/tag-name/{tag-name}/schema-name/{schema-name}:
     get:
       security:
@@ -197,7 +203,7 @@ paths:
       description: Get a Tag Masking.
       tags:
       - Tag Masking API
-      summary: Get a Tag Masking.
+      summary: Get a Tag Masking
       parameters:
       - description: The ALTR DatabaseID
         name: db-id
@@ -254,6 +260,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getDatabaseByDbIdDatabaseNameByDatabaseNameTagNameByTagNameSchemaNameBySchemaName
+      x-operation-id-source: derived
   /tag/{tag-group-id}:
     get:
       security:
@@ -261,7 +269,7 @@ paths:
       description: Get a Tag Masking.
       tags:
       - Tag Masking API
-      summary: Get a Tag Masking.
+      summary: Get a Tag Masking
       parameters:
       - description: The Altr tag group ID
         name: tag-group-id
@@ -294,13 +302,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: getTagByTagGroupId
+      x-operation-id-source: derived
     put:
       security:
       - BasicAuth: []
       description: Creates a new Tag Masking on the specified Tag.
       tags:
       - Tag Masking API
-      summary: Creates a Tag Masking.
+      summary: Creates a Tag Masking
       parameters:
       - description: The Altr tag group ID
         name: tag-group-id
@@ -338,13 +348,15 @@ paths:
               $ref: '#/components/schemas/main.PutTagMaskingByGroupIDInput'
         description: the Tag Masking details to store
         required: true
+      operationId: putTagByTagGroupId
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Deletes an existing Tag Masking.
       tags:
       - Tag Masking API
-      summary: Delete a Tag Masking.
+      summary: Delete a Tag Masking
       parameters:
       - description: During the delete process ignore issues and forget the Tag Masking.
         name: ignore_errors
@@ -386,6 +398,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+      operationId: deleteTagByTagGroupId
+      x-operation-id-source: derived
 components:
   schemas:
     ErrorResponse:
@@ -393,6 +407,20 @@ components:
       properties:
         error:
           type: string
+    management.GetTagMaskingOutput:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/types.TagMaskingItem'
+    management.CustomRoleProvider:
+      type: object
+      properties:
+        enabled:
+          description: 'Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
+
+            The list of roles provided by the custom UDF is used by ALTR''s policy decision engine for a given tag policy.'
+          type: boolean
+          default: false
     management.Masking:
       type: object
       properties:
@@ -449,6 +477,33 @@ components:
           allOf:
           - $ref: '#/components/schemas/management.ProtectionType'
           example: governed, governed-pushdown, tokenized-vault, or encryption-fpe
+    management.EncryptionFPEOptions:
+      type: object
+      properties:
+        alphabet:
+          type: string
+          enum:
+          - numeric
+          - alphabetic
+          - alphanumeric
+          example: numeric, alphabetic, or alphanumeric
+        is_padded:
+          type: boolean
+          default: false
+          example: false
+        key_name:
+          type: string
+        tweak_name:
+          type: string
+    management.ListTagMaskingOutput:
+      type: object
+      properties:
+        has_more:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/types.ListTagMaskingItem'
     types.ListTagMaskingItem:
       type: object
       properties:
@@ -491,48 +546,6 @@ components:
           type: string
         updated_at:
           type: string
-    types.TagMaskingError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    management.ProtectionType:
-      type: string
-      enum:
-      - ''
-      - governed
-      - governed-pushdown
-      - tokenized-vault
-      - encryption-fpe
-      x-enum-varnames:
-      - ProtectionTypeInferGoverned
-      - ProtectionTypeGoverned
-      - ProtectionTypeGovernedPushdown
-      - ProtectionTypeTokenizedVault
-      - ProtectionTypeEncryptionFPE
-    types.CustomRoleProvider:
-      type: object
-      properties:
-        enabled:
-          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
-          type: boolean
-          default: false
-        fully_qualified_function_udf_name:
-          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
-
-            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
-          type: string
-    management.ListTagMaskingOutput:
-      type: object
-      properties:
-        has_more:
-          type: boolean
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/types.ListTagMaskingItem'
     types.EncryptionFPEOptions:
       type: object
       properties:
@@ -545,80 +558,48 @@ components:
           type: string
         tweak_name:
           type: string
-    management.EncryptionFPEOptions:
+    types.TagMaskingItem:
       type: object
       properties:
-        alphabet:
+        created_at:
           type: string
-          enum:
-          - numeric
-          - alphabetic
-          - alphanumeric
-          example: numeric, alphabetic, or alphanumeric
-        is_padded:
-          type: boolean
-          default: false
-          example: false
-        key_name:
-          type: string
-        tweak_name:
-          type: string
-    main.DeleteTagMaskingInput:
-      type: object
-      required:
-      - database_id
-      - database_name
-      - schema_name
-      - tag_name
-      properties:
         database_id:
-          description: 'Which Altr DatabaseID to use in order to delete tag masking from the given tag.
-
-            The credentials for the provided DatabaseID are used when removing the tag masking policies.
-
-            Note the given tag does not need to live in this given database
-
-            as long as the databaseID''s credentials can access the given tag.
-
-            so the DatabaseID''s name + schema can be different from the provided SchemaName + DatabaseName.'
           type: integer
         database_name:
-          description: Database name where the given tag lives.
           type: string
-        schema_name:
-          description: SchemaName name where the given tag lives.
-          type: string
-        tag_name:
-          description: Tag name of the given Tag.
-          type: string
-    management.GetTagMaskingOutput:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/types.TagMaskingItem'
-    main.PutTagMaskingByGroupIDInput:
-      type: object
-      required:
-      - database_id
-      - friendly_name
-      properties:
-        database_id:
-          description: 'The Altr Database ID''s credentials to use in order to apply masking to the given Tag.
-
-            Note the given tag does not need to live in this given database
-
-            as long as the databaseID''s credentials can access the given tag.
-
-            so the DatabaseID''s name + schema can be different from the provided tag lives.'
+        database_type_enum:
           type: integer
         friendly_name:
-          description: Friendly Name for the Tag Masking.
           type: string
-          maxLength: 255
-        masking:
-          description: Masking Configuration.
+        masking_applied:
+          description: This is the most recent successfully applied configuration.
           allOf:
-          - $ref: '#/components/schemas/management.Masking'
+          - $ref: '#/components/schemas/types.Masking'
+        masking_failed:
+          description: 'The configuration which failed to apply.
+
+
+            If we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.
+
+            In that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,
+
+            while MaskingApplied is the previous configuration prior to the failed modification.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        masking_pending:
+          description: 'The configuration which is currently being applied.
+
+            This configuration will be moved to masking_applied or masking_failed depending on if it is successful.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        schema_name:
+          type: string
+        tag_group_id:
+          type: string
+        tag_name:
+          type: string
+        updated_at:
+          type: string
     types.Masking:
       type: object
       properties:
@@ -678,57 +659,48 @@ components:
         tracking_id:
           description: TrackingID a unique ALTR trackingID.
           type: string
-    management.CustomRoleProvider:
+    types.TagMaskingError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    types.CustomRoleProvider:
       type: object
       properties:
         enabled:
-          description: 'Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
-
-            The list of roles provided by the custom UDF is used by ALTR''s policy decision engine for a given tag policy.'
+          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
           type: boolean
           default: false
-    types.TagMaskingItem:
+        fully_qualified_function_udf_name:
+          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
+
+            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
+          type: string
+    main.PutTagMaskingByGroupIDInput:
       type: object
+      required:
+      - database_id
+      - friendly_name
       properties:
-        created_at:
-          type: string
         database_id:
-          type: integer
-        database_name:
-          type: string
-        database_type_enum:
+          description: 'The Altr Database ID''s credentials to use in order to apply masking to the given Tag.
+
+            Note the given tag does not need to live in this given database
+
+            as long as the databaseID''s credentials can access the given tag.
+
+            so the DatabaseID''s name + schema can be different from the provided tag lives.'
           type: integer
         friendly_name:
+          description: Friendly Name for the Tag Masking.
           type: string
-        masking_applied:
-          description: This is the most recent successfully applied configuration.
+          maxLength: 255
+        masking:
+          description: Masking Configuration.
           allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        masking_failed:
-          description: 'The configuration which failed to apply.
-
-
-            If we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.
-
-            In that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,
-
-            while MaskingApplied is the previous configuration prior to the failed modification.'
-          allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        masking_pending:
-          description: 'The configuration which is currently being applied.
-
-            This configuration will be moved to masking_applied or masking_failed depending on if it is successful.'
-          allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        schema_name:
-          type: string
-        tag_group_id:
-          type: string
-        tag_name:
-          type: string
-        updated_at:
-          type: string
+          - $ref: '#/components/schemas/management.Masking'
     main.PutTagMaskingInput:
       type: object
       required:
@@ -775,6 +747,48 @@ components:
           allOf:
           - $ref: '#/components/schemas/management.Masking'
           x-order: '5'
+    main.DeleteTagMaskingInput:
+      type: object
+      required:
+      - database_id
+      - database_name
+      - schema_name
+      - tag_name
+      properties:
+        database_id:
+          description: 'Which Altr DatabaseID to use in order to delete tag masking from the given tag.
+
+            The credentials for the provided DatabaseID are used when removing the tag masking policies.
+
+            Note the given tag does not need to live in this given database
+
+            as long as the databaseID''s credentials can access the given tag.
+
+            so the DatabaseID''s name + schema can be different from the provided SchemaName + DatabaseName.'
+          type: integer
+        database_name:
+          description: Database name where the given tag lives.
+          type: string
+        schema_name:
+          description: SchemaName name where the given tag lives.
+          type: string
+        tag_name:
+          description: Tag name of the given Tag.
+          type: string
+    management.ProtectionType:
+      type: string
+      enum:
+      - ''
+      - governed
+      - governed-pushdown
+      - tokenized-vault
+      - encryption-fpe
+      x-enum-varnames:
+      - ProtectionTypeInferGoverned
+      - ProtectionTypeGoverned
+      - ProtectionTypeGovernedPushdown
+      - ProtectionTypeTokenizedVault
+      - ProtectionTypeEncryptionFPE
   securitySchemes:
     BasicAuth:
       type: http

@@ -21,7 +21,7 @@ paths:
       description: This endpoint retrieves a list of service users based on the provided query parameters.
       tags:
       - Users
-      summary: Get Service Users handles the request to get service users.
+      summary: Get Service Users handles the request to get service users
       parameters:
       - example: 10
         description: Limit the number of results returned
@@ -66,13 +66,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+      operationId: getServicesByServiceUsers
+      x-operation-id-source: derived
     post:
       security:
       - BasicAuth: []
       description: This endpoint creates a new service user based on the provided request body.
       tags:
       - Users
-      summary: Register Service User handles the request to register a new service user.
+      summary: Register Service User handles the request to register a new service user
       parameters:
       - description: Service Type
         name: service
@@ -96,6 +98,8 @@ paths:
               $ref: '#/components/schemas/dto.CreateServiceUserRequest'
         description: Create Service User Request
         required: true
+      operationId: postServicesByServiceUsers
+      x-operation-id-source: derived
   /services/{service}/users/{userid}:
     get:
       security:
@@ -103,7 +107,7 @@ paths:
       description: This endpoint retrieves a service user based on the provided service type and user ID.
       tags:
       - Users
-      summary: Get Service User handles the request to get a service user.
+      summary: Get Service User handles the request to get a service user
       parameters:
       - description: Service Type
         name: service
@@ -128,13 +132,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+      operationId: getServicesByServiceUsersByUserid
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: This endpoint deletes a service user based on the provided service type and user ID.
       tags:
       - Users
-      summary: Delete Service User handles the request to delete a service user.
+      summary: Delete Service User handles the request to delete a service user
       parameters:
       - description: Service Type
         name: service
@@ -155,13 +161,15 @@ paths:
       responses:
         '204':
           description: No Content
+      operationId: deleteServicesByServiceUsersByUserid
+      x-operation-id-source: derived
     patch:
       security:
       - BasicAuth: []
       description: This endpoint updates a service user based on the provided service type and user ID.
       tags:
       - Users
-      summary: Update Service User handles the request to update a service user.
+      summary: Update Service User handles the request to update a service user
       parameters:
       - description: Service Type
         name: service
@@ -192,6 +200,8 @@ paths:
               $ref: '#/components/schemas/dto.UpdateServiceUserBody'
         description: Update Service User Request
         required: true
+      operationId: patchServicesByServiceUsersByUserid
+      x-operation-id-source: derived
   /users:
     get:
       security:
@@ -199,7 +209,7 @@ paths:
       description: This endpoint retrieves a list of users based on the provided query parameters.
       tags:
       - Users
-      summary: Get Users handles the request to get users.
+      summary: Get Users handles the request to get users
       parameters:
       - example: 10
         description: Limit the number of results returned
@@ -236,8 +246,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.ServiceUserQueryResponse'
+      operationId: getUsers
+      x-operation-id-source: derived
 components:
   schemas:
+    dto.GetServiceUserPublicResponse:
+      description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
+      type: object
+      properties:
+        auth:
+          description: Auth optionally provides a public view of authentication details, if available.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeAuthResponse'
+        user:
+          description: User is the composite service user object containing public attributes.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeServiceUser'
+    types.ServiceType:
+      type: string
+      enum:
+      - SNOWFLAKE
+      - UNSUPPORTED
+      x-enum-varnames:
+      - SnowflakeServiceUser
+      - UnsupportedServiceUser
+    dto.ServiceUserQueryResponse:
+      type: object
+      properties:
+        contiguous_id:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    dto.CompositeAuthResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
     dto.CompositeServiceUser:
       type: object
       properties:
@@ -283,63 +347,6 @@ components:
         username:
           type: string
           maxLength: 255
-    dto.ServiceUserQueryResponse:
-      type: object
-      properties:
-        contiguous_id:
-          type: string
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
-    dto.GetServiceUserPublicResponse:
-      description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
-      type: object
-      properties:
-        auth:
-          description: Auth optionally provides a public view of authentication details, if available.
-          allOf:
-          - $ref: '#/components/schemas/dto.CompositeAuthResponse'
-        user:
-          description: User is the composite service user object containing public attributes.
-          allOf:
-          - $ref: '#/components/schemas/dto.CompositeServiceUser'
-    dto.CreateServiceUserResponse:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/dto.CompositeServiceUser'
-    types.ServiceType:
-      type: string
-      enum:
-      - SNOWFLAKE
-      - UNSUPPORTED
-      x-enum-varnames:
-      - SnowflakeServiceUser
-      - UnsupportedServiceUser
-    dto.CompositeAuthResponse:
-      type: object
-      properties:
-        algorithm:
-          type: string
-        auth_type:
-          $ref: '#/components/schemas/types.AuthType'
-        created_at:
-          type: string
-        deactivated_at:
-          type: string
-        id:
-          type: array
-          items:
-            type: integer
-        public_key:
-          type: string
-        public_key_encoding:
-          type: string
-        public_key_fingerprint:
-          type: string
-        public_key_format:
-          type: string
     dto.CreateServiceUserRequest:
       type: object
       required:
@@ -360,6 +367,11 @@ components:
           description: Username is the primary identifier for the service user and is used for authentication and display.
           type: string
           maxLength: 255
+    dto.CreateServiceUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dto.CompositeServiceUser'
     types.AuthType:
       type: string
       enum:

@@ -72,9 +72,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List Agents.
+      summary: List Agents
       tags:
       - Agents
+      operationId: getAgents
+      x-operation-id-source: derived
     post:
       requestBody:
         content:
@@ -110,9 +112,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Agent.
+      summary: Create a new Agent
       tags:
       - Agents
+      operationId: postAgents
+      x-operation-id-source: derived
   /agents/{agent_id}:
     delete:
       description: An Agent cannot be deleted if its task_count > 0.
@@ -152,9 +156,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete Agent.
+      summary: Delete Agent
       tags:
       - Agents
+      operationId: deleteAgentsByAgentId
+      x-operation-id-source: derived
     get:
       parameters:
       - description: ID of the Agent.
@@ -196,9 +202,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get an Agent.
+      summary: Get an Agent
       tags:
       - Agents
+      operationId: getAgentsByAgentId
+      x-operation-id-source: derived
     patch:
       description: If property is not included it will not be updated. If property included with null value, it will be removed.
       parameters:
@@ -248,11 +256,21 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Update an Agent.
+      summary: Update an Agent
       tags:
       - Agents
+      operationId: patchAgentsByAgentId
+      x-operation-id-source: derived
 components:
   schemas:
+    management.PublicKey:
+      properties:
+        registered_at:
+          type: string
+        rsa_key:
+          type: string
+      type: object
+      x-order: '9'
     agents.CreateAgentInput:
       properties:
         description:
@@ -271,43 +289,6 @@ components:
           description: 'Valid types: SIS, CLASSIFIER'
           type: string
           x-order: '0'
-      type: object
-    management.PublicKey:
-      properties:
-        registered_at:
-          type: string
-        rsa_key:
-          type: string
-      type: object
-      x-order: '9'
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    agents.UpdateAgentInput:
-      properties:
-        description:
-          type: string
-          x-order: '1'
-        name:
-          type: string
-          x-order: '0'
-        public_key_1:
-          type: string
-          x-order: '2'
-        public_key_2:
-          type: string
-          x-order: '3'
       type: object
     management.Agent:
       properties:
@@ -340,6 +321,21 @@ components:
           type: string
           x-order: '9'
       type: object
+    agents.UpdateAgentInput:
+      properties:
+        description:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '0'
+        public_key_1:
+          type: string
+          x-order: '2'
+        public_key_2:
+          type: string
+          x-order: '3'
+      type: object
     management.ListAgentsOutput:
       properties:
         agents:
@@ -351,6 +347,20 @@ components:
         contiguous_id:
           type: string
           x-order: '1'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
   securitySchemes:
     basic:

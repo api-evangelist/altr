@@ -72,6 +72,8 @@ paths:
       summary: Get Access Tokens
       tags:
       - Control Plane
+      operationId: getAccessTokens
+      x-operation-id-source: derived
     post:
       description: This endpoint creates a new access token
       requestBody:
@@ -117,8 +119,38 @@ paths:
       summary: Creates Access Token
       tags:
       - Control Plane
+      operationId: postAccessTokens
+      x-operation-id-source: derived
 components:
   schemas:
+    dto.Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      type: object
+    dto.GetAccessTokenResponse:
+      properties:
+        created_at:
+          description: Milliseconds since epoch
+          type: integer
+        display_name:
+          type: string
+        id:
+          type: string
+        valid_from:
+          description: Milliseconds since epoch
+          type: integer
+        valid_until:
+          description: Milliseconds since epoch
+          type: integer
+      required:
+      - created_at
+      - id
+      - valid_from
+      - valid_until
+      type: object
     dto.AccessTokenQueryResponse:
       properties:
         access_tokens:
@@ -127,13 +159,6 @@ components:
           type: array
           uniqueItems: false
         contiguous_id:
-          type: string
-      type: object
-    dto.Error:
-      properties:
-        code:
-          type: string
-        message:
           type: string
       type: object
     dto.CreateAccessTokenResponse:
@@ -167,27 +192,6 @@ components:
       required:
       - chosen_duration_minutes
       - display_name
-      type: object
-    dto.GetAccessTokenResponse:
-      properties:
-        created_at:
-          description: Milliseconds since epoch
-          type: integer
-        display_name:
-          type: string
-        id:
-          type: string
-        valid_from:
-          description: Milliseconds since epoch
-          type: integer
-        valid_until:
-          description: Milliseconds since epoch
-          type: integer
-      required:
-      - created_at
-      - id
-      - valid_from
-      - valid_until
       type: object
   securitySchemes:
     basic:

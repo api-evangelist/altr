@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Plan API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,14 +13,14 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: plan
+- name: Plan
   description: Operations related to the features the organization has
 paths:
   /plan:
     get:
       tags:
-      - plan
-      summary: Returns a list features the organization has access to.
+      - Plan
+      summary: Returns a list features the organization has access to
       responses:
         '200':
           description: Response
@@ -50,11 +44,13 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: getPlan
+      x-operation-id-source: derived
   /plan/upgrade:
     patch:
       tags:
-      - plan
-      summary: Upgrades the organization to Enterprise, but only if they are in free tier.
+      - Plan
+      summary: Upgrades the organization to Enterprise, but only if they are in free tier
       description: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key
       requestBody:
         required: true
@@ -97,11 +93,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: patchPlanUpgrade
+      x-operation-id-source: derived
   /plan/contact:
     post:
       tags:
-      - plan
-      summary: Sends a request to upgrade to Enterprise Plus.
+      - Plan
+      summary: Sends a request to upgrade to Enterprise Plus
       description: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key
       requestBody:
         required: true
@@ -122,29 +120,87 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: postPlanContact
+      x-operation-id-source: derived
 components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    OkResponse:
+      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              success:
+                type: boolean
+                example: true
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     Features:
       type: object
       properties:
@@ -185,83 +241,27 @@ components:
         feat_databaseLimit:
           type: integer
           example: 1
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    OkResponse:
-      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-              success:
-                type: boolean
-                example: true
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
   securitySchemes:
     basicAuth:
       type: http

@@ -46,9 +46,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Get current user's sign-off status.
+      summary: Get current user's sign-off status
       tags:
       - Sign-Off
+      operationId: getAuditReportsDefinitionsByDefIdInstancesByInstIdSignOff
+      x-operation-id-source: derived
     post:
       description: Records an approval for a report instance.
       parameters:
@@ -106,9 +108,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Create a sign-off.
+      summary: Create a sign-off
       tags:
       - Sign-Off
+      operationId: postAuditReportsDefinitionsByDefIdInstancesByInstIdSignOff
+      x-operation-id-source: derived
   /audit-reports/definitions/{def_id}/instances/{inst_id}/sign_offs:
     get:
       description: Returns a paginated list of all sign-off records from all users for a report instance. Use GET .../sign_off (singular) to check only the current user's sign-off status.
@@ -151,33 +155,24 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List all sign-offs for an instance.
+      summary: List all sign-offs for an instance
       tags:
       - Sign-Off
+      operationId: getAuditReportsDefinitionsByDefIdInstancesByInstIdSignOffs
+      x-operation-id-source: derived
 components:
   schemas:
-    models.CreateSignOffInput:
+    models.GetSignOffResponse:
       properties:
-        action:
-          enum:
-          - approve
-          type: string
-        attestation:
-          type: boolean
-        comments:
-          type: string
+        sign_off:
+          $ref: '#/components/schemas/models.SignOff'
       type: object
-    models.ListSignOffsResponse:
+    fiber.APIError:
       properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.SignOff'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
     models.SignOff:
       properties:
@@ -200,23 +195,34 @@ components:
         user_name:
           type: string
       type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    models.GetSignOffResponse:
-      properties:
-        sign_off:
-          $ref: '#/components/schemas/models.SignOff'
-      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
+          type: string
+      type: object
+    models.CreateSignOffInput:
+      properties:
+        action:
+          enum:
+          - approve
+          type: string
+        attestation:
+          type: boolean
+        comments:
+          type: string
+      type: object
+    models.ListSignOffsResponse:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.SignOff'
+          type: array
+          uniqueItems: false
+        next_cursor:
           type: string
       type: object
   securitySchemes:

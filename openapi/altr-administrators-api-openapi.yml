@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Administrators API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,7 +13,7 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: administrators
+- name: Administrators
   description: Operations about administrators
   externalDocs:
     description: Find out more
@@ -28,8 +22,8 @@ paths:
   /administrators:
     get:
       tags:
-      - administrators
-      summary: List administrators in organization.
+      - Administrators
+      summary: List administrators in organization
       description: Lists all the administrators in the organization, in the order of their last name (by default, can be changed with filters).
       operationId: administrators|get-all-administrators
       parameters:
@@ -72,8 +66,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     post:
       tags:
-      - administrators
-      summary: Creates a new administrators and invites them to the organization.
+      - Administrators
+      summary: Creates a new administrators and invites them to the organization
       description: Creates a new administrators that will be added to the organization. This will send them an e-mail invite and the new administrator will be in the 'pending' status until they set their password.
       operationId: administrators|create-administrator
       requestBody:
@@ -129,8 +123,8 @@ paths:
   /administrators/{id}:
     get:
       tags:
-      - administrators
-      summary: Returns a single administrators by the id given.
+      - Administrators
+      summary: Returns a single administrators by the id given
       operationId: administrators|get-administrator
       parameters:
       - $ref: '#/components/parameters/idPath'
@@ -147,8 +141,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     patch:
       tags:
-      - administrators
-      summary: Updates an administrator.
+      - Administrators
+      summary: Updates an administrator
       description: Updates an administrator. Can be used to update oneself or other administrators. Can also be used to unlock an administrator who's account is locked out and update roles. Roles permissions are take into account when updating administrators.
       operationId: administrators|update-administrator
       parameters:
@@ -204,8 +198,8 @@ paths:
   /administrators/resend-token:
     post:
       tags:
-      - administrators
-      summary: For a pending user, resend's them an e-mail with a newly generated token.
+      - Administrators
+      summary: For a pending user, resend's them an e-mail with a newly generated token
       description: Resend's and generates a new user e-mail to the pending user.
       operationId: administrators|resend-token
       requestBody:
@@ -230,6 +224,169 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    UpdatedAdministrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    Administrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    OkResponse:
+      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              success:
+                type: boolean
+                example: true
+    Administrators:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  administrators:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Administrator'
+                  count:
+                    type: integer
+                    example: 1
+              success:
+                type: boolean
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
   schemas:
     ApiError:
       type: object
@@ -308,169 +465,6 @@ components:
         username:
           type: string
           example: George3
-  parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
-  responses:
-    UpdatedAdministrator:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Administrator'
-              success:
-                type: boolean
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Administrators:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  administrators:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Administrator'
-                  count:
-                    type: integer
-                    example: 1
-              success:
-                type: boolean
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    OkResponse:
-      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-              success:
-                type: boolean
-                example: true
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Administrator:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Administrator'
-              success:
-                type: boolean
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Not Found
-              statusCode: 404
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
   securitySchemes:
     basicAuth:
       type: http

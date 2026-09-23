@@ -5,7 +5,7 @@ info:
     name: API Support
   description: The Query Dashboard API is responsible for serving dashboard metrics using sidecar & snowflake audit data.
   termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
-  title: Query Dashboard Query Dashboard API API
+  title: Query Dashboard API
   version: 1.0.0
 servers:
 - url: https://api.live.altr.com/v1/dam
@@ -170,9 +170,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Trigger query audit search for a count using various filters.
+      summary: Trigger query audit search for a count using various filters
       tags:
       - Query Dashboard API
+      operationId: postSearch
+      x-operation-id-source: derived
   /search/{search_uuid}:
     get:
       description: This endpoint retrieves the results of a search using the `search_uuid` provided by the /audits endpoint. The results are paginated and can be retrieved using the `next_page_token` provided in the response.
@@ -229,26 +231,13 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get the results of a search using the `search_uuid`.
+      summary: Get the results of a search using the `search_uuid`
       tags:
       - Query Dashboard API
+      operationId: getSearchBySearchUuid
+      x-operation-id-source: derived
 components:
   schemas:
-    management.CountResult:
-      properties:
-        count:
-          type: integer
-        day:
-          type: integer
-        group:
-          type: string
-        hour:
-          type: integer
-        month:
-          type: integer
-        year:
-          type: integer
-      type: object
     fiber.ErrorResponse:
       properties:
         error:
@@ -270,6 +259,21 @@ components:
       properties:
         search_uuid:
           type: string
+      type: object
+    management.CountResult:
+      properties:
+        count:
+          type: integer
+        day:
+          type: integer
+        group:
+          type: string
+        hour:
+          type: integer
+        month:
+          type: integer
+        year:
+          type: integer
       type: object
   securitySchemes:
     basic:

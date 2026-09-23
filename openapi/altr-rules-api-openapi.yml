@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Altr Rules API
   version: '1.0'
-  description: 'Operations tagged Rules across 2 of this provider''s published API definitions: altr-dam-alerting-openapi.yml, altr-unified-policy-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Rules across 2 of this provider''s published API definitions: altr-dam-alerting-openapi.json, altr-unified-policy-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
   variables:
@@ -13,11 +13,6 @@ tags:
 - name: Rules
 paths:
   /rules:
-    servers:
-    - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
-      variables:
-        orgID:
-          default: ''
     post:
       description: Creates a new rule with filters, severity, and delivery configuration
       requestBody:
@@ -50,15 +45,17 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Create a Rule.
+      summary: Create a Rule
       tags:
       - Rules
-  /rules/:
+      operationId: postRules
+      x-operation-id-source: derived
     servers:
     - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
       variables:
         orgID:
           default: ''
+  /rules/:
     get:
       description: Returns a paginated list of DAM alerting rules
       parameters:
@@ -117,15 +114,17 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List Rules.
+      summary: List Rules
       tags:
       - Rules
-  /rules/{rule_id}:
+      operationId: getRules
+      x-operation-id-source: derived
     servers:
     - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
       variables:
         orgID:
           default: ''
+  /rules/{rule_id}:
     delete:
       description: Permanently deletes a rule and stops further evaluation against it.
       parameters:
@@ -152,9 +151,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Delete a rule.
+      summary: Delete a rule
       tags:
       - Rules
+      operationId: deleteRulesByRuleId
+      x-operation-id-source: derived
     get:
       description: Returns a single rule by ID
       parameters:
@@ -185,9 +186,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Get a Rule.
+      summary: Get a Rule
       tags:
       - Rules
+      operationId: getRulesByRuleId
+      x-operation-id-source: derived
     patch:
       description: Patches the mutable fields on a rule. Immutable fields (rule_type, filter_tree, data_source_scope, window_type, threshold, timezone) cannot be changed and must be set via delete+recreate.
       parameters:
@@ -233,12 +236,17 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Update a rule.
+      summary: Update a rule
       tags:
       - Rules
-  /policy/{policy_id}/rules/batch:
+      operationId: patchRulesByRuleId
+      x-operation-id-source: derived
     servers:
-    - url: https://api.live.altr.com/v1/unified-policy/management/
+    - url: https://{orgID}.dam-alerting.live.altr.com/v1/dam-alerting
+      variables:
+        orgID:
+          default: ''
+  /policy/{policy_id}/rules/batch:
     patch:
       operationId: updateBatchRules
       tags:
@@ -332,9 +340,9 @@ paths:
           $ref: '#/components/responses/InternalError'
       security:
       - basicAuth: []
-  /policy/{policy_id}/rules:
     servers:
     - url: https://api.live.altr.com/v1/unified-policy/management/
+  /policy/{policy_id}/rules:
     post:
       operationId: createRule
       tags:
@@ -515,9 +523,9 @@ paths:
           $ref: '#/components/responses/InternalError'
       security:
       - basicAuth: []
-  /policy/{policy_id}/rules/{rule_id}:
     servers:
     - url: https://api.live.altr.com/v1/unified-policy/management/
+  /policy/{policy_id}/rules/{rule_id}:
     get:
       operationId: getRuleById
       tags:
@@ -709,135 +717,21 @@ paths:
           $ref: '#/components/responses/InternalError'
       security:
       - basicAuth: []
+    servers:
+    - url: https://api.live.altr.com/v1/unified-policy/management/
 components:
   schemas:
-    ApiError:
-      type: object
+    models.ListRulesResponse:
       properties:
-        message:
+        contiguous_id:
           type: string
-          example: Internal Server Error
-        statusCode:
-          type: integer
-          example: 500
-    auditfilter.KeyEqValue:
-      description: 'KeyEq is required for: key_eq.'
-      properties:
-        key:
-          maxLength: 256
-          type: string
-        value:
-          maxLength: 256
-          type: string
-      required:
-      - key
-      - value
-      type: object
-    models.UpdateRuleRequest:
-      properties:
-        comment_required:
+        has_more:
           type: boolean
-        description:
-          maxLength: 2000
-          type: string
-        email_rate_limit_seconds:
-          description: 'EmailRateLimitSeconds sets the per-rule email window. nil = no change;
-
-            non-nil must be 0 (reset to platform default) or in [60, 86400].'
-          maximum: 86400
-          minimum: 0
-          type: integer
-        email_recipients:
+        items:
           items:
-            type: string
-          maxItems: 100
+            $ref: '#/components/schemas/models.Rule'
           type: array
           uniqueItems: false
-        enabled:
-          type: boolean
-        name:
-          maxLength: 255
-          minLength: 1
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          - critical
-          type: string
-      type: object
-    models.Rule:
-      properties:
-        comment_required:
-          type: boolean
-        created_at:
-          type: string
-        data_source_scope:
-          enum:
-          - snowflake
-          - oltp
-          - all
-          type: string
-        description:
-          maxLength: 2000
-          type: string
-        email_rate_limit_seconds:
-          description: 'EmailRateLimitSeconds is the per-rule email send-once window in seconds.
-
-            0 = use platform default (300 s). Must be in [60, 86400] when non-zero.'
-          maximum: 86400
-          minimum: 60
-          type: integer
-        email_recipients:
-          items:
-            type: string
-          maxItems: 100
-          type: array
-          uniqueItems: false
-        enabled:
-          type: boolean
-        filter_tree:
-          $ref: '#/components/schemas/auditfilter.FilterNode'
-        name:
-          maxLength: 255
-          type: string
-        rule_id:
-          type: string
-        rule_type:
-          enum:
-          - match
-          - threshold
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          - critical
-          type: string
-        threshold:
-          minimum: 1
-          type: integer
-        timezone:
-          description: IANA timezone (e.g. "America/New_York"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.
-          type: string
-        updated_at:
-          type: string
-        window_type:
-          enum:
-          - hourly
-          - daily
-          - weekly
-          - monthly
-          type: string
-      required:
-      - data_source_scope
-      - filter_tree
-      - name
-      - rule_id
-      - rule_type
-      - severity
       type: object
     auditfilter.Dimension:
       enum:
@@ -925,16 +819,50 @@ components:
       - DimSnowflakeExecutionDuration
       - DimSnowflakeTagName
       - DimSnowflakeTagValue
-    auditfilter.RangeValue:
-      description: 'Range is required for: range.'
+    auditfilter.BetweenValue:
+      description: 'Between is required for: between (time_of_day only).'
       properties:
-        max:
-          type: number
-        min:
-          type: number
+        end:
+          type: string
+        start:
+          type: string
       required:
-      - max
-      - min
+      - end
+      - start
+      type: object
+    models.UpdateRuleRequest:
+      properties:
+        comment_required:
+          type: boolean
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds sets the per-rule email window. nil = no change;
+
+            non-nil must be 0 (reset to platform default) or in [60, 86400].'
+          maximum: 86400
+          minimum: 0
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
       type: object
     auditfilter.Op:
       enum:
@@ -974,6 +902,116 @@ components:
       - OpExists
       - OpKeyExists
       - OpKeyEq
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    models.Rule:
+      properties:
+        comment_required:
+          type: boolean
+        created_at:
+          type: string
+        data_source_scope:
+          enum:
+          - snowflake
+          - oltp
+          - all
+          type: string
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds is the per-rule email send-once window in seconds.
+
+            0 = use platform default (300 s). Must be in [60, 86400] when non-zero.'
+          maximum: 86400
+          minimum: 60
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        filter_tree:
+          $ref: '#/components/schemas/auditfilter.FilterNode'
+        name:
+          maxLength: 255
+          type: string
+        rule_id:
+          type: string
+        rule_type:
+          enum:
+          - match
+          - threshold
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        threshold:
+          minimum: 1
+          type: integer
+        timezone:
+          description: IANA timezone (e.g. "America/New_York"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.
+          type: string
+        updated_at:
+          type: string
+        window_type:
+          enum:
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          type: string
+      required:
+      - data_source_scope
+      - filter_tree
+      - name
+      - rule_id
+      - rule_type
+      - severity
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    auditfilter.KeyEqValue:
+      description: 'KeyEq is required for: key_eq.'
+      properties:
+        key:
+          maxLength: 256
+          type: string
+        value:
+          maxLength: 256
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    auditfilter.RangeValue:
+      description: 'Range is required for: range.'
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+      required:
+      - max
+      - min
+      type: object
     auditfilter.FilterNode:
       properties:
         between:
@@ -1093,6 +1131,15 @@ components:
             - ALERT
             - BLOCK
             description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
     TimeWindowThreshold:
       description: Enforces a policy during a provided time window. Not available for pushdown policies.
       type: array
@@ -1146,43 +1193,6 @@ components:
             - ALERT
             - BLOCK
             description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    models.ListRulesResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Rule'
-          type: array
-          uniqueItems: false
-      type: object
-    auditfilter.BetweenValue:
-      description: 'Between is required for: between (time_of_day only).'
-      properties:
-        end:
-          type: string
-        start:
-          type: string
-      required:
-      - end
-      - start
-      type: object
   responses:
     BadRequest:
       description: Bad Request
@@ -1194,16 +1204,6 @@ components:
             message: Bad Request
             statusCode: 400
             date: '2022-07-20T18:00:58.723Z'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Unauthorized
-            statusCode: 401
-            date: '2022-07-20T18:00:58.723Z'
     Forbidden:
       description: Forbidden
       content:
@@ -1213,6 +1213,16 @@ components:
           example:
             message: Resource is forbidden
             statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
             date: '2022-07-20T18:00:58.723Z'
     InternalError:
       description: Internal Error
@@ -1233,5 +1243,5 @@ components:
       scheme: basic
       description: Unified Policy uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).<br/><br/>ALTR API keys are created and obtained on the API page in the ALTRnet (Settings > Preferences > API).<br/><br/>Usernames are the 'Key Names' listed on that page, and Passwords are the 'Key Secret' provided when an API key is created.
 x-refined-from:
-- altr-dam-alerting-openapi.yml
-- altr-unified-policy-openapi.yml
+- altr-dam-alerting-openapi.json
+- altr-unified-policy-openapi.json

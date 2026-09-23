@@ -65,9 +65,11 @@ paths:
           description: Internal Server Error
       security:
       - basic: []
-      summary: List Tasks for an Agent.
+      summary: List Tasks for an Agent
       tags:
       - Agent Tasks
+      operationId: getAgentsByAgentIdTasks
+      x-operation-id-source: derived
     post:
       parameters:
       - description: ID of Agent.
@@ -116,9 +118,11 @@ paths:
           description: Internal Server Error
       security:
       - basic: []
-      summary: Create a new Task for an Agent.
+      summary: Create a new Task for an Agent
       tags:
       - Agent Tasks
+      operationId: postAgentsByAgentIdTasks
+      x-operation-id-source: derived
   /agents/{agent_id}/tasks/{task_id}:
     delete:
       description: This will decrement the Agent's task_count by 1.
@@ -164,9 +168,11 @@ paths:
           description: Internal Server Error
       security:
       - basic: []
-      summary: Delete Task.
+      summary: Delete Task
       tags:
       - Agent Tasks
+      operationId: deleteAgentsByAgentIdTasksByTaskId
+      x-operation-id-source: derived
     get:
       parameters:
       - description: ID of Agent.
@@ -214,9 +220,11 @@ paths:
           description: Internal Server Error
       security:
       - basic: []
-      summary: Get a Task.
+      summary: Get a Task
       tags:
       - Agent Tasks
+      operationId: getAgentsByAgentIdTasksByTaskId
+      x-operation-id-source: derived
     patch:
       description: Update a Task for a given Agent with the provided details. Fields that are not provided will not be updated.
       parameters:
@@ -272,11 +280,44 @@ paths:
           description: Internal Server Error
       security:
       - basic: []
-      summary: Update a Task.
+      summary: Update a Task
       tags:
       - Agent Tasks
+      operationId: patchAgentsByAgentIdTasksByTaskId
+      x-operation-id-source: derived
 components:
   schemas:
+    management.ListTasksOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        tasks:
+          items:
+            $ref: '#/components/schemas/management.Task'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    tasks.CreateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '2'
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '3'
+      type: object
     management.SslConfig:
       description: SSL/TLS configuration - optional for all SIS repo types
       properties:
@@ -290,6 +331,18 @@ components:
           type: string
         trust_store_path:
           type: string
+      type: object
+    tasks.UpdateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+        name:
+          description: Name If provided, the name cannot be an empty string.
+          type: string
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
       type: object
     management.TaskConfiguration:
       properties:
@@ -337,56 +390,6 @@ components:
           type: string
       type: object
       x-order: '4'
-    tasks.CreateTaskInput:
-      properties:
-        configuration:
-          $ref: '#/components/schemas/management.TaskConfiguration'
-        description:
-          type: string
-          x-order: '1'
-        name:
-          type: string
-          x-order: '0'
-        repo_name:
-          type: string
-          x-order: '2'
-        schedule:
-          $ref: '#/components/schemas/management.Schedule'
-        service_user:
-          type: string
-          x-order: '3'
-      type: object
-    management.ListTasksOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        tasks:
-          items:
-            $ref: '#/components/schemas/management.Task'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    tasks.UpdateTaskInput:
-      properties:
-        configuration:
-          $ref: '#/components/schemas/management.TaskConfiguration'
-        description:
-          type: string
-        name:
-          description: Name If provided, the name cannot be an empty string.
-          type: string
-        schedule:
-          $ref: '#/components/schemas/management.Schedule'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
     management.Schedule:
       properties:
         max_duration:
@@ -407,12 +410,12 @@ components:
       - value
       type: object
       x-order: '5'
-    fiber.APIErrorResponse:
+    fiber.APIError:
       properties:
-        error_code:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
           type: integer
-        message:
-          type: string
       type: object
     management.Task:
       properties:
@@ -444,6 +447,13 @@ components:
         updated_at:
           type: string
           x-order: '9'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
   securitySchemes:
     basic:

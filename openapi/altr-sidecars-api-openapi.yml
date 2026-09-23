@@ -59,9 +59,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List all sidecars.
+      summary: List all sidecars
       tags:
       - Sidecars
+      operationId: getSidecars
+      x-operation-id-source: derived
     post:
       description: Create a new Sidecar with the provided details.
       requestBody:
@@ -98,9 +100,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Sidecar.
+      summary: Create a new Sidecar
       tags:
       - Sidecars
+      operationId: postSidecars
+      x-operation-id-source: derived
   /sidecars/{sidecar_id}:
     delete:
       description: A Sidecar cannot be deleted if its listener_count > 0.
@@ -140,9 +144,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete a Sidecar.
+      summary: Delete a Sidecar
       tags:
       - Sidecars
+      operationId: deleteSidecarsBySidecarId
+      x-operation-id-source: derived
     get:
       description: Get the sidecar for a given sidecar ID.
       parameters:
@@ -179,9 +185,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get a Sidecar.
+      summary: Get a Sidecar
       tags:
       - Sidecars
+      operationId: getSidecarsBySidecarId
+      x-operation-id-source: derived
     patch:
       description: Update a Sidecar.
       parameters:
@@ -225,9 +233,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Update a Sidecar.
+      summary: Update a Sidecar
       tags:
       - Sidecars
+      operationId: patchSidecarsBySidecarId
+      x-operation-id-source: derived
 components:
   schemas:
     management.PublicKey:
@@ -238,19 +248,17 @@ components:
           type: string
       type: object
       x-order: '9'
-    fiber.APIError:
+    management.ListSidecarsOutput:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
+        contiguous_id:
           type: string
+          x-order: '1'
+        sidecars:
+          items:
+            $ref: '#/components/schemas/management.Sidecar'
+          type: array
+          uniqueItems: false
+          x-order: '0'
       type: object
     sidecars.UpdateSidecarInput:
       properties:
@@ -363,17 +371,19 @@ components:
           type: string
           x-order: '11'
       type: object
-    management.ListSidecarsOutput:
+    fiber.APIError:
       properties:
-        contiguous_id:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
           type: string
-          x-order: '1'
-        sidecars:
-          items:
-            $ref: '#/components/schemas/management.Sidecar'
-          type: array
-          uniqueItems: false
-          x-order: '0'
       type: object
   securitySchemes:
     basic:

@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Systemaudits API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,7 +13,7 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: systemaudits
+- name: system Audits
   description: Operations related to system audits
   externalDocs:
     description: Find out more
@@ -29,8 +23,8 @@ paths:
     get:
       deprecated: true
       tags:
-      - systemaudits
-      summary: ' Deprecated - Returns system audits based on the query values specified (if any are set)'
+      - system Audits
+      summary: Deprecated - Returns system audits based on the query values specified (if any…
       operationId: getSystemAudits
       parameters:
       - $ref: '#/components/parameters/offset'
@@ -77,8 +71,8 @@ paths:
     patch:
       deprecated: true
       tags:
-      - systemaudits
-      summary: Deprecated - Reads a system audit, this gives the `timeread` property a timestamp
+      - system Audits
+      summary: Deprecated - Reads a system audit, this gives the `timeread` property a…
       operationId: patchSystemaudits
       requestBody:
         required: true
@@ -117,78 +111,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
-    SystemAudit:
-      type: object
-      description: System Audits object that contains a few properties.
-      properties:
-        id:
-          type: integer
-          example: 1
-        timeRead:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Null or a timestamp of when the system audit was read. Null meaning that it has NOT been read yet.
-        payload:
-          type: string
-          description: Stringify json that contains the message data about the system audit.
-          example: '{''actor'': {id: 2}}'
-        notificationType:
-          type: string
-          description: What type of notification this is and what entity it belongs too.
-          example: User Update
-  parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
   responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -213,6 +136,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     InternalError:
       description: Internal Error
       content:
@@ -225,6 +160,65 @@ components:
               statusCode: 500
               date: '2022-07-20T18:00:58.723Z'
             success: false
+  parameters:
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  schemas:
+    SystemAudit:
+      type: object
+      description: System Audits object that contains a few properties.
+      properties:
+        id:
+          type: integer
+          example: 1
+        timeRead:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Null or a timestamp of when the system audit was read. Null meaning that it has NOT been read yet.
+        payload:
+          type: string
+          description: Stringify json that contains the message data about the system audit.
+          example: '{''actor'': {id: 2}}'
+        notificationType:
+          type: string
+          description: What type of notification this is and what entity it belongs too.
+          example: User Update
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
   securitySchemes:
     basicAuth:
       type: http

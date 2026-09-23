@@ -65,6 +65,8 @@ paths:
       summary: Get Task Telemetry List by Agent
       tags:
       - Task
+      operationId: getAgentsByAgentIdTaskTelemetry
+      x-operation-id-source: derived
   /tasks/{task_id}/task-telemetry:
     delete:
       description: Delete a specific task telemetry item by task ID.
@@ -101,6 +103,8 @@ paths:
       summary: Delete Task Telemetry by Task ID
       tags:
       - Task
+      operationId: deleteTasksByTaskIdTaskTelemetry
+      x-operation-id-source: derived
     get:
       description: Get a specific task telemetry item by task ID.
       parameters:
@@ -146,25 +150,10 @@ paths:
       summary: Get Task Telemetry by Task ID
       tags:
       - Task
+      operationId: getTasksByTaskIdTaskTelemetry
+      x-operation-id-source: derived
 components:
   schemas:
-    types.TaskMessage:
-      properties:
-        message:
-          description: Human-readable message
-          maxLength: 1024
-          type: string
-        severity:
-          description: Severity level of the message
-          enum:
-          - Error
-          - Warning
-          - Suggestion
-          type: string
-      required:
-      - message
-      - severity
-      type: object
     main.APIErrorResponse:
       properties:
         error:
@@ -226,6 +215,23 @@ components:
         task_type:
           description: Type of task
           type: string
+      type: object
+    types.TaskMessage:
+      properties:
+        message:
+          description: Human-readable message
+          maxLength: 1024
+          type: string
+        severity:
+          description: Severity level of the message
+          enum:
+          - Error
+          - Warning
+          - Suggestion
+          type: string
+      required:
+      - message
+      - severity
       type: object
   securitySchemes:
     basic:

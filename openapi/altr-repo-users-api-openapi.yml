@@ -65,9 +65,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List all users for a repo.
+      summary: List all users for a repo
       tags:
       - Repo Users
+      operationId: getReposByRepoNameUsers
+      x-operation-id-source: derived
     post:
       description: 'Create a new Repo User with the provided details. Exactly one credential provider must be specified:
 
@@ -126,9 +128,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Repo User.
+      summary: Create a new Repo User
       tags:
       - Repo Users
+      operationId: postReposByRepoNameUsers
+      x-operation-id-source: derived
   /repos/{repo_name}/users/{username}:
     delete:
       description: Delete a user from a Repo.
@@ -174,9 +178,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete a Repo User.
+      summary: Delete a Repo User
       tags:
       - Repo Users
+      operationId: deleteReposByRepoNameUsersByUsername
+      x-operation-id-source: derived
     get:
       description: Get the user for a given repo name and user name.
       parameters:
@@ -219,9 +225,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get a Repo User.
+      summary: Get a Repo User
       tags:
       - Repo Users
+      operationId: getReposByRepoNameUsersByUsername
+      x-operation-id-source: derived
     patch:
       description: 'Update a Repo User. When changing the credential provider, supply exactly one of:
 
@@ -267,38 +275,13 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Update a Repo User.
+      summary: Update a Repo User
       tags:
       - Repo Users
+      operationId: patchReposByRepoNameUsersByUsername
+      x-operation-id-source: derived
 components:
   schemas:
-    repousers.CreateRepoUserInput:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-        username:
-          type: string
-          x-order: '0'
-      type: object
-    management.AzureKeyVault:
-      properties:
-        key_vault_uri:
-          type: string
-          x-order: '0'
-        secret_name:
-          type: string
-          x-order: '1'
-      required:
-      - key_vault_uri
-      - secret_name
-      type: object
-      x-order: '2'
     management.ListRepoUsersOutput:
       properties:
         contiguous_id:
@@ -311,15 +294,6 @@ components:
           uniqueItems: false
           x-order: '0'
       type: object
-    management.EnvironmentVariable:
-      properties:
-        variable_name:
-          type: string
-          x-order: '0'
-      required:
-      - variable_name
-      type: object
-      x-order: '3'
     management.AWSSecretsManager:
       properties:
         iam_role:
@@ -334,7 +308,20 @@ components:
       - secrets_path
       type: object
       x-order: '1'
-    repousers.UpdateRepoUserInput:
+    management.AzureKeyVault:
+      properties:
+        key_vault_uri:
+          type: string
+          x-order: '0'
+        secret_name:
+          type: string
+          x-order: '1'
+      required:
+      - key_vault_uri
+      - secret_name
+      type: object
+      x-order: '2'
+    repousers.CreateRepoUserInput:
       properties:
         aws_secrets_manager:
           $ref: '#/components/schemas/management.AWSSecretsManager'
@@ -344,6 +331,9 @@ components:
           $ref: '#/components/schemas/management.EnvironmentVariable'
         secret_file:
           $ref: '#/components/schemas/management.SecretFile'
+        username:
+          type: string
+          x-order: '0'
       type: object
     management.SecretFile:
       properties:
@@ -357,6 +347,15 @@ components:
       - path
       type: object
       x-order: '4'
+    management.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+          x-order: '0'
+      required:
+      - variable_name
+      type: object
+      x-order: '3'
     fiber.APIError:
       properties:
         response:
@@ -370,6 +369,17 @@ components:
           type: integer
         message:
           type: string
+      type: object
+    repousers.UpdateRepoUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
       type: object
     management.RepoUser:
       properties:

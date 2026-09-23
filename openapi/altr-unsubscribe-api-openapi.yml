@@ -44,9 +44,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/fiber.APIError'
           description: Invalid or tampered token
-      summary: Unsubscribe from DAM alert emails (human click).
+      summary: Unsubscribe from DAM alert emails (human click)
       tags:
       - Unsubscribe
+      operationId: getUnsubscribe
+      x-operation-id-source: derived
     post:
       description: One-click unsubscribe for Gmail/Yahoo. The token is supplied in the query string (the List-Unsubscribe URL already carries it); the `List-Unsubscribe=One-Click` request body is ignored. Unauthenticated — authorized solely by the signed token. Returns 200 with an empty body.
       parameters:
@@ -80,9 +82,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/fiber.APIError'
           description: Invalid or tampered token
-      summary: Unsubscribe from DAM alert emails (RFC 8058 one-click).
+      summary: Unsubscribe from DAM alert emails (RFC 8058 one-click)
       tags:
       - Unsubscribe
+      operationId: postUnsubscribe
+      x-operation-id-source: derived
 components:
   schemas:
     fiber.APIError:

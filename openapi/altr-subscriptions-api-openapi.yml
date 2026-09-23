@@ -76,9 +76,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List Subscriptions for an Integration.
+      summary: List Subscriptions for an Integration
       tags:
       - Subscriptions
+      operationId: getIntegrationsByIntegrationIdSubscriptions
+      x-operation-id-source: derived
     post:
       description: Creates a subscription under the integration named in the path. The server assigns and returns the subscription_id. `integration_id` in the body is ignored — the path is authoritative.
       parameters:
@@ -136,9 +138,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Create a Subscription.
+      summary: Create a Subscription
       tags:
       - Subscriptions
+      operationId: postIntegrationsByIntegrationIdSubscriptions
+      x-operation-id-source: derived
   /integrations/{integration_id}/subscriptions/{subscription_id}:
     delete:
       description: Removes a subscription.
@@ -184,9 +188,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Delete a Subscription.
+      summary: Delete a Subscription
       tags:
       - Subscriptions
+      operationId: deleteIntegrationsByIntegrationIdSubscriptionsBySubscriptionId
+      x-operation-id-source: derived
     get:
       description: Returns a single subscription by id under the named integration.
       parameters:
@@ -235,9 +241,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Get a Subscription.
+      summary: Get a Subscription
       tags:
       - Subscriptions
+      operationId: getIntegrationsByIntegrationIdSubscriptionsBySubscriptionId
+      x-operation-id-source: derived
     patch:
       description: Patches the mutable fields on a subscription. Only `criteria` and `enabled` are mutable; `event_type` is immutable (re-target by creating a new subscription).
       parameters:
@@ -301,9 +309,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Update a Subscription.
+      summary: Update a Subscription
       tags:
       - Subscriptions
+      operationId: patchIntegrationsByIntegrationIdSubscriptionsBySubscriptionId
+      x-operation-id-source: derived
   /subscriptions:
     get:
       description: Returns subscriptions across all integrations in the caller's org. To create or modify a subscription, use the nested `/integrations/:integration_id/subscriptions/:id` path.
@@ -374,50 +384,13 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Search Subscriptions across all Integrations.
+      summary: Search Subscriptions across all Integrations
       tags:
       - Subscriptions
+      operationId: getSubscriptions
+      x-operation-id-source: derived
 components:
   schemas:
-    models.CriteriaOperators:
-      properties:
-        eq:
-          x-order: '0'
-        exists:
-          type: boolean
-          x-order: '4'
-        gte:
-          x-order: '2'
-        in:
-          items: {}
-          maxItems: 500
-          type: array
-          uniqueItems: false
-          x-order: '1'
-        lte:
-          x-order: '3'
-      type: object
-    models.CreateSubscriptionRequest:
-      properties:
-        criteria:
-          additionalProperties:
-            $ref: '#/components/schemas/models.CriteriaOperators'
-          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
-
-            operator block. All entries must match for the event to be delivered (AND across
-
-            fields). Empty/omitted matches every event of the registered type.'
-          type: object
-        enabled:
-          type: boolean
-        event_type:
-          enum:
-          - dam.alert.fired
-          maxLength: 255
-          type: string
-      required:
-      - event_type
-      type: object
     models.Subscription:
       properties:
         created_at:
@@ -451,6 +424,48 @@ components:
       - integration_id
       - subscription_id
       type: object
+    models.UpdateSubscriptionRequest:
+      properties:
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
+
+            entries must match for the event to be delivered (AND across fields).'
+          type: object
+        enabled:
+          type: boolean
+      type: object
+    models.ListSubscriptionsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Subscription'
+          type: array
+          uniqueItems: false
+      type: object
+    models.CriteriaOperators:
+      properties:
+        eq:
+          x-order: '0'
+        exists:
+          type: boolean
+          x-order: '4'
+        gte:
+          x-order: '2'
+        in:
+          items: {}
+          maxItems: 500
+          type: array
+          uniqueItems: false
+          x-order: '1'
+        lte:
+          x-order: '3'
+      type: object
     fiber.APIError:
       properties:
         response:
@@ -465,29 +480,26 @@ components:
         message:
           type: string
       type: object
-    models.ListSubscriptionsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Subscription'
-          type: array
-          uniqueItems: false
-      type: object
-    models.UpdateSubscriptionRequest:
+    models.CreateSubscriptionRequest:
       properties:
         criteria:
           additionalProperties:
             $ref: '#/components/schemas/models.CriteriaOperators'
-          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
+          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
 
-            entries must match for the event to be delivered (AND across fields).'
+            operator block. All entries must match for the event to be delivered (AND across
+
+            fields). Empty/omitted matches every event of the registered type.'
           type: object
         enabled:
           type: boolean
+        event_type:
+          enum:
+          - dam.alert.fired
+          maxLength: 255
+          type: string
+      required:
+      - event_type
       type: object
   securitySchemes:
     BasicAuth:

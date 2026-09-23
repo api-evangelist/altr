@@ -50,9 +50,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List report definitions.
+      summary: List report definitions
       tags:
       - Definitions
+      operationId: getAuditReportsDefinitions
+      x-operation-id-source: derived
     post:
       description: Creates a new audit report definition with filters, schedule, and delivery configuration.
       requestBody:
@@ -91,9 +93,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Create a report definition.
+      summary: Create a report definition
       tags:
       - Definitions
+      operationId: postAuditReportsDefinitions
+      x-operation-id-source: derived
   /audit-reports/definitions/{definition_id}:
     delete:
       description: Soft-deletes an audit report definition by setting archived_at. Archived definitions are hidden from default list view but remain queryable. Must be restored before editing or triggering.
@@ -131,9 +135,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Archive a report definition.
+      summary: Archive a report definition
       tags:
       - Definitions
+      operationId: deleteAuditReportsDefinitionsByDefinitionId
+      x-operation-id-source: derived
     get:
       description: Returns a single audit report definition by ID.
       parameters:
@@ -164,9 +170,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Get a report definition.
+      summary: Get a report definition
       tags:
       - Definitions
+      operationId: getAuditReportsDefinitionsByDefinitionId
+      x-operation-id-source: derived
     put:
       description: Replaces the audit report definition with the provided body, preserving immutable fields.
       parameters:
@@ -212,9 +220,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Update a report definition.
+      summary: Update a report definition
       tags:
       - Definitions
+      operationId: putAuditReportsDefinitionsByDefinitionId
+      x-operation-id-source: derived
   /audit-reports/definitions/{definition_id}/restore:
     post:
       description: Removes the archived status from a definition, making it active again.
@@ -252,9 +262,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Restore an archived report definition.
+      summary: Restore an archived report definition
       tags:
       - Definitions
+      operationId: postAuditReportsDefinitionsByDefinitionIdRestore
+      x-operation-id-source: derived
   /audit-reports/definitions/{definition_id}/trigger:
     post:
       description: Queues a new report instance and starts the Step Function pipeline. Rate-limited to once per 5 minutes per definition.
@@ -292,105 +304,23 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Trigger on-demand report generation.
+      summary: Trigger on-demand report generation
       tags:
       - Definitions
+      operationId: postAuditReportsDefinitionsByDefinitionIdTrigger
+      x-operation-id-source: derived
 components:
   schemas:
-    models.FilterGroup:
+    models.ListDefinitionsResponse:
       properties:
-        filters:
+        has_more:
+          type: boolean
+        items:
           items:
-            $ref: '#/components/schemas/models.Filter'
+            $ref: '#/components/schemas/models.Definition'
           type: array
           uniqueItems: false
-      type: object
-    models.ReportWindow:
-      properties:
-        lookback_days:
-          description: Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).
-          example: 7
-          type: integer
-        timezone:
-          example: America/New_York
-          type: string
-      type: object
-    models.Filter:
-      properties:
-        field:
-          description: 'OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.'
-          example: database_name
-          type: string
-        mode:
-          enum:
-          - include
-          - exclude
-          example: include
-          type: string
-        patterns:
-          items:
-            $ref: '#/components/schemas/models.FilterPattern'
-          type: array
-          uniqueItems: false
-        range:
-          $ref: '#/components/schemas/models.NumericRange'
-        value:
-          type: boolean
-      type: object
-    models.DefinitionInput:
-      properties:
-        delivery:
-          $ref: '#/components/schemas/models.Delivery'
-        description:
-          example: Tracks schema changes across production databases
-          type: string
-        filters:
-          $ref: '#/components/schemas/models.ReportFilters'
-        integration_type:
-          enum:
-          - oltp
-          - snowflake
-          example: oltp
-          type: string
-        name:
-          example: Weekly DDL Audit
-          type: string
-        report_window:
-          $ref: '#/components/schemas/models.ReportWindow'
-        required_approvals:
-          example: 2
-          type: integer
-        retention_days:
-          example: 90
-          type: integer
-        schedule:
-          $ref: '#/components/schemas/models.Schedule'
-      type: object
-    models.Schedule:
-      properties:
-        cron:
-          example: 0 9 ? * MON
-          type: string
-        enabled:
-          example: true
-          type: boolean
-        timezone:
-          example: America/New_York
-          type: string
-      type: object
-    models.FilterPattern:
-      properties:
-        match_type:
-          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
-          enum:
-          - exact
-          - contains
-          - starts_with
-          - ends_with
-          example: starts_with
-          type: string
-        value:
-          example: PROD_
+        next_cursor:
           type: string
       type: object
     models.DeliveryChannel:
@@ -412,31 +342,30 @@ components:
           example: email
           type: string
       type: object
-    models.ListDefinitionsResponse:
+    models.FilterGroup:
       properties:
-        has_more:
-          type: boolean
-        items:
+        filters:
           items:
-            $ref: '#/components/schemas/models.Definition'
+            $ref: '#/components/schemas/models.Filter'
           type: array
           uniqueItems: false
-        next_cursor:
+      type: object
+    models.ReportWindow:
+      properties:
+        lookback_days:
+          description: Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).
+          example: 7
+          type: integer
+        timezone:
+          example: America/New_York
           type: string
       type: object
-    fiber.APIError:
+    models.NumericRange:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        max:
           type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
+        min:
           type: integer
-        message:
-          type: string
       type: object
     models.Definition:
       properties:
@@ -478,26 +407,111 @@ components:
         updated_at:
           type: string
       type: object
-    models.NumericRange:
+    models.DefinitionInput:
       properties:
-        max:
+        delivery:
+          $ref: '#/components/schemas/models.Delivery'
+        description:
+          example: Tracks schema changes across production databases
+          type: string
+        filters:
+          $ref: '#/components/schemas/models.ReportFilters'
+        integration_type:
+          enum:
+          - oltp
+          - snowflake
+          example: oltp
+          type: string
+        name:
+          example: Weekly DDL Audit
+          type: string
+        report_window:
+          $ref: '#/components/schemas/models.ReportWindow'
+        required_approvals:
+          example: 2
           type: integer
-        min:
+        retention_days:
+          example: 90
           type: integer
+        schedule:
+          $ref: '#/components/schemas/models.Schedule'
       type: object
-    models.Delivery:
+    models.Filter:
       properties:
-        channels:
+        field:
+          description: 'OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.'
+          example: database_name
+          type: string
+        mode:
+          enum:
+          - include
+          - exclude
+          example: include
+          type: string
+        patterns:
           items:
-            $ref: '#/components/schemas/models.DeliveryChannel'
+            $ref: '#/components/schemas/models.FilterPattern'
           type: array
           uniqueItems: false
+        range:
+          $ref: '#/components/schemas/models.NumericRange'
+        value:
+          type: boolean
+      type: object
+    models.FilterPattern:
+      properties:
+        match_type:
+          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
+          enum:
+          - exact
+          - contains
+          - starts_with
+          - ends_with
+          example: starts_with
+          type: string
+        value:
+          example: PROD_
+          type: string
       type: object
     models.ReportFilters:
       properties:
         filter_groups:
           items:
             $ref: '#/components/schemas/models.FilterGroup'
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    models.Schedule:
+      properties:
+        cron:
+          example: 0 9 ? * MON
+          type: string
+        enabled:
+          example: true
+          type: boolean
+        timezone:
+          example: America/New_York
+          type: string
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.Delivery:
+      properties:
+        channels:
+          items:
+            $ref: '#/components/schemas/models.DeliveryChannel'
           type: array
           uniqueItems: false
       type: object

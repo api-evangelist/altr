@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Me API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,7 +13,7 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: me
+- name: Me
   description: Operations related to the currently logged in administrator
   externalDocs:
     description: Find out more
@@ -28,8 +22,8 @@ paths:
   /me:
     get:
       tags:
-      - me
-      summary: Get information about the currently logged-in user and the organizations that user has access to.
+      - Me
+      summary: Get information about the currently logged-in user and the organizations that…
       operationId: getMe
       responses:
         '200':
@@ -86,7 +80,7 @@ paths:
   /me/logout:
     post:
       tags:
-      - me
+      - Me
       summary: logout the user, if hit using an api key return 204
       responses:
         '204':
@@ -97,11 +91,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: postMeLogout
+      x-operation-id-source: derived
   /me/preferences:
     patch:
       tags:
-      - me
-      summary: Updates preferences of the currently logged in administrator.
+      - Me
+      summary: Updates preferences of the currently logged in administrator
       operationId: updateMyPreferences
       requestBody:
         description: When setting a new password, oldPassword, newPassword, and confirmNewPassword are required.
@@ -138,8 +134,8 @@ paths:
   /me/preferences/twofactor/verify:
     post:
       tags:
-      - me
-      summary: Send a verification code to update your two factor settings.
+      - Me
+      summary: Send a verification code to update your two factor settings
       operationId: verifyTwoFactorUpdate
       requestBody:
         description: Send a verification code to update your two factor settings.
@@ -188,8 +184,8 @@ paths:
   /me/preferences/twofactor:
     patch:
       tags:
-      - me
-      summary: Update your two factor code after providing the two factor code and password.
+      - Me
+      summary: Update your two factor code after providing the two factor code and password
       operationId: updateTwoFactorType
       requestBody:
         description: Update your two factor code after providing the two factor code from /verify and the users valid password.
@@ -241,8 +237,8 @@ paths:
   /me/preferences/webauthn/credentials:
     get:
       tags:
-      - me
-      summary: List the current user's WebAuthn credentials.
+      - Me
+      summary: List the current user's WebAuthn credentials
       description: Returns all registered WebAuthn (passkey) credentials for the currently logged-in user. This endpoint requires a browser session and cannot be accessed via an API key.
       operationId: me|get-webauthn-credentials
       security: []
@@ -270,8 +266,8 @@ paths:
   /me/preferences/webauthn/credentials/{id}:
     delete:
       tags:
-      - me
-      summary: Delete a WebAuthn credential.
+      - Me
+      summary: Delete a WebAuthn credential
       description: Removes a registered WebAuthn (passkey) credential by its ID. This endpoint requires a browser session and cannot be accessed via an API key.
       operationId: me|delete-webauthn-credential
       security: []
@@ -304,8 +300,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     patch:
       tags:
-      - me
-      summary: Rename a WebAuthn credential.
+      - Me
+      summary: Rename a WebAuthn credential
       description: Updates the display name of a registered WebAuthn (passkey) credential. This endpoint requires a browser session and cannot be accessed via an API key.
       operationId: me|rename-webauthn-credential
       security: []
@@ -348,8 +344,8 @@ paths:
   /me/validate-password:
     post:
       tags:
-      - me
-      summary: Validate the authenticated administrator's password.
+      - Me
+      summary: Validate the authenticated administrator's password
       description: 'Used by the Portal before first-time WebAuthn credential registration to gate the zero-credentials path. Returns `{ success: true }` if the password is valid; otherwise responds with `400 Invalid Credentials`. Cannot be accessed via Basic Auth.'
       operationId: me|validate-password
       security: []
@@ -393,8 +389,8 @@ paths:
   /me/preferences/webauthn/register/options:
     post:
       tags:
-      - me
-      summary: Start a WebAuthn registration ceremony.
+      - Me
+      summary: Start a WebAuthn registration ceremony
       description: Generates the challenge and options required to begin registering a new WebAuthn (passkey) credential. The returned options should be passed to the browser's `navigator.credentials.create()` call. This endpoint requires a browser session and cannot be accessed via an API key.
       operationId: me|webauthn-register-options
       security: []
@@ -469,8 +465,8 @@ paths:
   /me/preferences/webauthn/register/verify:
     post:
       tags:
-      - me
-      summary: Complete a WebAuthn registration ceremony.
+      - Me
+      summary: Complete a WebAuthn registration ceremony
       description: Verifies the authenticator's response and saves the new WebAuthn credential. The `response` field should be the JSON-serialised `AuthenticatorAttestationResponse` returned by `navigator.credentials.create()`. This endpoint requires a browser session and cannot be accessed via an API key.
       operationId: me|webauthn-register-verify
       security: []
@@ -513,8 +509,8 @@ paths:
   /me/help:
     put:
       tags:
-      - me
-      summary: Emails support@altr.com with a generic request for support.
+      - Me
+      summary: Emails support@altr.com with a generic request for support
       description: This endpoint is only accessible via ALTR's UI; it cannot be accessed from an API key
       requestBody:
         required: false
@@ -564,29 +560,21 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: putMeHelp
+      x-operation-id-source: derived
 components:
+  parameters:
+    webauthnCredentialId:
+      name: id
+      in: path
+      required: true
+      description: Internal numeric ID of the registered WebAuthn credential.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        example: 1
   schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     WebAuthnCredential:
       type: object
       description: A registered WebAuthn (passkey) credential.
@@ -654,6 +642,27 @@ components:
                   type: integer
                 protect:
                   type: integer
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
     Administrator:
       type: object
       properties:
@@ -711,30 +720,6 @@ components:
           type: string
           example: George3
   responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -759,16 +744,16 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    InternalError:
-      description: Internal Error
+    Forbidden:
+      description: Forbidden
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Internal Server Error
-              statusCode: 500
+              message: Resource is forbidden
+              statusCode: 403
               date: '2022-07-20T18:00:58.723Z'
             success: false
     NotFound:
@@ -783,17 +768,30 @@ components:
               statusCode: 404
               date: '2022-07-20T18:00:58.723Z'
             success: false
-  parameters:
-    webauthnCredentialId:
-      name: id
-      in: path
-      required: true
-      description: Internal numeric ID of the registered WebAuthn credential.
-      schema:
-        type: integer
-        format: int64
-        minimum: 1
-        example: 1
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   securitySchemes:
     basicAuth:
       type: http

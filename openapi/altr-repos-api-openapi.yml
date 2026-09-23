@@ -76,9 +76,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List Repos.
+      summary: List Repos
       tags:
       - Repos
+      operationId: getRepos
+      x-operation-id-source: derived
     post:
       description: Create a new Repo with the provided details.
       requestBody:
@@ -115,9 +117,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Repo.
+      summary: Create a new Repo
       tags:
       - Repos
+      operationId: postRepos
+      x-operation-id-source: derived
   /repos/{repo_name}:
     delete:
       description: A Repo cannot be deleted if it its `user_count` or `binding_count` are > 0.
@@ -157,9 +161,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete a Repo.
+      summary: Delete a Repo
       tags:
       - Repos
+      operationId: deleteReposByRepoName
+      x-operation-id-source: derived
     get:
       description: Get the repo for a given repo name.
       parameters:
@@ -196,9 +202,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get a Repo.
+      summary: Get a Repo
       tags:
       - Repos
+      operationId: getReposByRepoName
+      x-operation-id-source: derived
     patch:
       description: Update a Repo.
       requestBody:
@@ -235,11 +243,25 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Update a Repo.
+      summary: Update a Repo
       tags:
       - Repos
+      operationId: patchReposByRepoName
+      x-operation-id-source: derived
 components:
   schemas:
+    management.ListReposOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        repos:
+          items:
+            $ref: '#/components/schemas/management.Repo'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
     repos.CreateRepoInput:
       properties:
         description:
@@ -257,26 +279,6 @@ components:
         type:
           type: string
           x-order: '2'
-      type: object
-    repos.UpdateRepoInput:
-      properties:
-        description:
-          type: string
-          x-order: '0'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
       type: object
     management.Repo:
       properties:
@@ -314,16 +316,24 @@ components:
           type: integer
           x-order: '5'
       type: object
-    management.ListReposOutput:
+    fiber.APIError:
       properties:
-        contiguous_id:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
           type: string
-          x-order: '1'
-        repos:
-          items:
-            $ref: '#/components/schemas/management.Repo'
-          type: array
-          uniqueItems: false
+      type: object
+    repos.UpdateRepoInput:
+      properties:
+        description:
+          type: string
           x-order: '0'
       type: object
   securitySchemes:

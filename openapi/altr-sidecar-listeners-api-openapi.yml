@@ -65,9 +65,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List all listener ports for given sidecarID.
+      summary: List all listener ports for given sidecarID
       tags:
       - Sidecar Listeners
+      operationId: getSidecarsBySidecarIdPorts
+      x-operation-id-source: derived
     post:
       description: Register a new sidecar listener port with the provided details.
       parameters:
@@ -107,9 +109,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Register a new sidecar listener port.
+      summary: Register a new sidecar listener port
       tags:
       - Sidecar Listeners
+      operationId: postSidecarsBySidecarIdPorts
+      x-operation-id-source: derived
   /sidecars/{sidecar_id}/ports/{port}:
     delete:
       description: Deregister a Sidecar Listener.
@@ -155,9 +159,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Deregister a Sidecar Listener.
+      summary: Deregister a Sidecar Listener
       tags:
       - Sidecar Listeners
+      operationId: deleteSidecarsBySidecarIdPortsByPort
+      x-operation-id-source: derived
 components:
   schemas:
     sidecarlisteners.RegisterSidecarListenerInput:
@@ -172,6 +178,16 @@ components:
           type: integer
           x-order: '0'
       type: object
+    management.ListSidecarListenersOutput:
+      properties:
+        contiguous_id:
+          type: string
+        sidecar_listeners:
+          items:
+            $ref: '#/components/schemas/management.ListenerPort'
+          type: array
+          uniqueItems: false
+      type: object
     fiber.APIError:
       properties:
         response:
@@ -185,16 +201,6 @@ components:
           type: integer
         message:
           type: string
-      type: object
-    management.ListSidecarListenersOutput:
-      properties:
-        contiguous_id:
-          type: string
-        sidecar_listeners:
-          items:
-            $ref: '#/components/schemas/management.ListenerPort'
-          type: array
-          uniqueItems: false
       type: object
     management.ListenerPort:
       properties:

@@ -56,9 +56,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List comments.
+      summary: List comments
       tags:
       - Comments
+      operationId: getAuditReportsDefinitionsByDefIdInstancesByInstIdComments
+      x-operation-id-source: derived
     post:
       description: Adds a comment to a report instance for investigation notes or attestation context.
       parameters:
@@ -104,9 +106,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Create a comment.
+      summary: Create a comment
       tags:
       - Comments
+      operationId: postAuditReportsDefinitionsByDefIdInstancesByInstIdComments
+      x-operation-id-source: derived
   /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/pin:
     post:
       description: Pins a comment so it appears first in the list. Only one comment can be pinned per instance. Allowed after sign-off.
@@ -156,9 +160,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Pin a comment.
+      summary: Pin a comment
       tags:
       - Comments
+      operationId: postAuditReportsDefinitionsByDefIdInstancesByInstIdCommentsByIdPin
+      x-operation-id-source: derived
   /audit-reports/definitions/{def_id}/instances/{inst_id}/comments/{id}/unpin:
     post:
       description: Unpins a comment, returning it to its chronological position. Allowed after sign-off.
@@ -202,30 +208,13 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Unpin a comment.
+      summary: Unpin a comment
       tags:
       - Comments
+      operationId: postAuditReportsDefinitionsByDefIdInstancesByInstIdCommentsByIdUnpin
+      x-operation-id-source: derived
 components:
   schemas:
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    repository.PaginatedResult-models_Comment:
-      properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Comment'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
-      type: object
     models.Comment:
       properties:
         author_id:
@@ -250,17 +239,36 @@ components:
           example: Reviewed all SELECT queries - no anomalies found
           type: string
       type: object
+    models.CreateCommentInput:
+      properties:
+        text:
+          example: Reviewed all SELECT queries - no anomalies found
+          type: string
+      type: object
+    repository.PaginatedResult-models_Comment:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
-          type: string
-      type: object
-    models.CreateCommentInput:
-      properties:
-        text:
-          example: Reviewed all SELECT queries - no anomalies found
           type: string
       type: object
   securitySchemes:

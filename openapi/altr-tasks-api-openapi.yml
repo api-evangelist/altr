@@ -84,6 +84,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.Error'
+      operationId: postServicesByServiceUsersByUserIDAuthByAuthByAuthidTest
+      x-operation-id-source: derived
   /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/latest:
     get:
       security:
@@ -148,6 +150,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.Error'
+      operationId: getServicesByServiceUsersByUseridAuthByAuthtypeByAuthidTestLatest
+      x-operation-id-source: derived
   /services/{service}/users/{userid}/auth/{authtype}/{authid}/test/{testid}:
     get:
       security:
@@ -218,19 +222,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dto.Error'
+      operationId: getServicesByServiceUsersByUseridAuthByAuthtypeByAuthidTestByTestid
+      x-operation-id-source: derived
 components:
   schemas:
-    dto.CreateAuthTestJobResponse:
-      type: object
-      properties:
-        created_at:
-          type: string
-        status:
-          type: string
-        task_id:
-          type: array
-          items:
-            type: integer
     dto.AuthTestJobStatusResponse:
       type: object
       properties:
@@ -255,6 +250,17 @@ components:
           type: string
         message:
           type: string
+    dto.CreateAuthTestJobResponse:
+      type: object
+      properties:
+        created_at:
+          type: string
+        status:
+          type: string
+        task_id:
+          type: array
+          items:
+            type: integer
   securitySchemes:
     BasicAuth:
       type: http

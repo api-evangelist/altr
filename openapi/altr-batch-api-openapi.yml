@@ -19,12 +19,12 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: batch
+- name: Batch
 paths:
   /batch:
     post:
       tags:
-      - batch
+      - Batch
       summary: Batch Write
       description: This endpoint tokenizes plaintext data. Up to 1024 values can be tokenized at once. Only string values can be tokenized. Values can be up to 128 UTF-8 code units long. Smaller batches may increase performance.
       parameters:
@@ -64,9 +64,11 @@ paths:
           $ref: '#/components/responses/TooMany'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: postBatch
+      x-operation-id-source: derived
     put:
       tags:
-      - batch
+      - Batch
       summary: Batch Read
       description: This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. Tokens are case sensitive. If you send values to this endpoint that are not valid tokens, the request will fail. Using smaller batch sizes may improve performance.
       requestBody:
@@ -103,10 +105,12 @@ paths:
           $ref: '#/components/responses/TooMany'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: putBatch
+      x-operation-id-source: derived
   /batch/partial:
     put:
       tags:
-      - batch
+      - Batch
       summary: Partial Batch Read
       description: This endpoint allows you to retrieve plaintext data from tokens. Up to 1024 values can be detokenized at once. If you send values to this endpoint that are not valid tokens, the request will not fail. Instead, any non-token values supplied will be returned back to the user. Using smaller batch sizes may improve performance.
       requestBody:
@@ -141,12 +145,17 @@ paths:
           $ref: '#/components/responses/TooMany'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: putBatchPartial
+      x-operation-id-source: derived
   /batch/delete:
     put:
       tags:
-      - batch
+      - Batch
       summary: Batch Delete
-      description: "This endpoint deletes tokens from ALTR's token vault. Up to 1024 values can be deleted at once. If a determinstic token is deleted from ALTR, a new POST for that tokens value will result in a newly minted token. If you send values to this endpoint that are not valid tokens, the invalid tokens will be ignored. Using smaller batch sizes may improve performance.\n\n Delete batches may be partially executed. Tokens from the batch that fail to be deleted are returned with their cause for failure."
+      description: 'This endpoint deletes tokens from ALTR''s token vault. Up to 1024 values can be deleted at once. If a determinstic token is deleted from ALTR, a new POST for that tokens value will result in a newly minted token. If you send values to this endpoint that are not valid tokens, the invalid tokens will be ignored. Using smaller batch sizes may improve performance.
+
+
+        Delete batches may be partially executed. Tokens from the batch that fail to be deleted are returned with their cause for failure.'
       requestBody:
         required: true
         content:
@@ -179,114 +188,22 @@ paths:
           $ref: '#/components/responses/TooMany'
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: putBatchDelete
+      x-operation-id-source: derived
 components:
-  schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            data:
-              type: string
-              example: '2022-07-20T18:00:58.723Z'
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-        success:
-          type: boolean
-          example: 'false'
-    BatchWrite:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W
-            field001:
-              type: string
-              example: token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG
-            field002:
-              type: string
-              example: token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl
-            field003:
-              type: string
-              example: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
-        success:
-          type: boolean
-          example: true
-    BatchReadPartial:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: Not a token
-            field001:
-              type: string
-              example: Sample Value 2
-            field002:
-              type: string
-              example: Sample Value 3
-            field003:
-              type: string
-              example: Sample Value 4
-        success:
-          type: boolean
-          example: true
-    BatchDelete:
-      type: object
-      properties:
-        unprocessed:
-          type: array
-          example: '[]'
-        success:
-          type: boolean
-          example: true
-    BatchRead:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: Sample Value 1
-            field001:
-              type: string
-              example: Sample Value 2
-            field002:
-              type: string
-              example: Sample Value 3
-            field003:
-              type: string
-              example: Sample Value 4
-        success:
-          type: boolean
-          example: true
   responses:
-    BatchDelete:
-      description: Delete Request
+    BatchReadPartial:
+      description: Partial Read Request
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/BatchDelete'
-          examples:
-            Success: {}
-            Partial Success:
-              value:
-                unprocessed:
-                - message: Too Many Requests
-                  statusCode: '429'
-                  field003: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
-                success: false
+            $ref: '#/components/schemas/BatchReadPartial'
+    BatchRead:
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchRead'
     WriteBadRequest:
       description: Bad Request
       content:
@@ -329,18 +246,6 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              date: '2022-07-20T18:00:58.723Z'
-              message: Unauthorized
-              statusCode: 401
-            success: false
     BatchDeleteBadRequest:
       description: Bad Request
       content:
@@ -390,6 +295,21 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
+    BatchDelete:
+      description: Delete Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchDelete'
+          examples:
+            Success: {}
+            Partial Success:
+              value:
+                unprocessed:
+                - message: Too Many Requests
+                  statusCode: '429'
+                  field003: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
+                success: false
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -402,68 +322,18 @@ components:
               message: Unsupported Media Type
               statusCode: 415
             success: false
-    BatchRead:
-      description: Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchRead'
-    PartialReadBadRequest:
-      description: Bad Request
+    NotFound:
+      description: Not Found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
-          examples:
-            Default:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Bad Request
-                  statusCode: 400
-                success: false
-            Exceeds limit:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Batch exceeds 1024 limit
-                  statusCode: 400
-                success: false
-            No Tokens:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: No Tokens Given
-                  statusCode: 400
-                success: false
-            Item(s) Too Short:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Item(s) In Batch Too Short
-                  statusCode: 400
-                success: false
-            Item(s) Exceed Length Limit:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Item(s) In Batch Exceed Length Limit
-                  statusCode: 400
-                success: false
-            Malformed Token:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Received Malformed Token
-                  statusCode: 400
-                success: false
-            Transaction Cancelled:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Transaction Cancelled
-                  statusCode: 400
-                success: false
+          example:
+            data:
+              date: '2022-07-20T18:00:58.723Z'
+              message: Not Found
+              statusCode: 404
+            success: false
     TooMany:
       description: Too Many Requests
       content:
@@ -476,12 +346,6 @@ components:
               message: Too Many Requests
               statusCode: 429
             success: false
-    BatchWrite:
-      description: Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchWrite'
     ReadBadRequest:
       description: Bad Request
       content:
@@ -538,6 +402,18 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              date: '2022-07-20T18:00:58.723Z'
+              message: Unauthorized
+              statusCode: 401
+            success: false
     InternalError:
       description: Internal Error
       content:
@@ -550,24 +426,159 @@ components:
               message: Internal Server Error
               statusCode: 500
             success: false
-    BatchReadPartial:
-      description: Partial Read Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchReadPartial'
-    NotFound:
-      description: Not Found
+    PartialReadBadRequest:
+      description: Bad Request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
-          example:
+          examples:
+            Default:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Bad Request
+                  statusCode: 400
+                success: false
+            Exceeds limit:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Batch exceeds 1024 limit
+                  statusCode: 400
+                success: false
+            No Tokens:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: No Tokens Given
+                  statusCode: 400
+                success: false
+            Item(s) Too Short:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Item(s) In Batch Too Short
+                  statusCode: 400
+                success: false
+            Item(s) Exceed Length Limit:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Item(s) In Batch Exceed Length Limit
+                  statusCode: 400
+                success: false
+            Malformed Token:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Received Malformed Token
+                  statusCode: 400
+                success: false
+            Transaction Cancelled:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Transaction Cancelled
+                  statusCode: 400
+                success: false
+    BatchWrite:
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchWrite'
+  schemas:
+    BatchWrite:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W
+            field001:
+              type: string
+              example: token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG
+            field002:
+              type: string
+              example: token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl
+            field003:
+              type: string
+              example: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
+        success:
+          type: boolean
+          example: true
+    BatchDelete:
+      type: object
+      properties:
+        unprocessed:
+          type: array
+          example: '[]'
+        success:
+          type: boolean
+          example: true
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
             data:
-              date: '2022-07-20T18:00:58.723Z'
-              message: Not Found
-              statusCode: 404
-            success: false
+              type: string
+              example: '2022-07-20T18:00:58.723Z'
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+        success:
+          type: boolean
+          example: 'false'
+    BatchReadPartial:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: Not a token
+            field001:
+              type: string
+              example: Sample Value 2
+            field002:
+              type: string
+              example: Sample Value 3
+            field003:
+              type: string
+              example: Sample Value 4
+        success:
+          type: boolean
+          example: true
+    BatchRead:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: Sample Value 1
+            field001:
+              type: string
+              example: Sample Value 2
+            field002:
+              type: string
+              example: Sample Value 3
+            field003:
+              type: string
+              example: Sample Value 4
+        success:
+          type: boolean
+          example: true
   securitySchemes:
     basicAuth:
       type: http

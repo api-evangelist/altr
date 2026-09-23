@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   description: The RBAC Management API. This is used to create and revoke grants on roles inside a database.
-  title: RBAC RBAC API API
+  title: RBAC API
   contact: {}
   version: 0.1.0
 servers:
@@ -16,7 +16,7 @@ paths:
       description: Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND` operation.
       tags:
       - RBAC API
-      summary: List ALTR managed privileges for your organization.
+      summary: List ALTR managed privileges for your organization
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -78,13 +78,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getDatabricks
+      x-operation-id-source: derived
     put:
       security:
       - BasicAuth: []
       description: Batch create/update a role's privileges.
       tags:
       - RBAC API
-      summary: Batch create/update a role's privileges.
+      summary: Batch create/update a role's privileges
       responses:
         '201':
           description: Created
@@ -123,13 +125,15 @@ paths:
               $ref: '#/components/schemas/types.DatabricksPutBatchPrivilegeRequest'
         description: The batch of privileges to grant to the specified role.
         required: true
+      operationId: putDatabricks
+      x-operation-id-source: derived
     patch:
       security:
       - BasicAuth: []
       description: Add or Remove references attached to a databricks privilege. Used for tracking what is responsible for this grant. When all references are removed, the privilege can be revoked.
       tags:
       - RBAC API
-      summary: Add or Remove references attached to a databricks privilege.
+      summary: Add or Remove references attached to a databricks privilege
       responses:
         '204':
           description: The references have been updated.
@@ -164,6 +168,8 @@ paths:
               $ref: '#/components/schemas/types.PatchDatabricksPrivilegeReferencesInput'
         description: Add or Remove references from a databricks privilege.
         required: true
+      operationId: patchDatabricks
+      x-operation-id-source: derived
   /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}:
     get:
       security:
@@ -171,7 +177,7 @@ paths:
       description: Get the details of an ALTR managed catalog privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Get the details of an ALTR managed catalog privilege which is granted to a specified principal.
+      summary: Get the details of an ALTR managed catalog privilege which is granted to a…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -231,13 +237,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed catalog privilege which is granted to a specified principal.
+      summary: Delete/revoke an ALTR managed catalog privilege which is granted to a specified…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -303,6 +311,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogName
+      x-operation-id-source: derived
   ? /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}/schema-name/{schemaName}
   : get:
       security:
@@ -310,7 +320,7 @@ paths:
       description: Get the details of an ALTR managed schema privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Get the details of an ALTR managed schema privilege which is granted to a specified principal.
+      summary: Get the details of an ALTR managed schema privilege which is granted to a…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -376,13 +386,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogNameSchemaNameBySchemaName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed schema privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified principal.
+      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -454,6 +466,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogNameSchemaNameBySchemaName
+      x-operation-id-source: derived
   ? /databricks/database-id/{databaseId}/principal-name/{principalName}/privilege/{privilege}/catalog-name/{catalogName}/schema-name/{schemaName}/table-name/{tableName}
   : get:
       security:
@@ -461,7 +475,7 @@ paths:
       description: Get the details of an ALTR managed table privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Get the details of an ALTR managed table privilege which is granted to a specified principal.
+      summary: Get the details of an ALTR managed table privilege which is granted to a…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -533,13 +547,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed table privilege which is granted to a specified principal.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified principal.
+      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified…
       parameters:
       - description: The ALTR Database ID of a connected database.
         name: databaseId
@@ -617,6 +633,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteDatabricksDatabaseIdByDatabaseIdPrincipalNameByPrincipalNamePrivilegeByPrivilegeCatalogNameByCatalogNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
   /databricks/reference/{reference}:
     get:
       security:
@@ -624,7 +642,7 @@ paths:
       description: List privileges by a given reference.
       tags:
       - RBAC API
-      summary: List privileges by a given reference.
+      summary: List privileges by a given reference
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -670,6 +688,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getDatabricksReferenceByReference
+      x-operation-id-source: derived
   /snowflake:
     get:
       security:
@@ -677,7 +697,7 @@ paths:
       description: Get all the details on ALTR managed privileges for your organization. Treat combining filters as an `AND` operation.
       tags:
       - RBAC API
-      summary: List ALTR managed privileges for your organization.
+      summary: List ALTR managed privileges for your organization
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -744,13 +764,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflake
+      x-operation-id-source: derived
     put:
       security:
       - BasicAuth: []
       description: Batch create/update a role's privileges.
       tags:
       - RBAC API
-      summary: Batch create/update a role's privileges.
+      summary: Batch create/update a role's privileges
       responses:
         '201':
           description: Created
@@ -789,13 +811,15 @@ paths:
               $ref: '#/components/schemas/types.PutBatchSnowflakePrivilegesInput'
         description: The batch of privileges to grant to the specified role.
         required: true
+      operationId: putSnowflake
+      x-operation-id-source: derived
     patch:
       security:
       - BasicAuth: []
       description: Add or Remove references attached to a snowflake privilege. Used for tracking what is responsible for this grant. When all references are removed, the privilege can be revoked.
       tags:
       - RBAC API
-      summary: Add or Remove references attached to a snowflake privilege.
+      summary: Add or Remove references attached to a snowflake privilege
       responses:
         '204':
           description: The references have been updated.
@@ -830,6 +854,8 @@ paths:
               $ref: '#/components/schemas/types.PatchSnowflakePrivilegeReferencesInput'
         description: Add or Remove references attached to a snowflake privilege.
         required: true
+      operationId: patchSnowflake
+      x-operation-id-source: derived
   /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}:
     get:
       security:
@@ -837,7 +863,7 @@ paths:
       description: Get all the details on an ALTR managed privilege granted to a specified role.
       tags:
       - RBAC API
-      summary: Get an ALTR managed database privilege granted to a specified role.
+      summary: Get an ALTR managed database privilege granted to a specified role
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -897,13 +923,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed database privilege which is granted to a specified role.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed database privilege which is granted to a specified role.
+      summary: Delete/revoke an ALTR managed database privilege which is granted to a…
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -969,6 +997,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseName
+      x-operation-id-source: derived
   ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}
   : get:
       security:
@@ -976,7 +1006,7 @@ paths:
       description: Gets all the details on an ALTR managed privilege granted to a specified role.
       tags:
       - RBAC API
-      summary: Get an ALTR managed schema privilege granted to a specified role.
+      summary: Get an ALTR managed schema privilege granted to a specified role
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1042,13 +1072,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed schema privilege which is granted to a specified role.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified role.
+      summary: Delete/revoke an ALTR managed schema privilege which is granted to a specified…
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1120,6 +1152,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaName
+      x-operation-id-source: derived
   ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}/table-name/{tableName}
   : get:
       security:
@@ -1127,7 +1161,7 @@ paths:
       description: Gets all the details on an ALTR managed privilege granted to a specified role.
       tags:
       - RBAC API
-      summary: Get an ALTR managed table privilege granted to a specified role.
+      summary: Get an ALTR managed table privilege granted to a specified role
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1199,13 +1233,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed table privilege which is granted to a specified role.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified role.
+      summary: Delete/revoke an ALTR managed table privilege which is granted to a specified…
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1283,6 +1319,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaNameTableNameByTableName
+      x-operation-id-source: derived
   ? /snowflake/database-id/{databaseId}/role-name/{role}/privilege/{privilege}/database-name/{databaseName}/schema-name/{schemaName}/view-name/{viewName}
   : get:
       security:
@@ -1290,7 +1328,7 @@ paths:
       description: Gets all the details on an ALTR managed privilege granted to a specified view.
       tags:
       - RBAC API
-      summary: Get an ALTR managed view privilege granted to a specified role.
+      summary: Get an ALTR managed view privilege granted to a specified role
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1362,13 +1400,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaNameViewNameByViewName
+      x-operation-id-source: derived
     delete:
       security:
       - BasicAuth: []
       description: Delete/revoke an ALTR managed view privilege which is granted to a specified role.
       tags:
       - RBAC API
-      summary: Delete/revoke an ALTR managed view privilege which is granted to a specified role.
+      summary: Delete/revoke an ALTR managed view privilege which is granted to a specified…
       parameters:
       - description: The ID of a connected database.
         name: databaseId
@@ -1446,6 +1486,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: deleteSnowflakeDatabaseIdByDatabaseIdRoleNameByRolePrivilegeByPrivilegeDatabaseNameByDatabaseNameSchemaNameBySchemaNameViewNameByViewName
+      x-operation-id-source: derived
   /snowflake/reference/{reference}:
     get:
       security:
@@ -1453,7 +1495,7 @@ paths:
       description: List privileges by a given reference.
       tags:
       - RBAC API
-      summary: List privileges by a given reference.
+      summary: List privileges by a given reference
       parameters:
       - description: The maximum number of items to return.
         name: limit
@@ -1499,27 +1541,215 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/types.RBACAPIErrorResponse'
+      operationId: getSnowflakeReferenceByReference
+      x-operation-id-source: derived
 components:
   schemas:
-    types.ListDatabricksPrivilegesResponse:
+    types.PatchSnowflakePrivilegeReferencesInput:
+      type: object
+      required:
+      - add_grant_references
+      - database_id
+      - privilege
+      - remove_grant_references
+      properties:
+        database_id:
+          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+          type: integer
+          minimum: 1
+          x-order: '0'
+        privilege:
+          description: List of privileges
+          allOf:
+          - $ref: '#/components/schemas/types.SnowflakePrivilege'
+          x-order: '2'
+        prevent_no_references_remaining_on_grant:
+          description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
+          type: boolean
+          default: false
+          x-order: '5'
+        add_grant_references:
+          description: 'A list of references to add to this privilege.
+
+            Mutually exclusive with remove_grant_references.'
+          type: array
+          maxItems: 25
+          uniqueItems: true
+          items:
+            type: string
+        remove_grant_references:
+          description: 'A list of references to remove from this privilege.
+
+            Mutually exclusive with add_grant_references.'
+          type: array
+          maxItems: 25
+          uniqueItems: true
+          items:
+            type: string
+    types.PatchDatabricksPrivilegeReferencesInput:
+      type: object
+      required:
+      - add_grant_references
+      - database_id
+      - privilege
+      - remove_grant_references
+      properties:
+        database_id:
+          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+          type: integer
+          minimum: 1
+          x-order: '0'
+        privilege:
+          description: List of privileges
+          allOf:
+          - $ref: '#/components/schemas/types.DatabricksPrimitivePrivilege'
+          x-order: '2'
+        prevent_no_references_remaining_on_grant:
+          description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
+          type: boolean
+          default: false
+          x-order: '5'
+        add_grant_references:
+          description: 'A list of references to add to this privilege.
+
+            Mutually exclusive with remove_grant_references.'
+          type: array
+          maxItems: 25
+          uniqueItems: true
+          items:
+            type: string
+        remove_grant_references:
+          description: 'A list of references to remove from this privilege.
+
+            Mutually exclusive with add_grant_references.'
+          type: array
+          maxItems: 25
+          uniqueItems: true
+          items:
+            type: string
+    types.PutBatchSnowflakePrivilegesOutput:
       type: object
       properties:
-        databricks_privileges:
+        snowflake_privileges:
+          description: List of privileges which are being created.
           type: array
           items:
-            $ref: '#/components/schemas/rbac.DatabricksPrivilegeItem'
-        has_more:
-          type: boolean
-    types.RevokeOptions:
+            $ref: '#/components/schemas/rbac.SnowflakeRolePrivilege'
+    management.ListSnowflakePrivilegesOutput:
       type: object
       properties:
-        ignore_errors:
-          description: 'When set to true, ALTR will ignore errors when revoking the grant inside the snowflake host.
-
-            This could result in orphaned ALTR configuration inside the snowflake host.
-
-            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
+        has_more:
           type: boolean
+        snowflake_privileges:
+          type: array
+          items:
+            $ref: '#/components/schemas/types.PrivilegeItem'
+    catalog.SecurableType:
+      type: string
+      enum:
+      - CATALOG
+      - CLEAN_ROOM
+      - CONNECTION
+      - CREDENTIAL
+      - EXTERNAL_LOCATION
+      - EXTERNAL_METADATA
+      - FUNCTION
+      - METASTORE
+      - PIPELINE
+      - PROVIDER
+      - RECIPIENT
+      - SCHEMA
+      - SHARE
+      - STAGING_TABLE
+      - STORAGE_CREDENTIAL
+      - TABLE
+      - VOLUME
+      x-enum-varnames:
+      - SecurableTypeCatalog
+      - SecurableTypeCleanRoom
+      - SecurableTypeConnection
+      - SecurableTypeCredential
+      - SecurableTypeExternalLocation
+      - SecurableTypeExternalMetadata
+      - SecurableTypeFunction
+      - SecurableTypeMetastore
+      - SecurableTypePipeline
+      - SecurableTypeProvider
+      - SecurableTypeRecipient
+      - SecurableTypeSchema
+      - SecurableTypeShare
+      - SecurableTypeStagingTable
+      - SecurableTypeStorageCredential
+      - SecurableTypeTable
+      - SecurableTypeVolume
+    rbac.DatabricksSecurable:
+      type: object
+      required:
+      - account_id
+      - catalog_name
+      - metastore_global_id
+      - securable_type
+      properties:
+        securable_type:
+          description: 'ALTR supports only the following securable types: "catalog", "schema", "table"'
+          allOf:
+          - $ref: '#/components/schemas/catalog.SecurableType'
+          x-order: '0'
+        account_id:
+          type: string
+          x-order: '1'
+        metastore_global_id:
+          type: string
+          x-order: '2'
+        catalog_name:
+          type: string
+          x-order: '3'
+        schema_name:
+          type: string
+          x-order: '4'
+        table_name:
+          type: string
+          x-order: '5'
+    types.Failure:
+      type: object
+      properties:
+        code:
+          description: 'Valid values noted below.
+
+            70008 - "Unexpected error when connecting to Snowflake database."
+
+            70009 - "Unexpected error when connecting to Snowflake database."
+
+            70010 - "Unexpected error when connecting to Snowflake database."
+
+            70100 - "Specified database ID''s type is not supported."
+
+            70110 - "Specified database or credential does not exist."
+
+            70200 - "Snowflake Query has failed."
+
+            74000 - "Unknown internal error."'
+          type: integer
+        message:
+          description: 'Valid values noted below.
+
+            70008 - "Unexpected error when connecting to Snowflake database."
+
+            70009 - "Unexpected error when connecting to Snowflake database."
+
+            70010 - "Unexpected error when connecting to Snowflake database."
+
+            70100 - "Specified database ID''s type is not supported."
+
+            70110 - "Specified database or credential does not exist."
+
+            70200 - "Snowflake Query has failed."
+
+            74000 - "Unknown internal error."'
+          type: string
+        query_id:
+          description: Snowflake queryID related to the failure. This may not be set in all failure scenarios.
+          type: string
     types.DatabricksPrimitivePrivilege:
       type: object
       required:
@@ -1544,29 +1774,16 @@ components:
           allOf:
           - $ref: '#/components/schemas/catalog.Privilege'
           x-order: '4'
-    rbac.DatabricksPrivilegeOptions:
-      type: object
-      properties:
-        ignore_errors:
-          description: 'When set to true, ALTR will ignore errors when doing a grant/revoke.
-
-            This could result in orphaned ALTR configuration.'
-          type: boolean
-    management.ListDatabricksPrivilegesByReferenceOutput:
-      type: object
-      properties:
-        next_token:
-          description: NextToken is null when there is no further page of results.
-          type:
-          - string
-          - 'null'
-        privileges:
-          description: Privileges is null when there are no matching privileges.
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/rbac.DatabricksPrivilegeItem'
+    rbac.SnowflakeFutureObjectType:
+      type: string
+      enum:
+      - TABLES
+      - SCHEMAS
+      - VIEWS
+      x-enum-varnames:
+      - SnowflakeFutureTables
+      - SnowflakeFutureSchemas
+      - SnowflakeFutureViews
     rbac.SnowflakeRolePrivilege:
       type: object
       required:
@@ -1658,157 +1875,6 @@ components:
           type: string
           maxLength: 255
           x-order: '9'
-    types.SnowflakePrivilege:
-      type: object
-      required:
-      - database_name
-      - privilege
-      - role
-      properties:
-        role:
-          type: string
-          x-order: '0'
-        database_name:
-          type: string
-          maxLength: 255
-          x-order: '1'
-        schema_name:
-          type: string
-          maxLength: 255
-          x-order: '2'
-        table_name:
-          type: string
-          maxLength: 255
-          x-order: '3'
-        view_name:
-          type: string
-          maxLength: 255
-          x-order: '4'
-        future_object_type:
-          description: 'Create the privilege as a future privilege for this object type.
-
-            When removed, we will only remove the future grant. Grants created by the future grant may remain.
-
-            See the link below for considerations, restrictions, and limitations.
-
-            https://docs.snowflake.com/en/sql-reference/sql/grant-privilege#future-grants-on-database-or-schema-objects
-
-            Supported values ''SCHEMAS'' ''TABLES'' ''VIEWS'''
-          enum:
-          - TABLES
-          - VIEWS
-          - SCHEMAS
-          allOf:
-          - $ref: '#/components/schemas/rbac.SnowflakeFutureObjectType'
-          x-order: '5'
-        privilege:
-          description: 'database https://docs.snowflake.com/en/user-guide/security-access-control-privileges#database-privileges
-
-            ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''REFERENCE_USAGE'' ''CREATE DATABASE ROLE'' ''CREATE SCHEMA'' ''IMPORTED PRIVILEGES'' ''OWNERSHIP'' ''ALL''
-
-            schema https://docs.snowflake.com/en/user-guide/security-access-control-privileges#schema-privileges
-
-            ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''CREATE AUTHENTICATION POLICY'' ''CREATE DATA METRIC FUNCTION'' ''CREATE TABLE'' ''CREATE DYNAMIC TABLE'' ''CREATE EVENT TABLE'' ''CREATE EXTERNAL TABLE'' ''CREATE GIT REPOSITORY'' ''CREATE ICEBERG TABLE'' ''CREATE VIEW'' ''CREATE MASKING POLICY'' ''CREATE MATERIALIZED VIEW'' ''CREATE NETWORK RULE'' ''CREATE NOTEBOOK'' ''CREATE ROW ACCESS POLICY''
-
-            ''CREATE SECRET'' ''CREATE SESSION POLICY'' ''CREATE STAGE'' ''CREATE STREAMLIT'' ''CREATE FILE FORMAT'' ''CREATE SEQUENCE'' ''CREATE FUNCTION'' ''CREATE PACKAGES POLICY'' ''CREATE PASSWORD POLICY''
-
-            ''CREATE PIPE'' ''CREATE STREAM'' ''CREATE TAG'' ''CREATE TASK'' ''CREATE PROCEDURE'' ''CREATE ALERT'' ''CREATE CORTEX SEARCH SERVICE'' ''CREATE SNOWFLAKE.CORE.BUDGET''
-
-            ''CREATE SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER'' ''CREATE SNOWFLAKE.ML.ANOMALY_DETECTION'' ''CREATE SNOWFLAKE.ML.CLASSIFICATION'' ''CREATE SNOWFLAKE.ML.FORECAST''
-
-            ''CREATE SNOWFLAKE.ML.TOP_INSIGHTS'' ''CREATE MODEL'' ''CREATE IMAGE REPOSITORY'' ''CREATE SERVICE'' ''CREATE SNAPSHOT'' ''ADD SEARCH OPTIMIZATION'' ''OWNERSHIP'' ''ALL''
-
-            table https://docs.snowflake.com/en/user-guide/security-access-control-privileges#table-privileges
-
-            ''SELECT'' ''INSERT'' ''UPDATE'' ''DELETE'' ''TRUNCATE'' ''REFERENCES'' ''APPLYBUDGET'' ''OWNERSHIP'' ''ALL'''
-          type: string
-          x-order: '6'
-    rbac.DatabricksFailure:
-      type: object
-      properties:
-        code:
-          type: integer
-        message:
-          type: string
-    management.ListSnowflakePrivilegesOutput:
-      type: object
-      properties:
-        has_more:
-          type: boolean
-        snowflake_privileges:
-          type: array
-          items:
-            $ref: '#/components/schemas/types.PrivilegeItem'
-    types.PutBatchSnowflakePrivilegesInput:
-      type: object
-      required:
-      - database_id
-      - privileges
-      properties:
-        database_id:
-          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
-          type: integer
-          minimum: 1
-          x-order: '0'
-        privileges:
-          description: List of privileges
-          type: array
-          items:
-            $ref: '#/components/schemas/types.SnowflakePrivilege'
-          x-order: '1'
-        grant_implicit_privileges:
-          description: If set to true, implicit privileges will also be granted unless it is a future grant.
-          type: boolean
-          default: false
-          x-order: '2'
-        grant_reference:
-          description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references are removed first.
-
-            If empty this will default to "RBAC"'
-          type: string
-          default: RBAC
-          x-order: '3'
-    types.PatchSnowflakePrivilegeReferencesInput:
-      type: object
-      required:
-      - add_grant_references
-      - database_id
-      - privilege
-      - remove_grant_references
-      properties:
-        database_id:
-          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
-          type: integer
-          minimum: 1
-          x-order: '0'
-        privilege:
-          description: List of privileges
-          allOf:
-          - $ref: '#/components/schemas/types.SnowflakePrivilege'
-          x-order: '2'
-        prevent_no_references_remaining_on_grant:
-          description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
-          type: boolean
-          default: false
-          x-order: '5'
-        add_grant_references:
-          description: 'A list of references to add to this privilege.
-
-            Mutually exclusive with remove_grant_references.'
-          type: array
-          maxItems: 25
-          uniqueItems: true
-          items:
-            type: string
-        remove_grant_references:
-          description: 'A list of references to remove from this privilege.
-
-            Mutually exclusive with add_grant_references.'
-          type: array
-          maxItems: 25
-          uniqueItems: true
-          items:
-            type: string
     management.ListSnowflakePrivilegesByReferenceOutput:
       type: object
       properties:
@@ -1824,47 +1890,50 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/types.PrivilegeItem'
-    types.PatchDatabricksPrivilegeReferencesInput:
+    types.DatabricksPutBatchPrivilegeResponse:
+      type: object
+      properties:
+        privileges:
+          type: array
+          items:
+            $ref: '#/components/schemas/rbac.DatabricksPrivilege'
+    types.DatabricksPutBatchPrivilegeRequest:
       type: object
       required:
-      - add_grant_references
       - database_id
-      - privilege
-      - remove_grant_references
+      - privileges
       properties:
         database_id:
-          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
           type: integer
           minimum: 1
           x-order: '0'
-        privilege:
-          description: List of privileges
-          allOf:
-          - $ref: '#/components/schemas/types.DatabricksPrimitivePrivilege'
-          x-order: '2'
-        prevent_no_references_remaining_on_grant:
-          description: If true, fail the request if no references would remain on a grant after the patch operation is completed.
+        privileges:
+          type: array
+          maxItems: 15
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/types.DatabricksPrimitivePrivilege'
+          x-order: '1'
+        grant_implicit_privileges:
           type: boolean
           default: false
-          x-order: '5'
-        add_grant_references:
-          description: 'A list of references to add to this privilege.
+          x-order: '2'
+        grant_reference:
+          description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references are removed first.
 
-            Mutually exclusive with remove_grant_references.'
+            If empty this will default to "RBAC"'
+          type: string
+          default: RBAC
+          x-order: '3'
+    types.ListDatabricksPrivilegesResponse:
+      type: object
+      properties:
+        databricks_privileges:
           type: array
-          maxItems: 25
-          uniqueItems: true
           items:
-            type: string
-        remove_grant_references:
-          description: 'A list of references to remove from this privilege.
-
-            Mutually exclusive with add_grant_references.'
-          type: array
-          maxItems: 25
-          uniqueItems: true
-          items:
-            type: string
+            $ref: '#/components/schemas/rbac.DatabricksPrivilegeItem'
+        has_more:
+          type: boolean
     types.PrivilegeItem:
       type: object
       properties:
@@ -1900,147 +1969,35 @@ components:
           type: string
         updated_at:
           type: string
-    management.GetSnowflakePrivilegeOutput:
-      type: object
-      properties:
-        privilege:
-          $ref: '#/components/schemas/types.PrivilegeItem'
-    rbac.DatabricksSecurable:
+    types.PutBatchSnowflakePrivilegesInput:
       type: object
       required:
-      - account_id
-      - catalog_name
-      - metastore_global_id
-      - securable_type
+      - database_id
+      - privileges
       properties:
-        securable_type:
-          description: 'ALTR supports only the following securable types: "catalog", "schema", "table"'
-          allOf:
-          - $ref: '#/components/schemas/catalog.SecurableType'
+        database_id:
+          description: Which ALTR DatabaseID credentials to use in order to grant privileges to the given role.
+          type: integer
+          minimum: 1
           x-order: '0'
-        account_id:
-          type: string
-          x-order: '1'
-        metastore_global_id:
-          type: string
-          x-order: '2'
-        catalog_name:
-          type: string
-          x-order: '3'
-        schema_name:
-          type: string
-          x-order: '4'
-        table_name:
-          type: string
-          x-order: '5'
-    catalog.SecurableType:
-      type: string
-      enum:
-      - CATALOG
-      - CLEAN_ROOM
-      - CONNECTION
-      - CREDENTIAL
-      - EXTERNAL_LOCATION
-      - EXTERNAL_METADATA
-      - FUNCTION
-      - METASTORE
-      - PIPELINE
-      - PROVIDER
-      - RECIPIENT
-      - SCHEMA
-      - SHARE
-      - STAGING_TABLE
-      - STORAGE_CREDENTIAL
-      - TABLE
-      - VOLUME
-      x-enum-varnames:
-      - SecurableTypeCatalog
-      - SecurableTypeCleanRoom
-      - SecurableTypeConnection
-      - SecurableTypeCredential
-      - SecurableTypeExternalLocation
-      - SecurableTypeExternalMetadata
-      - SecurableTypeFunction
-      - SecurableTypeMetastore
-      - SecurableTypePipeline
-      - SecurableTypeProvider
-      - SecurableTypeRecipient
-      - SecurableTypeSchema
-      - SecurableTypeShare
-      - SecurableTypeStagingTable
-      - SecurableTypeStorageCredential
-      - SecurableTypeTable
-      - SecurableTypeVolume
-    rbac.SnowflakeFutureObjectType:
-      type: string
-      enum:
-      - TABLES
-      - SCHEMAS
-      - VIEWS
-      x-enum-varnames:
-      - SnowflakeFutureTables
-      - SnowflakeFutureSchemas
-      - SnowflakeFutureViews
-    fiber.APIErrorResponse:
-      type: object
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-    types.RBACAPIErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-    types.Failure:
-      type: object
-      properties:
-        code:
-          description: 'Valid values noted below.
-
-            70008 - "Unexpected error when connecting to Snowflake database."
-
-            70009 - "Unexpected error when connecting to Snowflake database."
-
-            70010 - "Unexpected error when connecting to Snowflake database."
-
-            70100 - "Specified database ID''s type is not supported."
-
-            70110 - "Specified database or credential does not exist."
-
-            70200 - "Snowflake Query has failed."
-
-            74000 - "Unknown internal error."'
-          type: integer
-        message:
-          description: 'Valid values noted below.
-
-            70008 - "Unexpected error when connecting to Snowflake database."
-
-            70009 - "Unexpected error when connecting to Snowflake database."
-
-            70010 - "Unexpected error when connecting to Snowflake database."
-
-            70100 - "Specified database ID''s type is not supported."
-
-            70110 - "Specified database or credential does not exist."
-
-            70200 - "Snowflake Query has failed."
-
-            74000 - "Unknown internal error."'
-          type: string
-        query_id:
-          description: Snowflake queryID related to the failure. This may not be set in all failure scenarios.
-          type: string
-    types.PutBatchSnowflakePrivilegesOutput:
-      type: object
-      properties:
-        snowflake_privileges:
-          description: List of privileges which are being created.
+        privileges:
+          description: List of privileges
           type: array
           items:
-            $ref: '#/components/schemas/rbac.SnowflakeRolePrivilege'
+            $ref: '#/components/schemas/types.SnowflakePrivilege'
+          x-order: '1'
+        grant_implicit_privileges:
+          description: If set to true, implicit privileges will also be granted unless it is a future grant.
+          type: boolean
+          default: false
+          x-order: '2'
+        grant_reference:
+          description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references are removed first.
+
+            If empty this will default to "RBAC"'
+          type: string
+          default: RBAC
+          x-order: '3'
     rbac.DatabricksPrivilegeItem:
       type: object
       properties:
@@ -2189,34 +2146,128 @@ components:
       - PrivilegeWriteFiles
       - PrivilegeWritePrivateFiles
       - PrivilegeWriteVolume
-    types.DatabricksPutBatchPrivilegeRequest:
+    rbac.DatabricksFailure:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    types.RBACAPIErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+    rbac.DatabricksPrivilegeOptions:
+      type: object
+      properties:
+        ignore_errors:
+          description: 'When set to true, ALTR will ignore errors when doing a grant/revoke.
+
+            This could result in orphaned ALTR configuration.'
+          type: boolean
+    management.GetSnowflakePrivilegeOutput:
+      type: object
+      properties:
+        privilege:
+          $ref: '#/components/schemas/types.PrivilegeItem'
+    types.SnowflakePrivilege:
       type: object
       required:
-      - database_id
-      - privileges
+      - database_name
+      - privilege
+      - role
       properties:
-        database_id:
-          type: integer
-          minimum: 1
-          x-order: '0'
-        privileges:
-          type: array
-          maxItems: 15
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/types.DatabricksPrimitivePrivilege'
-          x-order: '1'
-        grant_implicit_privileges:
-          type: boolean
-          default: false
-          x-order: '2'
-        grant_reference:
-          description: 'A reference to add to this grant for tracking purposes. Grants cannot be removed unless these references are removed first.
-
-            If empty this will default to "RBAC"'
+        role:
           type: string
-          default: RBAC
+          x-order: '0'
+        database_name:
+          type: string
+          maxLength: 255
+          x-order: '1'
+        schema_name:
+          type: string
+          maxLength: 255
+          x-order: '2'
+        table_name:
+          type: string
+          maxLength: 255
           x-order: '3'
+        view_name:
+          type: string
+          maxLength: 255
+          x-order: '4'
+        future_object_type:
+          description: 'Create the privilege as a future privilege for this object type.
+
+            When removed, we will only remove the future grant. Grants created by the future grant may remain.
+
+            See the link below for considerations, restrictions, and limitations.
+
+            https://docs.snowflake.com/en/sql-reference/sql/grant-privilege#future-grants-on-database-or-schema-objects
+
+            Supported values ''SCHEMAS'' ''TABLES'' ''VIEWS'''
+          enum:
+          - TABLES
+          - VIEWS
+          - SCHEMAS
+          allOf:
+          - $ref: '#/components/schemas/rbac.SnowflakeFutureObjectType'
+          x-order: '5'
+        privilege:
+          description: 'database https://docs.snowflake.com/en/user-guide/security-access-control-privileges#database-privileges
+
+            ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''REFERENCE_USAGE'' ''CREATE DATABASE ROLE'' ''CREATE SCHEMA'' ''IMPORTED PRIVILEGES'' ''OWNERSHIP'' ''ALL''
+
+            schema https://docs.snowflake.com/en/user-guide/security-access-control-privileges#schema-privileges
+
+            ''APPLYBUDGET'' ''MODIFY'' ''MONITOR'' ''USAGE'' ''CREATE AUTHENTICATION POLICY'' ''CREATE DATA METRIC FUNCTION'' ''CREATE TABLE'' ''CREATE DYNAMIC TABLE'' ''CREATE EVENT TABLE'' ''CREATE EXTERNAL TABLE'' ''CREATE GIT REPOSITORY'' ''CREATE ICEBERG TABLE'' ''CREATE VIEW'' ''CREATE MASKING POLICY'' ''CREATE MATERIALIZED VIEW'' ''CREATE NETWORK RULE'' ''CREATE NOTEBOOK'' ''CREATE ROW ACCESS POLICY''
+
+            ''CREATE SECRET'' ''CREATE SESSION POLICY'' ''CREATE STAGE'' ''CREATE STREAMLIT'' ''CREATE FILE FORMAT'' ''CREATE SEQUENCE'' ''CREATE FUNCTION'' ''CREATE PACKAGES POLICY'' ''CREATE PASSWORD POLICY''
+
+            ''CREATE PIPE'' ''CREATE STREAM'' ''CREATE TAG'' ''CREATE TASK'' ''CREATE PROCEDURE'' ''CREATE ALERT'' ''CREATE CORTEX SEARCH SERVICE'' ''CREATE SNOWFLAKE.CORE.BUDGET''
+
+            ''CREATE SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER'' ''CREATE SNOWFLAKE.ML.ANOMALY_DETECTION'' ''CREATE SNOWFLAKE.ML.CLASSIFICATION'' ''CREATE SNOWFLAKE.ML.FORECAST''
+
+            ''CREATE SNOWFLAKE.ML.TOP_INSIGHTS'' ''CREATE MODEL'' ''CREATE IMAGE REPOSITORY'' ''CREATE SERVICE'' ''CREATE SNAPSHOT'' ''ADD SEARCH OPTIMIZATION'' ''OWNERSHIP'' ''ALL''
+
+            table https://docs.snowflake.com/en/user-guide/security-access-control-privileges#table-privileges
+
+            ''SELECT'' ''INSERT'' ''UPDATE'' ''DELETE'' ''TRUNCATE'' ''REFERENCES'' ''APPLYBUDGET'' ''OWNERSHIP'' ''ALL'''
+          type: string
+          x-order: '6'
+    management.ListDatabricksPrivilegesByReferenceOutput:
+      type: object
+      properties:
+        next_token:
+          description: NextToken is null when there is no further page of results.
+          type:
+          - string
+          - 'null'
+        privileges:
+          description: Privileges is null when there are no matching privileges.
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/rbac.DatabricksPrivilegeItem'
+    types.RevokeOptions:
+      type: object
+      properties:
+        ignore_errors:
+          description: 'When set to true, ALTR will ignore errors when revoking the grant inside the snowflake host.
+
+            This could result in orphaned ALTR configuration inside the snowflake host.
+
+            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
+          type: boolean
+    fiber.APIErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
     rbac.DatabricksPrivilege:
       type: object
       required:
@@ -2236,13 +2287,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/catalog.Privilege'
           x-order: '2'
-    types.DatabricksPutBatchPrivilegeResponse:
-      type: object
-      properties:
-        privileges:
-          type: array
-          items:
-            $ref: '#/components/schemas/rbac.DatabricksPrivilege'
   securitySchemes:
     BasicAuth:
       type: http

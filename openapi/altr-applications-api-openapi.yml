@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Applications API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,13 +13,13 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: applications
+- name: Applications
   description: Operations about applications
 paths:
   /applications:
     get:
       tags:
-      - applications
+      - Applications
       summary: Returns all applications along with query filter capabilities
       operationId: getApplications
       parameters:
@@ -73,8 +67,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     post:
       tags:
-      - applications
-      summary: Creates a new application given the appropriate body. If successful returns the application created and the driver installId, the driver installId is only valid for a single use.
+      - Applications
+      summary: Creates a new application given the appropriate body.
       operationId: createApplication
       requestBody:
         description: The applications creation request body
@@ -151,8 +145,8 @@ paths:
   /applications/{id}:
     get:
       tags:
-      - applications
-      summary: Returns individual application by the given id.
+      - Applications
+      summary: Returns individual application by the given id
       operationId: getApplication
       parameters:
       - $ref: '#/components/parameters/idPath'
@@ -176,8 +170,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     patch:
       tags:
-      - applications
-      summary: Updates an individual application by the given id.
+      - Applications
+      summary: Updates an individual application by the given id
       operationId: patchApplication
       parameters:
       - $ref: '#/components/parameters/idPath'
@@ -248,27 +242,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     Application:
       type: object
       properties:
@@ -352,14 +325,36 @@ components:
           disabled:
             type: boolean
             example: false
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
   parameters:
-    offset:
-      name: offset
+    limit:
+      name: limit
       in: query
       schema:
         type: integer
-        default: 0
         minimum: 0
+        maximum: 50
+        default: 50
     orderBy:
       name: orderBy
       in: query
@@ -369,14 +364,13 @@ components:
         - asc
         - desc
         default: asc
-    limit:
-      name: limit
+    offset:
+      name: offset
       in: query
       schema:
         type: integer
+        default: 0
         minimum: 0
-        maximum: 50
-        default: 50
     idPath:
       name: id
       in: path
@@ -386,18 +380,6 @@ components:
         minimum: 1
         maximum: 9007199254740991
   responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -422,6 +404,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     InternalError:
       description: Internal Error
       content:

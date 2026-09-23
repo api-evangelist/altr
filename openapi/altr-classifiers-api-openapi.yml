@@ -87,6 +87,8 @@ paths:
       summary: List classifiers
       tags:
       - Classifiers
+      operationId: getClassifiers
+      x-operation-id-source: derived
     post:
       description: 'Creates a new classifier. Pattern uses RE2 regex syntax. Classifier names starting with ''ALTR'' are reserved. Sampling (sample_size, sample_type) is configured on the job, not the classifier.
 
@@ -529,6 +531,8 @@ paths:
       summary: Create classifier
       tags:
       - Classifiers
+      operationId: postClassifiers
+      x-operation-id-source: derived
   /classifiers/{classifier_name}:
     delete:
       description: Soft deletes a classifier by its name. This will remove it from all collections and mark it as deleted. ALTR managed classifiers cannot be deleted.
@@ -566,6 +570,8 @@ paths:
       summary: Delete classifier
       tags:
       - Classifiers
+      operationId: deleteClassifiersByClassifierName
+      x-operation-id-source: derived
     get:
       description: Retrieves a specific classifier by its name, including its pattern, thresholds, and associated collections.
       parameters:
@@ -606,6 +612,8 @@ paths:
       summary: Get classifier by name
       tags:
       - Classifiers
+      operationId: getClassifiersByClassifierName
+      x-operation-id-source: derived
     patch:
       description: 'Updates a classifier''s properties using RESTful PATCH semantics.
 
@@ -724,6 +732,8 @@ paths:
       summary: Update classifier
       tags:
       - Classifiers
+      operationId: patchClassifiersByClassifierName
+      x-operation-id-source: derived
   /classifiers/{classifier_name}/collections/append:
     patch:
       description: Adds multiple collections to an existing classifier in a single atomic transaction. All collections must exist and not already be associated with this classifier. ALTR managed collections cannot be appended to classifiers.
@@ -774,6 +784,8 @@ paths:
       summary: Append collections to classifier
       tags:
       - Classifiers
+      operationId: patchClassifiersByClassifierNameCollectionsAppend
+      x-operation-id-source: derived
   /classifiers/{classifier_name}/collections/remove:
     patch:
       description: Removes multiple collections from an existing classifier in a single atomic transaction. All collections must be currently associated with this classifier. Collections with names starting with "ALTR" (such as the ALTR Managed collection) cannot be removed from any classifier.
@@ -818,6 +830,8 @@ paths:
       summary: Remove collections from classifier
       tags:
       - Classifiers
+      operationId: patchClassifiersByClassifierNameCollectionsRemove
+      x-operation-id-source: derived
   /tags:
     get:
       description: Returns every distinct key:value tag currently in use across the org's classifiers — both condition tags (compound-ruleset nodes) and classifier attribute tags — so tag editors can offer pick-from-existing suggestions. Each entry carries the parsed key/value, the number of classifiers using the tag, and where it appears (condition, attributes, or both). Deleted classifiers are excluded; imported ALTR-managed classifiers are included.
@@ -876,8 +890,53 @@ paths:
       summary: List the org's tag vocabulary
       tags:
       - Classifiers
+      operationId: getTags
+      x-operation-id-source: derived
 components:
   schemas:
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.TagVocabularyEntry:
+      properties:
+        classifier_count:
+          description: 'ClassifierCount is the number of classifiers carrying this tag anywhere
+
+            (each classifier contributes at most once per tag).'
+          example: 3
+          type: integer
+        key:
+          example: type
+          type: string
+        sources:
+          description: 'Sources lists where the tag appears org-wide: "attributes", "condition",
+
+            or both (sorted).'
+          example:
+          - condition
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tag:
+          example: type:ssn
+          type: string
+        value:
+          example: ssn
+          type: string
+      type: object
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
     types.ConditionTarget:
       description: 'Leaf fields (present when type is "leaf").
 
@@ -910,284 +969,6 @@ components:
       - ConditionTargetDataLength
       - ConditionTargetColumnSize
       - ConditionTargetComprehend
-    types.ClassifierItem:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/types.ClassifierAttributes'
-        classifier_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        collection_count:
-          type: integer
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        compound_ruleset:
-          $ref: '#/components/schemas/types.CompoundRuleset'
-        deleted_at:
-          type: string
-        description:
-          type: string
-        minimum_threshold:
-          type: integer
-        org_id:
-          type: string
-        pattern:
-          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
-
-            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
-
-            empty pattern also confuses the Snowflake batch procedure, which short-circuits
-
-            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
-          type: string
-        sample_size:
-          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
-
-            moved to the job level (CreateJobInput). No longer populated by create/update paths
-
-            but existing DynamoDB items may still have values for backward compatibility.'
-          type: integer
-        sample_type:
-          $ref: '#/components/schemas/types.SampleType'
-      type: object
-    management.TagVocabularyEntry:
-      properties:
-        classifier_count:
-          description: 'ClassifierCount is the number of classifiers carrying this tag anywhere
-
-            (each classifier contributes at most once per tag).'
-          example: 3
-          type: integer
-        key:
-          example: type
-          type: string
-        sources:
-          description: 'Sources lists where the tag appears org-wide: "attributes", "condition",
-
-            or both (sorted).'
-          example:
-          - condition
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        tag:
-          example: type:ssn
-          type: string
-        value:
-          example: ssn
-          type: string
-      type: object
-    management.GetClassifiersOutput:
-      properties:
-        classifiers:
-          items:
-            $ref: '#/components/schemas/types.ClassifierItem'
-          type: array
-          uniqueItems: false
-        contiguous_id:
-          type: string
-      type: object
-    management.UpdateClassifierOutput:
-      properties:
-        classifier:
-          $ref: '#/components/schemas/types.ClassifierItem'
-      type: object
-    management.CreateClassifierOutput:
-      properties:
-        classifier:
-          $ref: '#/components/schemas/types.ClassifierItem'
-      type: object
-    types.CompoundRuleset:
-      properties:
-        conditions:
-          items:
-            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
-          type: array
-          uniqueItems: false
-        operator:
-          $ref: '#/components/schemas/types.ConditionOperator'
-      type: object
-    classifiers.AppendCollectionsToClassifierInput:
-      properties:
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.SampleType:
-      enum:
-      - ROWS
-      - PERCENT
-      type: string
-      x-enum-varnames:
-      - SampleTypeRows
-      - SampleTypePercent
-    classifiers.RemoveCollectionsFromClassifierInput:
-      properties:
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.ColumnLocation:
-      properties:
-        database:
-          example: prod_db
-          type: string
-        schema:
-          example: pii
-          type: string
-        table:
-          example: customers
-          type: string
-      type: object
-    types.ContentFormat:
-      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
-
-        computed. Stay nil when the agent had no sample values (metadata-only
-
-        sampling) or when CONTENT_TYPE was excluded from condition_types.'
-      enum:
-      - JSON
-      - XML
-      - HTML
-      - YAML
-      - CSV
-      - BASE64
-      - PLAIN_TEXT
-      - PDF
-      - DOCX
-      - XLSX
-      - PPTX
-      - MS_OFFICE_LEGACY
-      - RTF
-      - ZIP
-      - GZIP
-      - PNG
-      - JPEG
-      - GIF
-      - TIFF
-      - PARQUET
-      type: string
-      x-enum-varnames:
-      - ContentFormatJSON
-      - ContentFormatXML
-      - ContentFormatHTML
-      - ContentFormatYAML
-      - ContentFormatCSV
-      - ContentFormatBase64
-      - ContentFormatPlainText
-      - ContentFormatPDF
-      - ContentFormatDOCX
-      - ContentFormatXLSX
-      - ContentFormatPPTX
-      - ContentFormatMSOfficeLegacy
-      - ContentFormatRTF
-      - ContentFormatZIP
-      - ContentFormatGZIP
-      - ContentFormatPNG
-      - ContentFormatJPEG
-      - ContentFormatGIF
-      - ContentFormatTIFF
-      - ContentFormatParquet
-    classifiers.PostClassifierInput:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/types.ClassifierAttributes'
-        classifier_name:
-          example: ssn_with_column_check
-          type: string
-        compound_ruleset:
-          $ref: '#/components/schemas/types.CompoundRuleset'
-        description:
-          example: SSN pattern with metadata column filter
-          type: string
-        minimum_threshold:
-          example: 70
-          type: integer
-        pattern:
-          example: \d{3}-\d{2}-\d{4}
-          type: string
-        sample_size:
-          example: 100
-          type: integer
-        sample_type:
-          enum:
-          - ROWS
-          - PERCENT
-          example: PERCENT
-          type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    types.MetadataComparator:
-      enum:
-      - matches
-      - contains
-      - equals
-      - starts_with
-      - ends_with
-      - greater_than
-      - greater_than_or_equal
-      - less_than
-      - less_than_or_equal
-      example: matches
-      type: string
-      x-enum-varnames:
-      - MetadataComparatorMatches
-      - MetadataComparatorContains
-      - MetadataComparatorEquals
-      - MetadataComparatorStartsWith
-      - MetadataComparatorEndsWith
-      - DataLengthComparatorGreaterThan
-      - DataLengthComparatorGreaterThanOrEqual
-      - DataLengthComparatorLessThan
-      - DataLengthComparatorLessThanOrEqual
-      - DataLengthComparatorEquals
-      - ColumnSizeComparatorGreaterThan
-      - ColumnSizeComparatorGreaterThanOrEqual
-      - ColumnSizeComparatorLessThan
-      - ColumnSizeComparatorLessThanOrEqual
-      - ColumnSizeComparatorEquals
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
-    types.ClassifierAttributes:
-      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
-      properties:
-        tags:
-          example:
-          - type:ssn
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
     classifiers.PatchClassifierInput:
       properties:
         attributes:
@@ -1213,10 +994,45 @@ components:
           example: PERCENT
           type: string
       type: object
-    management.GetClassifierByNameOutput:
+    management.GetClassifiersOutput:
       properties:
-        classifier:
-          $ref: '#/components/schemas/types.ClassifierItem'
+        classifiers:
+          items:
+            $ref: '#/components/schemas/types.ClassifierItem'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    classifiers.RemoveCollectionsFromClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
       type: object
     management.ListTagsOutput:
       properties:
@@ -1238,6 +1054,40 @@ components:
             $ref: '#/components/schemas/management.TagVocabularyEntry'
           type: array
           uniqueItems: false
+      type: object
+    classifiers.AppendCollectionsToClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    management.CreateClassifierOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
       type: object
     gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
       properties:
@@ -1426,6 +1276,172 @@ components:
           example: true
           type: boolean
       type: object
+    types.ClassifierItem:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        collection_count:
+          type: integer
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        deleted_at:
+          type: string
+        description:
+          type: string
+        minimum_threshold:
+          type: integer
+        org_id:
+          type: string
+        pattern:
+          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
+
+            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
+
+            empty pattern also confuses the Snowflake batch procedure, which short-circuits
+
+            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
+          type: string
+        sample_size:
+          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
+
+            moved to the job level (CreateJobInput). No longer populated by create/update paths
+
+            but existing DynamoDB items may still have values for backward compatibility.'
+          type: integer
+        sample_type:
+          $ref: '#/components/schemas/types.SampleType'
+      type: object
+    classifiers.PostClassifierInput:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          example: ssn_with_column_check
+          type: string
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        description:
+          example: SSN pattern with metadata column filter
+          type: string
+        minimum_threshold:
+          example: 70
+          type: integer
+        pattern:
+          example: \d{3}-\d{2}-\d{4}
+          type: string
+        sample_size:
+          example: 100
+          type: integer
+        sample_type:
+          enum:
+          - ROWS
+          - PERCENT
+          example: PERCENT
+          type: string
+      type: object
+    management.UpdateClassifierOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    management.GetClassifierByNameOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    types.ContentFormat:
+      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
+
+        computed. Stay nil when the agent had no sample values (metadata-only
+
+        sampling) or when CONTENT_TYPE was excluded from condition_types.'
+      enum:
+      - JSON
+      - XML
+      - HTML
+      - YAML
+      - CSV
+      - BASE64
+      - PLAIN_TEXT
+      - PDF
+      - DOCX
+      - XLSX
+      - PPTX
+      - MS_OFFICE_LEGACY
+      - RTF
+      - ZIP
+      - GZIP
+      - PNG
+      - JPEG
+      - GIF
+      - TIFF
+      - PARQUET
+      type: string
+      x-enum-varnames:
+      - ContentFormatJSON
+      - ContentFormatXML
+      - ContentFormatHTML
+      - ContentFormatYAML
+      - ContentFormatCSV
+      - ContentFormatBase64
+      - ContentFormatPlainText
+      - ContentFormatPDF
+      - ContentFormatDOCX
+      - ContentFormatXLSX
+      - ContentFormatPPTX
+      - ContentFormatMSOfficeLegacy
+      - ContentFormatRTF
+      - ContentFormatZIP
+      - ContentFormatGZIP
+      - ContentFormatPNG
+      - ContentFormatJPEG
+      - ContentFormatGIF
+      - ContentFormatTIFF
+      - ContentFormatParquet
   securitySchemes:
     basic:
       scheme: basic

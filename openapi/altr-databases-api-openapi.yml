@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: ALTR Management Databases API
   version: 12.25.1
-  description: 'Welcome to the Swagger documentation for ALTR''s Management API (MAPI). MAPI allows ALTR customers to configure data sources and governance policy within the ALTR platform and is used to power ALTR''s own UI. ALTR Enterprise customers are able to use MAPI to automate the configuration of data sources and governance policy.
-
-
-    MAPI does not include the endpoints for ALTR''s tokenization API; documentation on ALTR''s tokenization API can be found [here](https://docs.altr.com/reference).
-
-
-    MAPI uses [HTTP Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/). MAPI credentials can be obtained on the [API page](https://altrnet.live.altr.com/settings/preferences/api) (found under Settings > Preferences > API) of ALTR''s portal for Enterprise and Enterprise + customers. Usernames are the ''Key Names'' listed on that page, and Passwords are the ''Key Secret'' provided when an API key is created.'
+  description: Welcome to the Swagger documentation for ALTR's Management API (MAPI).
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -19,7 +13,7 @@ servers:
 security:
 - basicAuth: []
 tags:
-- name: databases
+- name: Databases
   description: Operations about data sources
   externalDocs:
     description: Find out more
@@ -28,7 +22,7 @@ paths:
   /databases:
     get:
       tags:
-      - databases
+      - Databases
       summary: Returns an array of databases that have been connected through the ALTR platform
       operationId: getDatabases
       parameters:
@@ -124,8 +118,8 @@ paths:
           $ref: '#/components/responses/InternalError'
     post:
       tags:
-      - databases
-      summary: Connects a new data source to the ALTR platform.
+      - Databases
+      summary: Connects a new data source to the ALTR platform
       operationId: createDatabase
       description: 'Fields databasePort, databaseName, databaseUsername, databasePassword, and hostname must appear together.
 
@@ -133,9 +127,7 @@ paths:
 
         Only one of the above configurations is allowed in a request.
 
-        See the different type of examples below.
-
-        '
+        See the different type of examples below.'
       requestBody:
         $ref: '#/components/requestBodies/CreateDatabaseBody'
       responses:
@@ -168,7 +160,7 @@ paths:
       operationId: getDatabase
       description: Returns a single database with the provided ID.
       tags:
-      - databases
+      - Databases
       responses:
         '200':
           description: Response
@@ -201,7 +193,7 @@ paths:
         description: Whether to ignore the errors when deleting a data source.
       description: Deletes and disconnects single database given the ID of the database, returns no content.
       tags:
-      - databases
+      - Databases
       responses:
         '204':
           description: No Content
@@ -216,7 +208,7 @@ paths:
     patch:
       description: Updates a database with the provided database id.
       tags:
-      - databases
+      - Databases
       summary: Update a database by ID
       operationId: updateDatabase
       requestBody:
@@ -328,9 +320,9 @@ paths:
     parameters:
     - $ref: '#/components/parameters/idPath'
     get:
-      summary: Fetches the connectivity status of a database by ID.
+      summary: Fetches the connectivity status of a database by ID
       tags:
-      - databases
+      - Databases
       responses:
         '200':
           description: OK
@@ -375,7 +367,7 @@ paths:
     patch:
       description: Triggers a request to update the databases status. This will set the database to in progress until the status job is completed.
       tags:
-      - databases
+      - Databases
       summary: Trigger database status sync
       operationId: updateDatabaseStatus
       responses:
@@ -405,7 +397,7 @@ paths:
     get:
       summary: Fetch the users snowflake accounts information
       tags:
-      - databases
+      - Databases
       responses:
         '200':
           description: OK
@@ -464,7 +456,7 @@ paths:
     patch:
       summary: Update snowflake account information
       tags:
-      - databases
+      - Databases
       parameters:
       - $ref: '#/components/parameters/idPath'
       requestBody:
@@ -526,13 +518,15 @@ paths:
                     type: boolean
         '500':
           $ref: '#/components/responses/InternalError'
+      operationId: patchDatabasesSnowflakeAccountsById
+      x-operation-id-source: derived
   /databases/snowflake/accounts/{id}/databases:
     parameters:
     - $ref: '#/components/parameters/idPath'
     get:
-      summary: Fetch the available databases that belongs to the users snowflake account.
+      summary: Fetch the available databases that belongs to the users snowflake account
       tags:
-      - databases
+      - Databases
       responses:
         '200':
           description: OK
@@ -595,9 +589,9 @@ paths:
       operationId: getSnowflakeAccountDatabases
   /databases/snowflake/connect:
     post:
-      summary: Connects a snowflake database given the id of the account and the database name.
+      summary: Connects a snowflake database given the id of the account and the database name
       tags:
-      - databases
+      - Databases
       requestBody:
         required: true
         content:
@@ -686,6 +680,248 @@ paths:
           $ref: '#/components/responses/InternalError'
       operationId: createSnowflakeConnection
 components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unprocessable Entity
+              statusCode: 422
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+  examples:
+    sfdbt:
+      summary: Snowflake Database Connection & Tag Data by Classification Example
+      description: 'Connect a Snowflake database that will scan and tag columns in your database based on classification.
+
+        An email will be sent when done.
+
+        By default, Google DLP is applied, this can be changed by adding a `classificationType` property and setting it to 2 or 4. Read more by expanding the schema to see all options.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        shouldClassify: true
+    databricks:
+      summary: Databricks Connection Example
+      description: The bare minimum that is needed to connect to Databricks
+      value:
+        friendlyDatabaseName: My Databricks Connection
+        databaseType: databricks
+        databasePassword: jose17mysvcprincipaloauthsecret10690
+        hostname: https://6my-45wrkbook34-host32.cloud.databricks.com/
+        databricksServicePrincipalId: 3bda4my-serv-princ-uuid-f016f8248c6a
+        databricksClusterId: 23my-3dbx23-cluster3432
+    sfdballproperties:
+      summary: Snowflake Database Connection; All Properties set.
+      description: 'Connect a Snowflake database, this property assigns every possible property for a snowflake database connection.
+
+
+        This database connection will connect a snowflake database with an assigned snowflake role, warehouse, 30 day usage history, and classification type `4` which will run Snowflake Classify and Tag Imports.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+        databasePort: 3305
+        dataUsageHistory: true
+        shouldClassify: true
+        classificationType: 3
+    driverdbconnectionstring:
+      summary: Driver Database Connection String Example
+      description: 'Instead of passing each property individually, you can pass an entire connection string instead.
+
+
+        Please keep in mind that this is only for Driver databases, connection strings are not available for Snowflake Databases.
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        connectionString: jdbc:altr:mysql://someURl.amazonaws.com:3306/myschema?user=mysqlusername&password=mysqlpassword
+    driverdb:
+      summary: Driver Database Connection Example
+      description: 'This connects a driver database with the bare minimum settings.
+
+        In this example, it connects a MySQL database. See the documentation for all database types that we support (or expand the schema section in the swagger docs)
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        databaseUsername: mysqlusername
+        databasePassword: mysqlpassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.mysql.com
+        databasePort: 3306
+    sfdb:
+      summary: Snowflake Database Connection Example
+      description: The bare minimum that is needed to connect a Snowflake database
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+    sfdbdetailed:
+      summary: Snowflake Database Connection Advanced Example
+      description: 'Snowflake Database Connection for more advanced settings. With this, you can set both the warehouse name and the snowflake role.
+
+        In addition, this will set the max number of connections to 5, and max number of batches to 15.'
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+    sfdbc:
+      summary: Snowflake Database Connection & Import Data Usage History Example
+      description: 'Connect a Snowflake database that will scan and analyze the last 30 days of data access in this database so you can understand how data is used.
+
+
+        Setting the property value of `dataUsageHistory` to true, will populate the Analytics page in the ALTRNet.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        dataUsageHistory: true
   schemas:
     ApiError:
       type: object
@@ -800,248 +1036,6 @@ components:
           type: string
           description: A field for Databricks connections that will only appear if the database type is "databricks".
           example: 23my-3dbx23-cluster3432
-  examples:
-    sfdbdetailed:
-      summary: Snowflake Database Connection Advanced Example
-      description: 'Snowflake Database Connection for more advanced settings. With this, you can set both the warehouse name and the snowflake role.
-
-        In addition, this will set the max number of connections to 5, and max number of batches to 15.'
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        snowflakeRole: MY_ROLE
-        warehouseName: MY_WAREHOUSE
-        maxNumberOfConnections: 5
-        maxNumberOfBatches: 15
-    driverdbconnectionstring:
-      summary: Driver Database Connection String Example
-      description: 'Instead of passing each property individually, you can pass an entire connection string instead.
-
-
-        Please keep in mind that this is only for Driver databases, connection strings are not available for Snowflake Databases.
-
-        '
-      value:
-        friendlyDatabaseName: My MySQL Database
-        databaseType: mysql
-        connectionString: jdbc:altr:mysql://someURl.amazonaws.com:3306/myschema?user=mysqlusername&password=mysqlpassword
-    sfdbc:
-      summary: Snowflake Database Connection & Import Data Usage History Example
-      description: 'Connect a Snowflake database that will scan and analyze the last 30 days of data access in this database so you can understand how data is used.
-
-
-        Setting the property value of `dataUsageHistory` to true, will populate the Analytics page in the ALTRNet.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        dataUsageHistory: true
-    sfdb:
-      summary: Snowflake Database Connection Example
-      description: The bare minimum that is needed to connect a Snowflake database
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-    sfdballproperties:
-      summary: Snowflake Database Connection; All Properties set.
-      description: 'Connect a Snowflake database, this property assigns every possible property for a snowflake database connection.
-
-
-        This database connection will connect a snowflake database with an assigned snowflake role, warehouse, 30 day usage history, and classification type `4` which will run Snowflake Classify and Tag Imports.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        snowflakeRole: MY_ROLE
-        warehouseName: MY_WAREHOUSE
-        maxNumberOfConnections: 5
-        maxNumberOfBatches: 15
-        databasePort: 3305
-        dataUsageHistory: true
-        shouldClassify: true
-        classificationType: 3
-    driverdb:
-      summary: Driver Database Connection Example
-      description: 'This connects a driver database with the bare minimum settings.
-
-        In this example, it connects a MySQL database. See the documentation for all database types that we support (or expand the schema section in the swagger docs)
-
-        '
-      value:
-        friendlyDatabaseName: My MySQL Database
-        databaseType: mysql
-        databaseUsername: mysqlusername
-        databasePassword: mysqlpassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.mysql.com
-        databasePort: 3306
-    databricks:
-      summary: Databricks Connection Example
-      description: The bare minimum that is needed to connect to Databricks
-      value:
-        friendlyDatabaseName: My Databricks Connection
-        databaseType: databricks
-        databasePassword: jose17mysvcprincipaloauthsecret10690
-        hostname: https://6my-45wrkbook34-host32.cloud.databricks.com/
-        databricksServicePrincipalId: 3bda4my-serv-princ-uuid-f016f8248c6a
-        databricksClusterId: 23my-3dbx23-cluster3432
-    sfdbt:
-      summary: Snowflake Database Connection & Tag Data by Classification Example
-      description: 'Connect a Snowflake database that will scan and tag columns in your database based on classification.
-
-        An email will be sent when done.
-
-        By default, Google DLP is applied, this can be changed by adding a `classificationType` property and setting it to 2 or 4. Read more by expanding the schema to see all options.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        shouldClassify: true
-  responses:
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Unprocessed:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unprocessable Entity
-              statusCode: 422
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Not Found
-              statusCode: 404
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-  parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
   requestBodies:
     CreateDatabaseBody:
       description: The JSON object containing database information.

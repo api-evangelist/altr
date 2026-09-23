@@ -51,9 +51,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: List report instances.
+      summary: List report instances
       tags:
       - Instances
+      operationId: getAuditReportsDefinitionsByDefIdInstances
+      x-operation-id-source: derived
   /audit-reports/definitions/{def_id}/instances/{inst_id}:
     get:
       description: Returns a single generated report instance by ID.
@@ -91,9 +93,11 @@ paths:
           description: Internal server error
       security:
       - BasicAuth: []
-      summary: Get a report instance.
+      summary: Get a report instance
       tags:
       - Instances
+      operationId: getAuditReportsDefinitionsByDefIdInstancesByInstId
+      x-operation-id-source: derived
   /audit-reports/definitions/{def_id}/instances/{inst_id}/download:
     get:
       description: Returns a pre-signed S3 URL for downloading the report in PDF or CSV format.
@@ -152,11 +156,25 @@ paths:
           description: Report not yet generated
       security:
       - BasicAuth: []
-      summary: Download a report instance.
+      summary: Download a report instance
       tags:
       - Instances
+      operationId: getAuditReportsDefinitionsByDefIdInstancesByInstIdDownload
+      x-operation-id-source: derived
 components:
   schemas:
+    models.DownloadResponse:
+      properties:
+        download_url:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
     models.Instance:
       properties:
         definition_id:
@@ -193,6 +211,13 @@ components:
         updated_at:
           type: string
       type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
     models.ListInstancesResponse:
       properties:
         has_more:
@@ -203,25 +228,6 @@ components:
           type: array
           uniqueItems: false
         next_cursor:
-          type: string
-      type: object
-    models.DownloadResponse:
-      properties:
-        download_url:
-          type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
           type: string
       type: object
   securitySchemes:

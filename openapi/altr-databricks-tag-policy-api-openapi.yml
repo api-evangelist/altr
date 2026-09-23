@@ -1,7 +1,11 @@
 openapi: 3.2.0
 info:
-  title: ALTR — Tag-based governance policy on Databricks Databricks Tag Policy API
-  description: This is an alpha API and may be changed or removed entirely in the future.<p>After registering your Databricks service principal and workspace with ALTR using `POST /databases` in the [Management API](https://altrnet.live.altr.com/api/swagger/#/databases/createDatabase), use this API to define tag-based governance on tagged columns in Databricks.<p>Your ALTR organization must be explicitly enable to use this API. Contact ALTR support.
+  title: ALTR — Tag-based governance policy on Databricks Databricks…
+  description: 'This is an alpha API and may be changed or removed entirely in the future.
+
+    After registering your Databricks service principal and workspace with ALTR using `POST /databases` in the Management API, use this API to define tag-based governance on tagged columns in Databricks.
+
+    Your ALTR organization must be explicitly enable to use this API. Contact ALTR support.'
   termsOfService: https://www.altr.com/info/altr-solutions-inc-terms-of-service
   contact:
     name: Support
@@ -21,7 +25,11 @@ paths:
       tags:
       - Databricks Tag Policy
       summary: Start application of a tag-based policy
-      description: When `policyAction` is `set`, an asynchronous Databricks job is launched to apply the given `policy` on all columns tagged with `tagName`.<p>When `policyAction` is set to `delete`, `policy` is ignored, and a Databricks job is launched to remove policy configured on tag `tagName`.<p>In either case, the status of the job can be tracked with the `GET` endpoint using the returned `id`.
+      description: 'When `policyAction` is `set`, an asynchronous Databricks job is launched to apply the given `policy` on all columns tagged with `tagName`.
+
+        When `policyAction` is set to `delete`, `policy` is ignored, and a Databricks job is launched to remove policy configured on tag `tagName`.
+
+        In either case, the status of the job can be tracked with the `GET` endpoint using the returned `id`.'
       operationId: startTagPolicyApplication
       requestBody:
         required: true
@@ -56,7 +64,9 @@ paths:
       tags:
       - Databricks Tag Policy
       summary: Get status and logs of a tag-based policy application
-      description: Check status of an asynchronous application of a tag-based policy started in the `POST` endpoint.<p>Returns the status and, if available, a presigned S3 URL to the logs.
+      description: 'Check status of an asynchronous application of a tag-based policy started in the `POST` endpoint.
+
+        Returns the status and, if available, a presigned S3 URL to the logs.'
       operationId: getTagPolicyApplicationStatus
       parameters:
       - name: id
@@ -184,6 +194,16 @@ components:
         - `constant_mask`: Replace the entire value with the constant value of `****`.
 
         - `email_mask`: Replace every character before the final `@` with `*`.'
+    PolicyActionEnum:
+      type: string
+      enum:
+      - set
+      - delete
+      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
+
+        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
+
+        - `delete`: Remove all policy on all columns with this `tagName`.'
     PolicySpecification:
       type: object
       properties:
@@ -275,16 +295,6 @@ components:
             - yellow
             action: allow
             permissivity: 100
-    PolicyActionEnum:
-      type: string
-      enum:
-      - set
-      - delete
-      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
-
-        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
-
-        - `delete`: Remove all policy on all columns with this `tagName`.'
   securitySchemes:
     basicAuth:
       type: http

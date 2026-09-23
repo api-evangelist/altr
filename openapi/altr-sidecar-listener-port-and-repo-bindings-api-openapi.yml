@@ -5,7 +5,7 @@ info:
     name: API Support
   description: This is the API for managing Sidecars, Agents and their configurations.
   termsOfService: https://altr.com/info/altr-solutions-inc-terms-of-service/
-  title: ALTR Sidecar/Agent Configuration Sidecar Listener Port and Repo bindings API
+  title: ALTR Sidecar/Agent Configuration Sidecar Listener Port and…
   version: 1.0.0
 servers:
 - url: https://{orgID}.sc-control.live.altr.com/v1
@@ -75,9 +75,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List repo bindings.
+      summary: List repo bindings
       tags:
       - Sidecar Listener Port and Repo bindings
+      operationId: getReposByRepoNameBindings
+      x-operation-id-source: derived
   /sidecars/{sidecar_id}/bindings:
     get:
       description: List all bindings for a specific sidecar with optional filtering by ports and repo names.
@@ -138,9 +140,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: List sidecar bindings.
+      summary: List sidecar bindings
       tags:
       - Sidecar Listener Port and Repo bindings
+      operationId: getSidecarsBySidecarIdBindings
+      x-operation-id-source: derived
   /sidecars/{sidecar_id}/bindings/ports/{port}/repos/{repo_name}:
     delete:
       description: Delete an existing Repo Sidecar Binding.
@@ -192,9 +196,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Delete a Repo Sidecar Binding.
+      summary: Delete a Repo Sidecar Binding
       tags:
       - Sidecar Listener Port and Repo bindings
+      operationId: deleteSidecarsBySidecarIdBindingsPortsByPortReposByRepoName
+      x-operation-id-source: derived
     get:
       description: Get the repo sidecar binding for a given sidecar ID, port, and repo name.
       parameters:
@@ -243,9 +249,11 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Get a Repo Sidecar Binding.
+      summary: Get a Repo Sidecar Binding
       tags:
       - Sidecar Listener Port and Repo bindings
+      operationId: getSidecarsBySidecarIdBindingsPortsByPortReposByRepoName
+      x-operation-id-source: derived
     post:
       description: Create a new Repo Sidecar Binding with the provided details.
       parameters:
@@ -290,11 +298,18 @@ paths:
           description: Bad Request
       security:
       - basic: []
-      summary: Create a new Repo Sidecar Binding.
+      summary: Create a new Repo Sidecar Binding
       tags:
       - Sidecar Listener Port and Repo bindings
+      operationId: postSidecarsBySidecarIdBindingsPortsByPortReposByRepoName
+      x-operation-id-source: derived
 components:
   schemas:
+    management.GetRepoBindOutput:
+      properties:
+        repo_sidecar_binding:
+          $ref: '#/components/schemas/management.RepoSidecarBinding'
+      type: object
     management.RepoSidecarBinding:
       properties:
         port:
@@ -308,13 +323,6 @@ components:
           x-order: '2'
       type: object
       x-order: '0'
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
     management.ListBindingsOutput:
       properties:
         contiguous_id:
@@ -327,17 +335,19 @@ components:
           uniqueItems: false
           x-order: '0'
       type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
           type: string
-      type: object
-    management.GetRepoBindOutput:
-      properties:
-        repo_sidecar_binding:
-          $ref: '#/components/schemas/management.RepoSidecarBinding'
       type: object
   securitySchemes:
     basic:

@@ -81,6 +81,8 @@ paths:
       summary: Get Agent Instances by Agent ID
       tags:
       - Agent
+      operationId: getAgentsByAgentIdInstances
+      x-operation-id-source: derived
   /agents/{agent_id}/instances/{instance_id}:
     delete:
       description: Delete an agent instance by its ID.
@@ -123,6 +125,8 @@ paths:
       summary: Delete Agent Instance by ID
       tags:
       - Agent
+      operationId: deleteAgentsByAgentIdInstancesByInstanceId
+      x-operation-id-source: derived
     get:
       description: Get a specific agent instance by its ID.
       parameters:
@@ -174,6 +178,8 @@ paths:
       summary: Get Agent Instance by ID
       tags:
       - Agent
+      operationId: getAgentsByAgentIdInstancesByInstanceId
+      x-operation-id-source: derived
 components:
   schemas:
     fiber.APIErrorResponse:
@@ -183,10 +189,17 @@ components:
         message:
           type: string
       type: object
-    main.APIErrorResponse:
+    types.AgentInstancesItemResponse:
       properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        contiguous_id:
+          description: Base64 encoded string representing the LastEvaluatedKey for pagination
+          type: string
+        items:
+          description: List of agent instance items
+          items:
+            $ref: '#/components/schemas/types.AgentInstanceItemResponse'
+          type: array
+          uniqueItems: false
       type: object
     types.AgentInstanceItemResponse:
       properties:
@@ -220,17 +233,10 @@ components:
           description: Tags associated with this instance
           type: object
       type: object
-    types.AgentInstancesItemResponse:
+    main.APIErrorResponse:
       properties:
-        contiguous_id:
-          description: Base64 encoded string representing the LastEvaluatedKey for pagination
-          type: string
-        items:
-          description: List of agent instance items
-          items:
-            $ref: '#/components/schemas/types.AgentInstanceItemResponse'
-          type: array
-          uniqueItems: false
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
   securitySchemes:
     basic:

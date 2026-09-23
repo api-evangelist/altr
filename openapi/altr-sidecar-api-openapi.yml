@@ -81,6 +81,8 @@ paths:
       summary: Get Sidecar Instances by Sidecar ID
       tags:
       - Sidecar
+      operationId: getSidecarsBySidecarIdInstances
+      x-operation-id-source: derived
   /sidecars/{sidecar_id}/instances/{instance_id}:
     delete:
       description: Delete a sidecar instance by its ID.
@@ -123,6 +125,8 @@ paths:
       summary: Delete Sidecar Instance by ID
       tags:
       - Sidecar
+      operationId: deleteSidecarsBySidecarIdInstancesByInstanceId
+      x-operation-id-source: derived
     get:
       description: Get a specific sidecar instance by its ID.
       parameters:
@@ -174,6 +178,8 @@ paths:
       summary: Get Sidecar Instance by ID
       tags:
       - Sidecar
+      operationId: getSidecarsBySidecarIdInstancesByInstanceId
+      x-operation-id-source: derived
 components:
   schemas:
     fiber.APIErrorResponse:
@@ -182,11 +188,6 @@ components:
           type: integer
         message:
           type: string
-      type: object
-    main.APIErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
     types.SidecarInstancesItemResponse:
       properties:
@@ -228,6 +229,11 @@ components:
             type: string
           description: Tags associated with this instance
           type: object
+      type: object
+    main.APIErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
   securitySchemes:
     basic:
