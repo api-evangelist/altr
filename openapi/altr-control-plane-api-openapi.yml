@@ -123,6 +123,16 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    dto.AccessTokenQueryResponse:
+      properties:
+        access_tokens:
+          items:
+            $ref: '#/components/schemas/dto.GetAccessTokenResponse'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
     dto.Error:
       properties:
         code:
@@ -151,15 +161,21 @@ components:
       - valid_from
       - valid_until
       type: object
-    dto.AccessTokenQueryResponse:
+    dto.CreateAccessTokenRequest:
       properties:
-        access_tokens:
-          items:
-            $ref: '#/components/schemas/dto.GetAccessTokenResponse'
-          type: array
-          uniqueItems: false
-        contiguous_id:
+        chosen_duration_minutes:
+          description: 5256000 is 10 years in minutes
+          example: 3600
+          maximum: 5256000
+          minimum: 1
+          type: integer
+        display_name:
+          maxLength: 255
+          minLength: 1
           type: string
+      required:
+      - chosen_duration_minutes
+      - display_name
       type: object
     dto.CreateAccessTokenResponse:
       properties:
@@ -176,22 +192,6 @@ components:
         valid_until:
           description: Milliseconds since epoch
           type: integer
-      type: object
-    dto.CreateAccessTokenRequest:
-      properties:
-        chosen_duration_minutes:
-          description: 5256000 is 10 years in minutes
-          example: 3600
-          maximum: 5256000
-          minimum: 1
-          type: integer
-        display_name:
-          maxLength: 255
-          minLength: 1
-          type: string
-      required:
-      - chosen_duration_minutes
-      - display_name
       type: object
   securitySchemes:
     basic:

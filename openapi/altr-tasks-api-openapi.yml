@@ -226,18 +226,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    dto.AuthTestJobStatusResponse:
+    dto.CreateAuthTestJobResponse:
       type: object
       properties:
-        completed_at:
-          type: string
         created_at:
           type: string
-        detail:
-          description: optional
-          type: string
         status:
-          description: PENDING|RUNNING|SUCCESS|FAILED
           type: string
         task_id:
           type: array
@@ -250,12 +244,18 @@ components:
           type: string
         message:
           type: string
-    dto.CreateAuthTestJobResponse:
+    dto.AuthTestJobStatusResponse:
       type: object
       properties:
+        completed_at:
+          type: string
         created_at:
           type: string
+        detail:
+          description: optional
+          type: string
         status:
+          description: PENDING|RUNNING|SUCCESS|FAILED
           type: string
         task_id:
           type: array

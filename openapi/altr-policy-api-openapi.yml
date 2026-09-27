@@ -1341,103 +1341,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Bad Request
-            statusCode: 400
-            date: '2022-07-20T18:00:58.723Z'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Resource is forbidden
-            statusCode: 403
-            date: '2022-07-20T18:00:58.723Z'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Unauthorized
-            statusCode: 401
-            date: '2022-07-20T18:00:58.723Z'
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Internal Server Error
-            statusCode: 500
-            date: '2022-07-20T18:00:58.723Z'
   schemas:
-    CreatePolicyRequest:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: 'For column policies, provide the column id, which can be retrieved from the `/data` endpoint in the Master API.
-
-
-            For tag policies, provide the tag name as the value.'
-          example: '1'
-        type:
-          type: string
-          description: "You can create policy on columns or tags you have connected to ALTR.\nBy selecting `pushdown`, the policy is implemented on a tag entirely inside the database (that is, the policy logic is \"pushed down\" to the database) instead of reaching out to ALTR over the network at runtime for policy decisions. This is useful in certain scenarios where performance is of paramount importance, but this implementation comes with significant limitations and should not be used without discussion with ALTR support to fully understand the ramifications. \n\n Please note that Push Down policies for columns is not presently supported, so assure that the identifier is a tag name, not a column id."
-          enum:
-          - COLUMN
-          - TAG
-          - PUSHDOWN
-          example: COLUMN
-        active:
-          type: boolean
-          description: Indicates whether the policy is active and applied. Defaults to true.
-          default: true
-        database_ids:
-          type: array
-          description: The database_ids field is required only if the database being used is for a specific Databricks connection. If no database_ids are provided, the policy will apply to all Snowflake (SF) data sources across the account. If a Databricks ID is passed, the policy type cannot be 'COLUMN' and will result in a failure. The database ID can be retrieved from the /databases endpoint in the Master API.
-          items:
-            type: integer
-            description: The database id to apply the policy to
-            example: '1'
-            maximum: 99
-    AccessRateThreshold:
-      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
-      type: array
-      items:
-        type: object
-        properties:
-          access_rate_unit:
-            type: string
-            enum:
-            - minute
-            - hour
-            - day
-            - week
-            - month
-            description: The time window starting at the first query until the ratebucket is reset
-          access_rate_limit:
-            type: integer
-            description: The max access count in the given time window
-            example: 100
-          action:
-            type: string
-            enum:
-            - ALERT
-            - BLOCK
-            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
     types.ListTagMaskingItem:
       type: object
       description: Pass-through from /v1/tag/masking types.ListTagMaskingItem. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
@@ -1481,243 +1385,36 @@ components:
           type: string
         updated_at:
           type: string
-    types.EncryptionFPEOptions:
-      type: object
-      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
-      properties:
-        alphabet:
-          type: string
-        key_name:
-          type: string
-        tweak_name:
-          type: string
-    ApiError:
+    CreatePolicyRequest:
       type: object
       properties:
-        message:
+        identifier:
           type: string
-          example: Internal Server Error
-        statusCode:
-          type: integer
-          example: 500
-    PolicyDefinition:
-      type: object
-      properties:
-        policy_id:
+          description: 'For column policies, provide the column id, which can be retrieved from the `/data` endpoint in the Master API.
+
+
+            For tag policies, provide the tag name as the value.'
+          example: '1'
+        type:
           type: string
-          example: COLUMN#iiowdjioqi213u90jdd0wau90
-          description: The unique identifier for this policy
-        name:
-          type: string
-          example: firstName
-          description: The name of the policy, either the column name or tag name
-        this_status:
-          type: string
-          example: SUCCESS
-          description: The status of updating this policy definition
-        metadata:
-          type: object
-          description: The metadata associated with the policy, this property is not present for GRANT policy types.
-          properties:
-            error_message:
-              type: string
-              description: may contain a short description of why the policy failed
-              example: The column does not exist
-            updated_at:
-              type: string
-              format: date-time
-              description: The time at which the policy definition was last updated. Note this may be different from the time at which the policy was last applied on tags affected by the policy.
-              example: '2025-02-07T16:12:12.807Z'
-            metastores:
-              type: object
-              description: For PUSHDOWN policies affecting Dataricks metastores. A map where the keys are metastore IDs and the values are objects representing the policy status and job tracking information for each metastore.
-              additionalProperties:
-                type: object
-                properties:
-                  policy_status:
-                    type: string
-                    description: The status of the policy application for this metastore.
-                    enum:
-                    - PENDING
-                    - SUCCESS
-                    - FAILED
-                  job_tracking_id:
-                    type: string
-                    description: The unique identifier for the job tracking the policy application.
-                required:
-                - policy_status
-                - job_tracking_id
-            affected_tags:
-              type: array
-              description: For TAG and PUSHDOWN policies, these are the affected tags. Though a policy definition, itself, may be updated, the tags to which the policy applies may still be updating with the new policy definition.
-              items:
-                $ref: '#/components/schemas/types.ListTagMaskingItem'
-            column_info:
-              type: object
-              description: If this is a column policy, this object will be present for the column policies.
-              properties:
-                database_name:
-                  type: string
-                  description: The name of the database associated with the column
-                  example: TEST_DB
-                schema_name:
-                  type: string
-                  description: The name of the schema associated wth the column
-                  example: PUBLIC
-                table_name:
-                  type: string
-                  description: The name of the table associated with the column.
-                  example: PEOPLE
-                column_name:
-                  type: string
-                  description: The name of the column.
-                  example: FIRST_NAME
-            roles:
-              type: array
-              items:
-                type: string
-                example: ADMIN
-                description: The roles with a rule associated with this policy.
-    AccessManagementPolicyUpdate:
-      type: object
-      properties:
-        policy_name:
-          type: string
-          example: My Swagger Policy
-          minLength: 1
-          maxLength: 255
-        description:
-          type: string
-          example: This is a policy generated via Swagger
-          minLength: 1
-          maxLength: 255
-        rules:
+          description: "You can create policy on columns or tags you have connected to ALTR.\nBy selecting `pushdown`, the policy is implemented on a tag entirely inside the database (that is, the policy logic is \"pushed down\" to the database) instead of reaching out to ALTR over the network at runtime for policy decisions. This is useful in certain scenarios where performance is of paramount importance, but this implementation comes with significant limitations and should not be used without discussion with ALTR support to fully understand the ramifications. \n\n Please note that Push Down policies for columns is not presently supported, so assure that the identifier is a tag name, not a column id."
+          enum:
+          - COLUMN
+          - TAG
+          - PUSHDOWN
+          example: COLUMN
+        active:
+          type: boolean
+          description: Indicates whether the policy is active and applied. Defaults to true.
+          default: true
+        database_ids:
           type: array
-          minItems: 1
+          description: The database_ids field is required only if the database being used is for a specific Databricks connection. If no database_ids are provided, the policy will apply to all Snowflake (SF) data sources across the account. If a Databricks ID is passed, the policy type cannot be 'COLUMN' and will result in a failure. The database ID can be retrieved from the /databases endpoint in the Master API.
           items:
-            type: object
-            properties:
-              actors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                      - role
-                    condition:
-                      type: string
-                      enum:
-                      - equals
-                      - starts_with
-                      - ends_with
-                    identifiers:
-                      type: array
-                      items:
-                        type: string
-                      uniqueItems: true
-                      example:
-                      - DEVELOPER_ROLE
-                      - ADMINISTRATOR_ROLE
-                  required:
-                  - type
-                  - condition
-                minItems: 1
-              objects:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                      - database
-                      - schema
-                      - table
-                    condition:
-                      type: string
-                      enum:
-                      - equals
-                      - starts_with
-                      - ends_with
-                      - fully_qualified
-                    identifiers:
-                      type: array
-                      items:
-                        type: string
-                      uniqueItems: true
-                      example:
-                      - DEVELOPER_DATABASE
-                      - ADMINISTRATOR_DATABASE
-                    fully_qualified_identifiers:
-                      description: This field is required if the condition is fully_qualified
-                      type: array
-                      items:
-                        description: This field is required if the condition is fully_qualified
-                        type:
-                        - object
-                        - 'null'
-                        properties:
-                          database:
-                            type: string
-                            example: DEVELOPER_DATABASE
-                          schema:
-                            type: string
-                            example: PUBLIC
-                          table:
-                            type: string
-                            example: USERS
-                          view:
-                            type: string
-                            example: USERS
-                  required:
-                  - type
-                  - condition
-                minItems: 1
-              access:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      enum:
-                      - read
-                      - write
-                  required:
-                  - name
-                minItems: 1
-                maxItems: 2
-            required:
-            - actors
-            - objects
-            - access
-      required:
-      - policy_name
-      - rules
-    ImpersonationPolicyRequest:
-      type: object
-      properties:
-        policy_name:
-          type: string
-          example: My Impersonation Policy
-          minLength: 1
-          maxLength: 255
-        description:
-          type: string
-          example: This is a policy generated via Swagger
-          minLength: 1
-          maxLength: 255
-        repo_name:
-          type: string
-          example: my-repo
-          description: The name of the repository where the impersonation policy is defined.
-        rules:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/ImpersonationPolicyRule'
+            type: integer
+            description: The database id to apply the policy to
+            example: '1'
+            maximum: 99
     ImpersonationPolicyRule:
       type: object
       properties:
@@ -1776,607 +1473,6 @@ components:
       required:
       - actors
       - targets
-    TimeWindowThreshold:
-      description: Enforces a policy during a provided time window. Not available for pushdown policies.
-      type: array
-      items:
-        type: object
-        properties:
-          day:
-            type: array
-            items:
-              type: string
-              enum:
-              - sunday
-              - monday
-              - tuesday
-              - wednesday
-              - thursday
-              - friday
-              - saturday
-              description: The user may not access data on these days of the week
-          start_time:
-            type: object
-            properties:
-              hour:
-                example: '12'
-                type: integer
-                description: The hour of the day in 24 hour format. 0-23
-              minute:
-                example: '30'
-                type: integer
-                description: The minute of the hour. 0-59
-            description: The user may not access data after this time and before the end_time.
-          end_time:
-            type: object
-            properties:
-              hour:
-                example: '20'
-                type: integer
-                description: The hour of the day in 24 hour format. 0-23
-              minute:
-                example: '30'
-                type: integer
-                description: The minute of the hour. 0-59
-            description: The user may not access data before this time and after the start_time.
-          timezone:
-            type: string
-            example: America/New_York
-            description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in. See a list of TZ Identifiers at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
-          action:
-            type: string
-            enum:
-            - ALERT
-            - BLOCK
-            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
-    OltpPolicyRequest:
-      type: object
-      properties:
-        policy_name:
-          type: string
-          example: My OLTP AMP Policy
-          minLength: 1
-          maxLength: 255
-        description:
-          type: string
-          example: This is a policy generated via Swagger
-          minLength: 1
-          maxLength: 255
-        repo_name:
-          type: string
-          example: my-repo
-          description: The name of the repository where the policy is defined.
-        case_sensitivity:
-          type: string
-          default: case_sensitive
-          enum:
-          - case_sensitive
-        rules:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/OltpAmpPolicyRule'
-    AccessManagementPolicy:
-      type: object
-      properties:
-        policy_name:
-          type: string
-          example: My Swagger Policy
-          minLength: 1
-          maxLength: 255
-        description:
-          type: string
-          example: This is a policy generated via Swagger
-          minLength: 1
-          maxLength: 255
-        policy_maintenance:
-          type:
-          - object
-          - 'null'
-          properties:
-            rate:
-              type: string
-              enum:
-              - day
-              - cron
-              example: day
-              description: The rate at which the policy should be maintained. If set to cron, the cron expression must be provided in the cron field. The cron field must be a valid AWS Cloud Watch cron expression.
-            value:
-              oneOf:
-              - type: string
-              - type: number
-          default: null
-        connection_ids:
-          type: array
-          items:
-            type: integer
-          minItems: 1
-          maxItems: 1
-          uniqueItems: true
-          example:
-          - 1
-        rules:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
-        access_request_id:
-          type: string
-          description: The ID of the access request associated with this policy, if any.
-          example: afe0b9c9-3a29-4de5-95d4-25a39787e157
-      required:
-      - policy_name
-      - connection_ids
-      - rules
-    OltpPolicyResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        data:
-          type: object
-          properties:
-            policy_id:
-              type: string
-              example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
-            policy:
-              type: object
-              properties:
-                PK:
-                  type: string
-                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
-                SK:
-                  type: string
-                  example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
-                client_id:
-                  type: string
-                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
-                created_at:
-                  type: string
-                  format: date-time
-                  example: '2025-02-07T16:12:12.807Z'
-                updated_at:
-                  type: string
-                  format: date-time
-                  example: '2025-02-07T16:12:12.807Z'
-                policy_name:
-                  type: string
-                  example: Swagger Policy
-                description:
-                  type: string
-                  example: This is a policy generated via Swagger
-                rules:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      type:
-                        type: string
-                        example: read
-                      actors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              example: idp_user
-                            condition:
-                              type: string
-                              example: equals
-                            identifiers:
-                              type: array
-                              items:
-                                type: string
-                              example:
-                              - JOHN_DOE
-                      objects:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              example: schema
-                            identifiers:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  database:
-                                    type: object
-                                    properties:
-                                      name:
-                                        type: string
-                                        example: MY_DATABASE
-                                      wildcard:
-                                        type: boolean
-                                        example: false
-                                  schema:
-                                    type: object
-                                    properties:
-                                      name:
-                                        type: string
-                                        example: PUBLIC
-                                      wildcard:
-                                        type: boolean
-                                        example: false
-                                  table:
-                                    type: object
-                                    properties:
-                                      name:
-                                        type: string
-                                        example: USERS
-                                      wildcard:
-                                        type: boolean
-                                        example: false
-                                  column:
-                                    type: object
-                                    properties:
-                                      name:
-                                        type: string
-                                        example: USERS
-                                      wildcard:
-                                        type: boolean
-                                        example: false
-                report_id:
-                  type:
-                  - string
-                  - 'null'
-                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
-                GSI1SK:
-                  type: string
-                  example: SUCCESS#OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
-                GSI1PK:
-                  type: string
-                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
-                id:
-                  type: string
-                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
-                tracking_id:
-                  type: string
-                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
-                database_type:
-                  type: integer
-                  example: 4
-                this_status:
-                  type: string
-                  example: ACTIVE
-    types.TagMaskingError:
-      type: object
-      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-    Rule:
-      type: object
-      properties:
-        access_rate_thresholds:
-          $ref: '#/components/schemas/AccessRateThreshold'
-        time_window_thresholds:
-          $ref: '#/components/schemas/TimeWindowThreshold'
-        masking_policy:
-          type: integer
-          enum:
-          - 10000
-          - 10001
-          - 10002
-          - 10003
-          - 10004
-          description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
-        role:
-          type: string
-          example: DEVELOPER_ROLE
-          description: The name of the role associated with this rule.
-        tag_value:
-          type: string
-          example: yellow
-          description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead.
-        tag_value_regex:
-          type: string
-          enum:
-          - '*'
-          description: The REGEX for matching tag values to which this rule applies. If you wish to use an exact string match, you may use 'tag_value' instead. Only * is currently supported.
-    types.Masking:
-      type: object
-      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
-      properties:
-        custom_role_provider:
-          description: 'CustomRoleProvider contains the configuration related to creating a custom role provider UDF.
-
-            This UDF is used by you to feed in roles to be used by ALTR''s policy decision engine for a given tag policy.'
-          allOf:
-          - $ref: '#/components/schemas/types.CustomRoleProvider'
-        encryption_fpe_options:
-          $ref: '#/components/schemas/types.EncryptionFPEOptions'
-        error:
-          description: 'ErrorMessage contains an error message related to the failure to apply the new ALTR tag masking configuration.
-
-            This won''t be defined for pending and applied tag masking.'
-          allOf:
-          - $ref: '#/components/schemas/types.TagMaskingError'
-        force_delete:
-          description: 'ForceDelete When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
-
-            This could result in orphaned ALTR configuration inside the snowflake host.
-
-            Caution should be used, it is recommended to have ForceDelete set to false (default behavior).'
-          type: boolean
-        mask_data_type_list:
-          description: 'MaskDataTypeList is a list of data types matched to this ALTR tag based masking policy.
-
-            See this for the full list of valid data types https://docs.snowflake.com/en/sql-reference/intro-summary-data-types
-
-            Geospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial'
-          type: array
-          items:
-            type: string
-        protection_type:
-          description: 'What content is this mask targeting (e.g. governed, tokenized-vault)
-
-
-            `governed` indicates that the content is un-formatted text. Content targeted with this type is
-
-            stored or transmitted as-is, without any specialized processing.
-
-
-            `governed-pushdown` is the same as `governed`, but the implementation is done entirely with the database
-
-            without reaching out to ALTR''s policy decision engine at runtime. This is sometimes needed for performance.
-
-
-            `tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is
-
-            set tokens will be converted back to original sensitive data, provided the user has permissions to view.
-
-
-            `encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set
-
-            data will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.'
-          type: string
-        tracking_id:
-          description: TrackingID a unique ALTR trackingID.
-          type: string
-    types.CustomRoleProvider:
-      type: object
-      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
-      properties:
-        enabled:
-          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
-          type: boolean
-          default: false
-        fully_qualified_function_udf_name:
-          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
-
-            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
-          type: string
-    OltpAmpPolicyRule:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - create
-          - read
-          - update
-          - delete
-        actors:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - idp_user
-                - idp_group
-              condition:
-                type: string
-                enum:
-                - equals
-              identifiers:
-                type: array
-                items:
-                  type: string
-                uniqueItems: true
-                example:
-                - DEVELOPER_ROLE
-                - ADMINISTRATOR_ROLE
-            required:
-            - type
-            - condition
-            - identifiers
-          minItems: 1
-        objects:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - repo_user
-              condition:
-                type: string
-                enum:
-                - equals
-              identifiers:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    database:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: MY_DATABASE
-                        wildcard:
-                          type: boolean
-                          example: false
-                    schema:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: PUBLIC
-                        wildcard:
-                          type: boolean
-                          example: false
-                    table:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: USERS
-                        wildcard:
-                          type: boolean
-                          example: false
-                    column:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                          example: USERS
-                        wildcard:
-                          type: boolean
-                          example: false
-                uniqueItems: true
-            required:
-            - type
-            - condition
-            - identifiers
-          minItems: 1
-      required:
-      - actors
-      - objects
-    AccessManagementPolicyResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        data:
-          type: object
-          properties:
-            policy_id:
-              type: string
-              example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
-            policy:
-              type: object
-              properties:
-                PK:
-                  type: string
-                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
-                SK:
-                  type: string
-                  example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
-                client_id:
-                  type: string
-                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
-                created_at:
-                  type: string
-                  format: date-time
-                  example: '2025-02-07T16:12:12.807Z'
-                updated_at:
-                  type: string
-                  format: date-time
-                  example: '2025-02-07T16:12:12.807Z'
-                policy_name:
-                  type: string
-                  example: Swagger Policy
-                description:
-                  type: string
-                  example: This is a policy generated via Swagger
-                connection_ids:
-                  type: array
-                  items:
-                    type: integer
-                  example:
-                  - 4
-                rules_pending:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      actors:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              example: role
-                            condition:
-                              type: string
-                              example: equals
-                            identifiers:
-                              type: array
-                              items:
-                                type: string
-                              example:
-                              - MY_ROLE
-                      objects:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              example: schema
-                            condition:
-                              type: string
-                              example: equals
-                            identifiers:
-                              type: array
-                              items:
-                                type: string
-                              example:
-                              - PUBLIC
-                      access:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                              example: read
-                rules_applied:
-                  type:
-                  - string
-                  - 'null'
-                  example: null
-                rules_failed:
-                  type:
-                  - string
-                  - 'null'
-                  example: null
-                report_id:
-                  type:
-                  - string
-                  - 'null'
-                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
-                GSI1SK:
-                  type: string
-                  example: ACTIVE#GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
-                GSI1PK:
-                  type: string
-                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
-                id:
-                  type: string
-                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
-                tracking_id:
-                  type: string
-                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
-                database_type:
-                  type: integer
-                  example: 9
-                this_status:
-                  type: string
-                  example: ACTIVE
     SnowflakeAccessManagementRule:
       type: object
       properties:
@@ -2517,6 +1613,910 @@ components:
       required:
       - actors
       - access
+    types.CustomRoleProvider:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        enabled:
+          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
+          type: boolean
+          default: false
+        fully_qualified_function_udf_name:
+          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
+
+            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
+          type: string
+    ImpersonationPolicyRequest:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Impersonation Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        repo_name:
+          type: string
+          example: my-repo
+          description: The name of the repository where the impersonation policy is defined.
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ImpersonationPolicyRule'
+    types.EncryptionFPEOptions:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        alphabet:
+          type: string
+        key_name:
+          type: string
+        tweak_name:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
+    OltpAmpPolicyRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - create
+          - read
+          - update
+          - delete
+        actors:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - idp_user
+                - idp_group
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+                example:
+                - DEVELOPER_ROLE
+                - ADMINISTRATOR_ROLE
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+        objects:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - repo_user
+              condition:
+                type: string
+                enum:
+                - equals
+              identifiers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    database:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: MY_DATABASE
+                        wildcard:
+                          type: boolean
+                          example: false
+                    schema:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: PUBLIC
+                        wildcard:
+                          type: boolean
+                          example: false
+                    table:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: USERS
+                        wildcard:
+                          type: boolean
+                          example: false
+                    column:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: USERS
+                        wildcard:
+                          type: boolean
+                          example: false
+                uniqueItems: true
+            required:
+            - type
+            - condition
+            - identifiers
+          minItems: 1
+      required:
+      - actors
+      - objects
+    TimeWindowThreshold:
+      description: Enforces a policy during a provided time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          day:
+            type: array
+            items:
+              type: string
+              enum:
+              - sunday
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+              description: The user may not access data on these days of the week
+          start_time:
+            type: object
+            properties:
+              hour:
+                example: '12'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data after this time and before the end_time.
+          end_time:
+            type: object
+            properties:
+              hour:
+                example: '20'
+                type: integer
+                description: The hour of the day in 24 hour format. 0-23
+              minute:
+                example: '30'
+                type: integer
+                description: The minute of the hour. 0-59
+            description: The user may not access data before this time and after the start_time.
+          timezone:
+            type: string
+            example: America/New_York
+            description: A zoneinfo/tz-database string for what timezone the threshold times should be applied in. See a list of TZ Identifiers at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
+    Rule:
+      type: object
+      properties:
+        access_rate_thresholds:
+          $ref: '#/components/schemas/AccessRateThreshold'
+        time_window_thresholds:
+          $ref: '#/components/schemas/TimeWindowThreshold'
+        masking_policy:
+          type: integer
+          enum:
+          - 10000
+          - 10001
+          - 10002
+          - 10003
+          - 10004
+          description: "The id of the masking policy which should be applied. If you have multiple conflicting masking policies applied to a query the lowest id is used.\n * 10000 - No mask \n 10001 - Full Mask \n 10002 - Email Mask \n 10004 - Constant Mask"
+        role:
+          type: string
+          example: DEVELOPER_ROLE
+          description: The name of the role associated with this rule.
+        tag_value:
+          type: string
+          example: yellow
+          description: The tag value to match for this rule. If you wish to use a regex, use 'tag_value_regex' instead.
+        tag_value_regex:
+          type: string
+          enum:
+          - '*'
+          description: The REGEX for matching tag values to which this rule applies. If you wish to use an exact string match, you may use 'tag_value' instead. Only * is currently supported.
+    AccessManagementPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            policy_id:
+              type: string
+              example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+            policy:
+              type: object
+              properties:
+                PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                SK:
+                  type: string
+                  example: GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                client_id:
+                  type: string
+                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
+                created_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                updated_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                policy_name:
+                  type: string
+                  example: Swagger Policy
+                description:
+                  type: string
+                  example: This is a policy generated via Swagger
+                connection_ids:
+                  type: array
+                  items:
+                    type: integer
+                  example:
+                  - 4
+                rules_pending:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      actors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: role
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - MY_ROLE
+                      objects:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: schema
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - PUBLIC
+                      access:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              example: read
+                rules_applied:
+                  type:
+                  - string
+                  - 'null'
+                  example: null
+                rules_failed:
+                  type:
+                  - string
+                  - 'null'
+                  example: null
+                report_id:
+                  type:
+                  - string
+                  - 'null'
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                GSI1SK:
+                  type: string
+                  example: ACTIVE#GRANT#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#9
+                GSI1PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                id:
+                  type: string
+                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+                tracking_id:
+                  type: string
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                database_type:
+                  type: integer
+                  example: 9
+                this_status:
+                  type: string
+                  example: ACTIVE
+    AccessManagementPolicyUpdate:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Swagger Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        rules:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              actors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - role
+                    condition:
+                      type: string
+                      enum:
+                      - equals
+                      - starts_with
+                      - ends_with
+                    identifiers:
+                      type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                      example:
+                      - DEVELOPER_ROLE
+                      - ADMINISTRATOR_ROLE
+                  required:
+                  - type
+                  - condition
+                minItems: 1
+              objects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                      - database
+                      - schema
+                      - table
+                    condition:
+                      type: string
+                      enum:
+                      - equals
+                      - starts_with
+                      - ends_with
+                      - fully_qualified
+                    identifiers:
+                      type: array
+                      items:
+                        type: string
+                      uniqueItems: true
+                      example:
+                      - DEVELOPER_DATABASE
+                      - ADMINISTRATOR_DATABASE
+                    fully_qualified_identifiers:
+                      description: This field is required if the condition is fully_qualified
+                      type: array
+                      items:
+                        description: This field is required if the condition is fully_qualified
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          database:
+                            type: string
+                            example: DEVELOPER_DATABASE
+                          schema:
+                            type: string
+                            example: PUBLIC
+                          table:
+                            type: string
+                            example: USERS
+                          view:
+                            type: string
+                            example: USERS
+                  required:
+                  - type
+                  - condition
+                minItems: 1
+              access:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                      - read
+                      - write
+                  required:
+                  - name
+                minItems: 1
+                maxItems: 2
+            required:
+            - actors
+            - objects
+            - access
+      required:
+      - policy_name
+      - rules
+    PolicyDefinition:
+      type: object
+      properties:
+        policy_id:
+          type: string
+          example: COLUMN#iiowdjioqi213u90jdd0wau90
+          description: The unique identifier for this policy
+        name:
+          type: string
+          example: firstName
+          description: The name of the policy, either the column name or tag name
+        this_status:
+          type: string
+          example: SUCCESS
+          description: The status of updating this policy definition
+        metadata:
+          type: object
+          description: The metadata associated with the policy, this property is not present for GRANT policy types.
+          properties:
+            error_message:
+              type: string
+              description: may contain a short description of why the policy failed
+              example: The column does not exist
+            updated_at:
+              type: string
+              format: date-time
+              description: The time at which the policy definition was last updated. Note this may be different from the time at which the policy was last applied on tags affected by the policy.
+              example: '2025-02-07T16:12:12.807Z'
+            metastores:
+              type: object
+              description: For PUSHDOWN policies affecting Dataricks metastores. A map where the keys are metastore IDs and the values are objects representing the policy status and job tracking information for each metastore.
+              additionalProperties:
+                type: object
+                properties:
+                  policy_status:
+                    type: string
+                    description: The status of the policy application for this metastore.
+                    enum:
+                    - PENDING
+                    - SUCCESS
+                    - FAILED
+                  job_tracking_id:
+                    type: string
+                    description: The unique identifier for the job tracking the policy application.
+                required:
+                - policy_status
+                - job_tracking_id
+            affected_tags:
+              type: array
+              description: For TAG and PUSHDOWN policies, these are the affected tags. Though a policy definition, itself, may be updated, the tags to which the policy applies may still be updating with the new policy definition.
+              items:
+                $ref: '#/components/schemas/types.ListTagMaskingItem'
+            column_info:
+              type: object
+              description: If this is a column policy, this object will be present for the column policies.
+              properties:
+                database_name:
+                  type: string
+                  description: The name of the database associated with the column
+                  example: TEST_DB
+                schema_name:
+                  type: string
+                  description: The name of the schema associated wth the column
+                  example: PUBLIC
+                table_name:
+                  type: string
+                  description: The name of the table associated with the column.
+                  example: PEOPLE
+                column_name:
+                  type: string
+                  description: The name of the column.
+                  example: FIRST_NAME
+            roles:
+              type: array
+              items:
+                type: string
+                example: ADMIN
+                description: The roles with a rule associated with this policy.
+    types.TagMaskingError:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    OltpPolicyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            policy_id:
+              type: string
+              example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+            policy:
+              type: object
+              properties:
+                PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                SK:
+                  type: string
+                  example: OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+                client_id:
+                  type: string
+                  example: a0a7b846-95d5-4248-a8c5-406e018d591a
+                created_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                updated_at:
+                  type: string
+                  format: date-time
+                  example: '2025-02-07T16:12:12.807Z'
+                policy_name:
+                  type: string
+                  example: Swagger Policy
+                description:
+                  type: string
+                  example: This is a policy generated via Swagger
+                rules:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: read
+                      actors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: idp_user
+                            condition:
+                              type: string
+                              example: equals
+                            identifiers:
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - JOHN_DOE
+                      objects:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: schema
+                            identifiers:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  database:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: MY_DATABASE
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  schema:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: PUBLIC
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  table:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: USERS
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                                  column:
+                                    type: object
+                                    properties:
+                                      name:
+                                        type: string
+                                        example: USERS
+                                      wildcard:
+                                        type: boolean
+                                        example: false
+                report_id:
+                  type:
+                  - string
+                  - 'null'
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                GSI1SK:
+                  type: string
+                  example: SUCCESS#OLTP#afe0b9c9-3a29-4de5-95d4-25a39787e157#DATABASE_TYPE#4
+                GSI1PK:
+                  type: string
+                  example: ORG#a0a7b846-95d5-4248-a8c5-406e018d591a#POLICY
+                id:
+                  type: string
+                  example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+                tracking_id:
+                  type: string
+                  example: 924ef8b9-22fb-4f20-a15d-a4b1948b285f
+                database_type:
+                  type: integer
+                  example: 4
+                this_status:
+                  type: string
+                  example: ACTIVE
+    types.Masking:
+      type: object
+      description: Pass-through from /v1/tag/masking. Reproduced here for your convenience, but because this is a pass-through, it may be out of date, and you should refer to the original documentation for the most up-to-date information.
+      properties:
+        custom_role_provider:
+          description: 'CustomRoleProvider contains the configuration related to creating a custom role provider UDF.
+
+            This UDF is used by you to feed in roles to be used by ALTR''s policy decision engine for a given tag policy.'
+          allOf:
+          - $ref: '#/components/schemas/types.CustomRoleProvider'
+        encryption_fpe_options:
+          $ref: '#/components/schemas/types.EncryptionFPEOptions'
+        error:
+          description: 'ErrorMessage contains an error message related to the failure to apply the new ALTR tag masking configuration.
+
+            This won''t be defined for pending and applied tag masking.'
+          allOf:
+          - $ref: '#/components/schemas/types.TagMaskingError'
+        force_delete:
+          description: 'ForceDelete When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
+
+            This could result in orphaned ALTR configuration inside the snowflake host.
+
+            Caution should be used, it is recommended to have ForceDelete set to false (default behavior).'
+          type: boolean
+        mask_data_type_list:
+          description: 'MaskDataTypeList is a list of data types matched to this ALTR tag based masking policy.
+
+            See this for the full list of valid data types https://docs.snowflake.com/en/sql-reference/intro-summary-data-types
+
+            Geospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial'
+          type: array
+          items:
+            type: string
+        protection_type:
+          description: 'What content is this mask targeting (e.g. governed, tokenized-vault)
+
+
+            `governed` indicates that the content is un-formatted text. Content targeted with this type is
+
+            stored or transmitted as-is, without any specialized processing.
+
+
+            `governed-pushdown` is the same as `governed`, but the implementation is done entirely with the database
+
+            without reaching out to ALTR''s policy decision engine at runtime. This is sometimes needed for performance.
+
+
+            `tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is
+
+            set tokens will be converted back to original sensitive data, provided the user has permissions to view.
+
+
+            `encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set
+
+            data will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.'
+          type: string
+        tracking_id:
+          description: TrackingID a unique ALTR trackingID.
+          type: string
+    OltpPolicyRequest:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My OLTP AMP Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        repo_name:
+          type: string
+          example: my-repo
+          description: The name of the repository where the policy is defined.
+        case_sensitivity:
+          type: string
+          default: case_sensitive
+          enum:
+          - case_sensitive
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OltpAmpPolicyRule'
+    AccessManagementPolicy:
+      type: object
+      properties:
+        policy_name:
+          type: string
+          example: My Swagger Policy
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          example: This is a policy generated via Swagger
+          minLength: 1
+          maxLength: 255
+        policy_maintenance:
+          type:
+          - object
+          - 'null'
+          properties:
+            rate:
+              type: string
+              enum:
+              - day
+              - cron
+              example: day
+              description: The rate at which the policy should be maintained. If set to cron, the cron expression must be provided in the cron field. The cron field must be a valid AWS Cloud Watch cron expression.
+            value:
+              oneOf:
+              - type: string
+              - type: number
+          default: null
+        connection_ids:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+          maxItems: 1
+          uniqueItems: true
+          example:
+          - 1
+        rules:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+        access_request_id:
+          type: string
+          description: The ID of the access request associated with this policy, if any.
+          example: afe0b9c9-3a29-4de5-95d4-25a39787e157
+      required:
+      - policy_name
+      - connection_ids
+      - rules
+    AccessRateThreshold:
+      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          access_rate_unit:
+            type: string
+            enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+            description: The time window starting at the first query until the ratebucket is reset
+          access_rate_limit:
+            type: integer
+            description: The max access count in the given time window
+            example: 100
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
+            date: '2022-07-20T18:00:58.723Z'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Resource is forbidden
+            statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Internal Server Error
+            statusCode: 500
+            date: '2022-07-20T18:00:58.723Z'
   securitySchemes:
     basicAuth:
       type: http

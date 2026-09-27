@@ -311,37 +311,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.ListDefinitionsResponse:
-      properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Definition'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
-      type: object
-    models.DeliveryChannel:
-      properties:
-        enabled:
-          example: true
-          type: boolean
-        recipients:
-          example:
-          - admin@company.com
-          - compliance@company.com
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        type:
-          enum:
-          - email
-          example: email
-          type: string
-      type: object
     models.FilterGroup:
       properties:
         filters:
@@ -360,12 +329,34 @@ components:
           example: America/New_York
           type: string
       type: object
-    models.NumericRange:
+    models.DefinitionInput:
       properties:
-        max:
+        delivery:
+          $ref: '#/components/schemas/models.Delivery'
+        description:
+          example: Tracks schema changes across production databases
+          type: string
+        filters:
+          $ref: '#/components/schemas/models.ReportFilters'
+        integration_type:
+          enum:
+          - oltp
+          - snowflake
+          example: oltp
+          type: string
+        name:
+          example: Weekly DDL Audit
+          type: string
+        report_window:
+          $ref: '#/components/schemas/models.ReportWindow'
+        required_approvals:
+          example: 2
           type: integer
-        min:
+        retention_days:
+          example: 90
           type: integer
+        schedule:
+          $ref: '#/components/schemas/models.Schedule'
       type: object
     models.Definition:
       properties:
@@ -407,35 +398,6 @@ components:
         updated_at:
           type: string
       type: object
-    models.DefinitionInput:
-      properties:
-        delivery:
-          $ref: '#/components/schemas/models.Delivery'
-        description:
-          example: Tracks schema changes across production databases
-          type: string
-        filters:
-          $ref: '#/components/schemas/models.ReportFilters'
-        integration_type:
-          enum:
-          - oltp
-          - snowflake
-          example: oltp
-          type: string
-        name:
-          example: Weekly DDL Audit
-          type: string
-        report_window:
-          $ref: '#/components/schemas/models.ReportWindow'
-        required_approvals:
-          example: 2
-          type: integer
-        retention_days:
-          example: 90
-          type: integer
-        schedule:
-          $ref: '#/components/schemas/models.Schedule'
-      type: object
     models.Filter:
       properties:
         field:
@@ -458,28 +420,38 @@ components:
         value:
           type: boolean
       type: object
-    models.FilterPattern:
+    models.NumericRange:
       properties:
-        match_type:
-          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
-          enum:
-          - exact
-          - contains
-          - starts_with
-          - ends_with
-          example: starts_with
+        max:
+          type: integer
+        min:
+          type: integer
+      type: object
+    models.TriggerNowResponse:
+      properties:
+        instance_id:
           type: string
-        value:
-          example: PROD_
+        message:
           type: string
       type: object
-    models.ReportFilters:
+    models.DeliveryChannel:
       properties:
-        filter_groups:
+        enabled:
+          example: true
+          type: boolean
+        recipients:
+          example:
+          - admin@company.com
+          - compliance@company.com
           items:
-            $ref: '#/components/schemas/models.FilterGroup'
+            type: string
           type: array
           uniqueItems: false
+        type:
+          enum:
+          - email
+          example: email
+          type: string
       type: object
     fiber.APIError:
       properties:
@@ -487,6 +459,14 @@ components:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
         statusCode:
           type: integer
+      type: object
+    models.Delivery:
+      properties:
+        channels:
+          items:
+            $ref: '#/components/schemas/models.DeliveryChannel'
+          type: array
+          uniqueItems: false
       type: object
     models.Schedule:
       properties:
@@ -507,19 +487,39 @@ components:
         message:
           type: string
       type: object
-    models.Delivery:
+    models.ListDefinitionsResponse:
       properties:
-        channels:
+        has_more:
+          type: boolean
+        items:
           items:
-            $ref: '#/components/schemas/models.DeliveryChannel'
+            $ref: '#/components/schemas/models.Definition'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.ReportFilters:
+      properties:
+        filter_groups:
+          items:
+            $ref: '#/components/schemas/models.FilterGroup'
           type: array
           uniqueItems: false
       type: object
-    models.TriggerNowResponse:
+    models.FilterPattern:
       properties:
-        instance_id:
+        match_type:
+          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
+          enum:
+          - exact
+          - contains
+          - starts_with
+          - ends_with
+          example: starts_with
           type: string
-        message:
+        value:
+          example: PROD_
           type: string
       type: object
   securitySchemes:

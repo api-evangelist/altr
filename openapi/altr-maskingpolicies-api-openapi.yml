@@ -71,6 +71,30 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -95,39 +119,7 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
   parameters:
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
     orderBy:
       name: orderBy
       in: query
@@ -144,7 +136,36 @@ components:
         type: integer
         default: 0
         minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
   schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
     MaskingPolicy:
       type: object
       description: An individual masking policy information.
@@ -198,27 +219,6 @@ components:
           type: string
           description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
           example: '0'
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
   securitySchemes:
     basicAuth:
       type: http

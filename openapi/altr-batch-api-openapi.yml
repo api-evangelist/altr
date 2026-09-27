@@ -191,19 +191,98 @@ paths:
       operationId: putBatchDelete
       x-operation-id-source: derived
 components:
-  responses:
-    BatchReadPartial:
-      description: Partial Read Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchReadPartial'
+  schemas:
+    BatchDelete:
+      type: object
+      properties:
+        unprocessed:
+          type: array
+          example: '[]'
+        success:
+          type: boolean
+          example: true
+    BatchWrite:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W
+            field001:
+              type: string
+              example: token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG
+            field002:
+              type: string
+              example: token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl
+            field003:
+              type: string
+              example: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
+        success:
+          type: boolean
+          example: true
     BatchRead:
-      description: Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchRead'
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: Sample Value 1
+            field001:
+              type: string
+              example: Sample Value 2
+            field002:
+              type: string
+              example: Sample Value 3
+            field003:
+              type: string
+              example: Sample Value 4
+        success:
+          type: boolean
+          example: true
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            data:
+              type: string
+              example: '2022-07-20T18:00:58.723Z'
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+        success:
+          type: boolean
+          example: 'false'
+    BatchReadPartial:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            field000:
+              type: string
+              example: Not a token
+            field001:
+              type: string
+              example: Sample Value 2
+            field002:
+              type: string
+              example: Sample Value 3
+            field003:
+              type: string
+              example: Sample Value 4
+        success:
+          type: boolean
+          example: true
+  responses:
     WriteBadRequest:
       description: Bad Request
       content:
@@ -246,106 +325,6 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
-    BatchDeleteBadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            Default:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Bad Request
-                  statusCode: 400
-                success: false
-            Exceeds limit:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Batch exceeds 1024 limit
-                  statusCode: 400
-                success: false
-            No Tokens:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: No Tokens Given
-                  statusCode: 400
-                success: false
-            Item(s) Too Short:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Item(s) In Batch Too Short
-                  statusCode: 400
-                success: false
-            Item(s) Exceed Length Limit:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Item(s) In Batch Exceed Length Limit
-                  statusCode: 400
-                success: false
-            Transaction Cancelled:
-              value:
-                data:
-                  date: '2022-07-20T18:00:58.723Z'
-                  message: Transaction Cancelled
-                  statusCode: 400
-                success: false
-    BatchDelete:
-      description: Delete Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchDelete'
-          examples:
-            Success: {}
-            Partial Success:
-              value:
-                unprocessed:
-                - message: Too Many Requests
-                  statusCode: '429'
-                  field003: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
-                success: false
-    UnsupportedMediaType:
-      description: Unsupported Media Type
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              date: '2022-07-20T18:00:58.723Z'
-              message: Unsupported Media Type
-              statusCode: 415
-            success: false
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              date: '2022-07-20T18:00:58.723Z'
-              message: Not Found
-              statusCode: 404
-            success: false
-    TooMany:
-      description: Too Many Requests
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              date: '2022-07-20T18:00:58.723Z'
-              message: Too Many Requests
-              statusCode: 429
-            success: false
     ReadBadRequest:
       description: Bad Request
       content:
@@ -402,6 +381,63 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
+    BatchDelete:
+      description: Delete Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchDelete'
+          examples:
+            Success: {}
+            Partial Success:
+              value:
+                unprocessed:
+                - message: Too Many Requests
+                  statusCode: '429'
+                  field003: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
+                success: false
+    BatchRead:
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchRead'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              date: '2022-07-20T18:00:58.723Z'
+              message: Internal Server Error
+              statusCode: 500
+            success: false
+    BatchWrite:
+      description: Response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchWrite'
+    BatchReadPartial:
+      description: Partial Read Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchReadPartial'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              date: '2022-07-20T18:00:58.723Z'
+              message: Not Found
+              statusCode: 404
+            success: false
     Unauthorized:
       description: Unauthorized
       content:
@@ -414,8 +450,57 @@ components:
               message: Unauthorized
               statusCode: 401
             success: false
-    InternalError:
-      description: Internal Error
+    BatchDeleteBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            Default:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Bad Request
+                  statusCode: 400
+                success: false
+            Exceeds limit:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Batch exceeds 1024 limit
+                  statusCode: 400
+                success: false
+            No Tokens:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: No Tokens Given
+                  statusCode: 400
+                success: false
+            Item(s) Too Short:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Item(s) In Batch Too Short
+                  statusCode: 400
+                success: false
+            Item(s) Exceed Length Limit:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Item(s) In Batch Exceed Length Limit
+                  statusCode: 400
+                success: false
+            Transaction Cancelled:
+              value:
+                data:
+                  date: '2022-07-20T18:00:58.723Z'
+                  message: Transaction Cancelled
+                  statusCode: 400
+                success: false
+    TooMany:
+      description: Too Many Requests
       content:
         application/json:
           schema:
@@ -423,8 +508,20 @@ components:
           example:
             data:
               date: '2022-07-20T18:00:58.723Z'
-              message: Internal Server Error
-              statusCode: 500
+              message: Too Many Requests
+              statusCode: 429
+            success: false
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              date: '2022-07-20T18:00:58.723Z'
+              message: Unsupported Media Type
+              statusCode: 415
             success: false
     PartialReadBadRequest:
       description: Bad Request
@@ -482,103 +579,6 @@ components:
                   message: Transaction Cancelled
                   statusCode: 400
                 success: false
-    BatchWrite:
-      description: Response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BatchWrite'
-  schemas:
-    BatchWrite:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: token_D4xX6U0dvORHDCOSrfTFhV7tRea2T1ek0RUpLCKbEKZYyVp3oVYPgKOvTyiDRa1W
-            field001:
-              type: string
-              example: token_fKK064rOjZqHQlacME1kf3niLiBaTwS7Mpf6wla1R7EmwZP4fYeMADGgp9ODPSBG
-            field002:
-              type: string
-              example: token_e85tR2w8id8OQ0DD408NVBLo0MRD2s54CH6xEhUnKMCWeUFhPXAxOKt7HZb06JGl
-            field003:
-              type: string
-              example: token_droAsMKhcUd7WNzmRT06QfpoBgCZlLYqWYQemD2MWDEliYceocd0O8WQDGvl3lTM
-        success:
-          type: boolean
-          example: true
-    BatchDelete:
-      type: object
-      properties:
-        unprocessed:
-          type: array
-          example: '[]'
-        success:
-          type: boolean
-          example: true
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            data:
-              type: string
-              example: '2022-07-20T18:00:58.723Z'
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-        success:
-          type: boolean
-          example: 'false'
-    BatchReadPartial:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: Not a token
-            field001:
-              type: string
-              example: Sample Value 2
-            field002:
-              type: string
-              example: Sample Value 3
-            field003:
-              type: string
-              example: Sample Value 4
-        success:
-          type: boolean
-          example: true
-    BatchRead:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            field000:
-              type: string
-              example: Sample Value 1
-            field001:
-              type: string
-              example: Sample Value 2
-            field002:
-              type: string
-              example: Sample Value 3
-            field003:
-              type: string
-              example: Sample Value 4
-        success:
-          type: boolean
-          example: true
   securitySchemes:
     basicAuth:
       type: http

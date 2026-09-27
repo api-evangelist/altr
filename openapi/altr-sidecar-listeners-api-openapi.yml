@@ -166,6 +166,13 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
     sidecarlisteners.RegisterSidecarListenerInput:
       properties:
         advertised_version:
@@ -188,20 +195,6 @@ components:
           type: array
           uniqueItems: false
       type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
     management.ListenerPort:
       properties:
         advertised_version:
@@ -213,6 +206,13 @@ components:
         port:
           type: integer
           x-order: '0'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
   securitySchemes:
     basic:

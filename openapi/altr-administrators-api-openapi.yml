@@ -224,191 +224,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    UpdatedAdministrator:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Administrator'
-              success:
-                type: boolean
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    Administrator:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/components/schemas/Administrator'
-              success:
-                type: boolean
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Not Found
-              statusCode: 404
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    OkResponse:
-      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-              success:
-                type: boolean
-                example: true
-    Administrators:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  administrators:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Administrator'
-                  count:
-                    type: integer
-                    example: 1
-              success:
-                type: boolean
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-  parameters:
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
   schemas:
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     Administrator:
       type: object
       properties:
@@ -465,6 +281,190 @@ components:
         username:
           type: string
           example: George3
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+  responses:
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Administrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    OkResponse:
+      description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              success:
+                type: boolean
+                example: true
+    Administrators:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  administrators:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Administrator'
+                  count:
+                    type: integer
+                    example: 1
+              success:
+                type: boolean
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    UpdatedAdministrator:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Administrator'
+              success:
+                type: boolean
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
   securitySchemes:
     basicAuth:
       type: http

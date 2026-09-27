@@ -154,11 +154,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    main.APIErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-      type: object
     types.TaskTelemetryItemsResponse:
       properties:
         contiguous_id:
@@ -170,6 +165,23 @@ components:
             $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
           type: array
           uniqueItems: false
+      type: object
+    types.TaskMessage:
+      properties:
+        message:
+          description: Human-readable message
+          maxLength: 1024
+          type: string
+        severity:
+          description: Severity level of the message
+          enum:
+          - Error
+          - Warning
+          - Suggestion
+          type: string
+      required:
+      - message
+      - severity
       type: object
     fiber.APIErrorResponse:
       properties:
@@ -216,22 +228,10 @@ components:
           description: Type of task
           type: string
       type: object
-    types.TaskMessage:
+    main.APIErrorResponse:
       properties:
-        message:
-          description: Human-readable message
-          maxLength: 1024
-          type: string
-        severity:
-          description: Severity level of the message
-          enum:
-          - Error
-          - Warning
-          - Suggestion
-          type: string
-      required:
-      - message
-      - severity
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
   securitySchemes:
     basic:

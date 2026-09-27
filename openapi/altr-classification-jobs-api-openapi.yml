@@ -2222,48 +2222,118 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    types.AzureKeyVault:
+    storage.ReportSummary:
       properties:
-        key_vault_uri:
-          type: string
-        secret_name:
-          type: string
-      required:
-      - key_vault_uri
-      - secret_name
+        classifications:
+          items:
+            $ref: '#/components/schemas/storage.ClassifierSummary'
+          type: array
+          uniqueItems: false
+        totals:
+          $ref: '#/components/schemas/storage.ReportSummaryTotals'
       type: object
-    types.DecisionItem:
+    types.GetFindingsTreeRootOutput:
       properties:
-        carried_from_job_id:
-          description: 'CarriedFromJobID is set on decisions COPIED forward from a prior confirmed
-
-            job during a carry-forward rerun (CopyDecisionsForward). Empty for a decision
-
-            made fresh in this job''s own review. The resolver uses this to enforce the
-
-            new-findings invariant: a carried decision never covers an is_new finding —
-
-            only a fresh (CarriedFromJobID == "") decision does (see
-
-            findings_tree_column_status_buckets.go effectiveDecisionForClassifier).'
+        items:
+          items:
+            $ref: '#/components/schemas/types.FindingsTreeDatabaseItem'
+          type: array
+          uniqueItems: false
+        next_page_token:
           type: string
+      type: object
+    types.FindingsTreeClassifierItem:
+      properties:
         classifier_name:
-          type: string
-        column:
           type: string
         confirmed_status:
           type: string
+        is_new:
+          description: 'IsNew is the carry-forward flag for this (column × classifier) leaf: true
+
+            iff the leaf was absent from the prior confirmed run (a NEW finding on a
+
+            rerun). It also drives the is_new-aware leaf pill in AttachLeafDecisionStatus:
+
+            a new leaf ignores carried decisions so it reads as pending rather than
+
+            inheriting a broad carried approve.'
+          type: boolean
+        match_rate_avg:
+          type: number
+        status_confirmed:
+          type: integer
+        status_pending:
+          type: integer
+        status_rejected:
+          type: integer
+        total_findings:
+          type: integer
+      type: object
+    decisions.DeleteDecisionInput:
+      properties:
+        classifier_name:
+          example: pii-detector
+          type: string
+          x-order: E
+        column:
+          example: email
+          type: string
+          x-order: D
         database:
+          example: mydb
           type: string
-        decided_at:
-          type: string
-        job_id:
-          type: string
-        org_id:
-          type: string
+          x-order: A
         schema:
+          example: public
           type: string
+          x-order: B
         table:
+          example: users
+          type: string
+          x-order: C
+      type: object
+    types.ConditionResultType:
+      description: Common fields
+      enum:
+      - leaf
+      - group
+      example: leaf
+      type: string
+      x-enum-varnames:
+      - ConditionResultTypeLeaf
+      - ConditionResultTypeGroup
+    types.FindingsTreeDatabaseItem:
+      properties:
+        column_status_counts:
+          $ref: '#/components/schemas/types.ColumnStatusBuckets'
+        distinct_classifier_count:
+          type: integer
+        findings_count:
+          type: integer
+        fully_decided:
+          type: boolean
+        match_rate_avg:
+          type: number
+        name:
+          type: string
+        new_findings_count:
+          description: 'NewFindingsCount is the carry-forward "+N new" badge: the number of
+
+            (column × classifier) leaves under this node''s subtree flagged is_new=1
+
+            (absent from the prior confirmed run). No omitempty — a 0 ("no new
+
+            findings") is a meaningful, explicit signal the UI must distinguish from
+
+            an absent field.'
+          type: integer
+      type: object
+    storage.GetS3PresignedURLOutput:
+      properties:
+        expiration:
+          type: string
+        url:
           type: string
       type: object
     types.GetFindingsTreeTablesOutput:
@@ -2276,40 +2346,104 @@ components:
         next_page_token:
           type: string
       type: object
-    types.FindingsTreeColumnItem:
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    types.JobGroup:
       properties:
-        classifier_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        column_status:
+        classification_method_label:
           type: string
-        distinct_classifier_count:
+        classification_type:
           type: integer
-        findings_count:
+        collection_name:
+          type: string
+        connection_type:
+          type: string
+        database_id:
           type: integer
-        fully_decided:
+        group_id:
+          type: string
+        has_more_runs:
           type: boolean
-        match_rate_avg:
-          type: number
-        name:
-          type: string
-        new_findings_count:
-          description: NewFindingsCount — see FindingsTreeDatabaseItem.NewFindingsCount.
-          type: integer
-      type: object
-    types.GetFindingsTreeClassifiersOutput:
-      properties:
-        items:
+        jobs:
+          description: the group's LATEST run only (0 or 1); page the rest via GET /jobs/groups/{group_id}/runs
           items:
-            $ref: '#/components/schemas/types.FindingsTreeClassifierItem'
+            $ref: '#/components/schemas/types.JobGroupChild'
           type: array
           uniqueItems: false
-        next_page_token:
+        source_key:
           type: string
       type: object
-    types.FindingsTreeTableItem:
+    decisions.PostDecisionInput:
+      properties:
+        classifier_name:
+          example: pii-detector
+          type: string
+          x-order: E
+        column:
+          example: email
+          type: string
+          x-order: D
+        confirmed_status:
+          enum:
+          - approved
+          - rejected
+          type: string
+          x-order: F
+        database:
+          example: mydb
+          type: string
+          x-order: A
+        schema:
+          example: public
+          type: string
+          x-order: B
+        table:
+          example: users
+          type: string
+          x-order: C
+      required:
+      - confirmed_status
+      type: object
+    types.JobType:
+      description: Job details
+      enum:
+      - FULL
+      - INCREMENTAL
+      type: string
+      x-enum-varnames:
+      - JobTypeFullClassification
+      - JobTypeIncrementalClassification
+    types.FindingsTreeSchemaItem:
       properties:
         column_status_counts:
           $ref: '#/components/schemas/types.ColumnStatusBuckets'
@@ -2326,6 +2460,156 @@ components:
         new_findings_count:
           description: NewFindingsCount — see FindingsTreeDatabaseItem.NewFindingsCount.
           type: integer
+      type: object
+    reportgenerator.OLTPClassificationRecord:
+      properties:
+        classified:
+          type: boolean
+        classifier_name:
+          type: string
+        classifier_threshold:
+          type: number
+        column_name:
+          type: string
+        column_size:
+          description: 'ColumnSizeVal is the agent-decorated declared column size from schema
+
+            metadata. Nil when unavailable (e.g. types with no declared length).
+
+            Named ColumnSizeVal to avoid collision with the maximum_length field.'
+          type: integer
+        content_format:
+          description: 'ContentFormat is the agent-decorated dominant content-type for this column
+
+            (JSON/XML/HTML/YAML/CSV/BASE64/PLAIN_TEXT). Empty when the agent had no
+
+            sample data (metadata-only sampling).'
+          type: string
+        content_format_ratio:
+          description: 'ContentFormatRatio is the winning-format frequency in [0.0, 1.0]. Nil when
+
+            ContentFormat is empty.'
+          type: number
+        created_at:
+          type: string
+        data_type:
+          type: string
+        database_name:
+          type: string
+        decision_lineage:
+          $ref: '#/components/schemas/types.DecisionLineage'
+        fully_qualified_name:
+          type: string
+        gdlp_classifier:
+          type: string
+        gdlp_likelihood:
+          type: string
+        id:
+          type: integer
+        match_percentage:
+          type: number
+        matched_rows:
+          type: integer
+        maximum_length:
+          type: integer
+        regex_pattern:
+          type: string
+        sample_size:
+          type: integer
+        sample_type:
+          type: string
+        schema_name:
+          type: string
+        table_name:
+          type: string
+        total_rows:
+          type: integer
+        updated_at:
+          type: string
+      type: object
+    storage.ReportSummaryTotals:
+      properties:
+        classified_columns:
+          type: integer
+        percent_successfully_classified:
+          type: number
+        total_columns:
+          type: integer
+      type: object
+    jobs.CreateSnowflakeJobInput:
+      properties:
+        classification_type:
+          description: "Classification engine to use. Defaults to altr_native when omitted.\n  - altr_native: ALTR regex classification via Snowflake UDFs. Requires collection_name and job_type.\n  - gdlp: Google DLP classification hosted by ALTR. Optionally accepts collection_name to scope infoTypes."
+          enum:
+          - altr_native
+          - gdlp
+          example: altr_native
+          type: string
+          x-order: '1'
+        collection_name:
+          description: Collection name. Required for altr_native (ALTR classifier collection). Optional for gdlp (GDLP collection to scope infoTypes).
+          example: pii_classifiers
+          type: string
+          x-order: '2'
+        condition_types:
+          description: 'Condition types to evaluate. Auto-derived from sample_strategy when omitted.
+
+            Valid: ROW_DATA, METADATA, COLUMN_LOCATION, GDLP, SNOWFLAKE_NATIVE, CONTENT_TYPE, DATA_LENGTH, COLUMN_SIZE, AMAZON_COMPREHEND. AMAZON_COMPREHEND is evaluated only on the GDLP worker path; on the ALTR Native in-warehouse pushdown it auto-resolves evaluated=false.
+
+            SNOWFLAKE_NATIVE evaluates against the SEMANTIC_CATEGORY / PRIVACY_CATEGORY
+
+            tags produced by Snowflake''s native classifier and is auto-enabled on
+
+            Snowflake-native job types (classification_type 2 / 3 / 4).'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+          x-order: '7'
+        database_id:
+          description: Database ID of the registered Snowflake database to classify.
+          example: 42
+          type: integer
+          x-order: '0'
+        job_type:
+          description: Job type. Required for altr_native; defaults to FULL for gdlp.
+          enum:
+          - FULL
+          - INCREMENTAL
+          example: FULL
+          type: string
+          x-order: '3'
+        requires_review:
+          description: 'When true, defer the consumable report behind the human review gate: the job
+
+            pauses at AWAITING_REVIEW until decisions are confirmed via POST /jobs/{id}/report/confirm.'
+          example: false
+          type: boolean
+          x-order: '8'
+        sample_size:
+          description: Number of rows to sample per column. Defaults to 100 when omitted.
+          example: 500
+          type: integer
+          x-order: '5'
+        sample_strategy:
+          description: 'Sampling strategy. ROWS: sample row data. METADATA: column names only (altr_native only). COMBINED: both.'
+          enum:
+          - ROWS
+          - METADATA
+          - COMBINED
+          example: COMBINED
+          type: string
+          x-order: '4'
+        sample_type:
+          description: 'Sampling method. ROWS: fixed row count. PERCENT: percentage of total rows.'
+          enum:
+          - ROWS
+          - PERCENT
+          example: ROWS
+          type: string
+          x-order: '6'
+      required:
+      - database_id
       type: object
     jobs.CreateOLTPJobInput:
       properties:
@@ -2409,13 +2693,6 @@ components:
           type: string
           x-order: '15'
       type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
     jobs.CreateDatabricksJobInput:
       properties:
         collection_name:
@@ -2442,6 +2719,39 @@ components:
           x-order: '3'
       required:
       - database_id
+      type: object
+    types.AzureKeyVault:
+      properties:
+        key_vault_uri:
+          type: string
+        secret_name:
+          type: string
+      required:
+      - key_vault_uri
+      - secret_name
+      type: object
+    types.FindingsTreeColumnItem:
+      properties:
+        classifier_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        column_status:
+          type: string
+        distinct_classifier_count:
+          type: integer
+        findings_count:
+          type: integer
+        fully_decided:
+          type: boolean
+        match_rate_avg:
+          type: number
+        name:
+          type: string
+        new_findings_count:
+          description: NewFindingsCount — see FindingsTreeDatabaseItem.NewFindingsCount.
+          type: integer
       type: object
     types.DecisionLineage:
       properties:
@@ -2501,6 +2811,242 @@ components:
           type: array
           uniqueItems: false
       type: object
+    management.ReviewStatusOutput:
+      properties:
+        approved:
+          type: integer
+        pending:
+          type: integer
+        rejected:
+          type: integer
+        total:
+          type: integer
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    types.Repository:
+      properties:
+        description:
+          type: string
+        hostname:
+          maxLength: 500
+          type: string
+        name:
+          maxLength: 32
+          type: string
+        port:
+          maximum: 65535
+          minimum: 0
+          type: integer
+        service_name:
+          type: string
+        sid:
+          description: Oracle-specific fields (mutually exclusive, one required for Oracle)
+          type: string
+        type:
+          description: 'Supported: Oracle, MSSQL, MySQL, Postgres'
+          enum:
+          - Oracle
+          - MSSQL
+          - MySQL
+          - Postgres
+          type: string
+      required:
+      - hostname
+      - name
+      - port
+      - type
+      type: object
+    jobs.UploadJobResultsBody:
+      properties:
+        chunk_index:
+          type: integer
+        records:
+          items:
+            $ref: '#/components/schemas/reportgenerator.OLTPClassificationRecord'
+          type: array
+          uniqueItems: false
+      type: object
+    types.JobItem:
+      properties:
+        agent_id:
+          description: OLTP Job details
+          type: string
+        classification_type:
+          $ref: '#/components/schemas/types.ClassificationType'
+        collection_name:
+          type: string
+        cols_processed:
+          description: Processing metrics
+          type: integer
+        completed_at:
+          description: Time is always stored RFC3339
+          type: string
+        condition_types:
+          description: 'ConditionTypes specifies which evaluation passes to run for this job.
+
+            Valid values: ROW_DATA, METADATA, COLUMN_LOCATION, GDLP, SNOWFLAKE_NATIVE,
+
+            CONTENT_TYPE, DATA_LENGTH, COLUMN_SIZE, AMAZON_COMPREHEND.
+
+            When absent (nil), derived from sample_strategy for backward compatibility;
+
+            an explicitly empty list ([]) means "evaluate no targets" (every leaf
+
+            auto-resolves evaluated=false). Stored as a DynamoDB List (not a String Set)
+
+            so the empty case is representable — a String Set cannot be empty and would
+
+            drop [] to absent. Readers unmarshal both List and legacy String Set into
+
+            []string, so this is backward-compatible on read.'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        confirmed_by:
+          description: 'ConfirmedBy is the actor who confirmed the report, stamped at AcceptReportConfirm
+
+            so the detached report task can read it when advancing the carry-forward anchor.'
+          type: string
+        database_id:
+          description: Standard job fields
+          type: integer
+        findings_count:
+          description: 'D-13: total findings count stamped by process_report; no omitempty so 0 is distinguishable from missing'
+          type: integer
+        hitl_task_token:
+          description: 'D-12: HITL Step Function task token; separate from task_id'
+          type: string
+        job_id:
+          type: string
+        job_type:
+          $ref: '#/components/schemas/types.JobType'
+        new_findings_count:
+          description: 'NewFindingsCount is the number of is_new (column × classifier) leaves stamped
+
+            by process_report on a carry-forward rerun — findings absent from the prior
+
+            confirmed run. 0 on first runs and on reruns with nothing new (this field alone
+
+            does NOT distinguish those two — whether a job is a rerun is signaled by
+
+            CarryForwardFrom / parent_job_id). No omitempty so the count serializes as an
+
+            explicit 0 rather than being dropped.'
+          type: integer
+        org_id:
+          type: string
+        parent_job_id:
+          description: ParentJobID links a carry-forward rerun to the prior confirmed job whose decisions were carried forward.
+          type: string
+        pause_count:
+          type: integer
+        platform:
+          description: '"snowflake" or "databricks"'
+          type: string
+        report_confirmed_at:
+          description: RFC3339
+          type: string
+        report_status:
+          $ref: '#/components/schemas/types.ReportStatus'
+        repository:
+          $ref: '#/components/schemas/types.Repository'
+        requires_review:
+          description: 'Review workflow fields
+
+            RequiresReview opts the job into the HitL report gate: when true, report
+
+            generation produces only the review substrate (findings_index.db + a private
+
+            unfiltered full-report draft) and the consumable report is deferred until
+
+            ConfirmReport runs with all findings decided. Defaults false → legacy
+
+            generate-immediately behavior.'
+          type: boolean
+        retry_count:
+          type: integer
+        review_status:
+          description: 'ReviewStatus is a DERIVED, never-stored projection of the gated review
+
+            lifecycle for the jobs-list UI (dynamodbav:"-"). Populated at read time via
+
+            DeriveReviewStatus. Richer presentation pills (needs-review vs in-review
+
+            progress %, "re-confirm soon" staleness) are the frontend''s job, derived from
+
+            the raw report_status / findings_count / new_findings_count / report_confirmed_at
+
+            fields; this field only exposes the phase the engine authoritatively knows.'
+          type: string
+        sample_size:
+          type: integer
+        sample_strategy:
+          type: string
+        sample_type:
+          type: string
+        service_user:
+          $ref: '#/components/schemas/types.ServiceUser'
+        started_at:
+          description: Time is always stored RFC3339
+          type: string
+        status:
+          $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.JobStatus'
+        task_id:
+          type: string
+        updated_at:
+          description: Time is always stored RFC3339
+          type: string
+      type: object
+    types.DecisionItem:
+      properties:
+        carried_from_job_id:
+          description: 'CarriedFromJobID is set on decisions COPIED forward from a prior confirmed
+
+            job during a carry-forward rerun (CopyDecisionsForward). Empty for a decision
+
+            made fresh in this job''s own review. The resolver uses this to enforce the
+
+            new-findings invariant: a carried decision never covers an is_new finding —
+
+            only a fresh (CarriedFromJobID == "") decision does (see
+
+            findings_tree_column_status_buckets.go effectiveDecisionForClassifier).'
+          type: string
+        classifier_name:
+          type: string
+        column:
+          type: string
+        confirmed_status:
+          type: string
+        database:
+          type: string
+        decided_at:
+          type: string
+        job_id:
+          type: string
+        org_id:
+          type: string
+        schema:
+          type: string
+        table:
+          type: string
+      type: object
+    types.AWSSecretsManager:
+      properties:
+        iam_role:
+          type: string
+        secrets_path:
+          type: string
+      required:
+      - secrets_path
+      type: object
     jobs.UpdateJobStatusInput:
       properties:
         status:
@@ -2510,6 +3056,178 @@ components:
           - CANCELLED
           type: string
           x-order: '0'
+      type: object
+    management.ListDecisionsOutput:
+      properties:
+        decisions:
+          items:
+            $ref: '#/components/schemas/types.DecisionItem'
+          type: array
+          uniqueItems: false
+        next_page_token:
+          type: string
+      type: object
+    types.GetFindingsTreeColumnsOutput:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/types.FindingsTreeColumnItem'
+          type: array
+          uniqueItems: false
+        next_page_token:
+          type: string
+      type: object
+    jobs.ListJobGroupsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/types.JobGroup'
+          type: array
+          uniqueItems: false
+      type: object
+    types.SecretFile:
+      properties:
+        path:
+          type: string
+      required:
+      - path
+      type: object
+    types.GetFindingLineageOutput:
+      properties:
+        decision_lineage:
+          $ref: '#/components/schemas/types.DecisionLineage'
+      type: object
+    types.GetFindingsTreeClassifiersOutput:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/types.FindingsTreeClassifierItem'
+          type: array
+          uniqueItems: false
+        next_page_token:
+          type: string
+      type: object
+    types.ClassificationType:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      x-enum-varnames:
+      - GoogleDLP
+      - SnowflakeNative
+      - SnowflakeObjectTagImport
+      - SnowflakeNativeAndTagImport
+      - ALTRNative
+      - GDLPByok
+    gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.JobStatus:
+      enum:
+      - CREATED
+      - RESUMED
+      - PAUSED
+      - RUNNING
+      - COMPLETED
+      - CANCELLED
+      - PENDING_CANCEL
+      - FAILED
+      - UPLOADING_REPORT
+      - PROCESSING_REPORT
+      - PROCESSING_FINDINGS
+      - AWAITING_REVIEW
+      type: string
+      x-enum-varnames:
+      - JobStatusCreated
+      - JobStatusResumed
+      - JobStatusPaused
+      - JobStatusRunning
+      - JobStatusCompleted
+      - JobStatusCancelled
+      - JobStatusPendingCancel
+      - JobStatusFailed
+      - JobStatusUploadingReport
+      - JobStatusProcessingReport
+      - JobStatusProcessingFindings
+      - JobStatusAwaitingReview
+    types.ReportStatus:
+      enum:
+      - draft
+      - in_review
+      - confirmed
+      type: string
+      x-enum-varnames:
+      - ReportStatusDraft
+      - ReportStatusInReview
+      - ReportStatusConfirmed
+    types.ContentFormat:
+      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
+
+        computed. Stay nil when the agent had no sample values (metadata-only
+
+        sampling) or when CONTENT_TYPE was excluded from condition_types.'
+      enum:
+      - JSON
+      - XML
+      - HTML
+      - YAML
+      - CSV
+      - BASE64
+      - PLAIN_TEXT
+      - PDF
+      - DOCX
+      - XLSX
+      - PPTX
+      - MS_OFFICE_LEGACY
+      - RTF
+      - ZIP
+      - GZIP
+      - PNG
+      - JPEG
+      - GIF
+      - TIFF
+      - PARQUET
+      type: string
+      x-enum-varnames:
+      - ContentFormatJSON
+      - ContentFormatXML
+      - ContentFormatHTML
+      - ContentFormatYAML
+      - ContentFormatCSV
+      - ContentFormatBase64
+      - ContentFormatPlainText
+      - ContentFormatPDF
+      - ContentFormatDOCX
+      - ContentFormatXLSX
+      - ContentFormatPPTX
+      - ContentFormatMSOfficeLegacy
+      - ContentFormatRTF
+      - ContentFormatZIP
+      - ContentFormatGZIP
+      - ContentFormatPNG
+      - ContentFormatJPEG
+      - ContentFormatGIF
+      - ContentFormatTIFF
+      - ContentFormatParquet
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
     types.ColumnStatusBuckets:
       properties:
@@ -2526,38 +3244,35 @@ components:
         total:
           type: integer
       type: object
-    types.ConditionTarget:
-      description: 'Leaf fields (present when type is "leaf").
-
-        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
-
-        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
-
-        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
-
-        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
-      enum:
-      - ROW_DATA
-      - METADATA
-      - COLUMN_LOCATION
-      - GDLP
-      - SNOWFLAKE_NATIVE
-      - CONTENT_TYPE
-      - DATA_LENGTH
-      - COLUMN_SIZE
-      - AMAZON_COMPREHEND
-      example: ROW_DATA
-      type: string
-      x-enum-varnames:
-      - ConditionTargetRowData
-      - ConditionTargetMetadata
-      - ConditionTargetColumnLocation
-      - ConditionTargetGDLP
-      - ConditionTargetSnowflakeNative
-      - ConditionTargetContentType
-      - ConditionTargetDataLength
-      - ConditionTargetColumnSize
-      - ConditionTargetComprehend
+    gitlab_ch5_altr_com_altrdb_altr-classification-engine_lambda_api_jobs.ListJobsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        jobs:
+          items:
+            $ref: '#/components/schemas/types.JobItem'
+          type: array
+          uniqueItems: false
+      type: object
+    types.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+      required:
+      - variable_name
+      type: object
+    storage.ClassifierSummary:
+      properties:
+        amount:
+          description: count of findings (column × classifier pairs) for this classifier
+          type: integer
+        classifier_name:
+          description: sourced from summary.json "type"
+          type: string
+        percent:
+          description: amount / total_columns * 100
+          type: number
+      type: object
     types.ConditionResult:
       properties:
         actual_column_size:
@@ -2789,57 +3504,40 @@ components:
         type:
           $ref: '#/components/schemas/types.ConditionResultType'
       type: object
-    types.ConditionResultType:
-      description: Common fields
-      enum:
-      - leaf
-      - group
-      example: leaf
-      type: string
-      x-enum-varnames:
-      - ConditionResultTypeLeaf
-      - ConditionResultTypeGroup
-    storage.ClassifierSummary:
+    types.JobGroupChild:
       properties:
-        amount:
-          description: count of findings (column × classifier pairs) for this classifier
+        cols_processed:
           type: integer
-        classifier_name:
-          description: sourced from summary.json "type"
+        completed_at:
           type: string
-        percent:
-          description: amount / total_columns * 100
-          type: number
-      type: object
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
-    jobs.UploadJobResultsBody:
-      properties:
-        chunk_index:
+        findings_count:
           type: integer
-        records:
-          items:
-            $ref: '#/components/schemas/reportgenerator.OLTPClassificationRecord'
-          type: array
-          uniqueItems: false
+        job_id:
+          type: string
+        new_findings_count:
+          type: integer
+        parent_job_id:
+          type: string
+        report_status:
+          type: string
+        requires_review:
+          type: boolean
+        review_status:
+          type: string
+        started_at:
+          type: string
+        status:
+          type: string
       type: object
-    storage.ReportSummary:
+    types.GetFindingsTreeSchemasOutput:
       properties:
-        classifications:
+        items:
           items:
-            $ref: '#/components/schemas/storage.ClassifierSummary'
+            $ref: '#/components/schemas/types.FindingsTreeSchemaItem'
           type: array
           uniqueItems: false
-        totals:
-          $ref: '#/components/schemas/storage.ReportSummaryTotals'
+        next_page_token:
+          type: string
       type: object
     types.ServiceUser:
       properties:
@@ -2859,356 +3557,23 @@ components:
       required:
       - username
       type: object
-    types.GetFindingsTreeRootOutput:
+    types.FindingsTreeTableItem:
       properties:
-        items:
-          items:
-            $ref: '#/components/schemas/types.FindingsTreeDatabaseItem'
-          type: array
-          uniqueItems: false
-        next_page_token:
-          type: string
-      type: object
-    storage.ReportSummaryTotals:
-      properties:
-        classified_columns:
-          type: integer
-        percent_successfully_classified:
-          type: number
-        total_columns:
-          type: integer
-      type: object
-    types.GetFindingsTreeColumnsOutput:
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/types.FindingsTreeColumnItem'
-          type: array
-          uniqueItems: false
-        next_page_token:
-          type: string
-      type: object
-    types.GetFindingsTreeSchemasOutput:
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/types.FindingsTreeSchemaItem'
-          type: array
-          uniqueItems: false
-        next_page_token:
-          type: string
-      type: object
-    management.ReviewStatusOutput:
-      properties:
-        approved:
-          type: integer
-        pending:
-          type: integer
-        rejected:
-          type: integer
-        total:
-          type: integer
-      type: object
-    jobs.CreateSnowflakeJobInput:
-      properties:
-        classification_type:
-          description: "Classification engine to use. Defaults to altr_native when omitted.\n  - altr_native: ALTR regex classification via Snowflake UDFs. Requires collection_name and job_type.\n  - gdlp: Google DLP classification hosted by ALTR. Optionally accepts collection_name to scope infoTypes."
-          enum:
-          - altr_native
-          - gdlp
-          example: altr_native
-          type: string
-          x-order: '1'
-        collection_name:
-          description: Collection name. Required for altr_native (ALTR classifier collection). Optional for gdlp (GDLP collection to scope infoTypes).
-          example: pii_classifiers
-          type: string
-          x-order: '2'
-        condition_types:
-          description: 'Condition types to evaluate. Auto-derived from sample_strategy when omitted.
-
-            Valid: ROW_DATA, METADATA, COLUMN_LOCATION, GDLP, SNOWFLAKE_NATIVE, CONTENT_TYPE, DATA_LENGTH, COLUMN_SIZE, AMAZON_COMPREHEND. AMAZON_COMPREHEND is evaluated only on the GDLP worker path; on the ALTR Native in-warehouse pushdown it auto-resolves evaluated=false.
-
-            SNOWFLAKE_NATIVE evaluates against the SEMANTIC_CATEGORY / PRIVACY_CATEGORY
-
-            tags produced by Snowflake''s native classifier and is auto-enabled on
-
-            Snowflake-native job types (classification_type 2 / 3 / 4).'
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-          x-order: '7'
-        database_id:
-          description: Database ID of the registered Snowflake database to classify.
-          example: 42
-          type: integer
-          x-order: '0'
-        job_type:
-          description: Job type. Required for altr_native; defaults to FULL for gdlp.
-          enum:
-          - FULL
-          - INCREMENTAL
-          example: FULL
-          type: string
-          x-order: '3'
-        requires_review:
-          description: 'When true, defer the consumable report behind the human review gate: the job
-
-            pauses at AWAITING_REVIEW until decisions are confirmed via POST /jobs/{id}/report/confirm.'
-          example: false
-          type: boolean
-          x-order: '8'
-        sample_size:
-          description: Number of rows to sample per column. Defaults to 100 when omitted.
-          example: 500
-          type: integer
-          x-order: '5'
-        sample_strategy:
-          description: 'Sampling strategy. ROWS: sample row data. METADATA: column names only (altr_native only). COMBINED: both.'
-          enum:
-          - ROWS
-          - METADATA
-          - COMBINED
-          example: COMBINED
-          type: string
-          x-order: '4'
-        sample_type:
-          description: 'Sampling method. ROWS: fixed row count. PERCENT: percentage of total rows.'
-          enum:
-          - ROWS
-          - PERCENT
-          example: ROWS
-          type: string
-          x-order: '6'
-      required:
-      - database_id
-      type: object
-    storage.GetS3PresignedURLOutput:
-      properties:
-        expiration:
-          type: string
-        url:
-          type: string
-      type: object
-    reportgenerator.OLTPClassificationRecord:
-      properties:
-        classified:
-          type: boolean
-        classifier_name:
-          type: string
-        classifier_threshold:
-          type: number
-        column_name:
-          type: string
-        column_size:
-          description: 'ColumnSizeVal is the agent-decorated declared column size from schema
-
-            metadata. Nil when unavailable (e.g. types with no declared length).
-
-            Named ColumnSizeVal to avoid collision with the maximum_length field.'
-          type: integer
-        content_format:
-          description: 'ContentFormat is the agent-decorated dominant content-type for this column
-
-            (JSON/XML/HTML/YAML/CSV/BASE64/PLAIN_TEXT). Empty when the agent had no
-
-            sample data (metadata-only sampling).'
-          type: string
-        content_format_ratio:
-          description: 'ContentFormatRatio is the winning-format frequency in [0.0, 1.0]. Nil when
-
-            ContentFormat is empty.'
-          type: number
-        created_at:
-          type: string
-        data_type:
-          type: string
-        database_name:
-          type: string
-        decision_lineage:
-          $ref: '#/components/schemas/types.DecisionLineage'
-        fully_qualified_name:
-          type: string
-        gdlp_classifier:
-          type: string
-        gdlp_likelihood:
-          type: string
-        id:
-          type: integer
-        match_percentage:
-          type: number
-        matched_rows:
-          type: integer
-        maximum_length:
-          type: integer
-        regex_pattern:
-          type: string
-        sample_size:
-          type: integer
-        sample_type:
-          type: string
-        schema_name:
-          type: string
-        table_name:
-          type: string
-        total_rows:
-          type: integer
-        updated_at:
-          type: string
-      type: object
-    types.ColumnLocation:
-      properties:
-        database:
-          example: prod_db
-          type: string
-        schema:
-          example: pii
-          type: string
-        table:
-          example: customers
-          type: string
-      type: object
-    types.JobItem:
-      properties:
-        agent_id:
-          description: OLTP Job details
-          type: string
-        classification_type:
-          $ref: '#/components/schemas/types.ClassificationType'
-        collection_name:
-          type: string
-        cols_processed:
-          description: Processing metrics
-          type: integer
-        completed_at:
-          description: Time is always stored RFC3339
-          type: string
-        condition_types:
-          description: 'ConditionTypes specifies which evaluation passes to run for this job.
-
-            Valid values: ROW_DATA, METADATA, COLUMN_LOCATION, GDLP, SNOWFLAKE_NATIVE,
-
-            CONTENT_TYPE, DATA_LENGTH, COLUMN_SIZE, AMAZON_COMPREHEND.
-
-            When absent (nil), derived from sample_strategy for backward compatibility;
-
-            an explicitly empty list ([]) means "evaluate no targets" (every leaf
-
-            auto-resolves evaluated=false). Stored as a DynamoDB List (not a String Set)
-
-            so the empty case is representable — a String Set cannot be empty and would
-
-            drop [] to absent. Readers unmarshal both List and legacy String Set into
-
-            []string, so this is backward-compatible on read.'
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        confirmed_by:
-          description: 'ConfirmedBy is the actor who confirmed the report, stamped at AcceptReportConfirm
-
-            so the detached report task can read it when advancing the carry-forward anchor.'
-          type: string
-        database_id:
-          description: Standard job fields
+        column_status_counts:
+          $ref: '#/components/schemas/types.ColumnStatusBuckets'
+        distinct_classifier_count:
           type: integer
         findings_count:
-          description: 'D-13: total findings count stamped by process_report; no omitempty so 0 is distinguishable from missing'
           type: integer
-        hitl_task_token:
-          description: 'D-12: HITL Step Function task token; separate from task_id'
-          type: string
-        job_id:
-          type: string
-        job_type:
-          $ref: '#/components/schemas/types.JobType'
-        new_findings_count:
-          description: 'NewFindingsCount is the number of is_new (column × classifier) leaves stamped
-
-            by process_report on a carry-forward rerun — findings absent from the prior
-
-            confirmed run. 0 on first runs and on reruns with nothing new (this field alone
-
-            does NOT distinguish those two — whether a job is a rerun is signaled by
-
-            CarryForwardFrom / parent_job_id). No omitempty so the count serializes as an
-
-            explicit 0 rather than being dropped.'
-          type: integer
-        org_id:
-          type: string
-        parent_job_id:
-          description: ParentJobID links a carry-forward rerun to the prior confirmed job whose decisions were carried forward.
-          type: string
-        pause_count:
-          type: integer
-        platform:
-          description: '"snowflake" or "databricks"'
-          type: string
-        report_confirmed_at:
-          description: RFC3339
-          type: string
-        report_status:
-          $ref: '#/components/schemas/types.ReportStatus'
-        repository:
-          $ref: '#/components/schemas/types.Repository'
-        requires_review:
-          description: 'Review workflow fields
-
-            RequiresReview opts the job into the HitL report gate: when true, report
-
-            generation produces only the review substrate (findings_index.db + a private
-
-            unfiltered full-report draft) and the consumable report is deferred until
-
-            ConfirmReport runs with all findings decided. Defaults false → legacy
-
-            generate-immediately behavior.'
+        fully_decided:
           type: boolean
-        retry_count:
+        match_rate_avg:
+          type: number
+        name:
+          type: string
+        new_findings_count:
+          description: NewFindingsCount — see FindingsTreeDatabaseItem.NewFindingsCount.
           type: integer
-        review_status:
-          description: 'ReviewStatus is a DERIVED, never-stored projection of the gated review
-
-            lifecycle for the jobs-list UI (dynamodbav:"-"). Populated at read time via
-
-            DeriveReviewStatus. Richer presentation pills (needs-review vs in-review
-
-            progress %, "re-confirm soon" staleness) are the frontend''s job, derived from
-
-            the raw report_status / findings_count / new_findings_count / report_confirmed_at
-
-            fields; this field only exposes the phase the engine authoritatively knows.'
-          type: string
-        sample_size:
-          type: integer
-        sample_strategy:
-          type: string
-        sample_type:
-          type: string
-        service_user:
-          $ref: '#/components/schemas/types.ServiceUser'
-        started_at:
-          description: Time is always stored RFC3339
-          type: string
-        status:
-          $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.JobStatus'
-        task_id:
-          type: string
-        updated_at:
-          description: Time is always stored RFC3339
-          type: string
-      type: object
-    types.AWSSecretsManager:
-      properties:
-        iam_role:
-          type: string
-        secrets_path:
-          type: string
-      required:
-      - secrets_path
       type: object
     jobs.CreateJobInput:
       properties:
@@ -3281,383 +3646,18 @@ components:
           type: string
           x-order: '8'
       type: object
-    types.JobGroupChild:
+    types.ColumnLocation:
       properties:
-        cols_processed:
-          type: integer
-        completed_at:
-          type: string
-        findings_count:
-          type: integer
-        job_id:
-          type: string
-        new_findings_count:
-          type: integer
-        parent_job_id:
-          type: string
-        report_status:
-          type: string
-        requires_review:
-          type: boolean
-        review_status:
-          type: string
-        started_at:
-          type: string
-        status:
-          type: string
-      type: object
-    types.ReportStatus:
-      enum:
-      - draft
-      - in_review
-      - confirmed
-      type: string
-      x-enum-varnames:
-      - ReportStatusDraft
-      - ReportStatusInReview
-      - ReportStatusConfirmed
-    decisions.PostDecisionInput:
-      properties:
-        classifier_name:
-          example: pii-detector
-          type: string
-          x-order: E
-        column:
-          example: email
-          type: string
-          x-order: D
-        confirmed_status:
-          enum:
-          - approved
-          - rejected
-          type: string
-          x-order: F
         database:
-          example: mydb
+          example: prod_db
           type: string
-          x-order: A
         schema:
-          example: public
+          example: pii
           type: string
-          x-order: B
         table:
-          example: users
-          type: string
-          x-order: C
-      required:
-      - confirmed_status
-      type: object
-    types.FindingsTreeDatabaseItem:
-      properties:
-        column_status_counts:
-          $ref: '#/components/schemas/types.ColumnStatusBuckets'
-        distinct_classifier_count:
-          type: integer
-        findings_count:
-          type: integer
-        fully_decided:
-          type: boolean
-        match_rate_avg:
-          type: number
-        name:
-          type: string
-        new_findings_count:
-          description: 'NewFindingsCount is the carry-forward "+N new" badge: the number of
-
-            (column × classifier) leaves under this node''s subtree flagged is_new=1
-
-            (absent from the prior confirmed run). No omitempty — a 0 ("no new
-
-            findings") is a meaningful, explicit signal the UI must distinguish from
-
-            an absent field.'
-          type: integer
-      type: object
-    types.SecretFile:
-      properties:
-        path:
-          type: string
-      required:
-      - path
-      type: object
-    gitlab_ch5_altr_com_altrdb_altr-classification-engine_lambda_api_jobs.ListJobsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        jobs:
-          items:
-            $ref: '#/components/schemas/types.JobItem'
-          type: array
-          uniqueItems: false
-      type: object
-    types.GetFindingLineageOutput:
-      properties:
-        decision_lineage:
-          $ref: '#/components/schemas/types.DecisionLineage'
-      type: object
-    types.ClassificationType:
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      type: integer
-      x-enum-varnames:
-      - GoogleDLP
-      - SnowflakeNative
-      - SnowflakeObjectTagImport
-      - SnowflakeNativeAndTagImport
-      - ALTRNative
-      - GDLPByok
-    types.Repository:
-      properties:
-        description:
-          type: string
-        hostname:
-          maxLength: 500
-          type: string
-        name:
-          maxLength: 32
-          type: string
-        port:
-          maximum: 65535
-          minimum: 0
-          type: integer
-        service_name:
-          type: string
-        sid:
-          description: Oracle-specific fields (mutually exclusive, one required for Oracle)
-          type: string
-        type:
-          description: 'Supported: Oracle, MSSQL, MySQL, Postgres'
-          enum:
-          - Oracle
-          - MSSQL
-          - MySQL
-          - Postgres
-          type: string
-      required:
-      - hostname
-      - name
-      - port
-      - type
-      type: object
-    types.EnvironmentVariable:
-      properties:
-        variable_name:
-          type: string
-      required:
-      - variable_name
-      type: object
-    types.JobType:
-      description: Job details
-      enum:
-      - FULL
-      - INCREMENTAL
-      type: string
-      x-enum-varnames:
-      - JobTypeFullClassification
-      - JobTypeIncrementalClassification
-    management.ListDecisionsOutput:
-      properties:
-        decisions:
-          items:
-            $ref: '#/components/schemas/types.DecisionItem'
-          type: array
-          uniqueItems: false
-        next_page_token:
+          example: customers
           type: string
       type: object
-    types.JobGroup:
-      properties:
-        classification_method_label:
-          type: string
-        classification_type:
-          type: integer
-        collection_name:
-          type: string
-        connection_type:
-          type: string
-        database_id:
-          type: integer
-        group_id:
-          type: string
-        has_more_runs:
-          type: boolean
-        jobs:
-          description: the group's LATEST run only (0 or 1); page the rest via GET /jobs/groups/{group_id}/runs
-          items:
-            $ref: '#/components/schemas/types.JobGroupChild'
-          type: array
-          uniqueItems: false
-        source_key:
-          type: string
-      type: object
-    types.FindingsTreeClassifierItem:
-      properties:
-        classifier_name:
-          type: string
-        confirmed_status:
-          type: string
-        is_new:
-          description: 'IsNew is the carry-forward flag for this (column × classifier) leaf: true
-
-            iff the leaf was absent from the prior confirmed run (a NEW finding on a
-
-            rerun). It also drives the is_new-aware leaf pill in AttachLeafDecisionStatus:
-
-            a new leaf ignores carried decisions so it reads as pending rather than
-
-            inheriting a broad carried approve.'
-          type: boolean
-        match_rate_avg:
-          type: number
-        status_confirmed:
-          type: integer
-        status_pending:
-          type: integer
-        status_rejected:
-          type: integer
-        total_findings:
-          type: integer
-      type: object
-    types.FindingsTreeSchemaItem:
-      properties:
-        column_status_counts:
-          $ref: '#/components/schemas/types.ColumnStatusBuckets'
-        distinct_classifier_count:
-          type: integer
-        findings_count:
-          type: integer
-        fully_decided:
-          type: boolean
-        match_rate_avg:
-          type: number
-        name:
-          type: string
-        new_findings_count:
-          description: NewFindingsCount — see FindingsTreeDatabaseItem.NewFindingsCount.
-          type: integer
-      type: object
-    gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.JobStatus:
-      enum:
-      - CREATED
-      - RESUMED
-      - PAUSED
-      - RUNNING
-      - COMPLETED
-      - CANCELLED
-      - PENDING_CANCEL
-      - FAILED
-      - UPLOADING_REPORT
-      - PROCESSING_REPORT
-      - PROCESSING_FINDINGS
-      - AWAITING_REVIEW
-      type: string
-      x-enum-varnames:
-      - JobStatusCreated
-      - JobStatusResumed
-      - JobStatusPaused
-      - JobStatusRunning
-      - JobStatusCompleted
-      - JobStatusCancelled
-      - JobStatusPendingCancel
-      - JobStatusFailed
-      - JobStatusUploadingReport
-      - JobStatusProcessingReport
-      - JobStatusProcessingFindings
-      - JobStatusAwaitingReview
-    decisions.DeleteDecisionInput:
-      properties:
-        classifier_name:
-          example: pii-detector
-          type: string
-          x-order: E
-        column:
-          example: email
-          type: string
-          x-order: D
-        database:
-          example: mydb
-          type: string
-          x-order: A
-        schema:
-          example: public
-          type: string
-          x-order: B
-        table:
-          example: users
-          type: string
-          x-order: C
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    jobs.ListJobGroupsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        groups:
-          items:
-            $ref: '#/components/schemas/types.JobGroup'
-          type: array
-          uniqueItems: false
-      type: object
-    types.ContentFormat:
-      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
-
-        computed. Stay nil when the agent had no sample values (metadata-only
-
-        sampling) or when CONTENT_TYPE was excluded from condition_types.'
-      enum:
-      - JSON
-      - XML
-      - HTML
-      - YAML
-      - CSV
-      - BASE64
-      - PLAIN_TEXT
-      - PDF
-      - DOCX
-      - XLSX
-      - PPTX
-      - MS_OFFICE_LEGACY
-      - RTF
-      - ZIP
-      - GZIP
-      - PNG
-      - JPEG
-      - GIF
-      - TIFF
-      - PARQUET
-      type: string
-      x-enum-varnames:
-      - ContentFormatJSON
-      - ContentFormatXML
-      - ContentFormatHTML
-      - ContentFormatYAML
-      - ContentFormatCSV
-      - ContentFormatBase64
-      - ContentFormatPlainText
-      - ContentFormatPDF
-      - ContentFormatDOCX
-      - ContentFormatXLSX
-      - ContentFormatPPTX
-      - ContentFormatMSOfficeLegacy
-      - ContentFormatRTF
-      - ContentFormatZIP
-      - ContentFormatGZIP
-      - ContentFormatPNG
-      - ContentFormatJPEG
-      - ContentFormatGIF
-      - ContentFormatTIFF
-      - ContentFormatParquet
   securitySchemes:
     basic:
       scheme: basic

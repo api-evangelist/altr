@@ -305,11 +305,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.GetRepoBindOutput:
-      properties:
-        repo_sidecar_binding:
-          $ref: '#/components/schemas/management.RepoSidecarBinding'
-      type: object
     management.RepoSidecarBinding:
       properties:
         port:
@@ -323,6 +318,18 @@ components:
           x-order: '2'
       type: object
       x-order: '0'
+    management.GetRepoBindOutput:
+      properties:
+        repo_sidecar_binding:
+          $ref: '#/components/schemas/management.RepoSidecarBinding'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
     management.ListBindingsOutput:
       properties:
         contiguous_id:
@@ -334,13 +341,6 @@ components:
           type: array
           uniqueItems: false
           x-order: '0'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
       type: object
     fiber.APIErrorResponse:
       properties:

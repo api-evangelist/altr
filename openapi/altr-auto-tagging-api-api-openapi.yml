@@ -666,6 +666,13 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    reportstorage.GetReportURLOutput:
+      type: object
+      properties:
+        expiration:
+          type: string
+        report_url:
+          type: string
     management.DeleteOptions:
       type: object
       properties:
@@ -679,6 +686,59 @@ components:
         unset_tags:
           description: When set to true, ALTR will unset tags set by the applied auto tagging configuration.
           type: boolean
+    management.ReportStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping report ID.
+          type: string
+    management.ListAutoTaggingConfigurationOutput:
+      type: object
+      properties:
+        has_more:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.AutoTaggingItem'
+    management.GetAutoTaggingConfigurationOutput:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/management.AutoTaggingItem'
+    main.DeleteAutoTaggingInput:
+      type: object
+      properties:
+        database_id:
+          description: 'Which ALTR DatabaseID credentials to use in order to delete Auto Tagging Configuration.
+
+            Note the given snowflake top level object does not need to live in this given DatabaseID
+
+            as long as the databaseID''s credentials has the necessary permissions to apply the given configuration.'
+          type: integer
+        databricks_object:
+          description: 'The top level databricks object subjected by this Auto Tagging configuration.
+
+            This object and it''s children are impacted by this configuration.
+
+            Mutually exclusive with other objects.'
+          allOf:
+          - $ref: '#/components/schemas/main.DatabricksInput'
+        snowflake_object:
+          description: 'The top level snowflake object subjected by this Auto Tagging configuration.
+
+            This object and it''s children are impacted by this configuration.
+
+            Mutually exclusive with other objects.'
+          allOf:
+          - $ref: '#/components/schemas/main.SnowflakeInput'
+    management.Failure:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
     autotagging.TagMapping:
       type: object
       required:
@@ -710,15 +770,43 @@ components:
           type: string
         table_name:
           type: string
-    management.ListAutoTaggingConfigurationOutput:
+    main.DatabricksInput:
       type: object
       properties:
-        has_more:
-          type: boolean
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.AutoTaggingItem'
+        catalog_name:
+          type: string
+        schema_name:
+          type: string
+        table_name:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    management.Snowflake:
+      type: object
+      required:
+      - account_id
+      - database_name
+      - region
+      properties:
+        account_id:
+          type: string
+        database_name:
+          type: string
+        region:
+          type: string
+        schema_name:
+          type: string
+        table_name:
+          type: string
+    management.MappingStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping storage ID.
+          type: string
     mappingstorage.GetMappingOutput:
       type: object
       properties:
@@ -726,52 +814,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/autotagging.TagMapping'
-    management.Databricks:
-      type: object
-      required:
-      - database_id
-      properties:
-        catalog_name:
-          type: string
-        database_id:
-          type: integer
-        schema_name:
-          type: string
-        table_name:
-          type: string
-    main.DeleteAutoTaggingInput:
+    management.AutoTaggingItem:
       type: object
       properties:
-        database_id:
-          description: 'Which ALTR DatabaseID credentials to use in order to delete Auto Tagging Configuration.
+        auto_tagging_applied:
+          description: 'This is the most recent applied configuration which produced an Auto Tagging report.
 
-            Note the given snowflake top level object does not need to live in this given DatabaseID
+            Note that this configuration may not have been completely successful.
 
-            as long as the databaseID''s credentials has the necessary permissions to apply the given configuration.'
-          type: integer
-        databricks_object:
+            The report should be inspected to determine what tags were successfully set/unset.'
+          allOf:
+          - $ref: '#/components/schemas/management.Configuration'
+        auto_tagging_failed:
+          description: 'The configuration which failed to apply due to a critical error.
+
+            If we fail to modify an existing masked tag, we will have both auto_tagging_failed and auto_tagging_applied defined.
+
+            In that situation,  auto_tagging_failed is the configuration which failed to apply due to a critical error,
+
+            while auto_tagging_applied is the previous configuration prior to the failed modification.'
+          allOf:
+          - $ref: '#/components/schemas/management.Configuration'
+        auto_tagging_pending:
+          description: 'The configuration which is currently being applied.
+
+            This configuration will be moved to auto_tagging_applied or auto_tagging_failed upon completion.'
+          allOf:
+          - $ref: '#/components/schemas/management.Configuration'
+        client_id:
+          type: string
+        databricks:
           description: 'The top level databricks object subjected by this Auto Tagging configuration.
 
-            This object and it''s children are impacted by this configuration.
-
-            Mutually exclusive with other objects.'
+            This object and it''s children are impacted by this configuration.'
           allOf:
-          - $ref: '#/components/schemas/main.DatabricksInput'
-        snowflake_object:
+          - $ref: '#/components/schemas/management.Databricks'
+        latest_created_at:
+          description: 'The time of the latest configuration change.
+
+            Each individual configuration state (applied, failed, pending) has a created at time.
+
+            This LatestCreatedAt time will be the most recent time of those three states.'
+          type: string
+        snowflake:
           description: 'The top level snowflake object subjected by this Auto Tagging configuration.
 
-            This object and it''s children are impacted by this configuration.
-
-            Mutually exclusive with other objects.'
+            This object and it''s children are impacted by this configuration.'
           allOf:
-          - $ref: '#/components/schemas/main.SnowflakeInput'
-    reportstorage.GetReportURLOutput:
-      type: object
-      properties:
-        expiration:
-          type: string
-        report_url:
-          type: string
+          - $ref: '#/components/schemas/management.Snowflake'
     management.Configuration:
       type: object
       properties:
@@ -828,6 +918,19 @@ components:
             This won''t be defined if the configuration is in auto_tagging_failed or auto_tagging_pending.'
           allOf:
           - $ref: '#/components/schemas/management.ReportStorageInformation'
+    management.Databricks:
+      type: object
+      required:
+      - database_id
+      properties:
+        catalog_name:
+          type: string
+        database_id:
+          type: integer
+        schema_name:
+          type: string
+        table_name:
+          type: string
     management.Progress:
       type: object
       properties:
@@ -841,94 +944,6 @@ components:
           type: integer
         step:
           description: The current step of the auto tagging job.
-          type: string
-    management.Failure:
-      type: object
-      properties:
-        code:
-          type: integer
-        message:
-          type: string
-    management.GetAutoTaggingConfigurationOutput:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/management.AutoTaggingItem'
-    management.MappingStorageInformation:
-      type: object
-      properties:
-        id:
-          description: ALTR Tag Mapping storage ID.
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-    management.AutoTaggingItem:
-      type: object
-      properties:
-        auto_tagging_applied:
-          description: 'This is the most recent applied configuration which produced an Auto Tagging report.
-
-            Note that this configuration may not have been completely successful.
-
-            The report should be inspected to determine what tags were successfully set/unset.'
-          allOf:
-          - $ref: '#/components/schemas/management.Configuration'
-        auto_tagging_failed:
-          description: 'The configuration which failed to apply due to a critical error.
-
-            If we fail to modify an existing masked tag, we will have both auto_tagging_failed and auto_tagging_applied defined.
-
-            In that situation,  auto_tagging_failed is the configuration which failed to apply due to a critical error,
-
-            while auto_tagging_applied is the previous configuration prior to the failed modification.'
-          allOf:
-          - $ref: '#/components/schemas/management.Configuration'
-        auto_tagging_pending:
-          description: 'The configuration which is currently being applied.
-
-            This configuration will be moved to auto_tagging_applied or auto_tagging_failed upon completion.'
-          allOf:
-          - $ref: '#/components/schemas/management.Configuration'
-        client_id:
-          type: string
-        databricks:
-          description: 'The top level databricks object subjected by this Auto Tagging configuration.
-
-            This object and it''s children are impacted by this configuration.'
-          allOf:
-          - $ref: '#/components/schemas/management.Databricks'
-        latest_created_at:
-          description: 'The time of the latest configuration change.
-
-            Each individual configuration state (applied, failed, pending) has a created at time.
-
-            This LatestCreatedAt time will be the most recent time of those three states.'
-          type: string
-        snowflake:
-          description: 'The top level snowflake object subjected by this Auto Tagging configuration.
-
-            This object and it''s children are impacted by this configuration.'
-          allOf:
-          - $ref: '#/components/schemas/management.Snowflake'
-    management.Snowflake:
-      type: object
-      required:
-      - account_id
-      - database_name
-      - region
-      properties:
-        account_id:
-          type: string
-        database_name:
-          type: string
-        region:
-          type: string
-        schema_name:
-          type: string
-        table_name:
           type: string
     main.PutAutoTaggingInput:
       type: object
@@ -983,21 +998,6 @@ components:
           description: 'The ID for an existing the Tag Mapping.
 
             Use this to reuse an existing Tag Mapping.'
-          type: string
-    management.ReportStorageInformation:
-      type: object
-      properties:
-        id:
-          description: ALTR Tag Mapping report ID.
-          type: string
-    main.DatabricksInput:
-      type: object
-      properties:
-        catalog_name:
-          type: string
-        schema_name:
-          type: string
-        table_name:
           type: string
   securitySchemes:
     BasicAuth:

@@ -575,34 +575,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    DataModel:
-      allOf:
-      - $ref: '#/components/schemas/BaseDataModel'
-      - type: object
-        properties:
-          implementation:
-            type:
-            - integer
-            - 'null'
-            enum:
-            - 1
-            - 2
-            - 3
-            description: 'An optional field indicating the way governance on the column was implemented. This only applies to Snowflake CI; this value can also be `null`:
-
-              * `1` - masking policy was created
-
-              * `2` - database does not support masking policies
-
-              * `3` - the column already has a masking policy applied to it.
-
-              '
-          CDMServiceEnabled:
-            type: boolean
-          databaseName:
-            type: string
-            description: The resolvable name of the connected database.
-            example: MainStore
     BaseDataModel:
       type: object
       description: Base Data Model Representation
@@ -767,59 +739,27 @@ components:
         tableName:
           type: string
           example: EMPLOYEES
-    MaskingPolicy:
+    ApiError:
       type: object
-      description: An individual masking policy information.
       properties:
-        id:
-          type: integer
-          description: The unique id of this masking policy
-          example: 10000
-        name:
-          type: string
-          description: The name of this masking policy
-          example: Constant Mask
-        details:
+        data:
           type: object
-          description: Contains additional details about this policy.
           properties:
-            tooltip:
+            message:
               type: string
-              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
-              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
-            example:
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
               type: string
-              description: An example of how this masking policy will be applied.
-              example: '****-**-1234'
-        description:
-          type: string
-          description: The description of the masking policy
-          example: For all your constant masking needs.
-        parameters:
-          type:
-          - object
-          - 'null'
-          description: A custom object that can be NULL, defines the options for custom masking policies.
-        maskType:
-          type: integer
-          enum:
-          - 0
-          - 2
-          - 3
-          - 4
-          - 5
-          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
-
-            '
-          example: 1
-        isEditable:
+              format: date-time
+        success:
           type: boolean
-          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
-          example: false
-        clientId:
-          type: string
-          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
-          example: '0'
     DataMetadata:
       type: object
       properties:
@@ -884,85 +824,100 @@ components:
         metrics_emit_processed:
           type: integer
           example: 111
-    ApiError:
+    DataModel:
+      allOf:
+      - $ref: '#/components/schemas/BaseDataModel'
+      - type: object
+        properties:
+          implementation:
+            type:
+            - integer
+            - 'null'
+            enum:
+            - 1
+            - 2
+            - 3
+            description: 'An optional field indicating the way governance on the column was implemented. This only applies to Snowflake CI; this value can also be `null`:
+
+              * `1` - masking policy was created
+
+              * `2` - database does not support masking policies
+
+              * `3` - the column already has a masking policy applied to it.
+
+              '
+          CDMServiceEnabled:
+            type: boolean
+          databaseName:
+            type: string
+            description: The resolvable name of the connected database.
+            example: MainStore
+    MaskingPolicy:
       type: object
+      description: An individual masking policy information.
       properties:
-        data:
+        id:
+          type: integer
+          description: The unique id of this masking policy
+          example: 10000
+        name:
+          type: string
+          description: The name of this masking policy
+          example: Constant Mask
+        details:
           type: object
+          description: Contains additional details about this policy.
           properties:
-            message:
+            tooltip:
               type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
+              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
+              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
+            example:
               type: string
-              format: date-time
-        success:
+              description: An example of how this masking policy will be applied.
+              example: '****-**-1234'
+        description:
+          type: string
+          description: The description of the masking policy
+          example: For all your constant masking needs.
+        parameters:
+          type:
+          - object
+          - 'null'
+          description: A custom object that can be NULL, defines the options for custom masking policies.
+        maskType:
+          type: integer
+          enum:
+          - 0
+          - 2
+          - 3
+          - 4
+          - 5
+          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
+
+            '
+          example: 1
+        isEditable:
           type: boolean
-  parameters:
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    fieldId:
-      name: fieldId
-      required: true
-      in: path
-      schema:
-        type: integer
-        minimum: 1
-      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
+          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
+          example: false
+        clientId:
+          type: string
+          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
+          example: '0'
   responses:
-    BadRequest:
-      description: Bad Request
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     Forbidden:
       description: Forbidden
       content:
@@ -987,18 +942,6 @@ components:
               statusCode: 404
               date: '2022-07-20T18:00:58.723Z'
             success: false
-    Unprocessed:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unprocessable Entity
-              statusCode: 422
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Unauthorized:
       description: Unauthorized
       content:
@@ -1011,18 +954,75 @@ components:
               statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
-    InternalError:
-      description: Internal Error
+    Unprocessed:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Internal Server Error
-              statusCode: 500
+              message: Unprocessable Entity
+              statusCode: 422
               date: '2022-07-20T18:00:58.723Z'
             success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    fieldId:
+      name: fieldId
+      required: true
+      in: path
+      schema:
+        type: integer
+        minimum: 1
+      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
   securitySchemes:
     basicAuth:
       type: http

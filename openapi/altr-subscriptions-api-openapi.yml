@@ -424,30 +424,6 @@ components:
       - integration_id
       - subscription_id
       type: object
-    models.UpdateSubscriptionRequest:
-      properties:
-        criteria:
-          additionalProperties:
-            $ref: '#/components/schemas/models.CriteriaOperators'
-          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
-
-            entries must match for the event to be delivered (AND across fields).'
-          type: object
-        enabled:
-          type: boolean
-      type: object
-    models.ListSubscriptionsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Subscription'
-          type: array
-          uniqueItems: false
-      type: object
     models.CriteriaOperators:
       properties:
         eq:
@@ -466,19 +442,24 @@ components:
         lte:
           x-order: '3'
       type: object
+    models.UpdateSubscriptionRequest:
+      properties:
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
+
+            entries must match for the event to be delivered (AND across fields).'
+          type: object
+        enabled:
+          type: boolean
+      type: object
     fiber.APIError:
       properties:
         response:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
         statusCode:
           type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
       type: object
     models.CreateSubscriptionRequest:
       properties:
@@ -500,6 +481,25 @@ components:
           type: string
       required:
       - event_type
+      type: object
+    models.ListSubscriptionsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Subscription'
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
   securitySchemes:
     BasicAuth:

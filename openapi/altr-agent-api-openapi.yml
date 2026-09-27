@@ -182,12 +182,10 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    fiber.APIErrorResponse:
+    main.APIErrorResponse:
       properties:
-        error_code:
-          type: integer
-        message:
-          type: string
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
     types.AgentInstancesItemResponse:
       properties:
@@ -200,6 +198,13 @@ components:
             $ref: '#/components/schemas/types.AgentInstanceItemResponse'
           type: array
           uniqueItems: false
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     types.AgentInstanceItemResponse:
       properties:
@@ -232,11 +237,6 @@ components:
             type: string
           description: Tags associated with this instance
           type: object
-      type: object
-    main.APIErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
   securitySchemes:
     basic:

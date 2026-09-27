@@ -469,17 +469,41 @@ components:
         dataTagColumn:
           type: string
           example: COLUMN_NAME
-    TagGroupsList:
+    TagDetailGDLP:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagGroup:
+          type: string
+          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
+        tagKey:
+          type: string
+          example: ALTR_Classification
+        tagValue:
+          type: string
+          example: PERSON_NAME
+        tagName:
+          type: string
+          example: SEMANTIC_CATEGORY
+        tagCreationTimeStamp:
+          type: string
+          example: 01/02/2022 1:1:1
+        columnCount:
+          type: integer
+          example: 10
+    TagList:
       type: object
       properties:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagGroup'
+            $ref: '#/components/schemas/Tag'
         totals:
           type: object
           properties:
-            tagGroupCount:
+            tagCount:
               type: integer
               example: 200
     TaggedColumnList:
@@ -495,6 +519,19 @@ components:
             column_count:
               type: integer
               example: 100
+    TagGroupsList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagGroup'
+        totals:
+          type: object
+          properties:
+            tagGroupCount:
+              type: integer
+              example: 200
     TagGroupDetail:
       type: object
       properties:
@@ -513,6 +550,41 @@ components:
         tagRegion:
           type: string
           example: SNOWFLAKE_KEY
+    TagGroupDeleted:
+      type: object
+      properties:
+        removed_tag_value_count:
+          type: integer
+          format: int64
+          example: 5
+        message:
+          type: string
+          example: Tag group and associated data tags marked as removed successfully.
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    Tag:
+      type: object
+      properties:
+        tagID:
+          type: string
+          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
+        tagKey:
+          type: string
+          example: ALTR_Classification
+        tagValue:
+          type: string
+          example: PERSON_NAME
+        tagCreationTimeStamp:
+          type: string
+          example: 01/02/2022 1:1:1
     TagDetail:
       type: object
       properties:
@@ -549,78 +621,6 @@ components:
         columnCount:
           type: integer
           example: 10
-    Error:
-      type: object
-      properties:
-        errorCode:
-          type: integer
-          format: int64
-          example: 404
-        message:
-          type: string
-          example: Requested ID did not exist.
-    TagList:
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        totals:
-          type: object
-          properties:
-            tagCount:
-              type: integer
-              example: 200
-    TagDetailGDLP:
-      type: object
-      properties:
-        tagID:
-          type: string
-          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
-        tagGroup:
-          type: string
-          example: 7cfa50s0-2f9e-d2cf-b739-b0edb8efc37f
-        tagKey:
-          type: string
-          example: ALTR_Classification
-        tagValue:
-          type: string
-          example: PERSON_NAME
-        tagName:
-          type: string
-          example: SEMANTIC_CATEGORY
-        tagCreationTimeStamp:
-          type: string
-          example: 01/02/2022 1:1:1
-        columnCount:
-          type: integer
-          example: 10
-    Tag:
-      type: object
-      properties:
-        tagID:
-          type: string
-          example: 8cfa50b0-2f9e-52cf-b739-b0eab8e7c37f
-        tagKey:
-          type: string
-          example: ALTR_Classification
-        tagValue:
-          type: string
-          example: PERSON_NAME
-        tagCreationTimeStamp:
-          type: string
-          example: 01/02/2022 1:1:1
-    TagGroupDeleted:
-      type: object
-      properties:
-        removed_tag_value_count:
-          type: integer
-          format: int64
-          example: 5
-        message:
-          type: string
-          example: Tag group and associated data tags marked as removed successfully.
     TagGroup:
       type: object
       properties:

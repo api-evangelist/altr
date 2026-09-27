@@ -287,36 +287,17 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.ListTasksOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        tasks:
-          items:
-            $ref: '#/components/schemas/management.Task'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    tasks.CreateTaskInput:
+    tasks.UpdateTaskInput:
       properties:
         configuration:
           $ref: '#/components/schemas/management.TaskConfiguration'
         description:
           type: string
-          x-order: '1'
         name:
+          description: Name If provided, the name cannot be an empty string.
           type: string
-          x-order: '0'
-        repo_name:
-          type: string
-          x-order: '2'
         schedule:
           $ref: '#/components/schemas/management.Schedule'
-        service_user:
-          type: string
-          x-order: '3'
       type: object
     management.SslConfig:
       description: SSL/TLS configuration - optional for all SIS repo types
@@ -331,18 +312,6 @@ components:
           type: string
         trust_store_path:
           type: string
-      type: object
-    tasks.UpdateTaskInput:
-      properties:
-        configuration:
-          $ref: '#/components/schemas/management.TaskConfiguration'
-        description:
-          type: string
-        name:
-          description: Name If provided, the name cannot be an empty string.
-          type: string
-        schedule:
-          $ref: '#/components/schemas/management.Schedule'
       type: object
     management.TaskConfiguration:
       properties:
@@ -390,26 +359,6 @@ components:
           type: string
       type: object
       x-order: '4'
-    management.Schedule:
-      properties:
-        max_duration:
-          description: MaxDuration is an optional ISO 8601 duration string that indicates the maximum expected duration of a task run.
-          type: string
-        timezone:
-          description: Timezone is an IANA timezone name (e.g., "America/New_York"). Defaults to "UTC" if omitted.
-          example: America/New_York
-          type: string
-        type:
-          enum:
-          - CRON
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
-      type: object
-      x-order: '5'
     fiber.APIError:
       properties:
         response:
@@ -448,6 +397,37 @@ components:
           type: string
           x-order: '9'
       type: object
+    tasks.CreateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '2'
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '3'
+      type: object
+    management.ListTasksOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        tasks:
+          items:
+            $ref: '#/components/schemas/management.Task'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
@@ -455,6 +435,26 @@ components:
         message:
           type: string
       type: object
+    management.Schedule:
+      properties:
+        max_duration:
+          description: MaxDuration is an optional ISO 8601 duration string that indicates the maximum expected duration of a task run.
+          type: string
+        timezone:
+          description: Timezone is an IANA timezone name (e.g., "America/New_York"). Defaults to "UTC" if omitted.
+          example: America/New_York
+          type: string
+        type:
+          enum:
+          - CRON
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+      type: object
+      x-order: '5'
   securitySchemes:
     basic:
       scheme: basic

@@ -336,15 +336,15 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    BadRequest:
-      description: Bad Request
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
-            message: Bad Request
-            statusCode: 400
+            message: Internal Server Error
+            statusCode: 500
             date: '2022-07-20T18:00:58.723Z'
     Forbidden:
       description: Forbidden
@@ -356,6 +356,16 @@ components:
             message: Resource is forbidden
             statusCode: 403
             date: '2022-07-20T18:00:58.723Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
     Unauthorized:
       description: Unauthorized
       content:
@@ -365,16 +375,6 @@ components:
           example:
             message: Unauthorized
             statusCode: 401
-            date: '2022-07-20T18:00:58.723Z'
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Internal Server Error
-            statusCode: 500
             date: '2022-07-20T18:00:58.723Z'
   schemas:
     AccessRequest:
@@ -643,6 +643,15 @@ components:
           - CLOSED_CANCELLED
           - CLOSED
           - FAILED
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
     SnowflakeAccessManagementRule:
       type: object
       properties:
@@ -783,15 +792,6 @@ components:
       required:
       - actors
       - access
-    ApiError:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal Server Error
-        statusCode:
-          type: integer
-          example: 500
   securitySchemes:
     basicAuth:
       type: http

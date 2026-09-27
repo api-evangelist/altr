@@ -169,41 +169,6 @@ paths:
           description: Something went wrong server-side. Try again later.
 components:
   schemas:
-    MaskActionEnum:
-      type: string
-      enum:
-      - none
-      - null_out
-      - last_four
-      - full_mask
-      - allow
-      - constant_mask
-      - email_mask
-      description: 'Specifies what to do to the value in governed column. Possible values are:
-
-        - `none`: No action. (Equivalent to `allow`). When a column has the given `tagName`, but none of the `rules` apply, `none` is used for the `defaultAction`.
-
-        - `null_out`: Replace with `null`.
-
-        - `last_four`: Excepting hyphens and other group "separators", replace every character except the final four with `*`.
-
-        - `full_mask`: Replace every character with `*`.
-
-        - `allow`: Allow the value as is. (Equivalent to `none`).
-
-        - `constant_mask`: Replace the entire value with the constant value of `****`.
-
-        - `email_mask`: Replace every character before the final `@` with `*`.'
-    PolicyActionEnum:
-      type: string
-      enum:
-      - set
-      - delete
-      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
-
-        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
-
-        - `delete`: Remove all policy on all columns with this `tagName`.'
     PolicySpecification:
       type: object
       properties:
@@ -295,6 +260,41 @@ components:
             - yellow
             action: allow
             permissivity: 100
+    MaskActionEnum:
+      type: string
+      enum:
+      - none
+      - null_out
+      - last_four
+      - full_mask
+      - allow
+      - constant_mask
+      - email_mask
+      description: 'Specifies what to do to the value in governed column. Possible values are:
+
+        - `none`: No action. (Equivalent to `allow`). When a column has the given `tagName`, but none of the `rules` apply, `none` is used for the `defaultAction`.
+
+        - `null_out`: Replace with `null`.
+
+        - `last_four`: Excepting hyphens and other group "separators", replace every character except the final four with `*`.
+
+        - `full_mask`: Replace every character with `*`.
+
+        - `allow`: Allow the value as is. (Equivalent to `none`).
+
+        - `constant_mask`: Replace the entire value with the constant value of `****`.
+
+        - `email_mask`: Replace every character before the final `@` with `*`.'
+    PolicyActionEnum:
+      type: string
+      enum:
+      - set
+      - delete
+      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
+
+        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
+
+        - `delete`: Remove all policy on all columns with this `tagName`.'
   securitySchemes:
     basicAuth:
       type: http

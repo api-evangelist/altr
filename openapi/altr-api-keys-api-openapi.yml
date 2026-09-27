@@ -164,174 +164,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    ApiKeys:
-      description: Response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: object
-                properties:
-                  keys:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ApiKey'
-                  count:
-                    type: integer
-                    example: 1
-              success:
-                type: boolean
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-  parameters:
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
   schemas:
-    ApiKey:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '1'
-        orgId:
-          type: string
-          example: 969276ae-9118-11ed-a1eb-0242ac120002
-        apiKey:
-          type: string
-          example: ALTR-C41A886326C405A5C6F14C225B3B7A8D49E6BDA1
-        description:
-          type: string
-          example: George Washington's API Key
-        userId:
-          type: integer
-          example: 1
-        status:
-          type: string
-          enum:
-          - ENABLED
-          - DISABLED
-          example: ENABLED
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    ApiKeyWithUser:
-      allOf:
-      - $ref: '#/components/schemas/ApiKey'
-      - type: object
-        properties:
-          user:
-            $ref: '#/components/schemas/Administrator'
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
-    ApiKeyWithSecret:
-      allOf:
-      - $ref: '#/components/schemas/ApiKeyWithUser'
-      - type: object
-        properties:
-          secret:
-            type: string
-            example: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
     Administrator:
       type: object
       properties:
@@ -388,6 +221,173 @@ components:
         username:
           type: string
           example: George3
+    ApiKeyWithSecret:
+      allOf:
+      - $ref: '#/components/schemas/ApiKeyWithUser'
+      - type: object
+        properties:
+          secret:
+            type: string
+            example: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+    ApiKeyWithUser:
+      allOf:
+      - $ref: '#/components/schemas/ApiKey'
+      - type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/Administrator'
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        orgId:
+          type: string
+          example: 969276ae-9118-11ed-a1eb-0242ac120002
+        apiKey:
+          type: string
+          example: ALTR-C41A886326C405A5C6F14C225B3B7A8D49E6BDA1
+        description:
+          type: string
+          example: George Washington's API Key
+        userId:
+          type: integer
+          example: 1
+        status:
+          type: string
+          enum:
+          - ENABLED
+          - DISABLED
+          example: ENABLED
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  responses:
+    ApiKeys:
+      description: Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApiKey'
+                  count:
+                    type: integer
+                    example: 1
+              success:
+                type: boolean
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
   securitySchemes:
     basicAuth:
       type: http

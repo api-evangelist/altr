@@ -806,195 +806,6 @@ paths:
           description: Failure servicing this request
 components:
   schemas:
-    ClassificationSummaryItem:
-      type: object
-      properties:
-        type:
-          type: string
-          example: SSN
-        percent:
-          type: float
-          example: 20
-        amount:
-          type: string
-          example: Requested ID did not exist.
-    ClassificationSummary:
-      type: object
-      properties:
-        classifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClassificationSummaryItem'
-        totals:
-          type: object
-          properties:
-            classifiedColumns:
-              type: integer
-              example: 200
-            totalColumns:
-              type: integer
-              example: 500
-            percentSuccessfullyClassified:
-              type: float
-              example: 22.5
-    Database:
-      type: object
-      properties:
-        databaseID:
-          type: integer
-          example: 1
-        databaseName:
-          type: string
-          example: TEST_DATABASE
-        databaseFriendlyName:
-          type: string
-          example: Test Database
-        dataDiscoveryJobRan:
-          type: boolean
-          example: true
-    DataDiscoveryTableList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTable'
-    DataDiscoveryJobList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryJob'
-    DataDiscoveryTableFailure:
-      type: object
-      properties:
-        jobID:
-          type: string
-          example: DIS-UUID
-        tableJobID:
-          type: string
-          example: UUID
-        tableJobError:
-          type: string
-          example: Job error message here
-        tableName:
-          type: string
-          example: Table1
-        schemaName:
-          type: string
-          example: Schema1
-        tableJobErrorCode:
-          type: integer
-          example: 65000
-        totalColumns:
-          type: integer
-          example: 10
-        columnsTagged:
-          type: integer
-          example: 5
-        columnsSucceeded:
-          type: integer
-          example: 0
-        columnsFailed:
-          type: integer
-          example: 10
-        tableFailureTimestamp:
-          type: string
-          example: 8/8/22 15:15:15
-    DatabaseList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Database'
-    DataDiscoveryTable:
-      type: object
-      properties:
-        jobID:
-          type: string
-          example: DIS-UUID
-        tableName:
-          type: string
-          example: Table1
-        schemaName:
-          type: string
-          example: Schema1
-        tableJobErrorCode:
-          type: integer
-          example: 65000
-        totalColumns:
-          type: integer
-          example: 10
-        columnsTagged:
-          type: integer
-          example: 5
-        columnsSucceeded:
-          type: integer
-          example: 0
-        tableFailureTimestamp:
-          type: string
-          example: 8/8/22 15:15:15
-    DataDiscoveryTableFailureList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTableFailure'
-    Error:
-      type: object
-      properties:
-        errorCode:
-          type: integer
-          format: int64
-          example: 404
-        message:
-          type: string
-          example: Requested ID did not exist.
-    ClassificationColumnTypeRequestItem:
-      type: object
-      properties:
-        clientDatabaseID:
-          type: integer
-          example: 1
-        databaseTypeName:
-          type: string
-          example: SnowflakeExternalFunction
-        databaseTypeID:
-          type: integer
-          example: 9
-        friendlyDatabaseName:
-          type: string
-          example: Database One
-        database:
-          type: string
-          example: DATABASE_ONE
-        schemaName:
-          type: string
-          example: SCHEMA_ONE
-        tableName:
-          type: string
-          example: TABLE_ONE
-        columnName:
-          type: string
-          example: COLUMN_ONE
-        classifier:
-          type: array
-          example:
-          - FIRST_NAME
-        alsoAppearsAs:
-          type: array
-          example:
-          - MALE_NAME
-          - FEMALE_NAME
-        isGovernable:
-          type: boolean
-          example: true
-        isScatterable:
-          type: boolean
-          example: true
-        dataType:
-          type: string
-          example: Varchar
-        confidence:
-          type: string
-          example: LIKELY
-        dataState:
-          type: string
-          example: REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */
-        fullyQualifiedTableName:
-          type: string
-          example: DATABASE_ONE.SCHEMA_ONE.TABLE_ONE
     ClassificationColumnTypeList:
       type: object
       properties:
@@ -1059,6 +870,195 @@ components:
         tablesCompletePercentage:
           type: float
           example: 50.0
+    DataDiscoveryTableFailureList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTableFailure'
+    DatabaseList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Database'
+    DataDiscoveryTableList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTable'
+    DataDiscoveryJobList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryJob'
+    ClassificationSummaryItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: SSN
+        percent:
+          type: float
+          example: 20
+        amount:
+          type: string
+          example: Requested ID did not exist.
+    DataDiscoveryTableFailure:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableJobID:
+          type: string
+          example: UUID
+        tableJobError:
+          type: string
+          example: Job error message here
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        columnsFailed:
+          type: integer
+          example: 10
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    DataDiscoveryTable:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    Database:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        databaseName:
+          type: string
+          example: TEST_DATABASE
+        databaseFriendlyName:
+          type: string
+          example: Test Database
+        dataDiscoveryJobRan:
+          type: boolean
+          example: true
+    ClassificationSummary:
+      type: object
+      properties:
+        classifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationSummaryItem'
+        totals:
+          type: object
+          properties:
+            classifiedColumns:
+              type: integer
+              example: 200
+            totalColumns:
+              type: integer
+              example: 500
+            percentSuccessfullyClassified:
+              type: float
+              example: 22.5
+    ClassificationColumnTypeRequestItem:
+      type: object
+      properties:
+        clientDatabaseID:
+          type: integer
+          example: 1
+        databaseTypeName:
+          type: string
+          example: SnowflakeExternalFunction
+        databaseTypeID:
+          type: integer
+          example: 9
+        friendlyDatabaseName:
+          type: string
+          example: Database One
+        database:
+          type: string
+          example: DATABASE_ONE
+        schemaName:
+          type: string
+          example: SCHEMA_ONE
+        tableName:
+          type: string
+          example: TABLE_ONE
+        columnName:
+          type: string
+          example: COLUMN_ONE
+        classifier:
+          type: array
+          example:
+          - FIRST_NAME
+        alsoAppearsAs:
+          type: array
+          example:
+          - MALE_NAME
+          - FEMALE_NAME
+        isGovernable:
+          type: boolean
+          example: true
+        isScatterable:
+          type: boolean
+          example: true
+        dataType:
+          type: string
+          example: Varchar
+        confidence:
+          type: string
+          example: LIKELY
+        dataState:
+          type: string
+          example: REGISTERED /* {REGISTERED, GOVERNED, PROTECTED } */
+        fullyQualifiedTableName:
+          type: string
+          example: DATABASE_ONE.SCHEMA_ONE.TABLE_ONE
   securitySchemes:
     basicAuth:
       type: http
