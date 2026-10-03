@@ -145,6 +145,15 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    dto.CreatePasswordBody:
+      type: object
+      required:
+      - password
+      properties:
+        password:
+          type: string
+          maxLength: 128
+          minLength: 8
     dto.CreateKeypairResponse:
       type: object
       properties:
@@ -168,15 +177,18 @@ components:
           type: string
         public_key_format:
           type: string
-    dto.CreatePasswordBody:
-      type: object
-      required:
-      - password
-      properties:
-        password:
-          type: string
-          maxLength: 128
-          minLength: 8
+    types.AuthType:
+      type: string
+      enum:
+      - UNSUPPORTED
+      - NONE
+      - PASSWORD
+      - KEYPAIR
+      x-enum-varnames:
+      - AuthTypeUnsupported
+      - AuthTypeNone
+      - AuthTypePassword
+      - AuthTypeKeypair
     dto.CreatePasswordResponse:
       type: object
       properties:
@@ -190,18 +202,6 @@ components:
           type: array
           items:
             type: integer
-    types.AuthType:
-      type: string
-      enum:
-      - UNSUPPORTED
-      - NONE
-      - PASSWORD
-      - KEYPAIR
-      x-enum-varnames:
-      - AuthTypeUnsupported
-      - AuthTypeNone
-      - AuthTypePassword
-      - AuthTypeKeypair
   securitySchemes:
     BasicAuth:
       type: http

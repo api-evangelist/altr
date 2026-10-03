@@ -182,10 +182,12 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    main.APIErrorResponse:
+    fiber.APIErrorResponse:
       properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     types.SidecarInstanceItemResponse:
       properties:
@@ -215,12 +217,10 @@ components:
           description: Tags associated with this instance
           type: object
       type: object
-    fiber.APIErrorResponse:
+    main.APIErrorResponse:
       properties:
-        error_code:
-          type: integer
-        message:
-          type: string
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
     types.SidecarInstancesItemResponse:
       properties:

@@ -564,6 +564,52 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    WebAuthnCredential:
+      type: object
+      description: A registered WebAuthn (passkey) credential.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Internal numeric ID of the registered WebAuthn credential.
+          example: 1
+        name:
+          type: string
+          description: Human-readable display name for the credential.
+          example: TouchID on MacBook Pro
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the credential was registered.
+          example: '2024-06-01T12:00:00.000Z'
+        last_used_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp of the most recent successful authentication with this credential. Null if the credential has never been used for authentication.
+          example: '2024-06-10T08:30:00.000Z'
     Administrator:
       type: object
       properties:
@@ -620,52 +666,6 @@ components:
         username:
           type: string
           example: George3
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
-    WebAuthnCredential:
-      type: object
-      description: A registered WebAuthn (passkey) credential.
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: Internal numeric ID of the registered WebAuthn credential.
-          example: 1
-        name:
-          type: string
-          description: Human-readable display name for the credential.
-          example: TouchID on MacBook Pro
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the credential was registered.
-          example: '2024-06-01T12:00:00.000Z'
-        last_used_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp of the most recent successful authentication with this credential. Null if the credential has never been used for authentication.
-          example: '2024-06-10T08:30:00.000Z'
     Me:
       type: object
       properties:
@@ -709,18 +709,6 @@ components:
                 protect:
                   type: integer
   responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Forbidden:
       description: Forbidden
       content:
@@ -733,16 +721,16 @@ components:
               statusCode: 403
               date: '2022-07-20T18:00:58.723Z'
             success: false
-    NotFound:
-      description: Not Found
+    Unauthorized:
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Not Found
-              statusCode: 404
+              message: Unauthorized
+              statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
     BadRequest:
@@ -769,16 +757,28 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    Unauthorized:
-      description: Unauthorized
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Unauthorized
-              statusCode: 401
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
               date: '2022-07-20T18:00:58.723Z'
             success: false
   parameters:

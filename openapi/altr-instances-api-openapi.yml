@@ -163,6 +163,23 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.ListInstancesResponse:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Instance'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.DownloadResponse:
+      properties:
+        download_url:
+          type: string
+      type: object
     models.Instance:
       properties:
         definition_id:
@@ -199,9 +216,11 @@ components:
         updated_at:
           type: string
       type: object
-    models.DownloadResponse:
+    fiber.APIErrorResponse:
       properties:
-        download_url:
+        error_code:
+          type: integer
+        message:
           type: string
       type: object
     fiber.APIError:
@@ -210,25 +229,6 @@ components:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
         statusCode:
           type: integer
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    models.ListInstancesResponse:
-      properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Instance'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
       type: object
   securitySchemes:
     BasicAuth:

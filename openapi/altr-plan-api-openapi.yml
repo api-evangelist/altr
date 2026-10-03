@@ -123,19 +123,69 @@ paths:
       operationId: postPlanContact
       x-operation-id-source: derived
 components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    Features:
+      type: object
+      properties:
+        feat_dashboard:
+          type: boolean
+        feat_anomalies:
+          type: boolean
+        feat_intelligence:
+          type: boolean
+        feat_dataPolicy:
+          type: boolean
+        feat_unlimitedLockColumnRelationship:
+          type: boolean
+        feat_lockColumnLimit:
+          type: integer
+          example: 10
+        feat_systemConfiguration:
+          type: boolean
+        feat_databaseDrivers:
+          type: boolean
+          example: false
+        feat_tokenization:
+          type: boolean
+        feat_tokenizationAPI:
+          type: boolean
+        feat_managementAPI:
+          type: boolean
+        feat_s3Integration:
+          type: boolean
+        feat_auditLogs:
+          type: boolean
+        feat_settings:
+          type: boolean
+        feat_tags:
+          type: boolean
+        feat_rowaccess:
+          type: boolean
+        feat_databaseLimit:
+          type: integer
+          example: 1
   responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Forbidden:
       description: Forbidden
       content:
@@ -184,6 +234,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     OkResponse:
       description: Indicates that the process was successful in being retrieved/sent. Does not necessarily mean that it will complete.
       content:
@@ -200,68 +262,6 @@ components:
               success:
                 type: boolean
                 example: true
-  schemas:
-    Features:
-      type: object
-      properties:
-        feat_dashboard:
-          type: boolean
-        feat_anomalies:
-          type: boolean
-        feat_intelligence:
-          type: boolean
-        feat_dataPolicy:
-          type: boolean
-        feat_unlimitedLockColumnRelationship:
-          type: boolean
-        feat_lockColumnLimit:
-          type: integer
-          example: 10
-        feat_systemConfiguration:
-          type: boolean
-        feat_databaseDrivers:
-          type: boolean
-          example: false
-        feat_tokenization:
-          type: boolean
-        feat_tokenizationAPI:
-          type: boolean
-        feat_managementAPI:
-          type: boolean
-        feat_s3Integration:
-          type: boolean
-        feat_auditLogs:
-          type: boolean
-        feat_settings:
-          type: boolean
-        feat_tags:
-          type: boolean
-        feat_rowaccess:
-          type: boolean
-        feat_databaseLimit:
-          type: integer
-          example: 1
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
   securitySchemes:
     basicAuth:
       type: http

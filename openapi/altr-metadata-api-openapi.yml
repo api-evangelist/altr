@@ -45,17 +45,55 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    OrganizationMetadata:
+      type: object
+      description: The organizations metadata object.
+      properties:
+        sys_is_spc:
+          type: string
+          example: '1'
+          description: Whether the organization is partner connect or not. This value is optional and may not be returned.
+        sys_feature_preset:
+          type: string
+          example: '3'
+          description: The feature preset that the organization is in. This value will always be returned. If this property is not returned it means that the organization does not have a tier.
+        sys_sso_enabled:
+          type: string
+          example: '0'
+          description: Indicates whether or not the organization has SSO enabled. This value is optional and may not be returned. If the value is 1, SSO is enabled. If the value is 0 or missing, SSO is not enabled.
   responses:
-    InternalError:
-      description: Internal Error
+    Unauthorized:
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Internal Server Error
-              statusCode: 500
+              message: Unauthorized
+              statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
     BadRequest:
@@ -82,56 +120,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    Unauthorized:
-      description: Unauthorized
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Unauthorized
-              statusCode: 401
+              message: Internal Server Error
+              statusCode: 500
               date: '2022-07-20T18:00:58.723Z'
             success: false
-  schemas:
-    OrganizationMetadata:
-      type: object
-      description: The organizations metadata object.
-      properties:
-        sys_is_spc:
-          type: string
-          example: '1'
-          description: Whether the organization is partner connect or not. This value is optional and may not be returned.
-        sys_feature_preset:
-          type: string
-          example: '3'
-          description: The feature preset that the organization is in. This value will always be returned. If this property is not returned it means that the organization does not have a tier.
-        sys_sso_enabled:
-          type: string
-          example: '0'
-          description: Indicates whether or not the organization has SSO enabled. This value is optional and may not be returned. If the value is 1, SSO is enabled. If the value is 0 or missing, SSO is not enabled.
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
   securitySchemes:
     basicAuth:
       type: http

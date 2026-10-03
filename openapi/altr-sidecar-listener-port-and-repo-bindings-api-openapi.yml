@@ -318,17 +318,17 @@ components:
           x-order: '2'
       type: object
       x-order: '0'
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
     management.GetRepoBindOutput:
       properties:
         repo_sidecar_binding:
           $ref: '#/components/schemas/management.RepoSidecarBinding'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
       type: object
     management.ListBindingsOutput:
       properties:
@@ -342,12 +342,12 @@ components:
           uniqueItems: false
           x-order: '0'
       type: object
-    fiber.APIErrorResponse:
+    fiber.APIError:
       properties:
-        error_code:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
           type: integer
-        message:
-          type: string
       type: object
   securitySchemes:
     basic:

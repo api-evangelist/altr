@@ -112,27 +112,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    SystemAudit:
-      type: object
-      description: System Audits object that contains a few properties.
-      properties:
-        id:
-          type: integer
-          example: 1
-        timeRead:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Null or a timestamp of when the system audit was read. Null meaning that it has NOT been read yet.
-        payload:
-          type: string
-          description: Stringify json that contains the message data about the system audit.
-          example: '{''actor'': {id: 2}}'
-        notificationType:
-          type: string
-          description: What type of notification this is and what entity it belongs too.
-          example: User Update
     ApiError:
       type: object
       properties:
@@ -154,17 +133,38 @@ components:
               format: date-time
         success:
           type: boolean
+    SystemAudit:
+      type: object
+      description: System Audits object that contains a few properties.
+      properties:
+        id:
+          type: integer
+          example: 1
+        timeRead:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Null or a timestamp of when the system audit was read. Null meaning that it has NOT been read yet.
+        payload:
+          type: string
+          description: Stringify json that contains the message data about the system audit.
+          example: '{''actor'': {id: 2}}'
+        notificationType:
+          type: string
+          description: What type of notification this is and what entity it belongs too.
+          example: User Update
   responses:
-    InternalError:
-      description: Internal Error
+    Unauthorized:
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Internal Server Error
-              statusCode: 500
+              message: Unauthorized
+              statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
     BadRequest:
@@ -191,26 +191,19 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    Unauthorized:
-      description: Unauthorized
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
             data:
-              message: Unauthorized
-              statusCode: 401
+              message: Internal Server Error
+              statusCode: 500
               date: '2022-07-20T18:00:58.723Z'
             success: false
   parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
     limit:
       name: limit
       in: query
@@ -219,6 +212,13 @@ components:
         minimum: 0
         maximum: 50
         default: 50
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
   securitySchemes:
     basicAuth:
       type: http

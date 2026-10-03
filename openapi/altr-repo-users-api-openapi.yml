@@ -282,59 +282,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    repousers.UpdateRepoUserInput:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-      type: object
-    management.EnvironmentVariable:
-      properties:
-        variable_name:
-          type: string
-          x-order: '0'
-      required:
-      - variable_name
-      type: object
-      x-order: '3'
-    management.ListRepoUsersOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        users:
-          items:
-            $ref: '#/components/schemas/management.RepoUser'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    management.AWSSecretsManager:
-      properties:
-        iam_role:
-          description: validate that this is an arn
-          type: string
-          x-order: '0'
-        secrets_path:
-          description: could change to id and name
-          type: string
-          x-order: '1'
-      required:
-      - secrets_path
-      type: object
-      x-order: '1'
     management.RepoUser:
       properties:
         aws_secrets_manager:
@@ -358,18 +305,6 @@ components:
           type: string
           x-order: '0'
       type: object
-    management.SecretFile:
-      properties:
-        path:
-          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
-
-            Example: "db_password" → /altr/secrets/db_password'
-          type: string
-          x-order: '0'
-      required:
-      - path
-      type: object
-      x-order: '4'
     fiber.APIErrorResponse:
       properties:
         error_code:
@@ -391,6 +326,32 @@ components:
           type: string
           x-order: '0'
       type: object
+    management.SecretFile:
+      properties:
+        path:
+          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
+
+            Example: "db_password" → /altr/secrets/db_password'
+          type: string
+          x-order: '0'
+      required:
+      - path
+      type: object
+      x-order: '4'
+    management.AWSSecretsManager:
+      properties:
+        iam_role:
+          description: validate that this is an arn
+          type: string
+          x-order: '0'
+        secrets_path:
+          description: could change to id and name
+          type: string
+          x-order: '1'
+      required:
+      - secrets_path
+      type: object
+      x-order: '1'
     management.AzureKeyVault:
       properties:
         key_vault_uri:
@@ -404,6 +365,45 @@ components:
       - secret_name
       type: object
       x-order: '2'
+    management.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+          x-order: '0'
+      required:
+      - variable_name
+      type: object
+      x-order: '3'
+    management.ListRepoUsersOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        users:
+          items:
+            $ref: '#/components/schemas/management.RepoUser'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    repousers.UpdateRepoUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
   securitySchemes:
     basic:
       scheme: basic

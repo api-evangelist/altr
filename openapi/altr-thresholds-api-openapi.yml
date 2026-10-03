@@ -838,66 +838,27 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    SimpleThreshold:
+    ApiError:
       type: object
       properties:
-        id:
-          type: integer
-          description: ID of the threshold
-          example: 1
-        name:
-          type: string
-          description: Name of the threshold
-          example: George Washington's Threshold
-        isEnabled:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
           type: boolean
-          description: Whether or not the threshold is in effect
-        limit:
-          type: integer
-          description: Number of records per unit (below) that may be accessed before action is taken
-          example: 100
-        unit:
-          type: string
-          enum:
-          - minute
-          - hour
-          - day
-          - week
-          - month
-          description: The time frame inside which the above limit is tracked
-          example: minute
-        action:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-          description: The action that will be taken when the ruleset for this threshold is violated. 0 = Anomaly, 1 = quicksand, 2 = block
-          example: 0
-        userCount:
-          type: integer
-          description: The number of users affected by this threshold
-          example: 1
-        groupCount:
-          type: integer
-          description: The number of groups affected by this threshold
-          example: 1
-        serverCount:
-          type: integer
-          description: The number of applications affected by this threshold
-          example: 2
-        lockCount:
-          type: integer
-          description: The number of locks affected by this threshold
-          example: 1
-        ipAddresses:
-          type: integer
-          description: The number of IP addresses affected by this threshold
-          example: 1
-        timeWindow:
-          type: integer
-          description: The number of rules (days per week) this threshold is in effect
-          example: 3
     FullThreshold:
       type: object
       properties:
@@ -1090,40 +1051,91 @@ components:
                 example: UTC
         success:
           type: boolean
-    ApiError:
+    SimpleThreshold:
       type: object
       properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
+        id:
+          type: integer
+          description: ID of the threshold
+          example: 1
+        name:
+          type: string
+          description: Name of the threshold
+          example: George Washington's Threshold
+        isEnabled:
           type: boolean
+          description: Whether or not the threshold is in effect
+        limit:
+          type: integer
+          description: Number of records per unit (below) that may be accessed before action is taken
+          example: 100
+        unit:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          - week
+          - month
+          description: The time frame inside which the above limit is tracked
+          example: minute
+        action:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          description: The action that will be taken when the ruleset for this threshold is violated. 0 = Anomaly, 1 = quicksand, 2 = block
+          example: 0
+        userCount:
+          type: integer
+          description: The number of users affected by this threshold
+          example: 1
+        groupCount:
+          type: integer
+          description: The number of groups affected by this threshold
+          example: 1
+        serverCount:
+          type: integer
+          description: The number of applications affected by this threshold
+          example: 2
+        lockCount:
+          type: integer
+          description: The number of locks affected by this threshold
+          example: 1
+        ipAddresses:
+          type: integer
+          description: The number of IP addresses affected by this threshold
+          example: 1
+        timeWindow:
+          type: integer
+          description: The number of rules (days per week) this threshold is in effect
+          example: 3
+  parameters:
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
   responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Unauthorized:
       description: Unauthorized
       content:
@@ -1160,30 +1172,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-  parameters:
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   securitySchemes:
     basicAuth:
       type: http

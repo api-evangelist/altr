@@ -391,39 +391,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.Subscription:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        criteria:
-          additionalProperties:
-            $ref: '#/components/schemas/models.CriteriaOperators'
-          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
-
-            operator block. All entries must match for the event to be delivered (AND across
-
-            fields). Empty/omitted matches every event of the registered type.'
-          type: object
-        enabled:
-          type: boolean
-        event_type:
-          enum:
-          - dam.alert.fired
-          maxLength: 255
-          type: string
-        integration_id:
-          type: string
-        subscription_id:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      required:
-      - event_type
-      - integration_id
-      - subscription_id
-      type: object
     models.CriteriaOperators:
       properties:
         eq:
@@ -442,24 +409,12 @@ components:
         lte:
           x-order: '3'
       type: object
-    models.UpdateSubscriptionRequest:
+    fiber.APIErrorResponse:
       properties:
-        criteria:
-          additionalProperties:
-            $ref: '#/components/schemas/models.CriteriaOperators'
-          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
-
-            entries must match for the event to be delivered (AND across fields).'
-          type: object
-        enabled:
-          type: boolean
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        error_code:
           type: integer
+        message:
+          type: string
       type: object
     models.CreateSubscriptionRequest:
       properties:
@@ -494,12 +449,57 @@ components:
           type: array
           uniqueItems: false
       type: object
-    fiber.APIErrorResponse:
+    models.Subscription:
       properties:
-        error_code:
-          type: integer
-        message:
+        created_at:
+          format: date-time
           type: string
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria maps event field paths (e.g. summary.severity, payload.rule_id) to an
+
+            operator block. All entries must match for the event to be delivered (AND across
+
+            fields). Empty/omitted matches every event of the registered type.'
+          type: object
+        enabled:
+          type: boolean
+        event_type:
+          enum:
+          - dam.alert.fired
+          maxLength: 255
+          type: string
+        integration_id:
+          type: string
+        subscription_id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - event_type
+      - integration_id
+      - subscription_id
+      type: object
+    models.UpdateSubscriptionRequest:
+      properties:
+        criteria:
+          additionalProperties:
+            $ref: '#/components/schemas/models.CriteriaOperators'
+          description: 'Criteria, when present, replaces the criteria map entirely (not a merge). All
+
+            entries must match for the event to be delivered (AND across fields).'
+          type: object
+        enabled:
+          type: boolean
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
   securitySchemes:
     BasicAuth:

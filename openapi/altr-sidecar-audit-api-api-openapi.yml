@@ -283,111 +283,6 @@ components:
           description: Token to retrieve the next page of results. If not present, there are no more results.
           type: string
       type: object
-    management.Sidecar:
-      properties:
-        id:
-          type: string
-        instance_id:
-          type: string
-        version:
-          type: string
-      required:
-      - id
-      - instance_id
-      - version
-      type: object
-    management.AppliedPolicy:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        result:
-          $ref: '#/components/schemas/management.PolicyResult'
-        type:
-          type: string
-      required:
-      - id
-      - name
-      - result
-      - type
-      type: object
-    management.ConnectionClient:
-      properties:
-        application_name:
-          type: string
-        connection_id:
-          type: string
-        connection_time:
-          type: string
-        host:
-          type: string
-        port:
-          type: integer
-      required:
-      - connection_id
-      - connection_time
-      - host
-      - port
-      type: object
-    management.DatabaseObject:
-      properties:
-        access_type:
-          type: string
-        database:
-          description: nullable
-          type: string
-        name:
-          type: string
-        object_type:
-          type: string
-        qualified_name:
-          type: string
-        qualified_path:
-          items:
-            $ref: '#/components/schemas/management.PathSegment'
-          type: array
-          uniqueItems: false
-        schema:
-          type: string
-        table:
-          type: string
-        wildcard:
-          type: boolean
-      type: object
-    auditfilter.KeyEqValue:
-      properties:
-        key:
-          maxLength: 256
-          type: string
-        value:
-          maxLength: 256
-          type: string
-      required:
-      - key
-      - value
-      type: object
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-      type: object
-    management.Repo:
-      properties:
-        host:
-          type: string
-        name:
-          type: string
-        port:
-          type: integer
-        type:
-          type: string
-      required:
-      - host
-      - name
-      - port
-      - type
-      type: object
     auditfilter.Dimension:
       enum:
       - user
@@ -474,94 +369,6 @@ components:
       - DimSnowflakeExecutionDuration
       - DimSnowflakeTagName
       - DimSnowflakeTagValue
-    management.PathSegment:
-      properties:
-        name:
-          type: string
-        object_type:
-          type: string
-      type: object
-    management.PolicyResult:
-      description: Aggregate of all policy results
-      properties:
-        block:
-          type: boolean
-      type: object
-    main.FilterNodeDoc:
-      properties:
-        between:
-          $ref: '#/components/schemas/auditfilter.BetweenValue'
-        children:
-          description: 'Children is required for op=and|or. Each entry is a nested FilterNode
-
-            with the same shape as this object. Typed as []object here only to break
-
-            the recursive $ref that older Swagger UI cannot resolve.'
-          items:
-            additionalProperties: {}
-            type: object
-          type: array
-          uniqueItems: false
-        dimension:
-          $ref: '#/components/schemas/auditfilter.Dimension'
-        key_eq:
-          $ref: '#/components/schemas/auditfilter.KeyEqValue'
-        list_value:
-          items:
-            type: string
-          minItems: 1
-          type: array
-          uniqueItems: false
-        number_value:
-          type: number
-        op:
-          $ref: '#/components/schemas/auditfilter.Op'
-        range:
-          $ref: '#/components/schemas/auditfilter.RangeValue'
-        string_value:
-          maxLength: 1024
-          type: string
-      required:
-      - op
-      type: object
-    auditfilter.BetweenValue:
-      properties:
-        end:
-          type: string
-        start:
-          type: string
-      required:
-      - end
-      - start
-      type: object
-    management.ConnectionRequest:
-      properties:
-        applied_policies:
-          description: All applied policies
-          items:
-            $ref: '#/components/schemas/management.AppliedPolicy'
-          type: array
-          uniqueItems: false
-        applied_policy_result:
-          $ref: '#/components/schemas/management.PolicyResult'
-        authorization_type:
-          type: string
-        authorized:
-          type: boolean
-        error:
-          type: string
-        response:
-          $ref: '#/components/schemas/management.ConnectionResponse'
-      required:
-      - authorization_type
-      - response
-      type: object
-    management.TriggerSearchOutput:
-      properties:
-        search_uuid:
-          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
-          type: string
-      type: object
     management.StatementResponse:
       description: 'In future we can add session params
 
@@ -583,29 +390,37 @@ components:
       - execution_time
       - message
       type: object
-    management.TargetResource:
-      description: 'Slim shape for targets and resources: only access_type, qualified_path, and wildcard.'
+    auditfilter.RangeValue:
       properties:
-        access_type:
+        max:
+          type: number
+        min:
+          type: number
+      required:
+      - max
+      - min
+      type: object
+    auditfilter.KeyEqValue:
+      properties:
+        key:
+          maxLength: 256
           type: string
-        qualified_path:
-          items:
-            $ref: '#/components/schemas/management.PathSegment'
-          type: array
-          uniqueItems: false
-        wildcard:
+        value:
+          maxLength: 256
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    management.PolicyResult:
+      description: Aggregate of all policy results
+      properties:
+        block:
           type: boolean
       type: object
-    management.ConsumingUser:
+    ErrorResponse:
       properties:
-        email:
-          type: string
-        user_groups:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        username:
+        error:
           type: string
       type: object
     auditfilter.Op:
@@ -646,6 +461,129 @@ components:
       - OpExists
       - OpKeyExists
       - OpKeyEq
+    management.UserIdentity:
+      properties:
+        consuming_user:
+          $ref: '#/components/schemas/management.ConsumingUser'
+        repo_user:
+          type: string
+      required:
+      - repo_user
+      type: object
+    management.TriggerSearchOutput:
+      properties:
+        search_uuid:
+          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
+          type: string
+      type: object
+    management.AppliedPolicy:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/management.PolicyResult'
+        type:
+          type: string
+      required:
+      - id
+      - name
+      - result
+      - type
+      type: object
+    management.Sidecar:
+      properties:
+        id:
+          type: string
+        instance_id:
+          type: string
+        version:
+          type: string
+      required:
+      - id
+      - instance_id
+      - version
+      type: object
+    management.ConnectionRequest:
+      properties:
+        applied_policies:
+          description: All applied policies
+          items:
+            $ref: '#/components/schemas/management.AppliedPolicy'
+          type: array
+          uniqueItems: false
+        applied_policy_result:
+          $ref: '#/components/schemas/management.PolicyResult'
+        authorization_type:
+          type: string
+        authorized:
+          type: boolean
+        error:
+          type: string
+        response:
+          $ref: '#/components/schemas/management.ConnectionResponse'
+      required:
+      - authorization_type
+      - response
+      type: object
+    main.SearchRequestDoc:
+      properties:
+        filter:
+          $ref: '#/components/schemas/main.FilterNodeDoc'
+        timezone:
+          description: 'Timezone is the IANA zone for time_of_day comparisons (e.g.
+
+            "America/New_York") — pass the dam rule''s timezone to replay its
+
+            filter. Required when the filter contains a time_of_day dimension,
+
+            forbidden otherwise.'
+          type: string
+      type: object
+    management.DatabaseObject:
+      properties:
+        access_type:
+          type: string
+        database:
+          description: nullable
+          type: string
+        name:
+          type: string
+        object_type:
+          type: string
+        qualified_name:
+          type: string
+        qualified_path:
+          items:
+            $ref: '#/components/schemas/management.PathSegment'
+          type: array
+          uniqueItems: false
+        schema:
+          type: string
+        table:
+          type: string
+        wildcard:
+          type: boolean
+      type: object
+    management.ConnectionClient:
+      properties:
+        application_name:
+          type: string
+        connection_id:
+          type: string
+        connection_time:
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+      required:
+      - connection_id
+      - connection_time
+      - host
+      - port
+      type: object
     management.StatementRequest:
       properties:
         applied_policies:
@@ -696,38 +634,18 @@ components:
       - response
       - statement
       type: object
-    management.UserIdentity:
+    management.TargetResource:
+      description: 'Slim shape for targets and resources: only access_type, qualified_path, and wildcard.'
       properties:
-        consuming_user:
-          $ref: '#/components/schemas/management.ConsumingUser'
-        repo_user:
+        access_type:
           type: string
-      required:
-      - repo_user
-      type: object
-    auditfilter.RangeValue:
-      properties:
-        max:
-          type: number
-        min:
-          type: number
-      required:
-      - max
-      - min
-      type: object
-    main.SearchRequestDoc:
-      properties:
-        filter:
-          $ref: '#/components/schemas/main.FilterNodeDoc'
-        timezone:
-          description: 'Timezone is the IANA zone for time_of_day comparisons (e.g.
-
-            "America/New_York") — pass the dam rule''s timezone to replay its
-
-            filter. Required when the filter contains a time_of_day dimension,
-
-            forbidden otherwise.'
-          type: string
+        qualified_path:
+          items:
+            $ref: '#/components/schemas/management.PathSegment'
+          type: array
+          uniqueItems: false
+        wildcard:
+          type: boolean
       type: object
     management.Audit:
       properties:
@@ -778,6 +696,44 @@ components:
       - tracking_id
       - user_identity
       type: object
+    management.ConsumingUser:
+      properties:
+        email:
+          type: string
+        user_groups:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        username:
+          type: string
+      type: object
+    management.Repo:
+      properties:
+        host:
+          type: string
+        name:
+          type: string
+        port:
+          type: integer
+        type:
+          type: string
+      required:
+      - host
+      - name
+      - port
+      - type
+      type: object
+    auditfilter.BetweenValue:
+      properties:
+        end:
+          type: string
+        start:
+          type: string
+      required:
+      - end
+      - start
+      type: object
     management.ConnectionResponse:
       properties:
         execution_time:
@@ -789,6 +745,50 @@ components:
       required:
       - execution_time
       - message
+      type: object
+    main.FilterNodeDoc:
+      properties:
+        between:
+          $ref: '#/components/schemas/auditfilter.BetweenValue'
+        children:
+          description: 'Children is required for op=and|or. Each entry is a nested FilterNode
+
+            with the same shape as this object. Typed as []object here only to break
+
+            the recursive $ref that older Swagger UI cannot resolve.'
+          items:
+            additionalProperties: {}
+            type: object
+          type: array
+          uniqueItems: false
+        dimension:
+          $ref: '#/components/schemas/auditfilter.Dimension'
+        key_eq:
+          $ref: '#/components/schemas/auditfilter.KeyEqValue'
+        list_value:
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: false
+        number_value:
+          type: number
+        op:
+          $ref: '#/components/schemas/auditfilter.Op'
+        range:
+          $ref: '#/components/schemas/auditfilter.RangeValue'
+        string_value:
+          maxLength: 1024
+          type: string
+      required:
+      - op
+      type: object
+    management.PathSegment:
+      properties:
+        name:
+          type: string
+        object_type:
+          type: string
       type: object
   securitySchemes:
     BasicAuth:

@@ -215,16 +215,11 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    repository.PaginatedResult-models_Comment:
+    fiber.APIErrorResponse:
       properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Comment'
-          type: array
-          uniqueItems: false
-        next_cursor:
+        error_code:
+          type: integer
+        message:
           type: string
       type: object
     models.Comment:
@@ -251,12 +246,17 @@ components:
           example: Reviewed all SELECT queries - no anomalies found
           type: string
       type: object
-    fiber.APIError:
+    repository.PaginatedResult-models_Comment:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
       type: object
     models.CreateCommentInput:
       properties:
@@ -264,12 +264,12 @@ components:
           example: Reviewed all SELECT queries - no anomalies found
           type: string
       type: object
-    fiber.APIErrorResponse:
+    fiber.APIError:
       properties:
-        error_code:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
           type: integer
-        message:
-          type: string
       type: object
   securitySchemes:
     BasicAuth:

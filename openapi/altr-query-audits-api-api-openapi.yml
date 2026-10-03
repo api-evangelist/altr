@@ -225,147 +225,6 @@ components:
           items:
             $ref: '#/components/schemas/management.QueryAudit'
           x-order: '1'
-    management.ColumnQueryTimeDecision:
-      type: object
-      properties:
-        database_type:
-          type: integer
-          x-order: '0'
-        database_name:
-          type: string
-          x-order: '1'
-        schema_name:
-          type: string
-          x-order: '2'
-        table_or_view_name:
-          type: string
-          x-order: '3'
-        column_name:
-          type: string
-          x-order: '4'
-        applied_policy:
-          allOf:
-          - $ref: '#/components/schemas/management.AppliedPolicy'
-          x-order: '5'
-        policy_info:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.PolicyInfo'
-          x-order: '6'
-    management.TagAuditTimeDecision:
-      type: object
-      properties:
-        tag_name:
-          type: string
-          x-order: '0'
-        tag_value:
-          type: string
-          x-order: '1'
-        applied_policy:
-          allOf:
-          - $ref: '#/components/schemas/management.AppliedPolicy'
-          x-order: '2'
-        policy_info:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.PolicyInfo'
-          x-order: '3'
-    management.QueryAudit:
-      type: object
-      properties:
-        event_id:
-          type: string
-          x-order: '0'
-        client_id:
-          type: string
-          x-order: '1'
-        event_version:
-          type: string
-          x-order: '2'
-        event_name:
-          type: string
-          x-order: '3'
-        event_source:
-          type: string
-          x-order: '4'
-        event_time:
-          type: integer
-          x-order: '5'
-        user_identity:
-          allOf:
-          - $ref: '#/components/schemas/management.UserIdentity'
-          x-order: '6'
-        event_details:
-          allOf:
-          - $ref: '#/components/schemas/management.EventDetails'
-          x-order: '7'
-    management.AppliedPolicy:
-      type: object
-      properties:
-        id:
-          type: integer
-          x-order: '0'
-        name:
-          type: string
-          x-order: '1'
-        type:
-          type: string
-          x-order: '2'
-        masking_type:
-          type: string
-          x-order: '3'
-        decision_type:
-          type: string
-          x-order: '4'
-        reason:
-          type: string
-          x-order: '5'
-    auditfilter.KeyEqValue:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        key:
-          type: string
-          maxLength: 256
-        value:
-          type: string
-          maxLength: 256
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-    management.Account:
-      type: object
-      properties:
-        region:
-          type: string
-          x-order: '0'
-        identifier:
-          type: string
-          x-order: '1'
-    management.Actor:
-      type: object
-      properties:
-        username:
-          type: string
-          x-order: '0'
-        current_role:
-          type: string
-          x-order: '1'
-        roles:
-          type: array
-          items:
-            type: string
-          x-order: '2'
-        client:
-          type: string
-          x-order: '3'
-        ip_address:
-          type: string
-          x-order: '4'
     auditfilter.Dimension:
       type: string
       enum:
@@ -452,215 +311,6 @@ components:
       - DimSnowflakeExecutionDuration
       - DimSnowflakeTagName
       - DimSnowflakeTagValue
-    main.FilterNodeDoc:
-      type: object
-      required:
-      - op
-      properties:
-        between:
-          $ref: '#/components/schemas/auditfilter.BetweenValue'
-        children:
-          description: 'Children is required for op=and|or. Each entry is a nested FilterNode
-
-            with the same shape as this object. Typed as []object here only to break
-
-            the recursive $ref that older Swagger UI cannot resolve.'
-          type: array
-          items:
-            type: object
-            additionalProperties: {}
-        dimension:
-          $ref: '#/components/schemas/auditfilter.Dimension'
-        key_eq:
-          $ref: '#/components/schemas/auditfilter.KeyEqValue'
-        list_value:
-          type: array
-          minItems: 1
-          items:
-            type: string
-        number_value:
-          type: number
-        op:
-          $ref: '#/components/schemas/auditfilter.Op'
-        range:
-          $ref: '#/components/schemas/auditfilter.RangeValue'
-        string_value:
-          type: string
-          maxLength: 1024
-    auditfilter.BetweenValue:
-      type: object
-      required:
-      - end
-      - start
-      properties:
-        end:
-          type: string
-        start:
-          type: string
-    management.TriggerSearchOutput:
-      type: object
-      properties:
-        search_uuid:
-          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
-          type: string
-    management.EventDetails:
-      type: object
-      properties:
-        actor:
-          allOf:
-          - $ref: '#/components/schemas/management.Actor'
-          x-order: '0'
-        account:
-          allOf:
-          - $ref: '#/components/schemas/management.Account'
-          x-order: '1'
-        query:
-          allOf:
-          - $ref: '#/components/schemas/management.Query'
-          x-order: '2'
-        result:
-          allOf:
-          - $ref: '#/components/schemas/management.Result'
-          x-order: '3'
-    management.Result:
-      type: object
-      properties:
-        row_count:
-          type: integer
-          x-order: '0'
-        tag_policy:
-          allOf:
-          - $ref: '#/components/schemas/management.TagPolicy'
-          x-order: '1'
-        column_policy:
-          allOf:
-          - $ref: '#/components/schemas/management.ColumnPolicy'
-          x-order: '2'
-    management.ColumnAuditTimeDecision:
-      type: object
-      properties:
-        database_type:
-          type: integer
-          x-order: '0'
-        database_name:
-          type: string
-          x-order: '1'
-        schema_name:
-          type: string
-          x-order: '2'
-        table_or_view_name:
-          type: string
-          x-order: '3'
-        column_name:
-          type: string
-          x-order: '4'
-        applied_policy:
-          allOf:
-          - $ref: '#/components/schemas/management.AppliedPolicy'
-          x-order: '5'
-        policy_info:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.PolicyInfo'
-          x-order: '6'
-    management.TagPolicy:
-      type: object
-      properties:
-        query_time_decision:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.TagQueryTimeDecision'
-          x-order: '0'
-        audit_time_decision:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.TagAuditTimeDecision'
-          x-order: '1'
-    auditfilter.Op:
-      type: string
-      enum:
-      - and
-      - or
-      - eq
-      - neq
-      - in
-      - contains
-      - regex
-      - cidr
-      - gt
-      - gte
-      - lt
-      - lte
-      - range
-      - between
-      - exists
-      - key_exists
-      - key_eq
-      x-enum-varnames:
-      - OpAnd
-      - OpOr
-      - OpEq
-      - OpNeq
-      - OpIn
-      - OpContains
-      - OpRegex
-      - OpCIDR
-      - OpGt
-      - OpGte
-      - OpLt
-      - OpLte
-      - OpRange
-      - OpBetween
-      - OpExists
-      - OpKeyExists
-      - OpKeyEq
-    management.UserIdentity:
-      type: object
-      properties:
-        type:
-          type: string
-          x-order: '0'
-        database_id:
-          type: string
-          x-order: '1'
-    auditfilter.RangeValue:
-      type: object
-      required:
-      - max
-      - min
-      properties:
-        max:
-          type: number
-        min:
-          type: number
-    management.PolicyInfo:
-      type: object
-      properties:
-        id:
-          type: integer
-          x-order: '0'
-        name:
-          type: string
-          x-order: '1'
-        type:
-          type: string
-          x-order: '2'
-        masking_type:
-          type: string
-          x-order: '3'
-    management.ColumnPolicy:
-      type: object
-      properties:
-        query_time_decision:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.ColumnQueryTimeDecision'
-          x-order: '0'
-        audit_time_decision:
-          type: array
-          items:
-            $ref: '#/components/schemas/management.ColumnAuditTimeDecision'
-          x-order: '1'
     management.TagQueryTimeDecision:
       type: object
       properties:
@@ -712,6 +362,240 @@ components:
         type:
           type: string
           x-order: '9'
+    management.TagPolicy:
+      type: object
+      properties:
+        query_time_decision:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.TagQueryTimeDecision'
+          x-order: '0'
+        audit_time_decision:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.TagAuditTimeDecision'
+          x-order: '1'
+    management.TagAuditTimeDecision:
+      type: object
+      properties:
+        tag_name:
+          type: string
+          x-order: '0'
+        tag_value:
+          type: string
+          x-order: '1'
+        applied_policy:
+          allOf:
+          - $ref: '#/components/schemas/management.AppliedPolicy'
+          x-order: '2'
+        policy_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.PolicyInfo'
+          x-order: '3'
+    management.ColumnAuditTimeDecision:
+      type: object
+      properties:
+        database_type:
+          type: integer
+          x-order: '0'
+        database_name:
+          type: string
+          x-order: '1'
+        schema_name:
+          type: string
+          x-order: '2'
+        table_or_view_name:
+          type: string
+          x-order: '3'
+        column_name:
+          type: string
+          x-order: '4'
+        applied_policy:
+          allOf:
+          - $ref: '#/components/schemas/management.AppliedPolicy'
+          x-order: '5'
+        policy_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.PolicyInfo'
+          x-order: '6'
+    auditfilter.RangeValue:
+      type: object
+      required:
+      - max
+      - min
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+    management.Account:
+      type: object
+      properties:
+        region:
+          type: string
+          x-order: '0'
+        identifier:
+          type: string
+          x-order: '1'
+    auditfilter.KeyEqValue:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          type: string
+          maxLength: 256
+        value:
+          type: string
+          maxLength: 256
+    management.EventDetails:
+      type: object
+      properties:
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/management.Actor'
+          x-order: '0'
+        account:
+          allOf:
+          - $ref: '#/components/schemas/management.Account'
+          x-order: '1'
+        query:
+          allOf:
+          - $ref: '#/components/schemas/management.Query'
+          x-order: '2'
+        result:
+          allOf:
+          - $ref: '#/components/schemas/management.Result'
+          x-order: '3'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    auditfilter.Op:
+      type: string
+      enum:
+      - and
+      - or
+      - eq
+      - neq
+      - in
+      - contains
+      - regex
+      - cidr
+      - gt
+      - gte
+      - lt
+      - lte
+      - range
+      - between
+      - exists
+      - key_exists
+      - key_eq
+      x-enum-varnames:
+      - OpAnd
+      - OpOr
+      - OpEq
+      - OpNeq
+      - OpIn
+      - OpContains
+      - OpRegex
+      - OpCIDR
+      - OpGt
+      - OpGte
+      - OpLt
+      - OpLte
+      - OpRange
+      - OpBetween
+      - OpExists
+      - OpKeyExists
+      - OpKeyEq
+    management.UserIdentity:
+      type: object
+      properties:
+        type:
+          type: string
+          x-order: '0'
+        database_id:
+          type: string
+          x-order: '1'
+    management.ColumnPolicy:
+      type: object
+      properties:
+        query_time_decision:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.ColumnQueryTimeDecision'
+          x-order: '0'
+        audit_time_decision:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.ColumnAuditTimeDecision'
+          x-order: '1'
+    management.TriggerSearchOutput:
+      type: object
+      properties:
+        search_uuid:
+          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
+          type: string
+    management.Result:
+      type: object
+      properties:
+        row_count:
+          type: integer
+          x-order: '0'
+        tag_policy:
+          allOf:
+          - $ref: '#/components/schemas/management.TagPolicy'
+          x-order: '1'
+        column_policy:
+          allOf:
+          - $ref: '#/components/schemas/management.ColumnPolicy'
+          x-order: '2'
+    management.Actor:
+      type: object
+      properties:
+        username:
+          type: string
+          x-order: '0'
+        current_role:
+          type: string
+          x-order: '1'
+        roles:
+          type: array
+          items:
+            type: string
+          x-order: '2'
+        client:
+          type: string
+          x-order: '3'
+        ip_address:
+          type: string
+          x-order: '4'
+    management.AppliedPolicy:
+      type: object
+      properties:
+        id:
+          type: integer
+          x-order: '0'
+        name:
+          type: string
+          x-order: '1'
+        type:
+          type: string
+          x-order: '2'
+        masking_type:
+          type: string
+          x-order: '3'
+        decision_type:
+          type: string
+          x-order: '4'
+        reason:
+          type: string
+          x-order: '5'
     main.SearchRequestDoc:
       type: object
       properties:
@@ -726,6 +610,122 @@ components:
 
             forbidden otherwise.'
           type: string
+    management.PolicyInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          x-order: '0'
+        name:
+          type: string
+          x-order: '1'
+        type:
+          type: string
+          x-order: '2'
+        masking_type:
+          type: string
+          x-order: '3'
+    management.ColumnQueryTimeDecision:
+      type: object
+      properties:
+        database_type:
+          type: integer
+          x-order: '0'
+        database_name:
+          type: string
+          x-order: '1'
+        schema_name:
+          type: string
+          x-order: '2'
+        table_or_view_name:
+          type: string
+          x-order: '3'
+        column_name:
+          type: string
+          x-order: '4'
+        applied_policy:
+          allOf:
+          - $ref: '#/components/schemas/management.AppliedPolicy'
+          x-order: '5'
+        policy_info:
+          type: array
+          items:
+            $ref: '#/components/schemas/management.PolicyInfo'
+          x-order: '6'
+    management.QueryAudit:
+      type: object
+      properties:
+        event_id:
+          type: string
+          x-order: '0'
+        client_id:
+          type: string
+          x-order: '1'
+        event_version:
+          type: string
+          x-order: '2'
+        event_name:
+          type: string
+          x-order: '3'
+        event_source:
+          type: string
+          x-order: '4'
+        event_time:
+          type: integer
+          x-order: '5'
+        user_identity:
+          allOf:
+          - $ref: '#/components/schemas/management.UserIdentity'
+          x-order: '6'
+        event_details:
+          allOf:
+          - $ref: '#/components/schemas/management.EventDetails'
+          x-order: '7'
+    auditfilter.BetweenValue:
+      type: object
+      required:
+      - end
+      - start
+      properties:
+        end:
+          type: string
+        start:
+          type: string
+    main.FilterNodeDoc:
+      type: object
+      required:
+      - op
+      properties:
+        between:
+          $ref: '#/components/schemas/auditfilter.BetweenValue'
+        children:
+          description: 'Children is required for op=and|or. Each entry is a nested FilterNode
+
+            with the same shape as this object. Typed as []object here only to break
+
+            the recursive $ref that older Swagger UI cannot resolve.'
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+        dimension:
+          $ref: '#/components/schemas/auditfilter.Dimension'
+        key_eq:
+          $ref: '#/components/schemas/auditfilter.KeyEqValue'
+        list_value:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        number_value:
+          type: number
+        op:
+          $ref: '#/components/schemas/auditfilter.Op'
+        range:
+          $ref: '#/components/schemas/auditfilter.RangeValue'
+        string_value:
+          type: string
+          maxLength: 1024
   securitySchemes:
     BasicAuth:
       type: http

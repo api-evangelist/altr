@@ -107,36 +107,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    main.CreateTagValueRefreshJobInput:
-      description: The payload for creating a new refresh job for a tag's value. Both the TagGroupID and DatabaseID must be provided.
-      type: object
-      required:
-      - database_id
-      - tag_group_id
-      properties:
-        database_id:
-          description: 'DatabaseID, the Altr Database ID''s credentials are used to refresh the given tag''s values.
-
-            Note that although the tag does not have to exist in this specified database, the database''s credentials need to have access to the provided tag.
-
-
-            Required: true
-
-            Example: 1234'
-          type: integer
-        tag_group_id:
-          description: 'TagGroupID, the ALTR tag group ID. This is the ALTR identifier for a snowflake tag.
-
-
-            Required: true
-
-            Example: "a5a295c5-426b-41bb-85b3-aa0feb8af00b"'
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
     main.CreateTagValueRefreshJobOutput:
       description: The response payload for the createTagValueRefresh job. If the job was initiated successfully, it contains the job's reference ID.
       type: object
@@ -184,6 +154,36 @@ components:
           type: string
         tracking_id:
           description: TrackingID is the ID used for tracking the job status. This field is optional.
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    main.CreateTagValueRefreshJobInput:
+      description: The payload for creating a new refresh job for a tag's value. Both the TagGroupID and DatabaseID must be provided.
+      type: object
+      required:
+      - database_id
+      - tag_group_id
+      properties:
+        database_id:
+          description: 'DatabaseID, the Altr Database ID''s credentials are used to refresh the given tag''s values.
+
+            Note that although the tag does not have to exist in this specified database, the database''s credentials need to have access to the provided tag.
+
+
+            Required: true
+
+            Example: 1234'
+          type: integer
+        tag_group_id:
+          description: 'TagGroupID, the ALTR tag group ID. This is the ALTR identifier for a snowflake tag.
+
+
+            Required: true
+
+            Example: "a5a295c5-426b-41bb-85b3-aa0feb8af00b"'
           type: string
   securitySchemes:
     BasicAuth:

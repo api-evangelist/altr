@@ -343,30 +343,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.UpdateIntegrationRequest:
-      properties:
-        allow_insecure_tls:
-          type: boolean
-        custom_webhook:
-          $ref: '#/components/schemas/models.CustomWebhookConfig'
-        description:
-          maxLength: 2000
-          type: string
-        enabled:
-          type: boolean
-        microsoft_teams:
-          $ref: '#/components/schemas/models.MicrosoftTeamsConfig'
-        name:
-          type: string
-        pagerduty:
-          $ref: '#/components/schemas/models.PagerDutyConfig'
-        service_now:
-          $ref: '#/components/schemas/models.ServiceNowConfig'
-        slack:
-          $ref: '#/components/schemas/models.SlackConfig'
-        splunk:
-          $ref: '#/components/schemas/models.SplunkConfig'
-      type: object
     models.SlackConfig:
       properties:
         webhook_url:
@@ -374,19 +350,6 @@ components:
           type: string
       required:
       - webhook_url
-      type: object
-    models.TestIntegrationResponse:
-      properties:
-        delivered:
-          type: boolean
-        event_id:
-          type: string
-        integration_id:
-          type: string
-        message:
-          type: string
-        status_code:
-          type: integer
       type: object
     models.Integration:
       properties:
@@ -454,6 +417,49 @@ components:
       - name
       - type
       type: object
+    models.UpdateIntegrationRequest:
+      properties:
+        allow_insecure_tls:
+          type: boolean
+        custom_webhook:
+          $ref: '#/components/schemas/models.CustomWebhookConfig'
+        description:
+          maxLength: 2000
+          type: string
+        enabled:
+          type: boolean
+        microsoft_teams:
+          $ref: '#/components/schemas/models.MicrosoftTeamsConfig'
+        name:
+          type: string
+        pagerduty:
+          $ref: '#/components/schemas/models.PagerDutyConfig'
+        service_now:
+          $ref: '#/components/schemas/models.ServiceNowConfig'
+        slack:
+          $ref: '#/components/schemas/models.SlackConfig'
+        splunk:
+          $ref: '#/components/schemas/models.SplunkConfig'
+      type: object
+    models.CustomWebhookConfig:
+      properties:
+        hmac_secret:
+          maxLength: 128
+          minLength: 16
+          type: string
+        url:
+          maxLength: 4096
+          type: string
+      required:
+      - url
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
     models.ServiceNowOAuthClientCreds:
       properties:
         client_id:
@@ -468,31 +474,59 @@ components:
       - client_id
       - client_secret
       type: object
-    models.PagerDutyConfig:
+    models.ServiceNowConfig:
       properties:
-        integration_key:
+        assignment_group:
+          maxLength: 32
           type: string
-      required:
-      - integration_key
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    models.CustomWebhookConfig:
-      properties:
-        hmac_secret:
-          maxLength: 128
-          minLength: 16
+        auth_type:
+          enum:
+          - basic
+          - oauth_client_credentials
           type: string
-        url:
+        basic:
+          $ref: '#/components/schemas/models.ServiceNowBasicAuth'
+        instance_url:
           maxLength: 4096
           type: string
+        oauth_client_credentials:
+          $ref: '#/components/schemas/models.ServiceNowOAuthClientCreds'
+        table_name:
+          default: incident
+          type: string
       required:
-      - url
+      - instance_url
+      type: object
+    models.SplunkConfig:
+      properties:
+        hec_token:
+          maxLength: 128
+          minLength: 8
+          type: string
+        hec_url:
+          description: 'HECURL is the Splunk HEC base URL (e.g. https://host:8088); /services/collector/event
+
+            is appended automatically. A full collector URL is also accepted as-is.'
+          maxLength: 4096
+          type: string
+        index:
+          maxLength: 80
+          type: string
+      required:
+      - hec_token
+      - hec_url
+      type: object
+    models.ListIntegrationsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Integration'
+          type: array
+          uniqueItems: false
       type: object
     models.CreateIntegrationRequest:
       properties:
@@ -534,75 +568,6 @@ components:
       - name
       - type
       type: object
-    models.ServiceNowConfig:
-      properties:
-        assignment_group:
-          maxLength: 32
-          type: string
-        auth_type:
-          enum:
-          - basic
-          - oauth_client_credentials
-          type: string
-        basic:
-          $ref: '#/components/schemas/models.ServiceNowBasicAuth'
-        instance_url:
-          maxLength: 4096
-          type: string
-        oauth_client_credentials:
-          $ref: '#/components/schemas/models.ServiceNowOAuthClientCreds'
-        table_name:
-          default: incident
-          type: string
-      required:
-      - instance_url
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    models.MicrosoftTeamsConfig:
-      properties:
-        workflow_url:
-          maxLength: 4096
-          type: string
-      required:
-      - workflow_url
-      type: object
-    models.SplunkConfig:
-      properties:
-        hec_token:
-          maxLength: 128
-          minLength: 8
-          type: string
-        hec_url:
-          description: 'HECURL is the Splunk HEC base URL (e.g. https://host:8088); /services/collector/event
-
-            is appended automatically. A full collector URL is also accepted as-is.'
-          maxLength: 4096
-          type: string
-        index:
-          maxLength: 80
-          type: string
-      required:
-      - hec_token
-      - hec_url
-      type: object
-    models.ListIntegrationsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Integration'
-          type: array
-          uniqueItems: false
-      type: object
     models.ServiceNowBasicAuth:
       properties:
         password:
@@ -616,6 +581,41 @@ components:
       required:
       - password
       - username
+      type: object
+    models.PagerDutyConfig:
+      properties:
+        integration_key:
+          type: string
+      required:
+      - integration_key
+      type: object
+    models.MicrosoftTeamsConfig:
+      properties:
+        workflow_url:
+          maxLength: 4096
+          type: string
+      required:
+      - workflow_url
+      type: object
+    models.TestIntegrationResponse:
+      properties:
+        delivered:
+          type: boolean
+        event_id:
+          type: string
+        integration_id:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: integer
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
   securitySchemes:
     BasicAuth:

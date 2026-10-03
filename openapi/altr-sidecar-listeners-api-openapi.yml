@@ -166,35 +166,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    sidecarlisteners.RegisterSidecarListenerInput:
-      properties:
-        advertised_version:
-          type: string
-          x-order: '2'
-        database_type:
-          type: string
-          x-order: '1'
-        port:
-          type: integer
-          x-order: '0'
-      type: object
-    management.ListSidecarListenersOutput:
-      properties:
-        contiguous_id:
-          type: string
-        sidecar_listeners:
-          items:
-            $ref: '#/components/schemas/management.ListenerPort'
-          type: array
-          uniqueItems: false
-      type: object
     management.ListenerPort:
       properties:
         advertised_version:
@@ -213,6 +184,35 @@ components:
           type: integer
         message:
           type: string
+      type: object
+    management.ListSidecarListenersOutput:
+      properties:
+        contiguous_id:
+          type: string
+        sidecar_listeners:
+          items:
+            $ref: '#/components/schemas/management.ListenerPort'
+          type: array
+          uniqueItems: false
+      type: object
+    sidecarlisteners.RegisterSidecarListenerInput:
+      properties:
+        advertised_version:
+          type: string
+          x-order: '2'
+        database_type:
+          type: string
+          x-order: '1'
+        port:
+          type: integer
+          x-order: '0'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
   securitySchemes:
     basic:

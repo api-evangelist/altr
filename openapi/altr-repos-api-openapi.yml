@@ -250,18 +250,36 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
     repos.UpdateRepoInput:
       properties:
         description:
           type: string
           x-order: '0'
+      type: object
+    repos.CreateRepoInput:
+      properties:
+        description:
+          type: string
+          x-order: '1'
+        hostname:
+          type: string
+          x-order: '3'
+        name:
+          type: string
+          x-order: '0'
+        port:
+          type: integer
+          x-order: '4'
+        type:
+          type: string
+          x-order: '2'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     management.ListReposOutput:
       properties:
@@ -274,13 +292,6 @@ components:
           type: array
           uniqueItems: false
           x-order: '0'
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
       type: object
     management.Repo:
       properties:
@@ -318,23 +329,12 @@ components:
           type: integer
           x-order: '5'
       type: object
-    repos.CreateRepoInput:
+    fiber.APIError:
       properties:
-        description:
-          type: string
-          x-order: '1'
-        hostname:
-          type: string
-          x-order: '3'
-        name:
-          type: string
-          x-order: '0'
-        port:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
           type: integer
-          x-order: '4'
-        type:
-          type: string
-          x-order: '2'
       type: object
   securitySchemes:
     basic:

@@ -574,95 +574,166 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unprocessable Entity
+              statusCode: 422
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   schemas:
-    BaseDataModel:
+    ApiError:
       type: object
-      description: Base Data Model Representation
       properties:
-        fieldId:
-          type: number
-          example: 1
-        nickname:
-          type: string
-          example: column_nickname
-        pct:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
+    MaskingPolicy:
+      type: object
+      description: An individual masking policy information.
+      properties:
+        id:
           type: integer
-          example: 100
-        databaseId:
+          description: The unique id of this masking policy
+          example: 10000
+        name:
           type: string
-          example: 1
-        groupId:
+          description: The name of this masking policy
+          example: Constant Mask
+        details:
+          type: object
+          description: Contains additional details about this policy.
+          properties:
+            tooltip:
+              type: string
+              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
+              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
+            example:
+              type: string
+              description: An example of how this masking policy will be applied.
+              example: '****-**-1234'
+        description:
+          type: string
+          description: The description of the masking policy
+          example: For all your constant masking needs.
+        parameters:
           type:
-          - string
+          - object
           - 'null'
-          example: null
-        databaseHelperId:
-          type: string
-        databaseType:
-          type: string
-          enum:
-          - sqlserver
-          - mysql
-          - redshift
-          - snowflake_external_functions
-          description: The type of database this column belongs too
-        jobId:
-          type:
-          - string
-          - 'null'
-          example: null
-        columnName:
-          type: string
-          example: email
-        friendlyDatabaseName:
-          type: string
-          example: Washington's Database 1
-        tableName:
-          type: string
-          example: employees
-        tableId:
+          description: A custom object that can be NULL, defines the options for custom masking policies.
+        maskType:
           type: integer
+          enum:
+          - 0
+          - 2
+          - 3
+          - 4
+          - 5
+          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
+
+            '
           example: 1
-        scatterStatus:
-          type: string
-          enum:
-          - unscattered
-          - unscatter_pending
-          - unscatter_error
-          - tokenized
-          - tokenize_pending
-          - tokenize_error
-          - fpe
-          - fpe_pending
-          - fpe_error
-          - scattered
-          - scatter_pending
-          - scatter_error
-          - remove_pending
-          - remove_error
-          example: unscattered
-        isParent:
+        isEditable:
           type: boolean
-        isView:
-          type: boolean
-          description: whether or not this column is a view or not.
-        alphabet:
+          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
+          example: false
+        clientId:
           type: string
-          enum:
-          - alphabetic
-          - numeric
-          - alphanumeric
-          - fpe
-          description: The name of the set of characters that will be decrypted in the ciphertext (e.g. alphabetic, numeric, alphanumeric). When scatterStatus is fpe, this field is present.
-        keyName:
-          type: string
-          description: The name of the key that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
-        tweakName:
-          type: string
-          description: The name of the tweak that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
-        isPadded:
-          type: boolean
-          description: Whether or not padding was applied on encryption of the data.
+          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
+          example: '0'
     DataLinkedColumns:
       type: object
       properties:
@@ -739,27 +810,6 @@ components:
         tableName:
           type: string
           example: EMPLOYEES
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     DataMetadata:
       type: object
       properties:
@@ -852,145 +902,111 @@ components:
             type: string
             description: The resolvable name of the connected database.
             example: MainStore
-    MaskingPolicy:
+    BaseDataModel:
       type: object
-      description: An individual masking policy information.
+      description: Base Data Model Representation
       properties:
-        id:
-          type: integer
-          description: The unique id of this masking policy
-          example: 10000
-        name:
-          type: string
-          description: The name of this masking policy
-          example: Constant Mask
-        details:
-          type: object
-          description: Contains additional details about this policy.
-          properties:
-            tooltip:
-              type: string
-              description: A description of the masking policy that is to be used for the tooltip text on the ALTRNet (this property is optional and may not appear on the response).
-              example: The Constant Mask for number value columns will display a single number one in place of the columns original number value.
-            example:
-              type: string
-              description: An example of how this masking policy will be applied.
-              example: '****-**-1234'
-        description:
-          type: string
-          description: The description of the masking policy
-          example: For all your constant masking needs.
-        parameters:
-          type:
-          - object
-          - 'null'
-          description: A custom object that can be NULL, defines the options for custom masking policies.
-        maskType:
-          type: integer
-          enum:
-          - 0
-          - 2
-          - 3
-          - 4
-          - 5
-          description: 'The type of masking that will be performed * `0` - No Mask * `2` - Full Mask * `3` - E-mail * `4` - Show Last Four * `5` - Constant Mask
-
-            '
+        fieldId:
+          type: number
           example: 1
-        isEditable:
-          type: boolean
-          description: Whether this masking policy can be edited or not, if the value is `false`, it is one of the default masking policies that are provided.
-          example: false
-        clientId:
+        nickname:
           type: string
-          description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
-          example: '0'
-  responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Not Found
-              statusCode: 404
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Unprocessed:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unprocessable Entity
-              statusCode: 422
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
+          example: column_nickname
+        pct:
+          type: integer
+          example: 100
+        databaseId:
+          type: string
+          example: 1
+        groupId:
+          type:
+          - string
+          - 'null'
+          example: null
+        databaseHelperId:
+          type: string
+        databaseType:
+          type: string
+          enum:
+          - sqlserver
+          - mysql
+          - redshift
+          - snowflake_external_functions
+          description: The type of database this column belongs too
+        jobId:
+          type:
+          - string
+          - 'null'
+          example: null
+        columnName:
+          type: string
+          example: email
+        friendlyDatabaseName:
+          type: string
+          example: Washington's Database 1
+        tableName:
+          type: string
+          example: employees
+        tableId:
+          type: integer
+          example: 1
+        scatterStatus:
+          type: string
+          enum:
+          - unscattered
+          - unscatter_pending
+          - unscatter_error
+          - tokenized
+          - tokenize_pending
+          - tokenize_error
+          - fpe
+          - fpe_pending
+          - fpe_error
+          - scattered
+          - scatter_pending
+          - scatter_error
+          - remove_pending
+          - remove_error
+          example: unscattered
+        isParent:
+          type: boolean
+        isView:
+          type: boolean
+          description: whether or not this column is a view or not.
+        alphabet:
+          type: string
+          enum:
+          - alphabetic
+          - numeric
+          - alphanumeric
+          - fpe
+          description: The name of the set of characters that will be decrypted in the ciphertext (e.g. alphabetic, numeric, alphanumeric). When scatterStatus is fpe, this field is present.
+        keyName:
+          type: string
+          description: The name of the key that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
+        tweakName:
+          type: string
+          description: The name of the tweak that will be used to decrypt the data. When scatterStatus is fpe, this field is present.
+        isPadded:
+          type: boolean
+          description: Whether or not padding was applied on encryption of the data.
   parameters:
+    fieldId:
+      name: fieldId
+      required: true
+      in: path
+      schema:
+        type: integer
+        minimum: 1
+      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
     orderBy:
       name: orderBy
       in: query
@@ -1000,14 +1016,6 @@ components:
         - asc
         - desc
         default: asc
-    fieldId:
-      name: fieldId
-      required: true
-      in: path
-      schema:
-        type: integer
-        minimum: 1
-      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
     offset:
       name: offset
       in: query
@@ -1015,14 +1023,6 @@ components:
         type: integer
         default: 0
         minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
   securitySchemes:
     basicAuth:
       type: http

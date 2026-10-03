@@ -250,74 +250,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    dto.CreateServiceUserRequest:
-      type: object
-      required:
-      - display_name
-      - username
-      properties:
-        display_name:
-          description: DisplayName provides a human-friendly name
-          type: string
-          maxLength: 255
-        hostname:
-          type: string
-        port:
-          type: integer
-          maximum: 65535
-          minimum: 1
-        username:
-          description: Username is the primary identifier for the service user and is used for authentication and display.
-          type: string
-          maxLength: 255
-    types.ServiceType:
-      type: string
-      enum:
-      - SNOWFLAKE
-      - UNSUPPORTED
-      x-enum-varnames:
-      - SnowflakeServiceUser
-      - UnsupportedServiceUser
-    dto.GetServiceUserPublicResponse:
-      description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
-      type: object
-      properties:
-        auth:
-          description: Auth optionally provides a public view of authentication details, if available.
-          allOf:
-          - $ref: '#/components/schemas/dto.CompositeAuthResponse'
-        user:
-          description: User is the composite service user object containing public attributes.
-          allOf:
-          - $ref: '#/components/schemas/dto.CompositeServiceUser'
-    dto.CreateServiceUserResponse:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/dto.CompositeServiceUser'
-    dto.CompositeAuthResponse:
-      type: object
-      properties:
-        algorithm:
-          type: string
-        auth_type:
-          $ref: '#/components/schemas/types.AuthType'
-        created_at:
-          type: string
-        deactivated_at:
-          type: string
-        id:
-          type: array
-          items:
-            type: integer
-        public_key:
-          type: string
-        public_key_encoding:
-          type: string
-        public_key_fingerprint:
-          type: string
-        public_key_format:
-          type: string
     dto.CompositeServiceUser:
       type: object
       properties:
@@ -362,6 +294,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    dto.CreateServiceUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dto.CompositeServiceUser'
+    dto.CreateServiceUserRequest:
+      type: object
+      required:
+      - display_name
+      - username
+      properties:
+        display_name:
+          description: DisplayName provides a human-friendly name
+          type: string
+          maxLength: 255
+        hostname:
+          type: string
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+        username:
+          description: Username is the primary identifier for the service user and is used for authentication and display.
+          type: string
+          maxLength: 255
+    dto.CompositeAuthResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
     types.AuthType:
       type: string
       enum:
@@ -384,6 +364,26 @@ components:
         username:
           type: string
           maxLength: 255
+    types.ServiceType:
+      type: string
+      enum:
+      - SNOWFLAKE
+      - UNSUPPORTED
+      x-enum-varnames:
+      - SnowflakeServiceUser
+      - UnsupportedServiceUser
+    dto.GetServiceUserPublicResponse:
+      description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
+      type: object
+      properties:
+        auth:
+          description: Auth optionally provides a public view of authentication details, if available.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeAuthResponse'
+        user:
+          description: User is the composite service user object containing public attributes.
+          allOf:
+          - $ref: '#/components/schemas/dto.CompositeServiceUser'
   securitySchemes:
     BasicAuth:
       type: http

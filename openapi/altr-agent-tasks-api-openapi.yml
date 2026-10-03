@@ -287,17 +287,43 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    tasks.UpdateTaskInput:
+    management.ListTasksOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        tasks:
+          items:
+            $ref: '#/components/schemas/management.Task'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    tasks.CreateTaskInput:
       properties:
         configuration:
           $ref: '#/components/schemas/management.TaskConfiguration'
         description:
           type: string
+          x-order: '1'
         name:
-          description: Name If provided, the name cannot be an empty string.
           type: string
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '2'
         schedule:
           $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '3'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     management.SslConfig:
       description: SSL/TLS configuration - optional for all SIS repo types
@@ -312,6 +338,49 @@ components:
           type: string
         trust_store_path:
           type: string
+      type: object
+    management.Task:
+      properties:
+        agent_id:
+          type: string
+          x-order: '3'
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        created_at:
+          type: string
+          x-order: '8'
+        description:
+          type: string
+          x-order: '2'
+        id:
+          type: string
+          x-order: '0'
+        name:
+          type: string
+          x-order: '1'
+        repo_name:
+          type: string
+          x-order: '4'
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
+        service_user:
+          type: string
+          x-order: '5'
+        updated_at:
+          type: string
+          x-order: '9'
+      type: object
+    tasks.UpdateTaskInput:
+      properties:
+        configuration:
+          $ref: '#/components/schemas/management.TaskConfiguration'
+        description:
+          type: string
+        name:
+          description: Name If provided, the name cannot be an empty string.
+          type: string
+        schedule:
+          $ref: '#/components/schemas/management.Schedule'
       type: object
     management.TaskConfiguration:
       properties:
@@ -359,82 +428,6 @@ components:
           type: string
       type: object
       x-order: '4'
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    management.Task:
-      properties:
-        agent_id:
-          type: string
-          x-order: '3'
-        configuration:
-          $ref: '#/components/schemas/management.TaskConfiguration'
-        created_at:
-          type: string
-          x-order: '8'
-        description:
-          type: string
-          x-order: '2'
-        id:
-          type: string
-          x-order: '0'
-        name:
-          type: string
-          x-order: '1'
-        repo_name:
-          type: string
-          x-order: '4'
-        schedule:
-          $ref: '#/components/schemas/management.Schedule'
-        service_user:
-          type: string
-          x-order: '5'
-        updated_at:
-          type: string
-          x-order: '9'
-      type: object
-    tasks.CreateTaskInput:
-      properties:
-        configuration:
-          $ref: '#/components/schemas/management.TaskConfiguration'
-        description:
-          type: string
-          x-order: '1'
-        name:
-          type: string
-          x-order: '0'
-        repo_name:
-          type: string
-          x-order: '2'
-        schedule:
-          $ref: '#/components/schemas/management.Schedule'
-        service_user:
-          type: string
-          x-order: '3'
-      type: object
-    management.ListTasksOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        tasks:
-          items:
-            $ref: '#/components/schemas/management.Task'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
     management.Schedule:
       properties:
         max_duration:
@@ -455,6 +448,13 @@ components:
       - value
       type: object
       x-order: '5'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
   securitySchemes:
     basic:
       scheme: basic

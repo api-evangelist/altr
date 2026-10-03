@@ -186,165 +186,27 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    Administrator:
+    ApiError:
       type: object
       properties:
-        id:
-          type: integer
-          example: 100
-        firstName:
-          type: string
-          example: George
-        lastName:
-          type: string
-          example: Washington
-        name:
-          type: string
-          description: Combination of `lastName, firstName`
-          example: Washington, George
-        email:
-          type: string
-          example: George@altr.com
-        phone:
-          type: integer
-          example: 1115555555
-        phoneNumber:
-          type: string
-          description: Combination of country code and phone
-          example: '+11115555555'
-        activityTimestamp:
-          type: string
-          format: date-time
-        userStatus:
-          type: string
-          enum:
-          - pending
-          - active
-          - disabled
-          example: active
-        role:
-          type: string
-          enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
-          example: SUPERADMINISTRATOR
-        countryCode:
-          type: integer
-          example: 1
-        createdAt:
-          type: string
-          format: date-time
-          example: '1732-02-22T20:00:37.000Z'
-        isLocked:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
           type: boolean
-          description: Whether the administrator is locked out of their account or not.
-          example: false
-        username:
-          type: string
-          example: George3
-    BaseAnomaly:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The ID of the anomaly being requested
-          example: 1
-        machineId:
-          type: integer
-          description: The ID of the machine used to make the query that caused the anomaly (must appear with userId, will never appear with serverId).
-          example: 8
-        userId:
-          type: integer
-          description: The ID of the user who made the query that caused the anomaly (must appear with machineId, will never appear with serverId)
-          example: 2
-        serverId:
-          type: integer
-          description: The ID of the application who executed the query that caused the anomaly (will never appear with serverId or machineId)
-          example: 7
-        thresholdId:
-          type:
-          - integer
-          - 'null'
-          description: The ID of the threshold that triggered the anomaly (preserved if threshold is deleted)
-          example: 5
-        thresholdName:
-          type: string
-          description: The name of the threshold that triggered the anomaly (preserved if threshold is deleted), if this is a UAP (Unified Access Policy) anomaly it is the name of the policy
-          example: Threshold Name Here
-        archived:
-          description: Either false OR the date-time the anomaly was closed
-          type: string
-          format: date-time
-        dt:
-          type: string
-          format: date-time
-          description: The date-time from when the anomaly was generated
-        timeWindowStart:
-          description: Either null OR the date-time the anomaly was calculated to have been started (earliest point transactions contributed to the anomaly)
-          type:
-          - string
-          - 'null'
-          format: date-time
-        ruleId:
-          description: If this is a UAP (Unified Access Policy) anomaly then this points to the UAP rule that triggered it.
-          type:
-          - string
-          - 'null'
-    Anomaly:
-      allOf:
-      - $ref: '#/components/schemas/Anomalies'
-      - type: object
-        properties:
-          notes:
-            description: An array of notes that have been posted to this anomaly
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  description: The ID of the note
-                typeId:
-                  type: integer
-                  description: The ID of the anomaly this note was posted to
-                userId:
-                  type: integer
-                  description: The ID of the administrator who added this note
-                dt:
-                  type: string
-                  format: date-time
-                  description: The date-time from the moment this note was added
-                note:
-                  type: string
-                  description: The actual text of this note
-                  example: This anomaly was closed due to being a false positive.
-                user:
-                  $ref: '#/components/schemas/Administrator'
-          threshold:
-            $ref: '#/components/schemas/FullThreshold'
-          transactions:
-            description: An array of objects that describe what data has been accessed in this anomaly
-            type: array
-            items:
-              type: object
-              properties:
-                columnName:
-                  type: string
-                  description: The name of a column requested by the actor during this anomaly
-                records:
-                  type: integer
-                  description: The number of times this column was queried during this anomaly
-                dt:
-                  type: string
-                  format: date-time
-                  description: The date-time from the most recent time this column was queried
-                ip:
-                  oneOf:
-                  - type: string
-                    format: ipv4
-                  - type: string
-                    format: ipv6
-                  description: The IP address the actor executed the most recent query from
     FullThreshold:
       type: object
       properties:
@@ -537,6 +399,61 @@ components:
                 example: UTC
         success:
           type: boolean
+    Anomaly:
+      allOf:
+      - $ref: '#/components/schemas/Anomalies'
+      - type: object
+        properties:
+          notes:
+            description: An array of notes that have been posted to this anomaly
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: The ID of the note
+                typeId:
+                  type: integer
+                  description: The ID of the anomaly this note was posted to
+                userId:
+                  type: integer
+                  description: The ID of the administrator who added this note
+                dt:
+                  type: string
+                  format: date-time
+                  description: The date-time from the moment this note was added
+                note:
+                  type: string
+                  description: The actual text of this note
+                  example: This anomaly was closed due to being a false positive.
+                user:
+                  $ref: '#/components/schemas/Administrator'
+          threshold:
+            $ref: '#/components/schemas/FullThreshold'
+          transactions:
+            description: An array of objects that describe what data has been accessed in this anomaly
+            type: array
+            items:
+              type: object
+              properties:
+                columnName:
+                  type: string
+                  description: The name of a column requested by the actor during this anomaly
+                records:
+                  type: integer
+                  description: The number of times this column was queried during this anomaly
+                dt:
+                  type: string
+                  format: date-time
+                  description: The date-time from the most recent time this column was queried
+                ip:
+                  oneOf:
+                  - type: string
+                    format: ipv4
+                  - type: string
+                    format: ipv6
+                  description: The IP address the actor executed the most recent query from
     Anomalies:
       allOf:
       - $ref: '#/components/schemas/BaseAnomaly'
@@ -606,40 +523,144 @@ components:
                 - 2
                 description: The current access status of the application (0 = normal, 1 = quicksanded, 2 = blocked)
                 example: 0
-    ApiError:
+    Administrator:
       type: object
       properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
+        id:
+          type: integer
+          example: 100
+        firstName:
+          type: string
+          example: George
+        lastName:
+          type: string
+          example: Washington
+        name:
+          type: string
+          description: Combination of `lastName, firstName`
+          example: Washington, George
+        email:
+          type: string
+          example: George@altr.com
+        phone:
+          type: integer
+          example: 1115555555
+        phoneNumber:
+          type: string
+          description: Combination of country code and phone
+          example: '+11115555555'
+        activityTimestamp:
+          type: string
+          format: date-time
+        userStatus:
+          type: string
+          enum:
+          - pending
+          - active
+          - disabled
+          example: active
+        role:
+          type: string
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+          example: SUPERADMINISTRATOR
+        countryCode:
+          type: integer
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          example: '1732-02-22T20:00:37.000Z'
+        isLocked:
           type: boolean
+          description: Whether the administrator is locked out of their account or not.
+          example: false
+        username:
+          type: string
+          example: George3
+    BaseAnomaly:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the anomaly being requested
+          example: 1
+        machineId:
+          type: integer
+          description: The ID of the machine used to make the query that caused the anomaly (must appear with userId, will never appear with serverId).
+          example: 8
+        userId:
+          type: integer
+          description: The ID of the user who made the query that caused the anomaly (must appear with machineId, will never appear with serverId)
+          example: 2
+        serverId:
+          type: integer
+          description: The ID of the application who executed the query that caused the anomaly (will never appear with serverId or machineId)
+          example: 7
+        thresholdId:
+          type:
+          - integer
+          - 'null'
+          description: The ID of the threshold that triggered the anomaly (preserved if threshold is deleted)
+          example: 5
+        thresholdName:
+          type: string
+          description: The name of the threshold that triggered the anomaly (preserved if threshold is deleted), if this is a UAP (Unified Access Policy) anomaly it is the name of the policy
+          example: Threshold Name Here
+        archived:
+          description: Either false OR the date-time the anomaly was closed
+          type: string
+          format: date-time
+        dt:
+          type: string
+          format: date-time
+          description: The date-time from when the anomaly was generated
+        timeWindowStart:
+          description: Either null OR the date-time the anomaly was calculated to have been started (earliest point transactions contributed to the anomaly)
+          type:
+          - string
+          - 'null'
+          format: date-time
+        ruleId:
+          description: If this is a UAP (Unified Access Policy) anomaly then this points to the UAP rule that triggered it.
+          type:
+          - string
+          - 'null'
+  parameters:
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
   responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Unauthorized:
       description: Unauthorized
       content:
@@ -676,39 +697,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-  parameters:
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   securitySchemes:
     basicAuth:
       type: http

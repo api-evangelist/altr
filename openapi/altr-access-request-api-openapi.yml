@@ -335,48 +335,96 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Internal Server Error
-            statusCode: 500
-            date: '2022-07-20T18:00:58.723Z'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Resource is forbidden
-            statusCode: 403
-            date: '2022-07-20T18:00:58.723Z'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Bad Request
-            statusCode: 400
-            date: '2022-07-20T18:00:58.723Z'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Unauthorized
-            statusCode: 401
-            date: '2022-07-20T18:00:58.723Z'
   schemas:
+    AccessRequestPostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
+          description: The unique identifier for the access request.
+        client_id:
+          type: string
+          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
+          description: The client ID associated with the access request.
+        tracking_id:
+          type: string
+          example: c4773270-0265-4f41-9c98-80f7d8679b18
+          description: The tracking ID for the access request.
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-06-12T18:20:05.713Z'
+          description: The timestamp when the access request was created.
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
+          description: The rules defining the access request.
+        requester:
+          type: string
+          example: ADAM
+          description: The name of the requester.
+        requester_identity:
+          type: object
+          properties:
+            requester:
+              type: string
+              example: ADAM
+              description: The name of the requester.
+            email:
+              type: string
+              example: ADAM@company.com
+              description: The email of the requester.
+            role:
+              type: string
+              example: DEVELOPER_ROLE
+              description: The role of the requester.
+        requester_justification:
+          type: string
+          example: Need access for testing purposes.
+          description: The justification provided by the requester.
+        snowflake_metadata:
+          type: object
+          properties:
+            account_region:
+              type: string
+              example: AWS_US_WEST_2
+              description: The region of the account.
+            account_name:
+              type: string
+              example: ORG
+              description: The name of the account.
+            organization_name:
+              type: string
+              example: COMPANY_ORG
+              description: The name of the organization.
+        status:
+          type: string
+          example: OPEN
+          description: The current status of the access request.
+          enum:
+          - NONE
+          - PENDING_CREATION
+          - OPEN
+          - PENDING
+          - PENDING_APPROVED
+          - CLOSED_APPROVED
+          - PENDING_DENIED
+          - CLOSED_DENIED
+          - PENDING_CANCELLED
+          - CLOSED_CANCELLED
+          - CLOSED
+          - FAILED
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
     AccessRequest:
       type: object
       description: Represents an access request entity.
@@ -563,95 +611,6 @@ components:
           type: string
           example: null
           description: The reason for failure, if applicable.
-    AccessRequestPostResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: a56f3f23-e523-46a8-880e-a41339ae7e3c
-          description: The unique identifier for the access request.
-        client_id:
-          type: string
-          example: 12e06dcd-8b2e-4102-82db-c8a692d87c52
-          description: The client ID associated with the access request.
-        tracking_id:
-          type: string
-          example: c4773270-0265-4f41-9c98-80f7d8679b18
-          description: The tracking ID for the access request.
-        created_at:
-          type: string
-          format: date-time
-          example: '2025-06-12T18:20:05.713Z'
-          description: The timestamp when the access request was created.
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/SnowflakeAccessManagementRule'
-          description: The rules defining the access request.
-        requester:
-          type: string
-          example: ADAM
-          description: The name of the requester.
-        requester_identity:
-          type: object
-          properties:
-            requester:
-              type: string
-              example: ADAM
-              description: The name of the requester.
-            email:
-              type: string
-              example: ADAM@company.com
-              description: The email of the requester.
-            role:
-              type: string
-              example: DEVELOPER_ROLE
-              description: The role of the requester.
-        requester_justification:
-          type: string
-          example: Need access for testing purposes.
-          description: The justification provided by the requester.
-        snowflake_metadata:
-          type: object
-          properties:
-            account_region:
-              type: string
-              example: AWS_US_WEST_2
-              description: The region of the account.
-            account_name:
-              type: string
-              example: ORG
-              description: The name of the account.
-            organization_name:
-              type: string
-              example: COMPANY_ORG
-              description: The name of the organization.
-        status:
-          type: string
-          example: OPEN
-          description: The current status of the access request.
-          enum:
-          - NONE
-          - PENDING_CREATION
-          - OPEN
-          - PENDING
-          - PENDING_APPROVED
-          - CLOSED_APPROVED
-          - PENDING_DENIED
-          - CLOSED_DENIED
-          - PENDING_CANCELLED
-          - CLOSED_CANCELLED
-          - CLOSED
-          - FAILED
-    ApiError:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal Server Error
-        statusCode:
-          type: integer
-          example: 500
     SnowflakeAccessManagementRule:
       type: object
       properties:
@@ -792,6 +751,47 @@ components:
       required:
       - actors
       - access
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Resource is forbidden
+            statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
+            date: '2022-07-20T18:00:58.723Z'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Bad Request
+            statusCode: 400
+            date: '2022-07-20T18:00:58.723Z'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Internal Server Error
+            statusCode: 500
+            date: '2022-07-20T18:00:58.723Z'
   securitySchemes:
     basicAuth:
       type: http

@@ -749,35 +749,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    snowflakemetadata.ListSchemaInfoOutput:
-      type: object
-      properties:
-        schemas:
-          description: Schemas represents a list of schema information
-          type: array
-          items:
-            $ref: '#/components/schemas/snowflakemetadata.SchemaInfo'
-    snowflakemetadata.TagInfo:
-      type: object
-      properties:
-        tag_name:
-          description: TagName represents the true tag name
-          type: string
-          x-order: '0'
-        allowed_values:
-          description: AllowedValues represents the true tag allowed values
-          type: array
-          items:
-            type: string
-          x-order: '1'
-    snowflakemetadata.ListViewInfoOutput:
-      type: object
-      properties:
-        views:
-          description: Views represents a list of view information
-          type: array
-          items:
-            $ref: '#/components/schemas/snowflakemetadata.ViewInfo'
     snowflakemetadata.TableInfo:
       type: object
       properties:
@@ -787,14 +758,18 @@ components:
         table_type:
           description: TableType represents the true table type
           type: string
-    snowflakemetadata.ListColumnInfoOutput:
+    snowflakemetadata.SchemaInfo:
       type: object
       properties:
-        columns:
-          description: Columns represents a list of column information
-          type: array
-          items:
-            $ref: '#/components/schemas/snowflakemetadata.ColumnInfo'
+        schema_name:
+          description: SchemaName represents the true schema name
+          type: string
+    snowflakemetadata.AccountRegionInfo:
+      type: object
+      properties:
+        account_region:
+          description: AccountRegion represents the account region for the Snowflake account
+          type: string
     snowflakemetadata.ListDatabaseInfoOutput:
       type: object
       properties:
@@ -803,20 +778,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/snowflakemetadata.DatabaseInfo'
-    snowflakemetadata.AccountRegionInfo:
-      type: object
-      properties:
-        account_region:
-          description: AccountRegion represents the account region for the Snowflake account
-          type: string
-    snowflakemetadata.ListTableInfoOutput:
-      type: object
-      properties:
-        tables:
-          description: Tables represents a list of table information
-          type: array
-          items:
-            $ref: '#/components/schemas/snowflakemetadata.TableInfo'
     snowflakemetadata.ListTagInfoOutput:
       type: object
       properties:
@@ -825,46 +786,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/snowflakemetadata.TagInfo'
-    snowflakemetadata.ViewInfo:
-      type: object
-      properties:
-        view_name:
-          description: ViewName represents the true view name
-          type: string
-          x-order: '0'
-        is_secure:
-          description: IsSecure represents if the view is of the secure type
-          type: boolean
-          x-order: '1'
-        is_materialized:
-          description: IsMaterialized represents if the view is of the materialized type
-          type: boolean
-          x-order: '2'
     ErrorResponse:
       type: object
       properties:
         error:
-          type: string
-    snowflakemetadata.SchemaInfo:
-      type: object
-      properties:
-        schema_name:
-          description: SchemaName represents the true schema name
-          type: string
-    snowflakemetadata.ColumnOptions:
-      type: object
-      properties:
-        can_fpe:
-          description: CanFPE represents if the column can be FPE'd
-          type: boolean
-        can_tokenize:
-          description: CanTokenize represents if the column can be tokenized
-          type: boolean
-    snowflakemetadata.OrganizationNameInfo:
-      type: object
-      properties:
-        organization_name:
-          description: OrganizationName is the name of the organization
           type: string
     snowflakemetadata.ColumnType:
       type: object
@@ -890,28 +815,60 @@ components:
         type:
           description: Type represents the true column type
           type: string
+    snowflakemetadata.ColumnOptions:
+      type: object
+      properties:
+        can_fpe:
+          description: CanFPE represents if the column can be FPE'd
+          type: boolean
+        can_tokenize:
+          description: CanTokenize represents if the column can be tokenized
+          type: boolean
+    snowflakemetadata.TagInfo:
+      type: object
+      properties:
+        tag_name:
+          description: TagName represents the true tag name
+          type: string
+          x-order: '0'
+        allowed_values:
+          description: AllowedValues represents the true tag allowed values
+          type: array
+          items:
+            type: string
+          x-order: '1'
+    snowflakemetadata.ViewInfo:
+      type: object
+      properties:
+        view_name:
+          description: ViewName represents the true view name
+          type: string
+          x-order: '0'
+        is_secure:
+          description: IsSecure represents if the view is of the secure type
+          type: boolean
+          x-order: '1'
+        is_materialized:
+          description: IsMaterialized represents if the view is of the materialized type
+          type: boolean
+          x-order: '2'
+    snowflakemetadata.RoleInfo:
+      type: object
+      properties:
+        role_name:
+          description: RoleName represents the true role name
+          type: string
+    snowflakemetadata.OrganizationNameInfo:
+      type: object
+      properties:
+        organization_name:
+          description: OrganizationName is the name of the organization
+          type: string
     snowflakemetadata.AccountLocatorInfo:
       type: object
       properties:
         account_locator:
           description: AccountLocator represents the account locator for the Snowflake account
-          type: string
-    snowflakemetadata.ListRoleInfoOutput:
-      type: object
-      properties:
-        roles:
-          description: Roles represents a list of role information
-          type: array
-          items:
-            $ref: '#/components/schemas/snowflakemetadata.RoleInfo'
-    snowflakemetadata.DatabaseInfo:
-      type: object
-      properties:
-        database_name:
-          description: DatabaseNames represents the true database name
-          type: string
-        database_type:
-          description: DatabaseType represents the true database kind
           type: string
     snowflakemetadata.ColumnInfo:
       type: object
@@ -930,12 +887,55 @@ components:
           allOf:
           - $ref: '#/components/schemas/snowflakemetadata.ColumnOptions'
           x-order: '2'
-    snowflakemetadata.RoleInfo:
+    snowflakemetadata.ListTableInfoOutput:
       type: object
       properties:
-        role_name:
-          description: RoleName represents the true role name
+        tables:
+          description: Tables represents a list of table information
+          type: array
+          items:
+            $ref: '#/components/schemas/snowflakemetadata.TableInfo'
+    snowflakemetadata.ListViewInfoOutput:
+      type: object
+      properties:
+        views:
+          description: Views represents a list of view information
+          type: array
+          items:
+            $ref: '#/components/schemas/snowflakemetadata.ViewInfo'
+    snowflakemetadata.ListColumnInfoOutput:
+      type: object
+      properties:
+        columns:
+          description: Columns represents a list of column information
+          type: array
+          items:
+            $ref: '#/components/schemas/snowflakemetadata.ColumnInfo'
+    snowflakemetadata.DatabaseInfo:
+      type: object
+      properties:
+        database_name:
+          description: DatabaseNames represents the true database name
           type: string
+        database_type:
+          description: DatabaseType represents the true database kind
+          type: string
+    snowflakemetadata.ListSchemaInfoOutput:
+      type: object
+      properties:
+        schemas:
+          description: Schemas represents a list of schema information
+          type: array
+          items:
+            $ref: '#/components/schemas/snowflakemetadata.SchemaInfo'
+    snowflakemetadata.ListRoleInfoOutput:
+      type: object
+      properties:
+        roles:
+          description: Roles represents a list of role information
+          type: array
+          items:
+            $ref: '#/components/schemas/snowflakemetadata.RoleInfo'
   securitySchemes:
     BasicAuth:
       type: http

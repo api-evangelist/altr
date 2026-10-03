@@ -154,42 +154,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    types.TaskTelemetryItemsResponse:
-      properties:
-        contiguous_id:
-          description: Base64 encoded pagination key
-          type: string
-        items:
-          description: List of task telemetry items
-          items:
-            $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
-          type: array
-          uniqueItems: false
-      type: object
-    types.TaskMessage:
-      properties:
-        message:
-          description: Human-readable message
-          maxLength: 1024
-          type: string
-        severity:
-          description: Severity level of the message
-          enum:
-          - Error
-          - Warning
-          - Suggestion
-          type: string
-      required:
-      - message
-      - severity
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
     types.TaskTelemetryItemResponse:
       properties:
         agent_id:
@@ -228,10 +192,46 @@ components:
           description: Type of task
           type: string
       type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    types.TaskTelemetryItemsResponse:
+      properties:
+        contiguous_id:
+          description: Base64 encoded pagination key
+          type: string
+        items:
+          description: List of task telemetry items
+          items:
+            $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
+          type: array
+          uniqueItems: false
+      type: object
     main.APIErrorResponse:
       properties:
         error:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
+      type: object
+    types.TaskMessage:
+      properties:
+        message:
+          description: Human-readable message
+          maxLength: 1024
+          type: string
+        severity:
+          description: Severity level of the message
+          enum:
+          - Error
+          - Warning
+          - Suggestion
+          type: string
+      required:
+      - message
+      - severity
       type: object
   securitySchemes:
     basic:

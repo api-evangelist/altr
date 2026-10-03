@@ -723,255 +723,6 @@ paths:
     - url: https://api.live.altr.com/v1/unified-policy/management/
 components:
   schemas:
-    models.ListRulesResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Rule'
-          type: array
-          uniqueItems: false
-      type: object
-    models.UpdateRuleRequest:
-      properties:
-        comment_required:
-          type: boolean
-        description:
-          maxLength: 2000
-          type: string
-        email_rate_limit_seconds:
-          description: 'EmailRateLimitSeconds sets the per-rule email window. nil = no change;
-
-            non-nil must be 0 (reset to platform default) or in [60, 86400].'
-          maximum: 86400
-          minimum: 0
-          type: integer
-        email_recipients:
-          items:
-            type: string
-          maxItems: 100
-          type: array
-          uniqueItems: false
-        enabled:
-          type: boolean
-        name:
-          maxLength: 255
-          minLength: 1
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          - critical
-          type: string
-      type: object
-    models.Rule:
-      properties:
-        comment_required:
-          type: boolean
-        created_at:
-          type: string
-        data_source_scope:
-          enum:
-          - snowflake
-          - oltp
-          - all
-          type: string
-        description:
-          maxLength: 2000
-          type: string
-        email_rate_limit_seconds:
-          description: 'EmailRateLimitSeconds is the per-rule email send-once window in seconds.
-
-            0 = use platform default (300 s). Must be in [60, 86400] when non-zero.'
-          maximum: 86400
-          minimum: 60
-          type: integer
-        email_recipients:
-          items:
-            type: string
-          maxItems: 100
-          type: array
-          uniqueItems: false
-        enabled:
-          type: boolean
-        filter_tree:
-          $ref: '#/components/schemas/auditfilter.FilterNode'
-        name:
-          maxLength: 255
-          type: string
-        rule_id:
-          type: string
-        rule_type:
-          enum:
-          - match
-          - threshold
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          - critical
-          type: string
-        threshold:
-          minimum: 1
-          type: integer
-        timezone:
-          description: IANA timezone (e.g. "America/New_York"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.
-          type: string
-        updated_at:
-          type: string
-        window_type:
-          enum:
-          - hourly
-          - daily
-          - weekly
-          - monthly
-          type: string
-      required:
-      - data_source_scope
-      - filter_tree
-      - name
-      - rule_id
-      - rule_type
-      - severity
-      type: object
-    auditfilter.Op:
-      enum:
-      - and
-      - or
-      - eq
-      - neq
-      - in
-      - contains
-      - regex
-      - cidr
-      - gt
-      - gte
-      - lt
-      - lte
-      - range
-      - between
-      - exists
-      - key_exists
-      - key_eq
-      type: string
-      x-enum-varnames:
-      - OpAnd
-      - OpOr
-      - OpEq
-      - OpNeq
-      - OpIn
-      - OpContains
-      - OpRegex
-      - OpCIDR
-      - OpGt
-      - OpGte
-      - OpLt
-      - OpLte
-      - OpRange
-      - OpBetween
-      - OpExists
-      - OpKeyExists
-      - OpKeyEq
-    auditfilter.BetweenValue:
-      description: 'Between is required for: between (time_of_day only).'
-      properties:
-        end:
-          type: string
-        start:
-          type: string
-      required:
-      - end
-      - start
-      type: object
-    auditfilter.KeyEqValue:
-      description: 'KeyEq is required for: key_eq.'
-      properties:
-        key:
-          maxLength: 256
-          type: string
-        value:
-          maxLength: 256
-          type: string
-      required:
-      - key
-      - value
-      type: object
-    auditfilter.RangeValue:
-      description: 'Range is required for: range.'
-      properties:
-        max:
-          type: number
-        min:
-          type: number
-      required:
-      - max
-      - min
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    models.CreateRuleRequest:
-      properties:
-        comment_required:
-          type: boolean
-        data_source_scope:
-          enum:
-          - snowflake
-          - oltp
-          type: string
-        description:
-          type: string
-        email_rate_limit_seconds:
-          description: 'EmailRateLimitSeconds sets the per-rule email send-once window. 0 (or
-
-            omitted) = platform default (300 s); non-zero must be in [60, 86400].'
-          type: integer
-        email_recipients:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        enabled:
-          type: boolean
-        filter_tree:
-          $ref: '#/components/schemas/auditfilter.FilterNode'
-        name:
-          type: string
-        rule_type:
-          enum:
-          - match
-          - threshold
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          - critical
-          type: string
-        threshold:
-          type: integer
-        timezone:
-          type: string
-        window_type:
-          enum:
-          - hourly
-          - daily
-          - weekly
-          - monthly
-          type: string
-      type: object
     auditfilter.FilterNode:
       properties:
         between:
@@ -1014,13 +765,6 @@ components:
           type: string
       required:
       - op
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
       type: object
     auditfilter.Dimension:
       enum:
@@ -1108,6 +852,296 @@ components:
       - DimSnowflakeExecutionDuration
       - DimSnowflakeTagName
       - DimSnowflakeTagValue
+    models.CreateRuleRequest:
+      properties:
+        comment_required:
+          type: boolean
+        data_source_scope:
+          enum:
+          - snowflake
+          - oltp
+          type: string
+        description:
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds sets the per-rule email send-once window. 0 (or
+
+            omitted) = platform default (300 s); non-zero must be in [60, 86400].'
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        filter_tree:
+          $ref: '#/components/schemas/auditfilter.FilterNode'
+        name:
+          type: string
+        rule_type:
+          enum:
+          - match
+          - threshold
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        threshold:
+          type: integer
+        timezone:
+          type: string
+        window_type:
+          enum:
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          type: string
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.UpdateRuleRequest:
+      properties:
+        comment_required:
+          type: boolean
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds sets the per-rule email window. nil = no change;
+
+            non-nil must be 0 (reset to platform default) or in [60, 86400].'
+          maximum: 86400
+          minimum: 0
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+      type: object
+    models.ListRulesResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Rule'
+          type: array
+          uniqueItems: false
+      type: object
+    models.Rule:
+      properties:
+        comment_required:
+          type: boolean
+        created_at:
+          type: string
+        data_source_scope:
+          enum:
+          - snowflake
+          - oltp
+          - all
+          type: string
+        description:
+          maxLength: 2000
+          type: string
+        email_rate_limit_seconds:
+          description: 'EmailRateLimitSeconds is the per-rule email send-once window in seconds.
+
+            0 = use platform default (300 s). Must be in [60, 86400] when non-zero.'
+          maximum: 86400
+          minimum: 60
+          type: integer
+        email_recipients:
+          items:
+            type: string
+          maxItems: 100
+          type: array
+          uniqueItems: false
+        enabled:
+          type: boolean
+        filter_tree:
+          $ref: '#/components/schemas/auditfilter.FilterNode'
+        name:
+          maxLength: 255
+          type: string
+        rule_id:
+          type: string
+        rule_type:
+          enum:
+          - match
+          - threshold
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        threshold:
+          minimum: 1
+          type: integer
+        timezone:
+          description: IANA timezone (e.g. "America/New_York"). Required on threshold rules; required on match rules whose filter_tree contains a time_of_day filter; must be empty on match rules without one.
+          type: string
+        updated_at:
+          type: string
+        window_type:
+          enum:
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          type: string
+      required:
+      - data_source_scope
+      - filter_tree
+      - name
+      - rule_id
+      - rule_type
+      - severity
+      type: object
+    auditfilter.KeyEqValue:
+      description: 'KeyEq is required for: key_eq.'
+      properties:
+        key:
+          maxLength: 256
+          type: string
+        value:
+          maxLength: 256
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    auditfilter.BetweenValue:
+      description: 'Between is required for: between (time_of_day only).'
+      properties:
+        end:
+          type: string
+        start:
+          type: string
+      required:
+      - end
+      - start
+      type: object
+    auditfilter.Op:
+      enum:
+      - and
+      - or
+      - eq
+      - neq
+      - in
+      - contains
+      - regex
+      - cidr
+      - gt
+      - gte
+      - lt
+      - lte
+      - range
+      - between
+      - exists
+      - key_exists
+      - key_eq
+      type: string
+      x-enum-varnames:
+      - OpAnd
+      - OpOr
+      - OpEq
+      - OpNeq
+      - OpIn
+      - OpContains
+      - OpRegex
+      - OpCIDR
+      - OpGt
+      - OpGte
+      - OpLt
+      - OpLte
+      - OpRange
+      - OpBetween
+      - OpExists
+      - OpKeyExists
+      - OpKeyEq
+    auditfilter.RangeValue:
+      description: 'Range is required for: range.'
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+      required:
+      - max
+      - min
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+        statusCode:
+          type: integer
+          example: 500
+    AccessRateThreshold:
+      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
+      type: array
+      items:
+        type: object
+        properties:
+          access_rate_unit:
+            type: string
+            enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+            description: The time window starting at the first query until the ratebucket is reset
+          access_rate_limit:
+            type: integer
+            description: The max access count in the given time window
+            example: 100
+          action:
+            type: string
+            enum:
+            - ALERT
+            - BLOCK
+            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
     TimeWindowThreshold:
       description: Enforces a policy during a provided time window. Not available for pushdown policies.
       type: array
@@ -1161,51 +1195,7 @@ components:
             - ALERT
             - BLOCK
             description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
-    AccessRateThreshold:
-      description: Enforces a policy based on the number of accesses in a given time window. Not available for pushdown policies.
-      type: array
-      items:
-        type: object
-        properties:
-          access_rate_unit:
-            type: string
-            enum:
-            - minute
-            - hour
-            - day
-            - week
-            - month
-            description: The time window starting at the first query until the ratebucket is reset
-          access_rate_limit:
-            type: integer
-            description: The max access count in the given time window
-            example: 100
-          action:
-            type: string
-            enum:
-            - ALERT
-            - BLOCK
-            description: Alerting will generate an alert in ALTR, Blocking will also block the users access to any connected data until the alert is cleared.
-    ApiError:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Internal Server Error
-        statusCode:
-          type: integer
-          example: 500
   responses:
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            message: Internal Server Error
-            statusCode: 500
-            date: '2022-07-20T18:00:58.723Z'
     Forbidden:
       description: Forbidden
       content:
@@ -1215,6 +1205,16 @@ components:
           example:
             message: Resource is forbidden
             statusCode: 403
+            date: '2022-07-20T18:00:58.723Z'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            message: Unauthorized
+            statusCode: 401
             date: '2022-07-20T18:00:58.723Z'
     BadRequest:
       description: Bad Request
@@ -1226,15 +1226,15 @@ components:
             message: Bad Request
             statusCode: 400
             date: '2022-07-20T18:00:58.723Z'
-    Unauthorized:
-      description: Unauthorized
+    InternalError:
+      description: Internal Error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
           example:
-            message: Unauthorized
-            statusCode: 401
+            message: Internal Server Error
+            statusCode: 500
             date: '2022-07-20T18:00:58.723Z'
   securitySchemes:
     BasicAuth:
