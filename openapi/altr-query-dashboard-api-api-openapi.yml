@@ -238,26 +238,14 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    fiber.ErrorResponse:
-      properties:
-        error:
-          type: string
-      type: object
     management.TriggerSearchOutput:
       properties:
         search_uuid:
           type: string
       type: object
-    main.GetResultOutput:
+    fiber.ErrorResponse:
       properties:
-        count_results:
-          description: Sidecar Audits.
-          items:
-            $ref: '#/components/schemas/management.CountResult'
-          type: array
-          uniqueItems: false
-        next_page_token:
-          description: Token to retrieve the next page of results. If not present, there are no more results.
+        error:
           type: string
       type: object
     management.CountResult:
@@ -274,6 +262,18 @@ components:
           type: integer
         year:
           type: integer
+      type: object
+    main.GetResultOutput:
+      properties:
+        count_results:
+          description: Sidecar Audits.
+          items:
+            $ref: '#/components/schemas/management.CountResult'
+          type: array
+          uniqueItems: false
+        next_page_token:
+          description: Token to retrieve the next page of results. If not present, there are no more results.
+          type: string
       type: object
   securitySchemes:
     basic:

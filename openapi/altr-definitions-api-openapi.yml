@@ -311,14 +311,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.FilterGroup:
-      properties:
-        filters:
-          items:
-            $ref: '#/components/schemas/models.Filter'
-          type: array
-          uniqueItems: false
-      type: object
     models.Delivery:
       properties:
         channels:
@@ -334,14 +326,91 @@ components:
         message:
           type: string
       type: object
-    models.ReportWindow:
+    models.ListDefinitionsResponse:
       properties:
-        lookback_days:
-          description: Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).
-          example: 7
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Definition'
+          type: array
+          uniqueItems: false
+        next_cursor:
+          type: string
+      type: object
+    models.Filter:
+      properties:
+        field:
+          description: 'OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.'
+          example: database_name
+          type: string
+        mode:
+          enum:
+          - include
+          - exclude
+          example: include
+          type: string
+        patterns:
+          items:
+            $ref: '#/components/schemas/models.FilterPattern'
+          type: array
+          uniqueItems: false
+        range:
+          $ref: '#/components/schemas/models.NumericRange'
+        value:
+          type: boolean
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
           type: integer
+      type: object
+    models.TriggerNowResponse:
+      properties:
+        instance_id:
+          type: string
+        message:
+          type: string
+      type: object
+    models.FilterGroup:
+      properties:
+        filters:
+          items:
+            $ref: '#/components/schemas/models.Filter'
+          type: array
+          uniqueItems: false
+      type: object
+    models.Schedule:
+      properties:
+        cron:
+          example: 0 9 ? * MON
+          type: string
+        enabled:
+          example: true
+          type: boolean
         timezone:
           example: America/New_York
+          type: string
+      type: object
+    models.DeliveryChannel:
+      properties:
+        enabled:
+          example: true
+          type: boolean
+        recipients:
+          example:
+          - admin@company.com
+          - compliance@company.com
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        type:
+          enum:
+          - email
+          example: email
           type: string
       type: object
     models.DefinitionInput:
@@ -373,107 +442,15 @@ components:
         schedule:
           $ref: '#/components/schemas/models.Schedule'
       type: object
-    models.TriggerNowResponse:
+    models.ReportWindow:
       properties:
-        instance_id:
-          type: string
-        message:
-          type: string
-      type: object
-    models.ListDefinitionsResponse:
-      properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Definition'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
-      type: object
-    models.DeliveryChannel:
-      properties:
-        enabled:
-          example: true
-          type: boolean
-        recipients:
-          example:
-          - admin@company.com
-          - compliance@company.com
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        type:
-          enum:
-          - email
-          example: email
-          type: string
-      type: object
-    models.ReportFilters:
-      properties:
-        filter_groups:
-          items:
-            $ref: '#/components/schemas/models.FilterGroup'
-          type: array
-          uniqueItems: false
-      type: object
-    models.Schedule:
-      properties:
-        cron:
-          example: 0 9 ? * MON
-          type: string
-        enabled:
-          example: true
-          type: boolean
+        lookback_days:
+          description: Number of complete calendar days to include. The window ends at midnight of the trigger date in the configured timezone, so data from the trigger day itself is excluded. Uses calendar-day arithmetic (DST-aware).
+          example: 7
+          type: integer
         timezone:
           example: America/New_York
           type: string
-      type: object
-    models.Filter:
-      properties:
-        field:
-          description: 'OLTP: database_name, table_name, schema_name, column_name, statement_type, consuming_user, event_source, event_name, repo_user, repo_host, repo_name, repo_type, application_name, client_host, connection_id, statement_text, policy_blocked, execution_success, row_count. Snowflake: username, current_role, ip_address, client, query_type, warehouse, warehouse_size, account_identifier, account_region, event_source, event_name, query_text, row_count.'
-          example: database_name
-          type: string
-        mode:
-          enum:
-          - include
-          - exclude
-          example: include
-          type: string
-        patterns:
-          items:
-            $ref: '#/components/schemas/models.FilterPattern'
-          type: array
-          uniqueItems: false
-        range:
-          $ref: '#/components/schemas/models.NumericRange'
-        value:
-          type: boolean
-      type: object
-    models.FilterPattern:
-      properties:
-        match_type:
-          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
-          enum:
-          - exact
-          - contains
-          - starts_with
-          - ends_with
-          example: starts_with
-          type: string
-        value:
-          example: PROD_
-          type: string
-      type: object
-    models.NumericRange:
-      properties:
-        max:
-          type: integer
-        min:
-          type: integer
       type: object
     models.Definition:
       properties:
@@ -515,11 +492,34 @@ components:
         updated_at:
           type: string
       type: object
-    fiber.APIError:
+    models.ReportFilters:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        filter_groups:
+          items:
+            $ref: '#/components/schemas/models.FilterGroup'
+          type: array
+          uniqueItems: false
+      type: object
+    models.FilterPattern:
+      properties:
+        match_type:
+          description: exact (default for scalars), contains (default for statement_text), starts_with, ends_with
+          enum:
+          - exact
+          - contains
+          - starts_with
+          - ends_with
+          example: starts_with
+          type: string
+        value:
+          example: PROD_
+          type: string
+      type: object
+    models.NumericRange:
+      properties:
+        max:
+          type: integer
+        min:
           type: integer
       type: object
   securitySchemes:

@@ -271,16 +271,201 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    main.GetResultOutput:
+    management.TriggerSearchOutput:
       properties:
-        audits:
-          description: Sidecar Audits.
+        search_uuid:
+          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
+          type: string
+      type: object
+    management.PathSegment:
+      properties:
+        name:
+          type: string
+        object_type:
+          type: string
+      type: object
+    management.StatementRequest:
+      properties:
+        applied_policies:
+          description: All applied policies
           items:
-            $ref: '#/components/schemas/management.Audit'
+            $ref: '#/components/schemas/management.AppliedPolicy'
           type: array
           uniqueItems: false
-        next_page_token:
-          description: Token to retrieve the next page of results. If not present, there are no more results.
+        applied_policy_result:
+          $ref: '#/components/schemas/management.PolicyResult'
+        destinations:
+          description: Destinations
+          items:
+            $ref: '#/components/schemas/management.DatabaseObject'
+          type: array
+          uniqueItems: false
+        projected_columns:
+          description: Projected columns
+          items:
+            $ref: '#/components/schemas/management.DatabaseObject'
+          type: array
+          uniqueItems: false
+        resources:
+          description: Objects the statement references (e.g. the object a GRANT applies to)
+          items:
+            $ref: '#/components/schemas/management.TargetResource'
+          type: array
+          uniqueItems: false
+        response:
+          $ref: '#/components/schemas/management.StatementResponse'
+        scanned_columns:
+          description: Scanned columns
+          items:
+            $ref: '#/components/schemas/management.DatabaseObject'
+          type: array
+          uniqueItems: false
+        statement:
+          type: string
+        statement_type:
+          type: string
+        targets:
+          description: Objects the statement acts upon (e.g. the table an INSERT/UPDATE writes to)
+          items:
+            $ref: '#/components/schemas/management.TargetResource'
+          type: array
+          uniqueItems: false
+      required:
+      - response
+      - statement
+      type: object
+    auditfilter.Op:
+      enum:
+      - and
+      - or
+      - eq
+      - neq
+      - in
+      - contains
+      - regex
+      - cidr
+      - gt
+      - gte
+      - lt
+      - lte
+      - range
+      - between
+      - exists
+      - key_exists
+      - key_eq
+      type: string
+      x-enum-varnames:
+      - OpAnd
+      - OpOr
+      - OpEq
+      - OpNeq
+      - OpIn
+      - OpContains
+      - OpRegex
+      - OpCIDR
+      - OpGt
+      - OpGte
+      - OpLt
+      - OpLte
+      - OpRange
+      - OpBetween
+      - OpExists
+      - OpKeyExists
+      - OpKeyEq
+    management.StatementResponse:
+      description: 'In future we can add session params
+
+        to add session params we need a list of avail params'
+      properties:
+        bytes:
+          type: integer
+        execution_time:
+          type: string
+        message:
+          description: Message returned example ->  OK"
+          type: string
+        records:
+          description: Number of records
+          type: integer
+        success:
+          type: boolean
+      required:
+      - execution_time
+      - message
+      type: object
+    management.Audit:
+      properties:
+        client:
+          $ref: '#/components/schemas/management.ConnectionClient'
+        configuration_version_id:
+          type: string
+        connection_request:
+          $ref: '#/components/schemas/management.ConnectionRequest'
+        event_id:
+          type: string
+        event_name:
+          type: string
+        event_source:
+          type: string
+        event_time:
+          type: string
+        event_time_nano_seconds:
+          type: integer
+        event_version:
+          type: string
+        org_id:
+          type: string
+        policy_version_id:
+          type: string
+        repo:
+          $ref: '#/components/schemas/management.Repo'
+        sidecar:
+          $ref: '#/components/schemas/management.Sidecar'
+        statement_request:
+          $ref: '#/components/schemas/management.StatementRequest'
+        tracking_id:
+          type: string
+        user_identity:
+          $ref: '#/components/schemas/management.UserIdentity'
+      required:
+      - client
+      - configuration_version_id
+      - event_id
+      - event_name
+      - event_source
+      - event_time
+      - event_time_nano_seconds
+      - event_version
+      - org_id
+      - policy_version_id
+      - repo
+      - tracking_id
+      - user_identity
+      type: object
+    management.ConsumingUser:
+      properties:
+        email:
+          type: string
+        user_groups:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        username:
+          type: string
+      type: object
+    main.SearchRequestDoc:
+      properties:
+        filter:
+          $ref: '#/components/schemas/main.FilterNodeDoc'
+        timezone:
+          description: 'Timezone is the IANA zone for time_of_day comparisons (e.g.
+
+            "America/New_York") — pass the dam rule''s timezone to replay its
+
+            filter. Required when the filter contains a time_of_day dimension,
+
+            forbidden otherwise.'
           type: string
       type: object
     auditfilter.Dimension:
@@ -369,271 +554,6 @@ components:
       - DimSnowflakeExecutionDuration
       - DimSnowflakeTagName
       - DimSnowflakeTagValue
-    management.StatementResponse:
-      description: 'In future we can add session params
-
-        to add session params we need a list of avail params'
-      properties:
-        bytes:
-          type: integer
-        execution_time:
-          type: string
-        message:
-          description: Message returned example ->  OK"
-          type: string
-        records:
-          description: Number of records
-          type: integer
-        success:
-          type: boolean
-      required:
-      - execution_time
-      - message
-      type: object
-    auditfilter.RangeValue:
-      properties:
-        max:
-          type: number
-        min:
-          type: number
-      required:
-      - max
-      - min
-      type: object
-    auditfilter.KeyEqValue:
-      properties:
-        key:
-          maxLength: 256
-          type: string
-        value:
-          maxLength: 256
-          type: string
-      required:
-      - key
-      - value
-      type: object
-    management.PolicyResult:
-      description: Aggregate of all policy results
-      properties:
-        block:
-          type: boolean
-      type: object
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-      type: object
-    auditfilter.Op:
-      enum:
-      - and
-      - or
-      - eq
-      - neq
-      - in
-      - contains
-      - regex
-      - cidr
-      - gt
-      - gte
-      - lt
-      - lte
-      - range
-      - between
-      - exists
-      - key_exists
-      - key_eq
-      type: string
-      x-enum-varnames:
-      - OpAnd
-      - OpOr
-      - OpEq
-      - OpNeq
-      - OpIn
-      - OpContains
-      - OpRegex
-      - OpCIDR
-      - OpGt
-      - OpGte
-      - OpLt
-      - OpLte
-      - OpRange
-      - OpBetween
-      - OpExists
-      - OpKeyExists
-      - OpKeyEq
-    management.UserIdentity:
-      properties:
-        consuming_user:
-          $ref: '#/components/schemas/management.ConsumingUser'
-        repo_user:
-          type: string
-      required:
-      - repo_user
-      type: object
-    management.TriggerSearchOutput:
-      properties:
-        search_uuid:
-          description: UUID of the search. Used to retrieve the results. Expires 30 days after creation.
-          type: string
-      type: object
-    management.AppliedPolicy:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        result:
-          $ref: '#/components/schemas/management.PolicyResult'
-        type:
-          type: string
-      required:
-      - id
-      - name
-      - result
-      - type
-      type: object
-    management.Sidecar:
-      properties:
-        id:
-          type: string
-        instance_id:
-          type: string
-        version:
-          type: string
-      required:
-      - id
-      - instance_id
-      - version
-      type: object
-    management.ConnectionRequest:
-      properties:
-        applied_policies:
-          description: All applied policies
-          items:
-            $ref: '#/components/schemas/management.AppliedPolicy'
-          type: array
-          uniqueItems: false
-        applied_policy_result:
-          $ref: '#/components/schemas/management.PolicyResult'
-        authorization_type:
-          type: string
-        authorized:
-          type: boolean
-        error:
-          type: string
-        response:
-          $ref: '#/components/schemas/management.ConnectionResponse'
-      required:
-      - authorization_type
-      - response
-      type: object
-    main.SearchRequestDoc:
-      properties:
-        filter:
-          $ref: '#/components/schemas/main.FilterNodeDoc'
-        timezone:
-          description: 'Timezone is the IANA zone for time_of_day comparisons (e.g.
-
-            "America/New_York") — pass the dam rule''s timezone to replay its
-
-            filter. Required when the filter contains a time_of_day dimension,
-
-            forbidden otherwise.'
-          type: string
-      type: object
-    management.DatabaseObject:
-      properties:
-        access_type:
-          type: string
-        database:
-          description: nullable
-          type: string
-        name:
-          type: string
-        object_type:
-          type: string
-        qualified_name:
-          type: string
-        qualified_path:
-          items:
-            $ref: '#/components/schemas/management.PathSegment'
-          type: array
-          uniqueItems: false
-        schema:
-          type: string
-        table:
-          type: string
-        wildcard:
-          type: boolean
-      type: object
-    management.ConnectionClient:
-      properties:
-        application_name:
-          type: string
-        connection_id:
-          type: string
-        connection_time:
-          type: string
-        host:
-          type: string
-        port:
-          type: integer
-      required:
-      - connection_id
-      - connection_time
-      - host
-      - port
-      type: object
-    management.StatementRequest:
-      properties:
-        applied_policies:
-          description: All applied policies
-          items:
-            $ref: '#/components/schemas/management.AppliedPolicy'
-          type: array
-          uniqueItems: false
-        applied_policy_result:
-          $ref: '#/components/schemas/management.PolicyResult'
-        destinations:
-          description: Destinations
-          items:
-            $ref: '#/components/schemas/management.DatabaseObject'
-          type: array
-          uniqueItems: false
-        projected_columns:
-          description: Projected columns
-          items:
-            $ref: '#/components/schemas/management.DatabaseObject'
-          type: array
-          uniqueItems: false
-        resources:
-          description: Objects the statement references (e.g. the object a GRANT applies to)
-          items:
-            $ref: '#/components/schemas/management.TargetResource'
-          type: array
-          uniqueItems: false
-        response:
-          $ref: '#/components/schemas/management.StatementResponse'
-        scanned_columns:
-          description: Scanned columns
-          items:
-            $ref: '#/components/schemas/management.DatabaseObject'
-          type: array
-          uniqueItems: false
-        statement:
-          type: string
-        statement_type:
-          type: string
-        targets:
-          description: Objects the statement acts upon (e.g. the table an INSERT/UPDATE writes to)
-          items:
-            $ref: '#/components/schemas/management.TargetResource'
-          type: array
-          uniqueItems: false
-      required:
-      - response
-      - statement
-      type: object
     management.TargetResource:
       description: 'Slim shape for targets and resources: only access_type, qualified_path, and wildcard.'
       properties:
@@ -646,105 +566,6 @@ components:
           uniqueItems: false
         wildcard:
           type: boolean
-      type: object
-    management.Audit:
-      properties:
-        client:
-          $ref: '#/components/schemas/management.ConnectionClient'
-        configuration_version_id:
-          type: string
-        connection_request:
-          $ref: '#/components/schemas/management.ConnectionRequest'
-        event_id:
-          type: string
-        event_name:
-          type: string
-        event_source:
-          type: string
-        event_time:
-          type: string
-        event_time_nano_seconds:
-          type: integer
-        event_version:
-          type: string
-        org_id:
-          type: string
-        policy_version_id:
-          type: string
-        repo:
-          $ref: '#/components/schemas/management.Repo'
-        sidecar:
-          $ref: '#/components/schemas/management.Sidecar'
-        statement_request:
-          $ref: '#/components/schemas/management.StatementRequest'
-        tracking_id:
-          type: string
-        user_identity:
-          $ref: '#/components/schemas/management.UserIdentity'
-      required:
-      - client
-      - configuration_version_id
-      - event_id
-      - event_name
-      - event_source
-      - event_time
-      - event_time_nano_seconds
-      - event_version
-      - org_id
-      - policy_version_id
-      - repo
-      - tracking_id
-      - user_identity
-      type: object
-    management.ConsumingUser:
-      properties:
-        email:
-          type: string
-        user_groups:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        username:
-          type: string
-      type: object
-    management.Repo:
-      properties:
-        host:
-          type: string
-        name:
-          type: string
-        port:
-          type: integer
-        type:
-          type: string
-      required:
-      - host
-      - name
-      - port
-      - type
-      type: object
-    auditfilter.BetweenValue:
-      properties:
-        end:
-          type: string
-        start:
-          type: string
-      required:
-      - end
-      - start
-      type: object
-    management.ConnectionResponse:
-      properties:
-        execution_time:
-          type: string
-        message:
-          type: string
-        success:
-          type: boolean
-      required:
-      - execution_time
-      - message
       type: object
     main.FilterNodeDoc:
       properties:
@@ -783,12 +604,191 @@ components:
       required:
       - op
       type: object
-    management.PathSegment:
+    management.ConnectionResponse:
       properties:
+        execution_time:
+          type: string
+        message:
+          type: string
+        success:
+          type: boolean
+      required:
+      - execution_time
+      - message
+      type: object
+    auditfilter.KeyEqValue:
+      properties:
+        key:
+          maxLength: 256
+          type: string
+        value:
+          maxLength: 256
+          type: string
+      required:
+      - key
+      - value
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+      type: object
+    management.PolicyResult:
+      description: Aggregate of all policy results
+      properties:
+        block:
+          type: boolean
+      type: object
+    auditfilter.BetweenValue:
+      properties:
+        end:
+          type: string
+        start:
+          type: string
+      required:
+      - end
+      - start
+      type: object
+    management.ConnectionClient:
+      properties:
+        application_name:
+          type: string
+        connection_id:
+          type: string
+        connection_time:
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+      required:
+      - connection_id
+      - connection_time
+      - host
+      - port
+      type: object
+    management.Sidecar:
+      properties:
+        id:
+          type: string
+        instance_id:
+          type: string
+        version:
+          type: string
+      required:
+      - id
+      - instance_id
+      - version
+      type: object
+    auditfilter.RangeValue:
+      properties:
+        max:
+          type: number
+        min:
+          type: number
+      required:
+      - max
+      - min
+      type: object
+    management.DatabaseObject:
+      properties:
+        access_type:
+          type: string
+        database:
+          description: nullable
+          type: string
         name:
           type: string
         object_type:
           type: string
+        qualified_name:
+          type: string
+        qualified_path:
+          items:
+            $ref: '#/components/schemas/management.PathSegment'
+          type: array
+          uniqueItems: false
+        schema:
+          type: string
+        table:
+          type: string
+        wildcard:
+          type: boolean
+      type: object
+    management.ConnectionRequest:
+      properties:
+        applied_policies:
+          description: All applied policies
+          items:
+            $ref: '#/components/schemas/management.AppliedPolicy'
+          type: array
+          uniqueItems: false
+        applied_policy_result:
+          $ref: '#/components/schemas/management.PolicyResult'
+        authorization_type:
+          type: string
+        authorized:
+          type: boolean
+        error:
+          type: string
+        response:
+          $ref: '#/components/schemas/management.ConnectionResponse'
+      required:
+      - authorization_type
+      - response
+      type: object
+    main.GetResultOutput:
+      properties:
+        audits:
+          description: Sidecar Audits.
+          items:
+            $ref: '#/components/schemas/management.Audit'
+          type: array
+          uniqueItems: false
+        next_page_token:
+          description: Token to retrieve the next page of results. If not present, there are no more results.
+          type: string
+      type: object
+    management.UserIdentity:
+      properties:
+        consuming_user:
+          $ref: '#/components/schemas/management.ConsumingUser'
+        repo_user:
+          type: string
+      required:
+      - repo_user
+      type: object
+    management.AppliedPolicy:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        result:
+          $ref: '#/components/schemas/management.PolicyResult'
+        type:
+          type: string
+      required:
+      - id
+      - name
+      - result
+      - type
+      type: object
+    management.Repo:
+      properties:
+        host:
+          type: string
+        name:
+          type: string
+        port:
+          type: integer
+        type:
+          type: string
+      required:
+      - host
+      - name
+      - port
+      - type
       type: object
   securitySchemes:
     BasicAuth:

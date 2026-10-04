@@ -271,14 +271,115 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.MatchedEvent:
+    models.OLTPAudit:
       properties:
-        oltp_audit:
-          $ref: '#/components/schemas/models.OLTPAudit'
-        snowflake_audit:
-          $ref: '#/components/schemas/models.SnowflakeAudit'
-        source:
+        authorization_type:
           type: string
+        bytes_returned:
+          type: integer
+        client_app:
+          type: string
+        client_ip:
+          type: string
+        column:
+          type: string
+        connection_authorized:
+          type: boolean
+        database:
+          type: string
+        event_name:
+          type: string
+        policies_applied:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        policy_types:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        query_status:
+          type: string
+        repo_host:
+          type: string
+        repo_type:
+          type: string
+        repo_user:
+          type: string
+        row_count:
+          type: integer
+        schema:
+          type: string
+        sidecar_id:
+          type: string
+        statement_text:
+          type: string
+        statement_type:
+          type: string
+        table:
+          type: string
+        user:
+          type: string
+        user_email:
+          type: string
+        user_group:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    models.AckMetadata:
+      properties:
+        acked_at:
+          type: string
+        acked_by_id:
+          type: string
+        acked_by_name:
+          type: string
+        comment:
+          type: string
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    models.Comment:
+      properties:
+        alert_id:
+          type: string
+        author_id:
+          type: string
+        author_name:
+          type: string
+        comment_id:
+          type: string
+        created_at:
+          type: string
+        text:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    models.ListCommentsResponse:
+      properties:
+        contiguous_id:
+          type: string
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
       type: object
     models.Alert:
       properties:
@@ -307,7 +408,35 @@ components:
         threshold_context:
           $ref: '#/components/schemas/models.ThresholdContext'
       type: object
-    models.ListCommentsResponse:
+    models.CreateCommentRequest:
+      properties:
+        text:
+          maxLength: 5000
+          type: string
+      required:
+      - text
+      type: object
+    models.ThresholdContext:
+      properties:
+        threshold:
+          type: integer
+        threshold_count:
+          type: integer
+        window_start:
+          type: string
+        window_type:
+          type: string
+      type: object
+    models.MatchedEvent:
+      properties:
+        oltp_audit:
+          $ref: '#/components/schemas/models.OLTPAudit'
+        snowflake_audit:
+          $ref: '#/components/schemas/models.SnowflakeAudit'
+        source:
+          type: string
+      type: object
+    models.ListAlertsResponse:
       properties:
         contiguous_id:
           type: string
@@ -315,42 +444,9 @@ components:
           type: boolean
         items:
           items:
-            $ref: '#/components/schemas/models.Comment'
+            $ref: '#/components/schemas/models.Alert'
           type: array
           uniqueItems: false
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    models.AckMetadata:
-      properties:
-        acked_at:
-          type: string
-        acked_by_id:
-          type: string
-        acked_by_name:
-          type: string
-        comment:
-          type: string
-      type: object
-    models.Comment:
-      properties:
-        alert_id:
-          type: string
-        author_id:
-          type: string
-        author_name:
-          type: string
-        comment_id:
-          type: string
-        created_at:
-          type: string
-        text:
-          type: string
       type: object
     models.SnowflakeAudit:
       properties:
@@ -410,106 +506,10 @@ components:
         warehouse_size:
           type: string
       type: object
-    models.ThresholdContext:
-      properties:
-        threshold:
-          type: integer
-        threshold_count:
-          type: integer
-        window_start:
-          type: string
-        window_type:
-          type: string
-      type: object
-    models.CreateCommentRequest:
-      properties:
-        text:
-          maxLength: 5000
-          type: string
-      required:
-      - text
-      type: object
-    models.ListAlertsResponse:
-      properties:
-        contiguous_id:
-          type: string
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Alert'
-          type: array
-          uniqueItems: false
-      type: object
-    models.OLTPAudit:
-      properties:
-        authorization_type:
-          type: string
-        bytes_returned:
-          type: integer
-        client_app:
-          type: string
-        client_ip:
-          type: string
-        column:
-          type: string
-        connection_authorized:
-          type: boolean
-        database:
-          type: string
-        event_name:
-          type: string
-        policies_applied:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        policy_types:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        query_status:
-          type: string
-        repo_host:
-          type: string
-        repo_type:
-          type: string
-        repo_user:
-          type: string
-        row_count:
-          type: integer
-        schema:
-          type: string
-        sidecar_id:
-          type: string
-        statement_text:
-          type: string
-        statement_type:
-          type: string
-        table:
-          type: string
-        user:
-          type: string
-        user_email:
-          type: string
-        user_group:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
     models.AckRequest:
       properties:
         comment:
           type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
       type: object
   securitySchemes:
     BasicAuth:

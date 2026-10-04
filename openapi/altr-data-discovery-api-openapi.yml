@@ -806,42 +806,57 @@ paths:
           description: Failure servicing this request
 components:
   schemas:
-    ClassificationColumnTypeList:
-      type: object
-      properties:
-        Columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClassificationColumnTypeRequestItem'
-        Totals:
-          type: object
-          properties:
-            column_count:
-              type: integer
-              example: 100
-    Database:
+    DataDiscoveryJob:
       type: object
       properties:
         databaseID:
           type: integer
           example: 1
+        jobUUID:
+          type: string
+          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
         databaseName:
           type: string
-          example: TEST_DATABASE
-        databaseFriendlyName:
+          example: DatabaseOne
+        startTimeStamp:
           type: string
-          example: Test Database
-        dataDiscoveryJobRan:
-          type: boolean
-          example: true
-    DataDiscoveryJobList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryJob'
-    DataDiscoveryTableList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTable'
+          example: '2006-01-02T15:04:05Z'
+        startTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        completeTimeStamp:
+          type: string
+          example: '2006-01-02T15:04:05Z'
+        completeTimeSinceEpoch:
+          type: long
+          example: 1656255468000
+        dataDiscoveryTypeString:
+          type: string
+          example: Google DLP
+        dataDiscoveryType:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: IN_PROGRESS
+        totalColumns:
+          type: integer
+          example: 10000
+        totalTables:
+          type: integer
+          example: 1000
+        completedColumns:
+          type: integer
+          example: 5000
+        completedTables:
+          type: integer
+          example: 500
+        columnsCompletePercentage:
+          type: float
+          example: 50.0
+        tablesCompletePercentage:
+          type: float
+          example: 50.0
     DataDiscoveryTable:
       type: object
       properties:
@@ -869,10 +884,64 @@ components:
         tableFailureTimestamp:
           type: string
           example: 8/8/22 15:15:15
-    DatabaseList:
+    ClassificationColumnTypeList:
+      type: object
+      properties:
+        Columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationColumnTypeRequestItem'
+        Totals:
+          type: object
+          properties:
+            column_count:
+              type: integer
+              example: 100
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: Requested ID did not exist.
+    ClassificationSummaryItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: SSN
+        percent:
+          type: float
+          example: 20
+        amount:
+          type: string
+          example: Requested ID did not exist.
+    Database:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        databaseName:
+          type: string
+          example: TEST_DATABASE
+        databaseFriendlyName:
+          type: string
+          example: Test Database
+        dataDiscoveryJobRan:
+          type: boolean
+          example: true
+    DataDiscoveryTableList:
       type: array
       items:
-        $ref: '#/components/schemas/Database'
+        $ref: '#/components/schemas/DataDiscoveryTable'
+    DataDiscoveryJobList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryJob'
     ClassificationSummary:
       type: object
       properties:
@@ -892,16 +961,46 @@ components:
             percentSuccessfullyClassified:
               type: float
               example: 22.5
-    Error:
+    DataDiscoveryTableFailure:
       type: object
       properties:
-        errorCode:
-          type: integer
-          format: int64
-          example: 404
-        message:
+        jobID:
           type: string
-          example: Requested ID did not exist.
+          example: DIS-UUID
+        tableJobID:
+          type: string
+          example: UUID
+        tableJobError:
+          type: string
+          example: Job error message here
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        columnsFailed:
+          type: integer
+          example: 10
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    DataDiscoveryTableFailureList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTableFailure'
     ClassificationColumnTypeRequestItem:
       type: object
       properties:
@@ -956,109 +1055,10 @@ components:
         fullyQualifiedTableName:
           type: string
           example: DATABASE_ONE.SCHEMA_ONE.TABLE_ONE
-    DataDiscoveryTableFailureList:
+    DatabaseList:
       type: array
       items:
-        $ref: '#/components/schemas/DataDiscoveryTableFailure'
-    DataDiscoveryJob:
-      type: object
-      properties:
-        databaseID:
-          type: integer
-          example: 1
-        jobUUID:
-          type: string
-          example: dis-asdf125-1234-1adf-982c-asdfvfadsfa
-        databaseName:
-          type: string
-          example: DatabaseOne
-        startTimeStamp:
-          type: string
-          example: '2006-01-02T15:04:05Z'
-        startTimeSinceEpoch:
-          type: long
-          example: 1656255468000
-        completeTimeStamp:
-          type: string
-          example: '2006-01-02T15:04:05Z'
-        completeTimeSinceEpoch:
-          type: long
-          example: 1656255468000
-        dataDiscoveryTypeString:
-          type: string
-          example: Google DLP
-        dataDiscoveryType:
-          type: integer
-          example: 1
-        status:
-          type: string
-          example: IN_PROGRESS
-        totalColumns:
-          type: integer
-          example: 10000
-        totalTables:
-          type: integer
-          example: 1000
-        completedColumns:
-          type: integer
-          example: 5000
-        completedTables:
-          type: integer
-          example: 500
-        columnsCompletePercentage:
-          type: float
-          example: 50.0
-        tablesCompletePercentage:
-          type: float
-          example: 50.0
-    ClassificationSummaryItem:
-      type: object
-      properties:
-        type:
-          type: string
-          example: SSN
-        percent:
-          type: float
-          example: 20
-        amount:
-          type: string
-          example: Requested ID did not exist.
-    DataDiscoveryTableFailure:
-      type: object
-      properties:
-        jobID:
-          type: string
-          example: DIS-UUID
-        tableJobID:
-          type: string
-          example: UUID
-        tableJobError:
-          type: string
-          example: Job error message here
-        tableName:
-          type: string
-          example: Table1
-        schemaName:
-          type: string
-          example: Schema1
-        tableJobErrorCode:
-          type: integer
-          example: 65000
-        totalColumns:
-          type: integer
-          example: 10
-        columnsTagged:
-          type: integer
-          example: 5
-        columnsSucceeded:
-          type: integer
-          example: 0
-        columnsFailed:
-          type: integer
-          example: 10
-        tableFailureTimestamp:
-          type: string
-          example: 8/8/22 15:15:15
+        $ref: '#/components/schemas/Database'
   securitySchemes:
     basicAuth:
       type: http

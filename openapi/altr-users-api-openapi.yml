@@ -250,6 +250,51 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    dto.CreateServiceUserRequest:
+      type: object
+      required:
+      - display_name
+      - username
+      properties:
+        display_name:
+          description: DisplayName provides a human-friendly name
+          type: string
+          maxLength: 255
+        hostname:
+          type: string
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+        username:
+          description: Username is the primary identifier for the service user and is used for authentication and display.
+          type: string
+          maxLength: 255
+    types.AuthType:
+      type: string
+      enum:
+      - UNSUPPORTED
+      - NONE
+      - PASSWORD
+      - KEYPAIR
+      x-enum-varnames:
+      - AuthTypeUnsupported
+      - AuthTypeNone
+      - AuthTypePassword
+      - AuthTypeKeypair
+    types.ServiceType:
+      type: string
+      enum:
+      - SNOWFLAKE
+      - UNSUPPORTED
+      x-enum-varnames:
+      - SnowflakeServiceUser
+      - UnsupportedServiceUser
+    dto.CreateServiceUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dto.CompositeServiceUser'
     dto.CompositeServiceUser:
       type: object
       properties:
@@ -285,40 +330,6 @@ components:
         username:
           description: Username is the username assigned to the service user.
           type: string
-    dto.ServiceUserQueryResponse:
-      type: object
-      properties:
-        contiguous_id:
-          type: string
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
-    dto.CreateServiceUserResponse:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/dto.CompositeServiceUser'
-    dto.CreateServiceUserRequest:
-      type: object
-      required:
-      - display_name
-      - username
-      properties:
-        display_name:
-          description: DisplayName provides a human-friendly name
-          type: string
-          maxLength: 255
-        hostname:
-          type: string
-        port:
-          type: integer
-          maximum: 65535
-          minimum: 1
-        username:
-          description: Username is the primary identifier for the service user and is used for authentication and display.
-          type: string
-          maxLength: 255
     dto.CompositeAuthResponse:
       type: object
       properties:
@@ -342,36 +353,6 @@ components:
           type: string
         public_key_format:
           type: string
-    types.AuthType:
-      type: string
-      enum:
-      - UNSUPPORTED
-      - NONE
-      - PASSWORD
-      - KEYPAIR
-      x-enum-varnames:
-      - AuthTypeUnsupported
-      - AuthTypeNone
-      - AuthTypePassword
-      - AuthTypeKeypair
-    dto.UpdateServiceUserBody:
-      description: UpdateServiceUserBody is used to update the details of an existing service user.
-      type: object
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-        username:
-          type: string
-          maxLength: 255
-    types.ServiceType:
-      type: string
-      enum:
-      - SNOWFLAKE
-      - UNSUPPORTED
-      x-enum-varnames:
-      - SnowflakeServiceUser
-      - UnsupportedServiceUser
     dto.GetServiceUserPublicResponse:
       description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
       type: object
@@ -384,6 +365,25 @@ components:
           description: User is the composite service user object containing public attributes.
           allOf:
           - $ref: '#/components/schemas/dto.CompositeServiceUser'
+    dto.ServiceUserQueryResponse:
+      type: object
+      properties:
+        contiguous_id:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
+    dto.UpdateServiceUserBody:
+      description: UpdateServiceUserBody is used to update the details of an existing service user.
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+        username:
+          type: string
+          maxLength: 255
   securitySchemes:
     BasicAuth:
       type: http

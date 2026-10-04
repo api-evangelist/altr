@@ -680,164 +680,28 @@ paths:
           $ref: '#/components/responses/InternalError'
       operationId: createSnowflakeConnection
 components:
-  parameters:
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-  examples:
-    driverdb:
-      summary: Driver Database Connection Example
-      description: 'This connects a driver database with the bare minimum settings.
-
-        In this example, it connects a MySQL database. See the documentation for all database types that we support (or expand the schema section in the swagger docs)
-
-        '
-      value:
-        friendlyDatabaseName: My MySQL Database
-        databaseType: mysql
-        databaseUsername: mysqlusername
-        databasePassword: mysqlpassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.mysql.com
-        databasePort: 3306
-    sfdbt:
-      summary: Snowflake Database Connection & Tag Data by Classification Example
-      description: 'Connect a Snowflake database that will scan and tag columns in your database based on classification.
-
-        An email will be sent when done.
-
-        By default, Google DLP is applied, this can be changed by adding a `classificationType` property and setting it to 2 or 4. Read more by expanding the schema to see all options.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        shouldClassify: true
-    sfdballproperties:
-      summary: Snowflake Database Connection; All Properties set.
-      description: 'Connect a Snowflake database, this property assigns every possible property for a snowflake database connection.
-
-
-        This database connection will connect a snowflake database with an assigned snowflake role, warehouse, 30 day usage history, and classification type `4` which will run Snowflake Classify and Tag Imports.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        snowflakeRole: MY_ROLE
-        warehouseName: MY_WAREHOUSE
-        maxNumberOfConnections: 5
-        maxNumberOfBatches: 15
-        databasePort: 3305
-        dataUsageHistory: true
-        shouldClassify: true
-        classificationType: 3
-    databricks:
-      summary: Databricks Connection Example
-      description: The bare minimum that is needed to connect to Databricks
-      value:
-        friendlyDatabaseName: My Databricks Connection
-        databaseType: databricks
-        databasePassword: jose17mysvcprincipaloauthsecret10690
-        hostname: https://6my-45wrkbook34-host32.cloud.databricks.com/
-        databricksServicePrincipalId: 3bda4my-serv-princ-uuid-f016f8248c6a
-        databricksClusterId: 23my-3dbx23-cluster3432
-    sfdbc:
-      summary: Snowflake Database Connection & Import Data Usage History Example
-      description: 'Connect a Snowflake database that will scan and analyze the last 30 days of data access in this database so you can understand how data is used.
-
-
-        Setting the property value of `dataUsageHistory` to true, will populate the Analytics page in the ALTRNet.
-
-        '
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        dataUsageHistory: true
-    sfdbdetailed:
-      summary: Snowflake Database Connection Advanced Example
-      description: 'Snowflake Database Connection for more advanced settings. With this, you can set both the warehouse name and the snowflake role.
-
-        In addition, this will set the max number of connections to 5, and max number of batches to 15.'
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
-        snowflakeRole: MY_ROLE
-        warehouseName: MY_WAREHOUSE
-        maxNumberOfConnections: 5
-        maxNumberOfBatches: 15
-    driverdbconnectionstring:
-      summary: Driver Database Connection String Example
-      description: 'Instead of passing each property individually, you can pass an entire connection string instead.
-
-
-        Please keep in mind that this is only for Driver databases, connection strings are not available for Snowflake Databases.
-
-        '
-      value:
-        friendlyDatabaseName: My MySQL Database
-        databaseType: mysql
-        connectionString: jdbc:altr:mysql://someURl.amazonaws.com:3306/myschema?user=mysqlusername&password=mysqlpassword
-    sfdb:
-      summary: Snowflake Database Connection Example
-      description: The bare minimum that is needed to connect a Snowflake database
-      value:
-        friendlyDatabaseName: My Snowflake Database
-        databaseType: snowflake_external_functions
-        databaseUsername: mysnowflakeusername
-        databasePassword: mysnowflakepassword
-        databaseName: MY_DATABASE_NAME
-        hostname: dfr432245.us-west.snowflakecomputing.com
-        databasePort: 3305
   schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
     Database:
       type: object
       properties:
@@ -930,52 +794,164 @@ components:
           type: string
           description: A field for Databricks connections that will only appear if the database type is "databricks".
           example: 23my-3dbx23-cluster3432
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
+  examples:
+    sfdbt:
+      summary: Snowflake Database Connection & Tag Data by Classification Example
+      description: 'Connect a Snowflake database that will scan and tag columns in your database based on classification.
+
+        An email will be sent when done.
+
+        By default, Google DLP is applied, this can be changed by adding a `classificationType` property and setting it to 2 or 4. Read more by expanding the schema to see all options.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        shouldClassify: true
+    databricks:
+      summary: Databricks Connection Example
+      description: The bare minimum that is needed to connect to Databricks
+      value:
+        friendlyDatabaseName: My Databricks Connection
+        databaseType: databricks
+        databasePassword: jose17mysvcprincipaloauthsecret10690
+        hostname: https://6my-45wrkbook34-host32.cloud.databricks.com/
+        databricksServicePrincipalId: 3bda4my-serv-princ-uuid-f016f8248c6a
+        databricksClusterId: 23my-3dbx23-cluster3432
+    driverdbconnectionstring:
+      summary: Driver Database Connection String Example
+      description: 'Instead of passing each property individually, you can pass an entire connection string instead.
+
+
+        Please keep in mind that this is only for Driver databases, connection strings are not available for Snowflake Databases.
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        connectionString: jdbc:altr:mysql://someURl.amazonaws.com:3306/myschema?user=mysqlusername&password=mysqlpassword
+    sfdballproperties:
+      summary: Snowflake Database Connection; All Properties set.
+      description: 'Connect a Snowflake database, this property assigns every possible property for a snowflake database connection.
+
+
+        This database connection will connect a snowflake database with an assigned snowflake role, warehouse, 30 day usage history, and classification type `4` which will run Snowflake Classify and Tag Imports.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+        databasePort: 3305
+        dataUsageHistory: true
+        shouldClassify: true
+        classificationType: 3
+    sfdbdetailed:
+      summary: Snowflake Database Connection Advanced Example
+      description: 'Snowflake Database Connection for more advanced settings. With this, you can set both the warehouse name and the snowflake role.
+
+        In addition, this will set the max number of connections to 5, and max number of batches to 15.'
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        snowflakeRole: MY_ROLE
+        warehouseName: MY_WAREHOUSE
+        maxNumberOfConnections: 5
+        maxNumberOfBatches: 15
+    driverdb:
+      summary: Driver Database Connection Example
+      description: 'This connects a driver database with the bare minimum settings.
+
+        In this example, it connects a MySQL database. See the documentation for all database types that we support (or expand the schema section in the swagger docs)
+
+        '
+      value:
+        friendlyDatabaseName: My MySQL Database
+        databaseType: mysql
+        databaseUsername: mysqlusername
+        databasePassword: mysqlpassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.mysql.com
+        databasePort: 3306
+    sfdbc:
+      summary: Snowflake Database Connection & Import Data Usage History Example
+      description: 'Connect a Snowflake database that will scan and analyze the last 30 days of data access in this database so you can understand how data is used.
+
+
+        Setting the property value of `dataUsageHistory` to true, will populate the Analytics page in the ALTRNet.
+
+        '
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+        dataUsageHistory: true
+    sfdb:
+      summary: Snowflake Database Connection Example
+      description: The bare minimum that is needed to connect a Snowflake database
+      value:
+        friendlyDatabaseName: My Snowflake Database
+        databaseType: snowflake_external_functions
+        databaseUsername: mysnowflakeusername
+        databasePassword: mysnowflakepassword
+        databaseName: MY_DATABASE_NAME
+        hostname: dfr432245.us-west.snowflakecomputing.com
+        databasePort: 3305
+  parameters:
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
   responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     Unprocessed:
       description: Unprocessable Entity
       content:
@@ -998,6 +974,18 @@ components:
             data:
               message: Resource is forbidden
               statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
     BadRequest:
@@ -1024,6 +1012,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     NotFound:
       description: Not Found
       content:

@@ -215,11 +215,29 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.CreateCommentInput:
+      properties:
+        text:
+          example: Reviewed all SELECT queries - no anomalies found
+          type: string
+      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
+          type: string
+      type: object
+    repository.PaginatedResult-models_Comment:
+      properties:
+        has_more:
+          type: boolean
+        items:
+          items:
+            $ref: '#/components/schemas/models.Comment'
+          type: array
+          uniqueItems: false
+        next_cursor:
           type: string
       type: object
     models.Comment:
@@ -242,24 +260,6 @@ components:
           enum:
           - approve
           type: string
-        text:
-          example: Reviewed all SELECT queries - no anomalies found
-          type: string
-      type: object
-    repository.PaginatedResult-models_Comment:
-      properties:
-        has_more:
-          type: boolean
-        items:
-          items:
-            $ref: '#/components/schemas/models.Comment'
-          type: array
-          uniqueItems: false
-        next_cursor:
-          type: string
-      type: object
-    models.CreateCommentInput:
-      properties:
         text:
           example: Reviewed all SELECT queries - no anomalies found
           type: string

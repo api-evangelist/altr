@@ -169,16 +169,6 @@ paths:
           description: Something went wrong server-side. Try again later.
 components:
   schemas:
-    PolicyActionEnum:
-      type: string
-      enum:
-      - set
-      - delete
-      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
-
-        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
-
-        - `delete`: Remove all policy on all columns with this `tagName`.'
     MaskActionEnum:
       type: string
       enum:
@@ -295,6 +285,16 @@ components:
             - yellow
             action: allow
             permissivity: 100
+    PolicyActionEnum:
+      type: string
+      enum:
+      - set
+      - delete
+      description: 'Specifies whether to set or remove policy from columns with the given `tagName`. Possible values are:
+
+        - `set`: Set the policy on the given `tagName` to the given `policy`; any policy previously on this `tagName` is discarded.
+
+        - `delete`: Remove all policy on all columns with this `tagName`.'
   securitySchemes:
     basicAuth:
       type: http

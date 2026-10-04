@@ -666,197 +666,10 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.GetAutoTaggingConfigurationOutput:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/management.AutoTaggingItem'
-    management.ReportStorageInformation:
-      type: object
-      properties:
-        id:
-          description: ALTR Tag Mapping report ID.
-          type: string
-    autotagging.TagMapping:
-      type: object
-      required:
-      - classifiers
-      - priority
-      - tag_name
-      - tag_value
-      properties:
-        classifiers:
-          type: array
-          items:
-            type: string
-        priority:
-          type: integer
-        tag_database:
-          type: string
-        tag_name:
-          type: string
-        tag_schema:
-          type: string
-        tag_value:
-          type: string
-    management.Failure:
-      type: object
-      properties:
-        code:
-          type: integer
-        message:
-          type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-    management.Databricks:
-      type: object
-      required:
-      - database_id
-      properties:
-        catalog_name:
-          type: string
-        database_id:
-          type: integer
-        schema_name:
-          type: string
-        table_name:
-          type: string
     main.SnowflakeInput:
       type: object
       properties:
         database_name:
-          type: string
-        schema_name:
-          type: string
-        table_name:
-          type: string
-    management.MappingStorageInformation:
-      type: object
-      properties:
-        id:
-          description: ALTR Tag Mapping storage ID.
-          type: string
-    management.Progress:
-      type: object
-      properties:
-        objects_tagged:
-          description: 'The number of objects we have attempted to tag.
-
-            This is the count of success/failed tagged objects.'
-          type: integer
-        objects_to_tag:
-          description: The number of objects that need to be tagged.
-          type: integer
-        step:
-          description: The current step of the auto tagging job.
-          type: string
-    management.Configuration:
-      type: object
-      properties:
-        altr_tracking_id:
-          type: string
-        classification_report_id:
-          description: The ALTR classification report ID.
-          type: string
-        completed_at:
-          description: The time we finished applying this configuration.
-          type: string
-        create_tag_if_not_exist:
-          description: Create the tags in the given tag mapping if they do not exist.
-          type: boolean
-        created_at:
-          description: Time which the configuration was initially created.
-          type: string
-        database_id:
-          type: integer
-        delete_options:
-          description: 'Delete options to remove this Auto Tagging configuration.
-
-            This will be defined if the intention is to delete this Auto Tagging configuration.'
-          allOf:
-          - $ref: '#/components/schemas/management.DeleteOptions'
-        failure:
-          description: 'The failure when applying this configuration.
-
-            This won''t be defined for auto_tagging_pending and auto_tagging_applied configurations.
-
-            These will only be failures which place the configuration into a failed state.
-
-            Failures in preconditions will result in this field being defined.
-
-            Failures setting or creating tags will not result in this field being defined, those failures will exist in the report.'
-          allOf:
-          - $ref: '#/components/schemas/management.Failure'
-        mapping_storage_information:
-          description: Information about the stored Tag Mapping used by this auto tagging configuration.
-          allOf:
-          - $ref: '#/components/schemas/management.MappingStorageInformation'
-        override_tags:
-          description: Override tag values on the affected objects.
-          type: boolean
-        progress:
-          description: The progress of the auto tagging job.
-          allOf:
-          - $ref: '#/components/schemas/management.Progress'
-        report_storage_information:
-          description: 'Report storage information.
-
-            his Report contains information about the results of applying this Auto Tagging configuration.
-
-            This won''t be defined if the configuration is in auto_tagging_failed or auto_tagging_pending.'
-          allOf:
-          - $ref: '#/components/schemas/management.ReportStorageInformation'
-    mappingstorage.GetMappingOutput:
-      type: object
-      properties:
-        tag_mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/autotagging.TagMapping'
-    management.DeleteOptions:
-      type: object
-      properties:
-        ignore_errors:
-          description: 'When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
-
-            This could result in orphaned ALTR configuration inside the snowflake host.
-
-            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
-          type: boolean
-        unset_tags:
-          description: When set to true, ALTR will unset tags set by the applied auto tagging configuration.
-          type: boolean
-    reportstorage.GetReportURLOutput:
-      type: object
-      properties:
-        expiration:
-          type: string
-        report_url:
-          type: string
-    main.DatabricksInput:
-      type: object
-      properties:
-        catalog_name:
-          type: string
-        schema_name:
-          type: string
-        table_name:
-          type: string
-    management.Snowflake:
-      type: object
-      required:
-      - account_id
-      - database_name
-      - region
-      properties:
-        account_id:
-          type: string
-        database_name:
-          type: string
-        region:
           type: string
         schema_name:
           type: string
@@ -916,6 +729,75 @@ components:
 
             Use this to reuse an existing Tag Mapping.'
           type: string
+    management.Configuration:
+      type: object
+      properties:
+        altr_tracking_id:
+          type: string
+        classification_report_id:
+          description: The ALTR classification report ID.
+          type: string
+        completed_at:
+          description: The time we finished applying this configuration.
+          type: string
+        create_tag_if_not_exist:
+          description: Create the tags in the given tag mapping if they do not exist.
+          type: boolean
+        created_at:
+          description: Time which the configuration was initially created.
+          type: string
+        database_id:
+          type: integer
+        delete_options:
+          description: 'Delete options to remove this Auto Tagging configuration.
+
+            This will be defined if the intention is to delete this Auto Tagging configuration.'
+          allOf:
+          - $ref: '#/components/schemas/management.DeleteOptions'
+        failure:
+          description: 'The failure when applying this configuration.
+
+            This won''t be defined for auto_tagging_pending and auto_tagging_applied configurations.
+
+            These will only be failures which place the configuration into a failed state.
+
+            Failures in preconditions will result in this field being defined.
+
+            Failures setting or creating tags will not result in this field being defined, those failures will exist in the report.'
+          allOf:
+          - $ref: '#/components/schemas/management.Failure'
+        mapping_storage_information:
+          description: Information about the stored Tag Mapping used by this auto tagging configuration.
+          allOf:
+          - $ref: '#/components/schemas/management.MappingStorageInformation'
+        override_tags:
+          description: Override tag values on the affected objects.
+          type: boolean
+        progress:
+          description: The progress of the auto tagging job.
+          allOf:
+          - $ref: '#/components/schemas/management.Progress'
+        report_storage_information:
+          description: 'Report storage information.
+
+            his Report contains information about the results of applying this Auto Tagging configuration.
+
+            This won''t be defined if the configuration is in auto_tagging_failed or auto_tagging_pending.'
+          allOf:
+          - $ref: '#/components/schemas/management.ReportStorageInformation'
+    management.Databricks:
+      type: object
+      required:
+      - database_id
+      properties:
+        catalog_name:
+          type: string
+        database_id:
+          type: integer
+        schema_name:
+          type: string
+        table_name:
+          type: string
     management.ListAutoTaggingConfigurationOutput:
       type: object
       properties:
@@ -951,6 +833,94 @@ components:
             Mutually exclusive with other objects.'
           allOf:
           - $ref: '#/components/schemas/main.SnowflakeInput'
+    management.MappingStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping storage ID.
+          type: string
+    autotagging.TagMapping:
+      type: object
+      required:
+      - classifiers
+      - priority
+      - tag_name
+      - tag_value
+      properties:
+        classifiers:
+          type: array
+          items:
+            type: string
+        priority:
+          type: integer
+        tag_database:
+          type: string
+        tag_name:
+          type: string
+        tag_schema:
+          type: string
+        tag_value:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+    management.GetAutoTaggingConfigurationOutput:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/management.AutoTaggingItem'
+    mappingstorage.GetMappingOutput:
+      type: object
+      properties:
+        tag_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/autotagging.TagMapping'
+    main.DatabricksInput:
+      type: object
+      properties:
+        catalog_name:
+          type: string
+        schema_name:
+          type: string
+        table_name:
+          type: string
+    management.Progress:
+      type: object
+      properties:
+        objects_tagged:
+          description: 'The number of objects we have attempted to tag.
+
+            This is the count of success/failed tagged objects.'
+          type: integer
+        objects_to_tag:
+          description: The number of objects that need to be tagged.
+          type: integer
+        step:
+          description: The current step of the auto tagging job.
+          type: string
+    management.DeleteOptions:
+      type: object
+      properties:
+        ignore_errors:
+          description: 'When set to true, ALTR will ignore errors when deleting configuration resources inside the snowflake host.
+
+            This could result in orphaned ALTR configuration inside the snowflake host.
+
+            Caution should be used, it is recommended to have ignore_errors set to false (default behavior).'
+          type: boolean
+        unset_tags:
+          description: When set to true, ALTR will unset tags set by the applied auto tagging configuration.
+          type: boolean
+    reportstorage.GetReportURLOutput:
+      type: object
+      properties:
+        expiration:
+          type: string
+        report_url:
+          type: string
     management.AutoTaggingItem:
       type: object
       properties:
@@ -999,6 +969,36 @@ components:
             This object and it''s children are impacted by this configuration.'
           allOf:
           - $ref: '#/components/schemas/management.Snowflake'
+    management.Failure:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    management.Snowflake:
+      type: object
+      required:
+      - account_id
+      - database_name
+      - region
+      properties:
+        account_id:
+          type: string
+        database_name:
+          type: string
+        region:
+          type: string
+        schema_name:
+          type: string
+        table_name:
+          type: string
+    management.ReportStorageInformation:
+      type: object
+      properties:
+        id:
+          description: ALTR Tag Mapping report ID.
+          type: string
   securitySchemes:
     BasicAuth:
       type: http

@@ -154,6 +154,18 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    types.TaskTelemetryItemsResponse:
+      properties:
+        contiguous_id:
+          description: Base64 encoded pagination key
+          type: string
+        items:
+          description: List of task telemetry items
+          items:
+            $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
+          type: array
+          uniqueItems: false
+      type: object
     types.TaskTelemetryItemResponse:
       properties:
         agent_id:
@@ -198,18 +210,6 @@ components:
           type: integer
         message:
           type: string
-      type: object
-    types.TaskTelemetryItemsResponse:
-      properties:
-        contiguous_id:
-          description: Base64 encoded pagination key
-          type: string
-        items:
-          description: List of task telemetry items
-          items:
-            $ref: '#/components/schemas/types.TaskTelemetryItemResponse'
-          type: array
-          uniqueItems: false
       type: object
     main.APIErrorResponse:
       properties:

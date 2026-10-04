@@ -263,37 +263,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.Agent:
-      properties:
-        created_at:
-          type: string
-          x-order: '8'
-        data_plane_url:
-          type: string
-          x-order: '4'
-        description:
-          type: string
-          x-order: '3'
-        id:
-          type: string
-          x-order: '1'
-        name:
-          type: string
-          x-order: '2'
-        public_key_1:
-          $ref: '#/components/schemas/management.PublicKey'
-        public_key_2:
-          $ref: '#/components/schemas/management.PublicKey'
-        task_count:
-          type: integer
-          x-order: '5'
-        type:
-          type: string
-          x-order: '0'
-        updated_at:
-          type: string
-          x-order: '9'
-      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
@@ -301,20 +270,12 @@ components:
         message:
           type: string
       type: object
-    agents.UpdateAgentInput:
+    fiber.APIError:
       properties:
-        description:
-          type: string
-          x-order: '1'
-        name:
-          type: string
-          x-order: '0'
-        public_key_1:
-          type: string
-          x-order: '2'
-        public_key_2:
-          type: string
-          x-order: '3'
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
     agents.CreateAgentInput:
       properties:
@@ -355,12 +316,51 @@ components:
           type: string
           x-order: '1'
       type: object
-    fiber.APIError:
+    agents.UpdateAgentInput:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        description:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '0'
+        public_key_1:
+          type: string
+          x-order: '2'
+        public_key_2:
+          type: string
+          x-order: '3'
+      type: object
+    management.Agent:
+      properties:
+        created_at:
+          type: string
+          x-order: '8'
+        data_plane_url:
+          type: string
+          x-order: '4'
+        description:
+          type: string
+          x-order: '3'
+        id:
+          type: string
+          x-order: '1'
+        name:
+          type: string
+          x-order: '2'
+        public_key_1:
+          $ref: '#/components/schemas/management.PublicKey'
+        public_key_2:
+          $ref: '#/components/schemas/management.PublicKey'
+        task_count:
           type: integer
+          x-order: '5'
+        type:
+          type: string
+          x-order: '0'
+        updated_at:
+          type: string
+          x-order: '9'
       type: object
   securitySchemes:
     basic:

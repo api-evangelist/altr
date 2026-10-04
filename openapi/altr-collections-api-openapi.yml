@@ -401,12 +401,170 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    collections.PostCollectionInput:
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    management.GetClassifiersInCollectionOutput:
       properties:
+        classifiers:
+          items:
+            $ref: '#/components/schemas/types.ClassifierItem'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    collections.UnifiedCollectionsOutput:
+      properties:
+        collections:
+          items:
+            $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
+      type: object
+    collections.RemoveClassifiersFromCollectionInput:
+      properties:
+        classifier_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    types.CollectionItem:
+      properties:
+        classifier_count:
+          type: integer
         collection_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        deleted_at:
+          description: Time is always stored RFC3339
           type: string
         description:
           type: string
+        org_id:
+          type: string
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    management.PatchCollectionOutput:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.CollectionItem'
+      type: object
+    collections.GetCollectionByNameResponse:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.UnifiedCollectionResponse'
       type: object
     types.ContentFormat:
       description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
@@ -457,54 +615,6 @@ components:
       - ContentFormatGIF
       - ContentFormatTIFF
       - ContentFormatParquet
-    types.CollectionItem:
-      properties:
-        classifier_count:
-          type: integer
-        collection_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        deleted_at:
-          description: Time is always stored RFC3339
-          type: string
-        description:
-          type: string
-        org_id:
-          type: string
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    collections.AppendClassifiersToCollectionInput:
-      properties:
-        classifier_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.ClassifierAttributes:
-      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
-      properties:
-        tags:
-          example:
-          - type:ssn
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
     gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
       properties:
         comparator:
@@ -692,108 +802,18 @@ components:
           example: true
           type: boolean
       type: object
-    types.UnifiedCollectionResponse:
+    collections.PostCollectionInput:
       properties:
-        classifier_count:
-          type: integer
         collection_name:
-          type: string
-        deleted_at:
           type: string
         description:
           type: string
-        org_id:
-          type: string
       type: object
-    types.ColumnLocation:
+    fiber.APIErrorResponse:
       properties:
-        database:
-          example: prod_db
-          type: string
-        schema:
-          example: pii
-          type: string
-        table:
-          example: customers
-          type: string
-      type: object
-    types.ConditionTarget:
-      description: 'Leaf fields (present when type is "leaf").
-
-        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
-
-        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
-
-        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
-
-        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
-      enum:
-      - ROW_DATA
-      - METADATA
-      - COLUMN_LOCATION
-      - GDLP
-      - SNOWFLAKE_NATIVE
-      - CONTENT_TYPE
-      - DATA_LENGTH
-      - COLUMN_SIZE
-      - AMAZON_COMPREHEND
-      example: ROW_DATA
-      type: string
-      x-enum-varnames:
-      - ConditionTargetRowData
-      - ConditionTargetMetadata
-      - ConditionTargetColumnLocation
-      - ConditionTargetGDLP
-      - ConditionTargetSnowflakeNative
-      - ConditionTargetContentType
-      - ConditionTargetDataLength
-      - ConditionTargetColumnSize
-      - ConditionTargetComprehend
-    types.MetadataComparator:
-      enum:
-      - matches
-      - contains
-      - equals
-      - starts_with
-      - ends_with
-      - greater_than
-      - greater_than_or_equal
-      - less_than
-      - less_than_or_equal
-      example: matches
-      type: string
-      x-enum-varnames:
-      - MetadataComparatorMatches
-      - MetadataComparatorContains
-      - MetadataComparatorEquals
-      - MetadataComparatorStartsWith
-      - MetadataComparatorEndsWith
-      - DataLengthComparatorGreaterThan
-      - DataLengthComparatorGreaterThanOrEqual
-      - DataLengthComparatorLessThan
-      - DataLengthComparatorLessThanOrEqual
-      - DataLengthComparatorEquals
-      - ColumnSizeComparatorGreaterThan
-      - ColumnSizeComparatorGreaterThanOrEqual
-      - ColumnSizeComparatorLessThan
-      - ColumnSizeComparatorLessThanOrEqual
-      - ColumnSizeComparatorEquals
-    types.SampleType:
-      enum:
-      - ROWS
-      - PERCENT
-      type: string
-      x-enum-varnames:
-      - SampleTypeRows
-      - SampleTypePercent
-    management.GetClassifiersInCollectionOutput:
-      properties:
-        classifiers:
-          items:
-            $ref: '#/components/schemas/types.ClassifierItem'
-          type: array
-          uniqueItems: false
-        contiguous_id:
+        error_code:
+          type: integer
+        message:
           type: string
       type: object
     types.ClassifierItem:
@@ -839,32 +859,7 @@ components:
         sample_type:
           $ref: '#/components/schemas/types.SampleType'
       type: object
-    collections.GetCollectionByNameResponse:
-      properties:
-        collection:
-          $ref: '#/components/schemas/types.UnifiedCollectionResponse'
-      type: object
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
-    collections.PatchCollectionInput:
-      properties:
-        description:
-          type: string
-      type: object
-    management.PatchCollectionOutput:
-      properties:
-        collection:
-          $ref: '#/components/schemas/types.CollectionItem'
-      type: object
-    collections.RemoveClassifiersFromCollectionInput:
+    collections.AppendClassifiersToCollectionInput:
       properties:
         classifier_names:
           items:
@@ -872,25 +867,30 @@ components:
           type: array
           uniqueItems: false
       type: object
-    collections.UnifiedCollectionsOutput:
+    collections.PatchCollectionInput:
       properties:
-        collections:
-          items:
-            $ref: '#/components/schemas/types.UnifiedCollectionResponse'
-          type: array
-          uniqueItems: false
-        contiguous_id:
+        description:
           type: string
       type: object
-    types.CompoundRuleset:
+    fiber.APIError:
       properties:
-        conditions:
-          items:
-            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
-          type: array
-          uniqueItems: false
-        operator:
-          $ref: '#/components/schemas/types.ConditionOperator'
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    types.UnifiedCollectionResponse:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
       type: object
   securitySchemes:
     basic:

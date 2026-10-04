@@ -256,24 +256,6 @@ components:
           type: string
           x-order: '0'
       type: object
-    repos.CreateRepoInput:
-      properties:
-        description:
-          type: string
-          x-order: '1'
-        hostname:
-          type: string
-          x-order: '3'
-        name:
-          type: string
-          x-order: '0'
-        port:
-          type: integer
-          x-order: '4'
-        type:
-          type: string
-          x-order: '2'
-      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
@@ -281,17 +263,12 @@ components:
         message:
           type: string
       type: object
-    management.ListReposOutput:
+    fiber.APIError:
       properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        repos:
-          items:
-            $ref: '#/components/schemas/management.Repo'
-          type: array
-          uniqueItems: false
-          x-order: '0'
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
     management.Repo:
       properties:
@@ -329,12 +306,35 @@ components:
           type: integer
           x-order: '5'
       type: object
-    fiber.APIError:
+    management.ListReposOutput:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        repos:
+          items:
+            $ref: '#/components/schemas/management.Repo'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    repos.CreateRepoInput:
+      properties:
+        description:
+          type: string
+          x-order: '1'
+        hostname:
+          type: string
+          x-order: '3'
+        name:
+          type: string
+          x-order: '0'
+        port:
           type: integer
+          x-order: '4'
+        type:
+          type: string
+          x-order: '2'
       type: object
   securitySchemes:
     basic:

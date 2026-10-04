@@ -84,18 +84,6 @@ components:
           example: '0'
           description: Indicates whether or not the organization has SSO enabled. This value is optional and may not be returned. If the value is 1, SSO is enabled. If the value is 0 or missing, SSO is not enabled.
   responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -120,6 +108,18 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     InternalError:
       description: Internal Error
       content:

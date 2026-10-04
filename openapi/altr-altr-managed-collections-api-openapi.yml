@@ -256,6 +256,232 @@ components:
         contiguous_id:
           type: string
       type: object
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    management.GetCollectionByNameOutput:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.CollectionItem'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    types.ClassifierItem:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        collection_count:
+          type: integer
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        deleted_at:
+          type: string
+        description:
+          type: string
+        minimum_threshold:
+          type: integer
+        org_id:
+          type: string
+        pattern:
+          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
+
+            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
+
+            empty pattern also confuses the Snowflake batch procedure, which short-circuits
+
+            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
+          type: string
+        sample_size:
+          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
+
+            moved to the job level (CreateJobInput). No longer populated by create/update paths
+
+            but existing DynamoDB items may still have values for backward compatibility.'
+          type: integer
+        sample_type:
+          $ref: '#/components/schemas/types.SampleType'
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    types.ContentFormat:
+      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
+
+        computed. Stay nil when the agent had no sample values (metadata-only
+
+        sampling) or when CONTENT_TYPE was excluded from condition_types.'
+      enum:
+      - JSON
+      - XML
+      - HTML
+      - YAML
+      - CSV
+      - BASE64
+      - PLAIN_TEXT
+      - PDF
+      - DOCX
+      - XLSX
+      - PPTX
+      - MS_OFFICE_LEGACY
+      - RTF
+      - ZIP
+      - GZIP
+      - PNG
+      - JPEG
+      - GIF
+      - TIFF
+      - PARQUET
+      type: string
+      x-enum-varnames:
+      - ContentFormatJSON
+      - ContentFormatXML
+      - ContentFormatHTML
+      - ContentFormatYAML
+      - ContentFormatCSV
+      - ContentFormatBase64
+      - ContentFormatPlainText
+      - ContentFormatPDF
+      - ContentFormatDOCX
+      - ContentFormatXLSX
+      - ContentFormatPPTX
+      - ContentFormatMSOfficeLegacy
+      - ContentFormatRTF
+      - ContentFormatZIP
+      - ContentFormatGZIP
+      - ContentFormatPNG
+      - ContentFormatJPEG
+      - ContentFormatGIF
+      - ContentFormatTIFF
+      - ContentFormatParquet
+    types.CollectionItem:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        deleted_at:
+          description: Time is always stored RFC3339
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
+      type: object
     gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
       properties:
         comparator:
@@ -443,137 +669,6 @@ components:
           example: true
           type: boolean
       type: object
-    types.ClassifierItem:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/types.ClassifierAttributes'
-        classifier_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        collection_count:
-          type: integer
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        compound_ruleset:
-          $ref: '#/components/schemas/types.CompoundRuleset'
-        deleted_at:
-          type: string
-        description:
-          type: string
-        minimum_threshold:
-          type: integer
-        org_id:
-          type: string
-        pattern:
-          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
-
-            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
-
-            empty pattern also confuses the Snowflake batch procedure, which short-circuits
-
-            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
-          type: string
-        sample_size:
-          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
-
-            moved to the job level (CreateJobInput). No longer populated by create/update paths
-
-            but existing DynamoDB items may still have values for backward compatibility.'
-          type: integer
-        sample_type:
-          $ref: '#/components/schemas/types.SampleType'
-      type: object
-    types.CollectionItem:
-      properties:
-        classifier_count:
-          type: integer
-        collection_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        deleted_at:
-          description: Time is always stored RFC3339
-          type: string
-        description:
-          type: string
-        org_id:
-          type: string
-      type: object
-    types.ContentFormat:
-      description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
-
-        computed. Stay nil when the agent had no sample values (metadata-only
-
-        sampling) or when CONTENT_TYPE was excluded from condition_types.'
-      enum:
-      - JSON
-      - XML
-      - HTML
-      - YAML
-      - CSV
-      - BASE64
-      - PLAIN_TEXT
-      - PDF
-      - DOCX
-      - XLSX
-      - PPTX
-      - MS_OFFICE_LEGACY
-      - RTF
-      - ZIP
-      - GZIP
-      - PNG
-      - JPEG
-      - GIF
-      - TIFF
-      - PARQUET
-      type: string
-      x-enum-varnames:
-      - ContentFormatJSON
-      - ContentFormatXML
-      - ContentFormatHTML
-      - ContentFormatYAML
-      - ContentFormatCSV
-      - ContentFormatBase64
-      - ContentFormatPlainText
-      - ContentFormatPDF
-      - ContentFormatDOCX
-      - ContentFormatXLSX
-      - ContentFormatPPTX
-      - ContentFormatMSOfficeLegacy
-      - ContentFormatRTF
-      - ContentFormatZIP
-      - ContentFormatGZIP
-      - ContentFormatPNG
-      - ContentFormatJPEG
-      - ContentFormatGIF
-      - ContentFormatTIFF
-      - ContentFormatParquet
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
     types.ColumnLocation:
       properties:
         database:
@@ -585,101 +680,6 @@ components:
         table:
           example: customers
           type: string
-      type: object
-    types.ConditionTarget:
-      description: 'Leaf fields (present when type is "leaf").
-
-        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
-
-        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
-
-        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
-
-        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
-      enum:
-      - ROW_DATA
-      - METADATA
-      - COLUMN_LOCATION
-      - GDLP
-      - SNOWFLAKE_NATIVE
-      - CONTENT_TYPE
-      - DATA_LENGTH
-      - COLUMN_SIZE
-      - AMAZON_COMPREHEND
-      example: ROW_DATA
-      type: string
-      x-enum-varnames:
-      - ConditionTargetRowData
-      - ConditionTargetMetadata
-      - ConditionTargetColumnLocation
-      - ConditionTargetGDLP
-      - ConditionTargetSnowflakeNative
-      - ConditionTargetContentType
-      - ConditionTargetDataLength
-      - ConditionTargetColumnSize
-      - ConditionTargetComprehend
-    types.ClassifierAttributes:
-      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
-      properties:
-        tags:
-          example:
-          - type:ssn
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.CompoundRuleset:
-      properties:
-        conditions:
-          items:
-            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
-          type: array
-          uniqueItems: false
-        operator:
-          $ref: '#/components/schemas/types.ConditionOperator'
-      type: object
-    types.MetadataComparator:
-      enum:
-      - matches
-      - contains
-      - equals
-      - starts_with
-      - ends_with
-      - greater_than
-      - greater_than_or_equal
-      - less_than
-      - less_than_or_equal
-      example: matches
-      type: string
-      x-enum-varnames:
-      - MetadataComparatorMatches
-      - MetadataComparatorContains
-      - MetadataComparatorEquals
-      - MetadataComparatorStartsWith
-      - MetadataComparatorEndsWith
-      - DataLengthComparatorGreaterThan
-      - DataLengthComparatorGreaterThanOrEqual
-      - DataLengthComparatorLessThan
-      - DataLengthComparatorLessThanOrEqual
-      - DataLengthComparatorEquals
-      - ColumnSizeComparatorGreaterThan
-      - ColumnSizeComparatorGreaterThanOrEqual
-      - ColumnSizeComparatorLessThan
-      - ColumnSizeComparatorLessThanOrEqual
-      - ColumnSizeComparatorEquals
-    types.SampleType:
-      enum:
-      - ROWS
-      - PERCENT
-      type: string
-      x-enum-varnames:
-      - SampleTypeRows
-      - SampleTypePercent
-    management.GetCollectionByNameOutput:
-      properties:
-        collection:
-          $ref: '#/components/schemas/types.CollectionItem'
       type: object
   securitySchemes:
     basic:

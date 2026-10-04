@@ -402,62 +402,18 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.Masking:
+    types.EncryptionFPEOptions:
       type: object
       properties:
-        custom_role_provider:
-          description: 'Contains the configuration related to creating a custom role provider UDF.
-
-            This UDF is used by you to feed in roles to be used by ALTR''s policy decision engine for a given tag policy.'
-          allOf:
-          - $ref: '#/components/schemas/management.CustomRoleProvider'
-        encryption_fpe_options:
-          $ref: '#/components/schemas/management.EncryptionFPEOptions'
-        mask_data_type_list:
-          description: 'MaskDataTypeList is a list of data types to mask.
-
-            See https://docs.snowflake.com/en/sql-reference/intro-summary-data-types
-
-            Geospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial
-
-            If not set, MaskDataTypeList will default to this list of snowflake data types ["ARRAY","OBJECT","VARIANT","DATE","TIME","TIMESTAMP_LTZ","TIMESTAMP_NTZ","TIMESTAMP_TZ","BOOLEAN","BINARY","VARCHAR","NUMBER","FLOAT"]'
-          type: array
-          uniqueItems: true
-          items:
-            type: string
-          example:
-          - VARCHAR
-          - NUMBER
-        protection_type:
-          description: 'What content is this mask targeting (e.g. governed, tokenized-vault)
-
-
-            `governed` indicates that the content is un-formatted text. Content targeted with this type is
-
-            stored or transmitted as-is, without any specialized processing.
-
-
-            `governed-pushdown` indicates that the content is un-formatted text. Policy decision is implemented entirely inside the database
-
-            without reaching out to ALTR''s policy decision engine at runtime. This is sometimes needed for performance.
-
-
-            `tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is
-
-            set tokens will be converted back to original sensitive data, provided the user has permissions to view.
-
-
-            `encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set
-
-            data will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.'
-          enum:
-          - governed
-          - governed-pushdown
-          - tokenized-vault
-          - encryption-fpe
-          allOf:
-          - $ref: '#/components/schemas/management.ProtectionType'
-          example: governed, governed-pushdown, tokenized-vault, or encryption-fpe
+        alphabet:
+          type: string
+        is_padded:
+          type: boolean
+          default: false
+        key_name:
+          type: string
+        tweak_name:
+          type: string
     types.TagMaskingError:
       type: object
       properties:
@@ -465,11 +421,122 @@ components:
           type: string
         message:
           type: string
+    main.DeleteTagMaskingInput:
+      type: object
+      required:
+      - database_id
+      - database_name
+      - schema_name
+      - tag_name
+      properties:
+        database_id:
+          description: 'Which Altr DatabaseID to use in order to delete tag masking from the given tag.
+
+            The credentials for the provided DatabaseID are used when removing the tag masking policies.
+
+            Note the given tag does not need to live in this given database
+
+            as long as the databaseID''s credentials can access the given tag.
+
+            so the DatabaseID''s name + schema can be different from the provided SchemaName + DatabaseName.'
+          type: integer
+        database_name:
+          description: Database name where the given tag lives.
+          type: string
+        schema_name:
+          description: SchemaName name where the given tag lives.
+          type: string
+        tag_name:
+          description: Tag name of the given Tag.
+          type: string
     management.GetTagMaskingOutput:
       type: object
       properties:
         item:
           $ref: '#/components/schemas/types.TagMaskingItem'
+    management.ProtectionType:
+      type: string
+      enum:
+      - ''
+      - governed
+      - governed-pushdown
+      - tokenized-vault
+      - encryption-fpe
+      x-enum-varnames:
+      - ProtectionTypeInferGoverned
+      - ProtectionTypeGoverned
+      - ProtectionTypeGovernedPushdown
+      - ProtectionTypeTokenizedVault
+      - ProtectionTypeEncryptionFPE
+    types.ListTagMaskingItem:
+      type: object
+      properties:
+        created_at:
+          type: string
+        database_id:
+          type: integer
+        database_name:
+          type: string
+        database_type_enum:
+          type: integer
+        friendly_name:
+          type: string
+        masking_applied:
+          description: This is the most recent successfully applied configuration.
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        masking_failed:
+          description: 'The configuration which failed to apply.
+
+
+            If we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.
+
+            In that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,
+
+            while MaskingApplied is the previous configuration prior to the failed modification.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        masking_pending:
+          description: 'The configuration which is currently being applied.
+
+            This configuration will be moved to masking_applied or masking_failed depending on if it is successful.'
+          allOf:
+          - $ref: '#/components/schemas/types.Masking'
+        schema_name:
+          type: string
+        tag_group_id:
+          type: string
+        tag_name:
+          type: string
+        updated_at:
+          type: string
+    management.ListTagMaskingOutput:
+      type: object
+      properties:
+        has_more:
+          type: boolean
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/types.ListTagMaskingItem'
+    management.EncryptionFPEOptions:
+      type: object
+      properties:
+        alphabet:
+          type: string
+          enum:
+          - numeric
+          - alphabetic
+          - alphanumeric
+          example: numeric, alphabetic, or alphanumeric
+        is_padded:
+          type: boolean
+          default: false
+          example: false
+        key_name:
+          type: string
+        tweak_name:
+          type: string
     main.PutTagMaskingInput:
       type: object
       required:
@@ -558,59 +625,26 @@ components:
           type: string
         updated_at:
           type: string
-    types.ListTagMaskingItem:
+    management.CustomRoleProvider:
       type: object
       properties:
-        created_at:
-          type: string
-        database_id:
-          type: integer
-        database_name:
-          type: string
-        database_type_enum:
-          type: integer
-        friendly_name:
-          type: string
-        masking_applied:
-          description: This is the most recent successfully applied configuration.
-          allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        masking_failed:
-          description: 'The configuration which failed to apply.
+        enabled:
+          description: 'Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
 
-
-            If we fail to modify an existing masked tag, we will have both MaskingFailed and MaskingApplied defined.
-
-            In that situation,  MaskingFailed is the configuration which failed to apply and will contain an appropriate error message,
-
-            while MaskingApplied is the previous configuration prior to the failed modification.'
-          allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        masking_pending:
-          description: 'The configuration which is currently being applied.
-
-            This configuration will be moved to masking_applied or masking_failed depending on if it is successful.'
-          allOf:
-          - $ref: '#/components/schemas/types.Masking'
-        schema_name:
-          type: string
-        tag_group_id:
-          type: string
-        tag_name:
-          type: string
-        updated_at:
-          type: string
-    types.EncryptionFPEOptions:
-      type: object
-      properties:
-        alphabet:
-          type: string
-        is_padded:
+            The list of roles provided by the custom UDF is used by ALTR''s policy decision engine for a given tag policy.'
           type: boolean
           default: false
-        key_name:
-          type: string
-        tweak_name:
+    types.CustomRoleProvider:
+      type: object
+      properties:
+        enabled:
+          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
+          type: boolean
+          default: false
+        fully_qualified_function_udf_name:
+          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
+
+            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
           type: string
     main.PutTagMaskingByGroupIDInput:
       type: object
@@ -635,78 +669,62 @@ components:
           description: Masking Configuration.
           allOf:
           - $ref: '#/components/schemas/management.Masking'
-    management.EncryptionFPEOptions:
+    management.Masking:
       type: object
       properties:
-        alphabet:
-          type: string
+        custom_role_provider:
+          description: 'Contains the configuration related to creating a custom role provider UDF.
+
+            This UDF is used by you to feed in roles to be used by ALTR''s policy decision engine for a given tag policy.'
+          allOf:
+          - $ref: '#/components/schemas/management.CustomRoleProvider'
+        encryption_fpe_options:
+          $ref: '#/components/schemas/management.EncryptionFPEOptions'
+        mask_data_type_list:
+          description: 'MaskDataTypeList is a list of data types to mask.
+
+            See https://docs.snowflake.com/en/sql-reference/intro-summary-data-types
+
+            Geospatial data types are not supported https://docs.snowflake.com/en/sql-reference/data-types-geospatial
+
+            If not set, MaskDataTypeList will default to this list of snowflake data types ["ARRAY","OBJECT","VARIANT","DATE","TIME","TIMESTAMP_LTZ","TIMESTAMP_NTZ","TIMESTAMP_TZ","BOOLEAN","BINARY","VARCHAR","NUMBER","FLOAT"]'
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+          example:
+          - VARCHAR
+          - NUMBER
+        protection_type:
+          description: 'What content is this mask targeting (e.g. governed, tokenized-vault)
+
+
+            `governed` indicates that the content is un-formatted text. Content targeted with this type is
+
+            stored or transmitted as-is, without any specialized processing.
+
+
+            `governed-pushdown` indicates that the content is un-formatted text. Policy decision is implemented entirely inside the database
+
+            without reaching out to ALTR''s policy decision engine at runtime. This is sometimes needed for performance.
+
+
+            `tokenized-vault` signifies content that has undergone the process of Vaulted Tokenization. If this property is
+
+            set tokens will be converted back to original sensitive data, provided the user has permissions to view.
+
+
+            `encryption-fpe` signifies content that has undergone the process of ff3-1 encryption. If this property is set
+
+            data will be assumed encrypted and will be converted back to the original sensitive data, provided the user has permissions to view.'
           enum:
-          - numeric
-          - alphabetic
-          - alphanumeric
-          example: numeric, alphabetic, or alphanumeric
-        is_padded:
-          type: boolean
-          default: false
-          example: false
-        key_name:
-          type: string
-        tweak_name:
-          type: string
-    types.CustomRoleProvider:
-      type: object
-      properties:
-        enabled:
-          description: Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
-          type: boolean
-          default: false
-        fully_qualified_function_udf_name:
-          description: 'FullyQualifiedFunctionUDFName This is the fully qualified function UDF name used by the tag''s masking policy to get the list of roles.
-
-            This list of roles is used by ALTR''s policy decision engine for a given tag policy.'
-          type: string
-    main.DeleteTagMaskingInput:
-      type: object
-      required:
-      - database_id
-      - database_name
-      - schema_name
-      - tag_name
-      properties:
-        database_id:
-          description: 'Which Altr DatabaseID to use in order to delete tag masking from the given tag.
-
-            The credentials for the provided DatabaseID are used when removing the tag masking policies.
-
-            Note the given tag does not need to live in this given database
-
-            as long as the databaseID''s credentials can access the given tag.
-
-            so the DatabaseID''s name + schema can be different from the provided SchemaName + DatabaseName.'
-          type: integer
-        database_name:
-          description: Database name where the given tag lives.
-          type: string
-        schema_name:
-          description: SchemaName name where the given tag lives.
-          type: string
-        tag_name:
-          description: Tag name of the given Tag.
-          type: string
-    management.ProtectionType:
-      type: string
-      enum:
-      - ''
-      - governed
-      - governed-pushdown
-      - tokenized-vault
-      - encryption-fpe
-      x-enum-varnames:
-      - ProtectionTypeInferGoverned
-      - ProtectionTypeGoverned
-      - ProtectionTypeGovernedPushdown
-      - ProtectionTypeTokenizedVault
-      - ProtectionTypeEncryptionFPE
+          - governed
+          - governed-pushdown
+          - tokenized-vault
+          - encryption-fpe
+          allOf:
+          - $ref: '#/components/schemas/management.ProtectionType'
+          example: governed, governed-pushdown, tokenized-vault, or encryption-fpe
     types.Masking:
       type: object
       properties:
@@ -771,24 +789,6 @@ components:
       properties:
         error:
           type: string
-    management.CustomRoleProvider:
-      type: object
-      properties:
-        enabled:
-          description: 'Enabled When set to true, ALTR will create and use a Custom UDF to get the list of roles.
-
-            The list of roles provided by the custom UDF is used by ALTR''s policy decision engine for a given tag policy.'
-          type: boolean
-          default: false
-    management.ListTagMaskingOutput:
-      type: object
-      properties:
-        has_more:
-          type: boolean
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/types.ListTagMaskingItem'
   securitySchemes:
     BasicAuth:
       type: http

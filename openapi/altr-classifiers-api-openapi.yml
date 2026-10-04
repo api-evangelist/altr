@@ -894,6 +894,167 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    classifiers.AppendCollectionsToClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
+      type: object
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    management.CreateClassifierOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
+    management.TagVocabularyEntry:
+      properties:
+        classifier_count:
+          description: 'ClassifierCount is the number of classifiers carrying this tag anywhere
+
+            (each classifier contributes at most once per tag).'
+          example: 3
+          type: integer
+        key:
+          example: type
+          type: string
+        sources:
+          description: 'Sources lists where the tag appears org-wide: "attributes", "condition",
+
+            or both (sorted).'
+          example:
+          - condition
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tag:
+          example: type:ssn
+          type: string
+        value:
+          example: ssn
+          type: string
+      type: object
+    types.MetadataComparator:
+      enum:
+      - matches
+      - contains
+      - equals
+      - starts_with
+      - ends_with
+      - greater_than
+      - greater_than_or_equal
+      - less_than
+      - less_than_or_equal
+      example: matches
+      type: string
+      x-enum-varnames:
+      - MetadataComparatorMatches
+      - MetadataComparatorContains
+      - MetadataComparatorEquals
+      - MetadataComparatorStartsWith
+      - MetadataComparatorEndsWith
+      - DataLengthComparatorGreaterThan
+      - DataLengthComparatorGreaterThanOrEqual
+      - DataLengthComparatorLessThan
+      - DataLengthComparatorLessThanOrEqual
+      - DataLengthComparatorEquals
+      - ColumnSizeComparatorGreaterThan
+      - ColumnSizeComparatorGreaterThanOrEqual
+      - ColumnSizeComparatorLessThan
+      - ColumnSizeComparatorLessThanOrEqual
+      - ColumnSizeComparatorEquals
+    classifiers.RemoveCollectionsFromClassifierInput:
+      properties:
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
     types.ContentFormat:
       description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
 
@@ -943,46 +1104,6 @@ components:
       - ContentFormatGIF
       - ContentFormatTIFF
       - ContentFormatParquet
-    management.UpdateClassifierOutput:
-      properties:
-        classifier:
-          $ref: '#/components/schemas/types.ClassifierItem'
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    types.ClassifierAttributes:
-      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
-      properties:
-        tags:
-          example:
-          - type:ssn
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    management.GetClassifiersOutput:
-      properties:
-        classifiers:
-          items:
-            $ref: '#/components/schemas/types.ClassifierItem'
-          type: array
-          uniqueItems: false
-        contiguous_id:
-          type: string
-      type: object
     gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
       properties:
         comparator:
@@ -1170,161 +1291,17 @@ components:
           example: true
           type: boolean
       type: object
-    management.ListTagsOutput:
-      properties:
-        contiguous_id:
-          description: ContiguousID is set when more pages remain; echo it back to resume.
-          type: string
-        keys:
-          description: 'Keys is the sorted distinct list of tag keys of the WHOLE filtered
-
-            vocabulary (not just this page) — it drives a namespace picker, so it
-
-            stays complete on every page.'
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        tags:
-          items:
-            $ref: '#/components/schemas/management.TagVocabularyEntry'
-          type: array
-          uniqueItems: false
-      type: object
-    classifiers.PostClassifierInput:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/types.ClassifierAttributes'
-        classifier_name:
-          example: ssn_with_column_check
-          type: string
-        compound_ruleset:
-          $ref: '#/components/schemas/types.CompoundRuleset'
-        description:
-          example: SSN pattern with metadata column filter
-          type: string
-        minimum_threshold:
-          example: 70
-          type: integer
-        pattern:
-          example: \d{3}-\d{2}-\d{4}
-          type: string
-        sample_size:
-          example: 100
-          type: integer
-        sample_type:
-          enum:
-          - ROWS
-          - PERCENT
-          example: PERCENT
-          type: string
-      type: object
-    types.ColumnLocation:
-      properties:
-        database:
-          example: prod_db
-          type: string
-        schema:
-          example: pii
-          type: string
-        table:
-          example: customers
-          type: string
-      type: object
-    types.ConditionTarget:
-      description: 'Leaf fields (present when type is "leaf").
-
-        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
-
-        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
-
-        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
-
-        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
-      enum:
-      - ROW_DATA
-      - METADATA
-      - COLUMN_LOCATION
-      - GDLP
-      - SNOWFLAKE_NATIVE
-      - CONTENT_TYPE
-      - DATA_LENGTH
-      - COLUMN_SIZE
-      - AMAZON_COMPREHEND
-      example: ROW_DATA
-      type: string
-      x-enum-varnames:
-      - ConditionTargetRowData
-      - ConditionTargetMetadata
-      - ConditionTargetColumnLocation
-      - ConditionTargetGDLP
-      - ConditionTargetSnowflakeNative
-      - ConditionTargetContentType
-      - ConditionTargetDataLength
-      - ConditionTargetColumnSize
-      - ConditionTargetComprehend
-    management.GetClassifierByNameOutput:
+    management.UpdateClassifierOutput:
       properties:
         classifier:
           $ref: '#/components/schemas/types.ClassifierItem'
       type: object
-    classifiers.AppendCollectionsToClassifierInput:
+    fiber.APIErrorResponse:
       properties:
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.MetadataComparator:
-      enum:
-      - matches
-      - contains
-      - equals
-      - starts_with
-      - ends_with
-      - greater_than
-      - greater_than_or_equal
-      - less_than
-      - less_than_or_equal
-      example: matches
-      type: string
-      x-enum-varnames:
-      - MetadataComparatorMatches
-      - MetadataComparatorContains
-      - MetadataComparatorEquals
-      - MetadataComparatorStartsWith
-      - MetadataComparatorEndsWith
-      - DataLengthComparatorGreaterThan
-      - DataLengthComparatorGreaterThanOrEqual
-      - DataLengthComparatorLessThan
-      - DataLengthComparatorLessThanOrEqual
-      - DataLengthComparatorEquals
-      - ColumnSizeComparatorGreaterThan
-      - ColumnSizeComparatorGreaterThanOrEqual
-      - ColumnSizeComparatorLessThan
-      - ColumnSizeComparatorLessThanOrEqual
-      - ColumnSizeComparatorEquals
-    types.SampleType:
-      enum:
-      - ROWS
-      - PERCENT
-      type: string
-      x-enum-varnames:
-      - SampleTypeRows
-      - SampleTypePercent
-    management.CreateClassifierOutput:
-      properties:
-        classifier:
-          $ref: '#/components/schemas/types.ClassifierItem'
-      type: object
-    classifiers.RemoveCollectionsFromClassifierInput:
-      properties:
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     types.ClassifierItem:
       properties:
@@ -1369,6 +1346,49 @@ components:
         sample_type:
           $ref: '#/components/schemas/types.SampleType'
       type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.ListTagsOutput:
+      properties:
+        contiguous_id:
+          description: ContiguousID is set when more pages remain; echo it back to resume.
+          type: string
+        keys:
+          description: 'Keys is the sorted distinct list of tag keys of the WHOLE filtered
+
+            vocabulary (not just this page) — it drives a namespace picker, so it
+
+            stays complete on every page.'
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        tags:
+          items:
+            $ref: '#/components/schemas/management.TagVocabularyEntry'
+          type: array
+          uniqueItems: false
+      type: object
+    management.GetClassifiersOutput:
+      properties:
+        classifiers:
+          items:
+            $ref: '#/components/schemas/types.ClassifierItem'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    management.GetClassifierByNameOutput:
+      properties:
+        classifier:
+          $ref: '#/components/schemas/types.ClassifierItem'
+      type: object
     classifiers.PatchClassifierInput:
       properties:
         attributes:
@@ -1394,53 +1414,33 @@ components:
           example: PERCENT
           type: string
       type: object
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
-    management.TagVocabularyEntry:
+    classifiers.PostClassifierInput:
       properties:
-        classifier_count:
-          description: 'ClassifierCount is the number of classifiers carrying this tag anywhere
-
-            (each classifier contributes at most once per tag).'
-          example: 3
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          example: ssn_with_column_check
+          type: string
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        description:
+          example: SSN pattern with metadata column filter
+          type: string
+        minimum_threshold:
+          example: 70
           type: integer
-        key:
-          example: type
+        pattern:
+          example: \d{3}-\d{2}-\d{4}
           type: string
-        sources:
-          description: 'Sources lists where the tag appears org-wide: "attributes", "condition",
-
-            or both (sorted).'
-          example:
-          - condition
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        tag:
-          example: type:ssn
+        sample_size:
+          example: 100
+          type: integer
+        sample_type:
+          enum:
+          - ROWS
+          - PERCENT
+          example: PERCENT
           type: string
-        value:
-          example: ssn
-          type: string
-      type: object
-    types.CompoundRuleset:
-      properties:
-        conditions:
-          items:
-            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
-          type: array
-          uniqueItems: false
-        operator:
-          $ref: '#/components/schemas/types.ConditionOperator'
       type: object
   securitySchemes:
     basic:

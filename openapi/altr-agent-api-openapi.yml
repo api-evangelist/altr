@@ -182,6 +182,11 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    main.APIErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+      type: object
     types.AgentInstancesItemResponse:
       properties:
         contiguous_id:
@@ -200,11 +205,6 @@ components:
           type: integer
         message:
           type: string
-      type: object
-    main.APIErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
     types.AgentInstanceItemResponse:
       properties:

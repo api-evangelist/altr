@@ -359,6 +359,134 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    management.RepoUser:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        created_at:
+          type: string
+          x-order: '6'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        repo_name:
+          type: string
+          x-order: '1'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        updated_at:
+          type: string
+          x-order: '7'
+        username:
+          type: string
+          x-order: '0'
+      type: object
+    management.ListServiceUsersOutput:
+      properties:
+        contiguous_id:
+          type: string
+          x-order: '1'
+        service_users:
+          items:
+            $ref: '#/components/schemas/management.ServiceUser'
+          type: array
+          uniqueItems: false
+          x-order: '0'
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    serviceusers.UpdateServiceUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        resource:
+          type: string
+          x-order: '0'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
+    management.AzureKeyVault:
+      properties:
+        key_vault_uri:
+          type: string
+          x-order: '0'
+        secret_name:
+          type: string
+          x-order: '1'
+      required:
+      - key_vault_uri
+      - secret_name
+      type: object
+      x-order: '2'
+    serviceusers.CreateServiceUserInput:
+      properties:
+        aws_secrets_manager:
+          $ref: '#/components/schemas/management.AWSSecretsManager'
+        azure_key_vault:
+          $ref: '#/components/schemas/management.AzureKeyVault'
+        environment_variable:
+          $ref: '#/components/schemas/management.EnvironmentVariable'
+        resource:
+          type: string
+          x-order: '1'
+        secret_file:
+          $ref: '#/components/schemas/management.SecretFile'
+        username:
+          type: string
+          x-order: '0'
+      type: object
+    management.EnvironmentVariable:
+      properties:
+        variable_name:
+          type: string
+          x-order: '0'
+      required:
+      - variable_name
+      type: object
+      x-order: '3'
+    management.AWSSecretsManager:
+      properties:
+        iam_role:
+          description: validate that this is an arn
+          type: string
+          x-order: '0'
+        secrets_path:
+          description: could change to id and name
+          type: string
+          x-order: '1'
+      required:
+      - secrets_path
+      type: object
+      x-order: '1'
+    management.SecretFile:
+      properties:
+        path:
+          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
+
+            Example: "db_password" → /altr/secrets/db_password'
+          type: string
+          x-order: '0'
+      required:
+      - path
+      type: object
+      x-order: '4'
     management.ServiceUser:
       properties:
         aws_secrets_manager:
@@ -387,134 +515,6 @@ components:
         username:
           type: string
           x-order: '1'
-      type: object
-    serviceusers.UpdateServiceUserInput:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        resource:
-          type: string
-          x-order: '0'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    management.RepoUser:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        created_at:
-          type: string
-          x-order: '6'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        repo_name:
-          type: string
-          x-order: '1'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-        updated_at:
-          type: string
-          x-order: '7'
-        username:
-          type: string
-          x-order: '0'
-      type: object
-    management.SecretFile:
-      properties:
-        path:
-          description: 'Simple filename (no directory separators). Resolved under /altr/secrets/ at runtime.
-
-            Example: "db_password" → /altr/secrets/db_password'
-          type: string
-          x-order: '0'
-      required:
-      - path
-      type: object
-      x-order: '4'
-    management.AWSSecretsManager:
-      properties:
-        iam_role:
-          description: validate that this is an arn
-          type: string
-          x-order: '0'
-        secrets_path:
-          description: could change to id and name
-          type: string
-          x-order: '1'
-      required:
-      - secrets_path
-      type: object
-      x-order: '1'
-    serviceusers.CreateServiceUserInput:
-      properties:
-        aws_secrets_manager:
-          $ref: '#/components/schemas/management.AWSSecretsManager'
-        azure_key_vault:
-          $ref: '#/components/schemas/management.AzureKeyVault'
-        environment_variable:
-          $ref: '#/components/schemas/management.EnvironmentVariable'
-        resource:
-          type: string
-          x-order: '1'
-        secret_file:
-          $ref: '#/components/schemas/management.SecretFile'
-        username:
-          type: string
-          x-order: '0'
-      type: object
-    management.AzureKeyVault:
-      properties:
-        key_vault_uri:
-          type: string
-          x-order: '0'
-        secret_name:
-          type: string
-          x-order: '1'
-      required:
-      - key_vault_uri
-      - secret_name
-      type: object
-      x-order: '2'
-    management.EnvironmentVariable:
-      properties:
-        variable_name:
-          type: string
-          x-order: '0'
-      required:
-      - variable_name
-      type: object
-      x-order: '3'
-    management.ListServiceUsersOutput:
-      properties:
-        contiguous_id:
-          type: string
-          x-order: '1'
-        service_users:
-          items:
-            $ref: '#/components/schemas/management.ServiceUser'
-          type: array
-          uniqueItems: false
-          x-order: '0'
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
       type: object
   securitySchemes:
     basic:

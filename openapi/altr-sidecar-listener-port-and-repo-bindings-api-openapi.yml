@@ -305,25 +305,19 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    management.RepoSidecarBinding:
-      properties:
-        port:
-          type: integer
-          x-order: '0'
-        repo_name:
-          type: string
-          x-order: '3'
-        sidecar_id:
-          type: string
-          x-order: '2'
-      type: object
-      x-order: '0'
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
           type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
     management.GetRepoBindOutput:
       properties:
@@ -342,13 +336,19 @@ components:
           uniqueItems: false
           x-order: '0'
       type: object
-    fiber.APIError:
+    management.RepoSidecarBinding:
       properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
+        port:
           type: integer
+          x-order: '0'
+        repo_name:
+          type: string
+          x-order: '3'
+        sidecar_id:
+          type: string
+          x-order: '2'
       type: object
+      x-order: '0'
   securitySchemes:
     basic:
       scheme: basic
