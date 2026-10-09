@@ -2,7 +2,7 @@
 name: Apply a tag-based governance policy to Databricks with ALTR
 description: Connect a Databricks metastore to ALTR and apply a PUSHDOWN masking policy against a raw column tag, which is the opposite convention to Snowflake.
 api: openapi/altr-unified-policy-openapi.yml
-operations: [getDatabases, createDatabase, createPolicy, createGrantPolicyDatabricks, createRule, getRules, startClassificationMetastore]
+operations: [getDatabases, createDatabase, createPolicy, createGrantPolicyDatabricks, createRule, getPolicyByPolicyIdRules, startClassificationMetastore]
 ---
 
 # Apply a tag-based governance policy to Databricks

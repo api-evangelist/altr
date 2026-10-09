@@ -2,7 +2,7 @@
 name: Create a tag-based dynamic masking policy in ALTR
 description: Connect a Snowflake tag to ALTR, create a masking policy against it, and attach per-role masking rules so each role sees a different level of the data.
 api: openapi/altr-unified-policy-openapi.yml
-operations: [getPolicies, createPolicy, createPolicyWithRules, getPolicyById, createRule, getRules, getRuleById, updateRule, updateBatchRules, deleteRule, deletePolicy, getUserGroups, retrieveTagsList, retrieveTagDetails]
+operations: [getPolicies, createPolicy, createPolicyWithRules, getPolicyById, createRule, getPolicyByPolicyIdRules, getRuleById, updateRule, updateBatchRules, deleteRule, deletePolicy, getUserGroups, retrieveTagsList, retrieveTagDetails]
 ---
 
 # Create a tag-based dynamic masking policy
