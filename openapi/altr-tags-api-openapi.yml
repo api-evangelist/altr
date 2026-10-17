@@ -102,6 +102,27 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
+    ApiError:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal Server Error
+            statusCode:
+              type: integer
+              example: 500
+            context:
+              type: object
+              example: {}
+              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
+            date:
+              type: string
+              format: date-time
+        success:
+          type: boolean
     ColumnsInTag:
       type: object
       description: Tags object
@@ -128,27 +149,6 @@ components:
           type: string
           format: date
           description: The column name.
-    ApiError:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            message:
-              type: string
-              example: Internal Server Error
-            statusCode:
-              type: integer
-              example: 500
-            context:
-              type: object
-              example: {}
-              description: An object with properties that may **optionally** appear, will contain more information relating to the error message.
-            date:
-              type: string
-              format: date-time
-        success:
-          type: boolean
     Tags:
       type: object
       description: Tags object
@@ -189,18 +189,6 @@ components:
                     title: DB_CONNECTION
                   date: '2022-07-20T18:00:58.723Z'
                 success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
     InternalError:
       description: Internal Error
       content:
@@ -211,6 +199,18 @@ components:
             data:
               message: Internal Server Error
               statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
   parameters:

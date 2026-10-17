@@ -182,29 +182,17 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    main.APIErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-      type: object
-    types.AgentInstancesItemResponse:
-      properties:
-        contiguous_id:
-          description: Base64 encoded string representing the LastEvaluatedKey for pagination
-          type: string
-        items:
-          description: List of agent instance items
-          items:
-            $ref: '#/components/schemas/types.AgentInstanceItemResponse'
-          type: array
-          uniqueItems: false
-      type: object
     fiber.APIErrorResponse:
       properties:
         error_code:
           type: integer
         message:
           type: string
+      type: object
+    main.APIErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
       type: object
     types.AgentInstanceItemResponse:
       properties:
@@ -237,6 +225,18 @@ components:
             type: string
           description: Tags associated with this instance
           type: object
+      type: object
+    types.AgentInstancesItemResponse:
+      properties:
+        contiguous_id:
+          description: Base64 encoded string representing the LastEvaluatedKey for pagination
+          type: string
+        items:
+          description: List of agent instance items
+          items:
+            $ref: '#/components/schemas/types.AgentInstanceItemResponse'
+          type: array
+          uniqueItems: false
       type: object
   securitySchemes:
     basic:

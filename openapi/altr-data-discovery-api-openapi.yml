@@ -806,6 +806,42 @@ paths:
           description: Failure servicing this request
 components:
   schemas:
+    ClassificationSummary:
+      type: object
+      properties:
+        classifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationSummaryItem'
+        totals:
+          type: object
+          properties:
+            classifiedColumns:
+              type: integer
+              example: 200
+            totalColumns:
+              type: integer
+              example: 500
+            percentSuccessfullyClassified:
+              type: float
+              example: 22.5
+    ClassificationColumnTypeList:
+      type: object
+      properties:
+        Columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationColumnTypeRequestItem'
+        Totals:
+          type: object
+          properties:
+            column_count:
+              type: integer
+              example: 100
+    DataDiscoveryTableFailureList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTableFailure'
     DataDiscoveryJob:
       type: object
       properties:
@@ -857,46 +893,10 @@ components:
         tablesCompletePercentage:
           type: float
           example: 50.0
-    DataDiscoveryTable:
-      type: object
-      properties:
-        jobID:
-          type: string
-          example: DIS-UUID
-        tableName:
-          type: string
-          example: Table1
-        schemaName:
-          type: string
-          example: Schema1
-        tableJobErrorCode:
-          type: integer
-          example: 65000
-        totalColumns:
-          type: integer
-          example: 10
-        columnsTagged:
-          type: integer
-          example: 5
-        columnsSucceeded:
-          type: integer
-          example: 0
-        tableFailureTimestamp:
-          type: string
-          example: 8/8/22 15:15:15
-    ClassificationColumnTypeList:
-      type: object
-      properties:
-        Columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClassificationColumnTypeRequestItem'
-        Totals:
-          type: object
-          properties:
-            column_count:
-              type: integer
-              example: 100
+    DataDiscoveryTableList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryTable'
     Error:
       type: object
       properties:
@@ -919,88 +919,6 @@ components:
         amount:
           type: string
           example: Requested ID did not exist.
-    Database:
-      type: object
-      properties:
-        databaseID:
-          type: integer
-          example: 1
-        databaseName:
-          type: string
-          example: TEST_DATABASE
-        databaseFriendlyName:
-          type: string
-          example: Test Database
-        dataDiscoveryJobRan:
-          type: boolean
-          example: true
-    DataDiscoveryTableList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTable'
-    DataDiscoveryJobList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryJob'
-    ClassificationSummary:
-      type: object
-      properties:
-        classifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClassificationSummaryItem'
-        totals:
-          type: object
-          properties:
-            classifiedColumns:
-              type: integer
-              example: 200
-            totalColumns:
-              type: integer
-              example: 500
-            percentSuccessfullyClassified:
-              type: float
-              example: 22.5
-    DataDiscoveryTableFailure:
-      type: object
-      properties:
-        jobID:
-          type: string
-          example: DIS-UUID
-        tableJobID:
-          type: string
-          example: UUID
-        tableJobError:
-          type: string
-          example: Job error message here
-        tableName:
-          type: string
-          example: Table1
-        schemaName:
-          type: string
-          example: Schema1
-        tableJobErrorCode:
-          type: integer
-          example: 65000
-        totalColumns:
-          type: integer
-          example: 10
-        columnsTagged:
-          type: integer
-          example: 5
-        columnsSucceeded:
-          type: integer
-          example: 0
-        columnsFailed:
-          type: integer
-          example: 10
-        tableFailureTimestamp:
-          type: string
-          example: 8/8/22 15:15:15
-    DataDiscoveryTableFailureList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DataDiscoveryTableFailure'
     ClassificationColumnTypeRequestItem:
       type: object
       properties:
@@ -1055,10 +973,92 @@ components:
         fullyQualifiedTableName:
           type: string
           example: DATABASE_ONE.SCHEMA_ONE.TABLE_ONE
+    Database:
+      type: object
+      properties:
+        databaseID:
+          type: integer
+          example: 1
+        databaseName:
+          type: string
+          example: TEST_DATABASE
+        databaseFriendlyName:
+          type: string
+          example: Test Database
+        dataDiscoveryJobRan:
+          type: boolean
+          example: true
+    DataDiscoveryTable:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
+    DataDiscoveryTableFailure:
+      type: object
+      properties:
+        jobID:
+          type: string
+          example: DIS-UUID
+        tableJobID:
+          type: string
+          example: UUID
+        tableJobError:
+          type: string
+          example: Job error message here
+        tableName:
+          type: string
+          example: Table1
+        schemaName:
+          type: string
+          example: Schema1
+        tableJobErrorCode:
+          type: integer
+          example: 65000
+        totalColumns:
+          type: integer
+          example: 10
+        columnsTagged:
+          type: integer
+          example: 5
+        columnsSucceeded:
+          type: integer
+          example: 0
+        columnsFailed:
+          type: integer
+          example: 10
+        tableFailureTimestamp:
+          type: string
+          example: 8/8/22 15:15:15
     DatabaseList:
       type: array
       items:
         $ref: '#/components/schemas/Database'
+    DataDiscoveryJobList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DataDiscoveryJob'
   securitySchemes:
     basicAuth:
       type: http

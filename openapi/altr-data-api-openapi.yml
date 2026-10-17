@@ -574,139 +574,39 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    Unprocessed:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unprocessable Entity
-              statusCode: 422
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    Forbidden:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Resource is forbidden
-              statusCode: 403
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          examples:
-            default:
-              value:
-                data:
-                  message: '''id'' must be present'
-                  statusCode: 400
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-            with context property:
-              value:
-                data:
-                  message: Invalid credentials.
-                  statusCode: 400
-                  context:
-                    error_code: 60000
-                    title: DB_CONNECTION
-                  date: '2022-07-20T18:00:58.723Z'
-                success: false
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Unauthorized
-              statusCode: 401
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Not Found
-              statusCode: 404
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
   schemas:
-    DataLinkedColumns:
+    DataMetadata:
       type: object
       properties:
         linkedColumns:
           type: array
           items:
-            type: object
-            properties:
-              size:
-                type: integer
-                example: 0
-                description: Column length
-              canMonitor:
-                type: boolean
-              canTokenized:
-                type: boolean
-              canScatter:
-                type: boolean
-              nullableType:
-                type: integer
-                description: 0 if non null, 1 if null
-                enum:
-                - 0
-                - 1
-                example: 1
-              name:
-                type: string
-                example: EMAIL
-              isAltred:
-                type: boolean
-                example: false
-              isMonitored:
-                type: boolean
-              isTokenized:
-                type: boolean
-              type:
-                type: string
-                example: DATE
-              tableName:
-                type: string
-                example: EMPLOYEES
-          example: []
-          description: This is continue to return any DataLinkedColumns linked columns until there aren't anymore.
+            $ref: '#/components/schemas/DataLinkedColumns'
+        isAltred:
+          type: boolean
+        isView:
+          type: boolean
+          example: false
+        type:
+          type: string
+          example: DATE
+        uuid:
+          type: string
+          example: bb4dc5c9-4305-523d-8b28-4e6fa8e4cb6a
+        tableName:
+          type: string
+          example: EMPLOYEE
+        schemaName:
+          type: string
+          example: PUBLIC
+          description: Only available if the column is in a view
+        viewName:
+          type: string
+          example: MY_VIEW
+          description: Only available if the column is in a view
         size:
           type: integer
           example: 0
-          description: Column length
         canMonitor:
           type: boolean
         canTokenize:
@@ -723,19 +623,22 @@ components:
         name:
           type: string
           example: EMAIL
-        isAltred:
-          type: boolean
-          example: false
         isMonitored:
           type: boolean
         isTokenized:
           type: boolean
-        type:
-          type: string
-          example: DATE
-        tableName:
-          type: string
-          example: EMPLOYEES
+        metrics_emit_total:
+          type: integer
+          example: 111
+        metrics_emit_received_at:
+          type: integer
+          example: 1673294738721
+        metrics_emit_queued:
+          type: integer
+          example: 0
+        metrics_emit_processed:
+          type: integer
+          example: 111
     ApiError:
       type: object
       properties:
@@ -810,6 +713,34 @@ components:
           type: string
           description: The client id in which the custom masking policy belongs too. If this value is 0, it means it's available for all organizations and is not a custom masking policy.
           example: '0'
+    DataModel:
+      allOf:
+      - $ref: '#/components/schemas/BaseDataModel'
+      - type: object
+        properties:
+          implementation:
+            type:
+            - integer
+            - 'null'
+            enum:
+            - 1
+            - 2
+            - 3
+            description: 'An optional field indicating the way governance on the column was implemented. This only applies to Snowflake CI; this value can also be `null`:
+
+              * `1` - masking policy was created
+
+              * `2` - database does not support masking policies
+
+              * `3` - the column already has a masking policy applied to it.
+
+              '
+          CDMServiceEnabled:
+            type: boolean
+          databaseName:
+            type: string
+            description: The resolvable name of the connected database.
+            example: MainStore
     BaseDataModel:
       type: object
       description: Base Data Model Representation
@@ -898,38 +829,53 @@ components:
         isPadded:
           type: boolean
           description: Whether or not padding was applied on encryption of the data.
-    DataMetadata:
+    DataLinkedColumns:
       type: object
       properties:
         linkedColumns:
           type: array
           items:
-            $ref: '#/components/schemas/DataLinkedColumns'
-        isAltred:
-          type: boolean
-        isView:
-          type: boolean
-          example: false
-        type:
-          type: string
-          example: DATE
-        uuid:
-          type: string
-          example: bb4dc5c9-4305-523d-8b28-4e6fa8e4cb6a
-        tableName:
-          type: string
-          example: EMPLOYEE
-        schemaName:
-          type: string
-          example: PUBLIC
-          description: Only available if the column is in a view
-        viewName:
-          type: string
-          example: MY_VIEW
-          description: Only available if the column is in a view
+            type: object
+            properties:
+              size:
+                type: integer
+                example: 0
+                description: Column length
+              canMonitor:
+                type: boolean
+              canTokenized:
+                type: boolean
+              canScatter:
+                type: boolean
+              nullableType:
+                type: integer
+                description: 0 if non null, 1 if null
+                enum:
+                - 0
+                - 1
+                example: 1
+              name:
+                type: string
+                example: EMAIL
+              isAltred:
+                type: boolean
+                example: false
+              isMonitored:
+                type: boolean
+              isTokenized:
+                type: boolean
+              type:
+                type: string
+                example: DATE
+              tableName:
+                type: string
+                example: EMPLOYEES
+          example: []
+          description: This is continue to return any DataLinkedColumns linked columns until there aren't anymore.
         size:
           type: integer
           example: 0
+          description: Column length
         canMonitor:
           type: boolean
         canTokenize:
@@ -946,50 +892,104 @@ components:
         name:
           type: string
           example: EMAIL
+        isAltred:
+          type: boolean
+          example: false
         isMonitored:
           type: boolean
         isTokenized:
           type: boolean
-        metrics_emit_total:
-          type: integer
-          example: 111
-        metrics_emit_received_at:
-          type: integer
-          example: 1673294738721
-        metrics_emit_queued:
-          type: integer
-          example: 0
-        metrics_emit_processed:
-          type: integer
-          example: 111
-    DataModel:
-      allOf:
-      - $ref: '#/components/schemas/BaseDataModel'
-      - type: object
-        properties:
-          implementation:
-            type:
-            - integer
-            - 'null'
-            enum:
-            - 1
-            - 2
-            - 3
-            description: 'An optional field indicating the way governance on the column was implemented. This only applies to Snowflake CI; this value can also be `null`:
-
-              * `1` - masking policy was created
-
-              * `2` - database does not support masking policies
-
-              * `3` - the column already has a masking policy applied to it.
-
-              '
-          CDMServiceEnabled:
-            type: boolean
-          databaseName:
-            type: string
-            description: The resolvable name of the connected database.
-            example: MainStore
+        type:
+          type: string
+          example: DATE
+        tableName:
+          type: string
+          example: EMPLOYEES
+  responses:
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Resource is forbidden
+              statusCode: 403
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unprocessed:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unprocessable Entity
+              statusCode: 422
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            default:
+              value:
+                data:
+                  message: '''id'' must be present'
+                  statusCode: 400
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+            with context property:
+              value:
+                data:
+                  message: Invalid credentials.
+                  statusCode: 400
+                  context:
+                    error_code: 60000
+                    title: DB_CONNECTION
+                  date: '2022-07-20T18:00:58.723Z'
+                success: false
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Unauthorized
+              statusCode: 401
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Not Found
+              statusCode: 404
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
   parameters:
     offset:
       name: offset
@@ -998,14 +998,14 @@ components:
         type: integer
         default: 0
         minimum: 0
-    limit:
-      name: limit
-      in: query
+    fieldId:
+      name: fieldId
+      required: true
+      in: path
       schema:
         type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
+        minimum: 1
+      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
     orderBy:
       name: orderBy
       in: query
@@ -1015,14 +1015,14 @@ components:
         - asc
         - desc
         default: asc
-    fieldId:
-      name: fieldId
-      required: true
-      in: path
+    limit:
+      name: limit
+      in: query
       schema:
         type: integer
-        minimum: 1
-      description: The ID that corresponds to govern, protected, tokenized, or fpe column.
+        minimum: 0
+        maximum: 50
+        default: 50
   securitySchemes:
     basicAuth:
       type: http

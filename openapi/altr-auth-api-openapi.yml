@@ -145,38 +145,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    dto.CreateKeypairResponse:
-      type: object
-      properties:
-        algorithm:
-          type: string
-        auth_type:
-          $ref: '#/components/schemas/types.AuthType'
-        created_at:
-          type: string
-        deactivated_at:
-          type: string
-        id:
-          type: array
-          items:
-            type: integer
-        public_key:
-          type: string
-        public_key_encoding:
-          type: string
-        public_key_fingerprint:
-          type: string
-        public_key_format:
-          type: string
-    dto.CreatePasswordBody:
-      type: object
-      required:
-      - password
-      properties:
-        password:
-          type: string
-          maxLength: 128
-          minLength: 8
     types.AuthType:
       type: string
       enum:
@@ -202,6 +170,38 @@ components:
           type: array
           items:
             type: integer
+    dto.CreatePasswordBody:
+      type: object
+      required:
+      - password
+      properties:
+        password:
+          type: string
+          maxLength: 128
+          minLength: 8
+    dto.CreateKeypairResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
   securitySchemes:
     BasicAuth:
       type: http

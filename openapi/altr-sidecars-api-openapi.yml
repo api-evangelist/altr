@@ -240,44 +240,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    sidecars.CreateSidecarInput:
-      properties:
-        description:
-          maxLength: 400
-          type: string
-          x-order: '1'
-        disable_platform_audits:
-          description: 'DisablePlatformAudits
-
-            When true, the sidecar will not send activity audits (connections and SQL statements) to the platform.'
-          type: boolean
-          x-order: '6'
-        hostname:
-          maxLength: 500
-          type: string
-          x-order: '2'
-        name:
-          maxLength: 64
-          type: string
-          x-order: '0'
-        public_key_1:
-          maxLength: 45000
-          type: string
-          x-order: '3'
-        public_key_2:
-          maxLength: 45000
-          type: string
-          x-order: '4'
-        unsupported_query_bypass:
-          description: 'UnsupportedQueryBypass
-
-            When true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.'
-          type: boolean
-          x-order: '5'
-      required:
-      - hostname
-      - name
-      type: object
     sidecars.UpdateSidecarInput:
       properties:
         description:
@@ -308,19 +270,17 @@ components:
           type: boolean
           x-order: '5'
       type: object
-    fiber.APIErrorResponse:
+    management.ListSidecarsOutput:
       properties:
-        error_code:
-          type: integer
-        message:
+        contiguous_id:
           type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
+          x-order: '1'
+        sidecars:
+          items:
+            $ref: '#/components/schemas/management.Sidecar'
+          type: array
+          uniqueItems: false
+          x-order: '0'
       type: object
     management.Sidecar:
       properties:
@@ -365,17 +325,50 @@ components:
           type: string
           x-order: '11'
       type: object
-    management.ListSidecarsOutput:
+    fiber.APIErrorResponse:
       properties:
-        contiguous_id:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    sidecars.CreateSidecarInput:
+      properties:
+        description:
+          maxLength: 400
           type: string
           x-order: '1'
-        sidecars:
-          items:
-            $ref: '#/components/schemas/management.Sidecar'
-          type: array
-          uniqueItems: false
+        disable_platform_audits:
+          description: 'DisablePlatformAudits
+
+            When true, the sidecar will not send activity audits (connections and SQL statements) to the platform.'
+          type: boolean
+          x-order: '6'
+        hostname:
+          maxLength: 500
+          type: string
+          x-order: '2'
+        name:
+          maxLength: 64
+          type: string
           x-order: '0'
+        public_key_1:
+          maxLength: 45000
+          type: string
+          x-order: '3'
+        public_key_2:
+          maxLength: 45000
+          type: string
+          x-order: '4'
+        unsupported_query_bypass:
+          description: 'UnsupportedQueryBypass
+
+            When true, unsupported queries will bypass the query parser and return all results without applying policy instead of returning an error.'
+          type: boolean
+          x-order: '5'
+      required:
+      - hostname
+      - name
       type: object
     management.PublicKey:
       properties:
@@ -385,6 +378,13 @@ components:
           type: string
       type: object
       x-order: '9'
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
+      type: object
   securitySchemes:
     basic:
       scheme: basic

@@ -250,6 +250,29 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    dto.CompositeAuthResponse:
+      type: object
+      properties:
+        algorithm:
+          type: string
+        auth_type:
+          $ref: '#/components/schemas/types.AuthType'
+        created_at:
+          type: string
+        deactivated_at:
+          type: string
+        id:
+          type: array
+          items:
+            type: integer
+        public_key:
+          type: string
+        public_key_encoding:
+          type: string
+        public_key_fingerprint:
+          type: string
+        public_key_format:
+          type: string
     dto.CreateServiceUserRequest:
       type: object
       required:
@@ -270,31 +293,20 @@ components:
           description: Username is the primary identifier for the service user and is used for authentication and display.
           type: string
           maxLength: 255
-    types.AuthType:
-      type: string
-      enum:
-      - UNSUPPORTED
-      - NONE
-      - PASSWORD
-      - KEYPAIR
-      x-enum-varnames:
-      - AuthTypeUnsupported
-      - AuthTypeNone
-      - AuthTypePassword
-      - AuthTypeKeypair
-    types.ServiceType:
-      type: string
-      enum:
-      - SNOWFLAKE
-      - UNSUPPORTED
-      x-enum-varnames:
-      - SnowflakeServiceUser
-      - UnsupportedServiceUser
     dto.CreateServiceUserResponse:
       type: object
       properties:
         user:
           $ref: '#/components/schemas/dto.CompositeServiceUser'
+    dto.ServiceUserQueryResponse:
+      type: object
+      properties:
+        contiguous_id:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
     dto.CompositeServiceUser:
       type: object
       properties:
@@ -330,29 +342,36 @@ components:
         username:
           description: Username is the username assigned to the service user.
           type: string
-    dto.CompositeAuthResponse:
+    types.AuthType:
+      type: string
+      enum:
+      - UNSUPPORTED
+      - NONE
+      - PASSWORD
+      - KEYPAIR
+      x-enum-varnames:
+      - AuthTypeUnsupported
+      - AuthTypeNone
+      - AuthTypePassword
+      - AuthTypeKeypair
+    types.ServiceType:
+      type: string
+      enum:
+      - SNOWFLAKE
+      - UNSUPPORTED
+      x-enum-varnames:
+      - SnowflakeServiceUser
+      - UnsupportedServiceUser
+    dto.UpdateServiceUserBody:
+      description: UpdateServiceUserBody is used to update the details of an existing service user.
       type: object
       properties:
-        algorithm:
+        display_name:
           type: string
-        auth_type:
-          $ref: '#/components/schemas/types.AuthType'
-        created_at:
+          maxLength: 255
+        username:
           type: string
-        deactivated_at:
-          type: string
-        id:
-          type: array
-          items:
-            type: integer
-        public_key:
-          type: string
-        public_key_encoding:
-          type: string
-        public_key_fingerprint:
-          type: string
-        public_key_format:
-          type: string
+          maxLength: 255
     dto.GetServiceUserPublicResponse:
       description: GetServiceUserPublicResponse is used to deliver publicly accessible details of a service user.
       type: object
@@ -365,25 +384,6 @@ components:
           description: User is the composite service user object containing public attributes.
           allOf:
           - $ref: '#/components/schemas/dto.CompositeServiceUser'
-    dto.ServiceUserQueryResponse:
-      type: object
-      properties:
-        contiguous_id:
-          type: string
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/dto.GetServiceUserPublicResponse'
-    dto.UpdateServiceUserBody:
-      description: UpdateServiceUserBody is used to update the details of an existing service user.
-      type: object
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-        username:
-          type: string
-          maxLength: 255
   securitySchemes:
     BasicAuth:
       type: http

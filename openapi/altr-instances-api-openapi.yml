@@ -175,6 +175,13 @@ components:
         next_cursor:
           type: string
       type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
     models.Instance:
       properties:
         definition_id:
@@ -211,11 +218,9 @@ components:
         updated_at:
           type: string
       type: object
-    fiber.APIErrorResponse:
+    models.DownloadResponse:
       properties:
-        error_code:
-          type: integer
-        message:
+        download_url:
           type: string
       type: object
     fiber.APIError:
@@ -224,11 +229,6 @@ components:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
         statusCode:
           type: integer
-      type: object
-    models.DownloadResponse:
-      properties:
-        download_url:
-          type: string
       type: object
   securitySchemes:
     BasicAuth:

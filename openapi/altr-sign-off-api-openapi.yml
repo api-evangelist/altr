@@ -162,36 +162,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.GetSignOffResponse:
-      properties:
-        sign_off:
-          $ref: '#/components/schemas/models.SignOff'
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    fiber.APIError:
-      properties:
-        response:
-          $ref: '#/components/schemas/fiber.APIErrorResponse'
-        statusCode:
-          type: integer
-      type: object
-    models.CreateSignOffInput:
-      properties:
-        action:
-          enum:
-          - approve
-          type: string
-        attestation:
-          type: boolean
-        comments:
-          type: string
-      type: object
     models.ListSignOffsResponse:
       properties:
         has_more:
@@ -224,6 +194,36 @@ components:
           type: string
         user_name:
           type: string
+      type: object
+    models.GetSignOffResponse:
+      properties:
+        sign_off:
+          $ref: '#/components/schemas/models.SignOff'
+      type: object
+    models.CreateSignOffInput:
+      properties:
+        action:
+          enum:
+          - approve
+          type: string
+        attestation:
+          type: boolean
+        comments:
+          type: string
+      type: object
+    fiber.APIErrorResponse:
+      properties:
+        error_code:
+          type: integer
+        message:
+          type: string
+      type: object
+    fiber.APIError:
+      properties:
+        response:
+          $ref: '#/components/schemas/fiber.APIErrorResponse'
+        statusCode:
+          type: integer
       type: object
   securitySchemes:
     BasicAuth:

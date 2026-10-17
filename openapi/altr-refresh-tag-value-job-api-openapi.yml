@@ -132,6 +132,29 @@ components:
 
             Example: "a5a295c5-426b-41bb-85b3-aa0feb8af00b"'
           type: string
+    main.CreateTagValueRefreshJobOutput:
+      description: The response payload for the createTagValueRefresh job. If the job was initiated successfully, it contains the job's reference ID.
+      type: object
+      properties:
+        job_reference_id:
+          description: 'The job reference ID for the initiated refresh job
+
+
+            Example: "a5a295c5-426b-41-1970-01-00-00-00"'
+          type: string
+    tagvaluerefreshjobmanagement.DescribeTagValueRefreshJobError:
+      type: object
+      properties:
+        error_code:
+          type: integer
+        error_message:
+          type: string
+        failed_allowed_value:
+          type: array
+          items:
+            type: string
+        query_id:
+          type: string
     main.GetTagValueRefreshJobStatusOutput:
       type: object
       properties:
@@ -156,29 +179,6 @@ components:
           type: string
         tracking_id:
           description: TrackingID is the ID used for tracking the job status. This field is optional.
-          type: string
-    tagvaluerefreshjobmanagement.DescribeTagValueRefreshJobError:
-      type: object
-      properties:
-        error_code:
-          type: integer
-        error_message:
-          type: string
-        failed_allowed_value:
-          type: array
-          items:
-            type: string
-        query_id:
-          type: string
-    main.CreateTagValueRefreshJobOutput:
-      description: The response payload for the createTagValueRefresh job. If the job was initiated successfully, it contains the job's reference ID.
-      type: object
-      properties:
-        job_reference_id:
-          description: 'The job reference ID for the initiated refresh job
-
-
-            Example: "a5a295c5-426b-41-1970-01-00-00-00"'
           type: string
     ErrorResponse:
       type: object

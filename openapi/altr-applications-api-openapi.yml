@@ -346,7 +346,52 @@ components:
           disabled:
             type: boolean
             example: false
+  parameters:
+    idPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 9007199254740991
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+    orderBy:
+      name: orderBy
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 50
+        default: 50
   responses:
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            data:
+              message: Internal Server Error
+              statusCode: 500
+              date: '2022-07-20T18:00:58.723Z'
+            success: false
     BadRequest:
       description: Bad Request
       content:
@@ -383,51 +428,6 @@ components:
               statusCode: 401
               date: '2022-07-20T18:00:58.723Z'
             success: false
-    InternalError:
-      description: Internal Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
-          example:
-            data:
-              message: Internal Server Error
-              statusCode: 500
-              date: '2022-07-20T18:00:58.723Z'
-            success: false
-  parameters:
-    offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-        minimum: 0
-    limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        maximum: 50
-        default: 50
-    idPath:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 9007199254740991
-    orderBy:
-      name: orderBy
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: asc
   securitySchemes:
     basicAuth:
       type: http

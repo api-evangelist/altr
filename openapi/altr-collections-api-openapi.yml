@@ -401,79 +401,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    types.ConditionOperator:
-      description: Group fields (present when type is "group")
-      enum:
-      - AND
-      - OR
-      example: OR
-      type: string
-      x-enum-varnames:
-      - ConditionOperatorAND
-      - ConditionOperatorOR
-    management.GetClassifiersInCollectionOutput:
-      properties:
-        classifiers:
-          items:
-            $ref: '#/components/schemas/types.ClassifierItem'
-          type: array
-          uniqueItems: false
-        contiguous_id:
-          type: string
-      type: object
-    collections.UnifiedCollectionsOutput:
-      properties:
-        collections:
-          items:
-            $ref: '#/components/schemas/types.UnifiedCollectionResponse'
-          type: array
-          uniqueItems: false
-        contiguous_id:
-          type: string
-      type: object
-    types.ColumnLocation:
-      properties:
-        database:
-          example: prod_db
-          type: string
-        schema:
-          example: pii
-          type: string
-        table:
-          example: customers
-          type: string
-      type: object
-    collections.RemoveClassifiersFromCollectionInput:
-      properties:
-        classifier_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    types.SampleType:
-      enum:
-      - ROWS
-      - PERCENT
-      type: string
-      x-enum-varnames:
-      - SampleTypeRows
-      - SampleTypePercent
-    types.CollectionItem:
-      properties:
-        classifier_count:
-          type: integer
-        collection_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        deleted_at:
-          description: Time is always stored RFC3339
-          type: string
-        description:
-          type: string
-        org_id:
-          type: string
-      type: object
     types.MetadataComparator:
       enum:
       - matches
@@ -503,68 +430,30 @@ components:
       - ColumnSizeComparatorLessThan
       - ColumnSizeComparatorLessThanOrEqual
       - ColumnSizeComparatorEquals
-    types.ClassifierAttributes:
-      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+    collections.RemoveClassifiersFromCollectionInput:
       properties:
-        tags:
-          example:
-          - type:ssn
+        classifier_names:
           items:
             type: string
           type: array
           uniqueItems: false
       type: object
-    types.CompoundRuleset:
+    management.GetClassifiersInCollectionOutput:
       properties:
-        conditions:
+        classifiers:
           items:
-            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+            $ref: '#/components/schemas/types.ClassifierItem'
           type: array
           uniqueItems: false
-        operator:
-          $ref: '#/components/schemas/types.ConditionOperator'
+        contiguous_id:
+          type: string
       type: object
-    types.ConditionTarget:
-      description: 'Leaf fields (present when type is "leaf").
-
-        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
-
-        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
-
-        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
-
-        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
-      enum:
-      - ROW_DATA
-      - METADATA
-      - COLUMN_LOCATION
-      - GDLP
-      - SNOWFLAKE_NATIVE
-      - CONTENT_TYPE
-      - DATA_LENGTH
-      - COLUMN_SIZE
-      - AMAZON_COMPREHEND
-      example: ROW_DATA
-      type: string
-      x-enum-varnames:
-      - ConditionTargetRowData
-      - ConditionTargetMetadata
-      - ConditionTargetColumnLocation
-      - ConditionTargetGDLP
-      - ConditionTargetSnowflakeNative
-      - ConditionTargetContentType
-      - ConditionTargetDataLength
-      - ConditionTargetColumnSize
-      - ConditionTargetComprehend
-    management.PatchCollectionOutput:
+    fiber.APIErrorResponse:
       properties:
-        collection:
-          $ref: '#/components/schemas/types.CollectionItem'
-      type: object
-    collections.GetCollectionByNameResponse:
-      properties:
-        collection:
-          $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+        error_code:
+          type: integer
+        message:
+          type: string
       type: object
     types.ContentFormat:
       description: 'CONTENT_TYPE actuals — populated when the column-level aggregate was
@@ -615,6 +504,200 @@ components:
       - ContentFormatGIF
       - ContentFormatTIFF
       - ContentFormatParquet
+    types.ColumnLocation:
+      properties:
+        database:
+          example: prod_db
+          type: string
+        schema:
+          example: pii
+          type: string
+        table:
+          example: customers
+          type: string
+      type: object
+    collections.PatchCollectionInput:
+      properties:
+        description:
+          type: string
+      type: object
+    types.ConditionOperator:
+      description: Group fields (present when type is "group")
+      enum:
+      - AND
+      - OR
+      example: OR
+      type: string
+      x-enum-varnames:
+      - ConditionOperatorAND
+      - ConditionOperatorOR
+    types.SampleType:
+      enum:
+      - ROWS
+      - PERCENT
+      type: string
+      x-enum-varnames:
+      - SampleTypeRows
+      - SampleTypePercent
+    types.CollectionItem:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        deleted_at:
+          description: Time is always stored RFC3339
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
+      type: object
+    collections.GetCollectionByNameResponse:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+      type: object
+    collections.PostCollectionInput:
+      properties:
+        collection_name:
+          type: string
+        description:
+          type: string
+      type: object
+    types.ClassifierAttributes:
+      description: Attributes is optional static semantic metadata (tier + tags) for the classifier.
+      properties:
+        tags:
+          example:
+          - type:ssn
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.ClassifierItem:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/types.ClassifierAttributes'
+        classifier_name:
+          description: '* This is the raw name provided by the user, it is not sanitized by default.'
+          type: string
+        collection_count:
+          type: integer
+        collection_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+        compound_ruleset:
+          $ref: '#/components/schemas/types.CompoundRuleset'
+        deleted_at:
+          type: string
+        description:
+          type: string
+        minimum_threshold:
+          type: integer
+        org_id:
+          type: string
+        pattern:
+          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
+
+            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
+
+            empty pattern also confuses the Snowflake batch procedure, which short-circuits
+
+            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
+          type: string
+        sample_size:
+          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
+
+            moved to the job level (CreateJobInput). No longer populated by create/update paths
+
+            but existing DynamoDB items may still have values for backward compatibility.'
+          type: integer
+        sample_type:
+          $ref: '#/components/schemas/types.SampleType'
+      type: object
+    types.ConditionTarget:
+      description: 'Leaf fields (present when type is "leaf").
+
+        For ROW_DATA / METADATA / COLUMN_LOCATION targets: Target + Comparator + Pattern + Location.
+
+        For GDLP target: Target + InfoType + MinimumLikelihood (Comparator/Pattern/Location are unused).
+
+        For SNOWFLAKE_NATIVE target: Target + SemanticCategory and/or PrivacyCategory
+
+        (Comparator/Pattern/Location/InfoType/MinimumLikelihood are unused).'
+      enum:
+      - ROW_DATA
+      - METADATA
+      - COLUMN_LOCATION
+      - GDLP
+      - SNOWFLAKE_NATIVE
+      - CONTENT_TYPE
+      - DATA_LENGTH
+      - COLUMN_SIZE
+      - AMAZON_COMPREHEND
+      example: ROW_DATA
+      type: string
+      x-enum-varnames:
+      - ConditionTargetRowData
+      - ConditionTargetMetadata
+      - ConditionTargetColumnLocation
+      - ConditionTargetGDLP
+      - ConditionTargetSnowflakeNative
+      - ConditionTargetContentType
+      - ConditionTargetDataLength
+      - ConditionTargetColumnSize
+      - ConditionTargetComprehend
+    types.UnifiedCollectionResponse:
+      properties:
+        classifier_count:
+          type: integer
+        collection_name:
+          type: string
+        deleted_at:
+          type: string
+        description:
+          type: string
+        org_id:
+          type: string
+      type: object
+    collections.UnifiedCollectionsOutput:
+      properties:
+        collections:
+          items:
+            $ref: '#/components/schemas/types.UnifiedCollectionResponse'
+          type: array
+          uniqueItems: false
+        contiguous_id:
+          type: string
+      type: object
+    collections.AppendClassifiersToCollectionInput:
+      properties:
+        classifier_names:
+          items:
+            type: string
+          type: array
+          uniqueItems: false
+      type: object
+    types.CompoundRuleset:
+      properties:
+        conditions:
+          items:
+            $ref: '#/components/schemas/gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition'
+          type: array
+          uniqueItems: false
+        operator:
+          $ref: '#/components/schemas/types.ConditionOperator'
+      type: object
+    management.PatchCollectionOutput:
+      properties:
+        collection:
+          $ref: '#/components/schemas/types.CollectionItem'
+      type: object
     gitlab_ch5_altr_com_altrdb_altr-classification-engine_pkg_management_types.Condition:
       properties:
         comparator:
@@ -802,95 +885,12 @@ components:
           example: true
           type: boolean
       type: object
-    collections.PostCollectionInput:
-      properties:
-        collection_name:
-          type: string
-        description:
-          type: string
-      type: object
-    fiber.APIErrorResponse:
-      properties:
-        error_code:
-          type: integer
-        message:
-          type: string
-      type: object
-    types.ClassifierItem:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/types.ClassifierAttributes'
-        classifier_name:
-          description: '* This is the raw name provided by the user, it is not sanitized by default.'
-          type: string
-        collection_count:
-          type: integer
-        collection_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-        compound_ruleset:
-          $ref: '#/components/schemas/types.CompoundRuleset'
-        deleted_at:
-          type: string
-        description:
-          type: string
-        minimum_threshold:
-          type: integer
-        org_id:
-          type: string
-        pattern:
-          description: 'Pattern is omitempty so compound-only classifiers (compound_ruleset supplied, no
-
-            top-level pattern) do not round-trip "pattern":"" through the API. A persisted
-
-            empty pattern also confuses the Snowflake batch procedure, which short-circuits
-
-            the UDF call when LENGTH(regex_pattern) == 0 (see issue #21).'
-          type: string
-        sample_size:
-          description: 'Legacy: SampleSize and SampleType are classifier-level fields from before sampling
-
-            moved to the job level (CreateJobInput). No longer populated by create/update paths
-
-            but existing DynamoDB items may still have values for backward compatibility.'
-          type: integer
-        sample_type:
-          $ref: '#/components/schemas/types.SampleType'
-      type: object
-    collections.AppendClassifiersToCollectionInput:
-      properties:
-        classifier_names:
-          items:
-            type: string
-          type: array
-          uniqueItems: false
-      type: object
-    collections.PatchCollectionInput:
-      properties:
-        description:
-          type: string
-      type: object
     fiber.APIError:
       properties:
         response:
           $ref: '#/components/schemas/fiber.APIErrorResponse'
         statusCode:
           type: integer
-      type: object
-    types.UnifiedCollectionResponse:
-      properties:
-        classifier_count:
-          type: integer
-        collection_name:
-          type: string
-        deleted_at:
-          type: string
-        description:
-          type: string
-        org_id:
-          type: string
       type: object
   securitySchemes:
     basic:
